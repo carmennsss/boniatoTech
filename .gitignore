@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 .metadata/.lock
 .metadata/.lock_info
 .metadata/.log
@@ -286,7 +284,6 @@
 .metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml
 .metadata/defender.check
 .metadata/version.ini
->>>>>>> miguel
 /.metadata/
 .metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index
 .metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index
@@ -296,3 +293,5 @@
 .metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs
 .metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index
 .metadata/.mylyn/tasks.xml.zip
+.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs
+.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs
