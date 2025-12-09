@@ -295,3 +295,7 @@
 .metadata/.mylyn/tasks.xml.zip
 .metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.core.prefs
 .metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs
+<<<<<<< HEAD
+=======
+.metadata/.plugins/org.eclipse.m2e.logback/0.log
+>>>>>>> main
