@@ -1,3 +1,5 @@
+package cliente;
+
 import java.io.Serializable;
 
 public class ObtieneFichero implements Serializable {
