@@ -1,4 +1,4 @@
-package com.example.demo.modelo;
+package modelos;
 
 public class Log {
 	

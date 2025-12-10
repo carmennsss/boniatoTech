@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import com.example.demo.modelo.Log;
-import com.example.demo.modelo.User;
+import modelos.Log;
+import modelos.User;
 
 public class GestionFTP {
 
