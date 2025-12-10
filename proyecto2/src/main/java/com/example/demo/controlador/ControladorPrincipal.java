@@ -14,7 +14,7 @@ public class ControladorPrincipal {
 	
 	@GetMapping("/consultaDirectorio")
 	public List<File> consulta() {
-		
+
 	}
 
 }
