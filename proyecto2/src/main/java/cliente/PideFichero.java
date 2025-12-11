@@ -4,13 +4,13 @@ import java.io.Serializable;
 public class PideFichero implements Serializable {
     private static final long serialVersionUID = 1L;
     
-    private String rutaCompleta;
+    private String nombreFichero;
 
-    public PideFichero(String rutaCompleta) {
-        this.rutaCompleta = rutaCompleta;
+    public PideFichero(String nombreFichero) {
+        this.nombreFichero = nombreFichero;
     }
 
-    public String getRutaCompleta() {
-        return rutaCompleta;
+    public String getNombreFichero() {
+        return nombreFichero;
     }
 }
