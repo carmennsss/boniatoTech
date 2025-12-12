@@ -16,6 +16,14 @@
 			<artifactId>commons-net</artifactId>
 			<version>3.9.0</version>
 		</dependency>
-	</dependencies>
+
+    <dependency>
+        <groupId>com.sun.mail</groupId>
+        <artifactId>jakarta.mail</artifactId>
+        <version>1.6.7</version>
+    </dependency>
+
+	
+	</dependencies>	
 
 </project>
