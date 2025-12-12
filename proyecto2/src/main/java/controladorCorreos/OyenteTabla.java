@@ -1,4 +1,4 @@
-package controlador;
+package controladorCorreos;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
