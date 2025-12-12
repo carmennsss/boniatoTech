@@ -1,4 +1,4 @@
-package controlador;
+package controladorCorreos;
 
 import java.util.ArrayList;
 import java.util.Date;
