@@ -7,7 +7,7 @@ import modelo.Correo;
 import vista.VistaGeneralCorreo;
 
 
-public class Main {
+public class MainCorreos {
 
 
 	public static void main(String[] args) {
