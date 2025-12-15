@@ -7,8 +7,26 @@ public class ModeloClienteFTP {
     private FTPClient cliente;
     private String servidor = "13.62.51.110";
     private int puerto = 21;
+    private String user="";
+    private String pass="";
+    
+    public String getUser() {
+		return user;
+	}
 
-    public ModeloClienteFTP() {
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+
+	public ModeloClienteFTP() {
         cliente = new FTPClient();
     }
 

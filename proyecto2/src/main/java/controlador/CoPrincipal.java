@@ -18,22 +18,26 @@ public class CoPrincipal {
     private ModeloBaseDatos bd;
     private MoView modeloVista;
     private ViMain vista;
+    private VistaGestorArchivos vistaArchivo;
+    private VistaMenuPrincipal vistaMenuPrincipal;
     private boolean editando;
 
     public CoPrincipal() {
         this.bd = new ModeloBaseDatos();
         this.modeloVista = new MoView();
         this.vista = new ViMain();
-
         if (bd.getConexion() == null) {
             vista.mostrarMensajeError("No se pudo conectar a la base de datos");
             System.exit(1);
         }
 
         modelo.ModeloClienteFTP modeloFTP = new modelo.ModeloClienteFTP();
-        OyenteLogin oyLogin = new OyenteLogin(vista, modeloFTP, this);
+        this.vistaMenuPrincipal = new VistaMenuPrincipal(modeloFTP,vista);
+        this.vistaArchivo = new VistaGestorArchivos(modeloFTP, vistaMenuPrincipal);
+        OyenteLogin oyLogin = new OyenteLogin(vista, modeloFTP, this, vistaArchivo, vistaMenuPrincipal);
         vista.getPanelLogin().getBotones().get(0).addActionListener(oyLogin);
-
+        vistaMenuPrincipal.getBotonCRUD().addActionListener(oyLogin);
+        vistaMenuPrincipal.getBotonFileManager().addActionListener(oyLogin);
         vista.hacerVisible();
         asignarEventosCRUD();
     }
