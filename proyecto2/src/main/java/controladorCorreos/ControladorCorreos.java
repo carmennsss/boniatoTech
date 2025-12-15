@@ -3,6 +3,8 @@ package controladorCorreos;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.mail.Flags;
+
 import modelo.Correo;
 import vista.VistaGeneralCorreo;
 
@@ -18,28 +20,49 @@ public class ControladorCorreos {
 	public ControladorCorreos() {
 		configurarVistaGeneral();
 		
-		new Thread(() -> {
-	        System.out.println("Conectando con Gmail...");
-	        correos = obtenerCorreos();
-	        
-	        // Una vez descargados, actualizamos la tabla en el hilo de Swing
-	        javax.swing.SwingUtilities.invokeLater(() -> {
-	            vistaGeneral.cargarCorreos(correos);
-	            // Re-asignamos el oyente porque 'correos' ahora tiene datos
-	            // O mejor: pasa la lista 'correos' al oyente al principio y solo llénala aquí.
-	            vistaGeneral.getEmailTabla().addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos));
-	            System.out.println("Correos cargados.");
-	        });
-	    }).start();
+		cargarCorreos();
 		
-		
+		asignarBotonRecargar();
 		
 	}
 
 
 
 
-	private ArrayList<Correo> obtenerCorreos() {
+
+
+
+
+	protected void cargarCorreos() {
+		new Thread(() -> {
+			vistaGeneral.getBotonRecargar().setEnabled(false);
+
+	        System.out.println("Conectando con Gmail...");
+	        correos.clear();
+	        correos.addAll(obtenerCorreos());
+	        
+	        // Una vez descargados, actualizamos la tabla en el hilo de Swing
+	        javax.swing.SwingUtilities.invokeLater(() -> {
+	            vistaGeneral.cargarCorreos(correos);
+
+	            System.out.println("Correos cargados.");
+				vistaGeneral.getBotonRecargar().setEnabled(true);
+
+	        });
+	    }).start();
+	}
+
+
+
+
+	private void asignarBotonRecargar() {
+		vistaGeneral.getBotonRecargar().addActionListener(new OyenteRecargar(vistaGeneral, correos, this));
+	}
+
+
+
+
+	public ArrayList<Correo> obtenerCorreos() {
 		ReceptorCorreo receptor = new ReceptorCorreo();
 		ArrayList<Correo> listaCorreos = receptor.recibirCorreosPOP3(HOST, "recent:" + CORREO, PASSWORD_APLICACION);		
 		
@@ -55,6 +78,16 @@ public class ControladorCorreos {
 	}
 
 
+	public static void eliminarCorreo(Correo correo) throws Exception {
+		correo.getMessage().setFlag(Flags.Flag.DELETED, true);
+		
+	}
+	
+	public static void marcarCorreoLeido(Correo correo) throws Exception {
+		correo.getMessage().setFlag(Flags.Flag.SEEN, true);
+	}
+	
+	
 
 
 	public static String getPasswordAplicacion() {
