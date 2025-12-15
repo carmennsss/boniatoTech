@@ -22,7 +22,7 @@ public class ControladorCorreos {
 	        System.out.println("Conectando con Gmail...");
 	        correos = obtenerCorreos();
 	        
-	        // 3. Una vez descargados, actualizamos la tabla en el hilo de Swing
+	        // Una vez descargados, actualizamos la tabla en el hilo de Swing
 	        javax.swing.SwingUtilities.invokeLater(() -> {
 	            vistaGeneral.cargarCorreos(correos);
 	            // Re-asignamos el oyente porque 'correos' ahora tiene datos
