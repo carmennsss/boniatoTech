@@ -82,9 +82,9 @@ public class VistaGeneralCorreo extends JFrame {
 	private void inicializarVista() {
 		JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
 
-		JLabel etiquetaCorreo = new JLabel("Correo de " + correo);
-		etiquetaCorreo.setPreferredSize(new Dimension(250, 40));
-		etiquetaCorreo.setFont(new Font("Arial", Font.BOLD, 12));
+		JLabel etiquetaCorreo = new JLabel("Bandeja de entrada de " + correo);
+		etiquetaCorreo.setPreferredSize(new Dimension(400, 40));
+		etiquetaCorreo.setFont(new Font("Arial", Font.ITALIC, 12));
 
 		botonEnviarCorreo = new JButton("Enviar correo");
 		botonEnviarCorreo.setPreferredSize(new Dimension(120, 30));
