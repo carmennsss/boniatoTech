@@ -39,11 +39,16 @@ public class VistaGeneralCorreo extends JFrame {
 
 		String[] nombresColumnas = { "De", "Asunto", "Fecha" };
 
-		tablaModelo = new DefaultTableModel(nombresColumnas, 10);
+		tablaModelo = new DefaultTableModel(nombresColumnas, 0) {
+	        @Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false; // Esto evita la edición, pero permite la selección
+	        }
+	    };
 
 		emailTabla = new JTable(tablaModelo);
 		emailTabla.setRowHeight(35);
-		emailTabla.setEnabled(false);
+		//emailTabla.setEnabled(false);
 		emailTabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
