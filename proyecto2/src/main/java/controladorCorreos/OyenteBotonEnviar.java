@@ -17,6 +17,7 @@ public class OyenteBotonEnviar implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		v = new VistaCorreoBase(correo);
+		v.getBotonEnviar().addActionListener(new OyenteEnviarCorreo(v));
 		v.setVisible(true);
 	}
 

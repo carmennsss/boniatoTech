@@ -15,22 +15,21 @@ public class VistaCorreoBase extends JFrame {
     private JTextField textoAsunto;
     private JTextArea textoCuerpo;
     private JButton botonEnviar;
+    private String remitente;
 
     // CONSTRUCTOR ENVIAR/REDACTAR
     public VistaCorreoBase(String remitente) {
         this.setTitle("Redactar Nuevo Correo");
+        this.remitente = remitente;
         
         inicializarComponentes();
         propiedadesGenerales();
 
-        // Configuración Específica para ENVIAR
-        textoPara.setText(""); // Se deja vacío para escribir el destinatario
+        textoPara.setText(""); 
         
-        // El botón "Enviar" solo es necesario en la vista de REDACCIÓN
         JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panelBoton.add(botonEnviar);
 
-        // Se monta la vista (la lógica del diseño está en ensamblarVista())
         ensamblarVista(true, remitente, null); 
         
         this.setVisible(true);
@@ -43,12 +42,10 @@ public class VistaCorreoBase extends JFrame {
         inicializarComponentes();
         propiedadesGenerales();
 
-        // Configuración Específica para CONSULTAR
         textoPara.setText(correo.getRemitente());
         textoAsunto.setText(correo.getAsunto());
         textoCuerpo.setText(correo.getCuerpo());
         
-        // Bloquear edición
         textoPara.setEditable(false);
         textoAsunto.setEditable(false);
         textoCuerpo.setEditable(false);
@@ -119,4 +116,13 @@ public class VistaCorreoBase extends JFrame {
     public JTextField getTextoAsunto() { return textoAsunto; }
     public JTextArea getTextoCuerpo() { return textoCuerpo; }
     public JButton getBotonEnviar() { return botonEnviar; }
+
+	public String getRemitente() {
+		return remitente;
+	}
+
+	public void setRemitente(String remitente) {
+		this.remitente = remitente;
+	}
+    
 }
