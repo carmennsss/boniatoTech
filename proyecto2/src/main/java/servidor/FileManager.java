@@ -219,5 +219,9 @@ public class FileManager {
             e.printStackTrace();
         }
     }
+    
+    public String getUserName() {
+    	return usuario;
+    }
 
 }

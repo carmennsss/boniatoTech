@@ -22,8 +22,11 @@ public class VistaGestorArchivos extends JFrame {
     public VistaGestorArchivos() {
         this.setTitle("File Manager");
         this.setLayout(new BorderLayout());
-        Font fuenteTitulo = new Font("Arial", Font.BOLD, 25);
+        Font fuenteUser = new Font("Arial", Font.BOLD, 25);
+        JLabel user = new JLabel("Welcome, "+ftp.getUserName());
+        Font fuenteTitulo = new Font("Arial", Font.BOLD, 20);
         JLabel titulo = new JLabel("Server Files: ");
+        user.setFont(fuenteUser);
         titulo.setFont(fuenteTitulo);
 
         JButton botonSubida = new JButton("Upload File");
@@ -39,7 +42,7 @@ public class VistaGestorArchivos extends JFrame {
         derecha.setLayout(new BoxLayout(derecha, BoxLayout.Y_AXIS));
         izquierda.setLayout(new BoxLayout(izquierda, BoxLayout.Y_AXIS));
 
-        derecha.setBorder(new EmptyBorder(100, 0, 0, 20));
+        derecha.setBorder(new EmptyBorder(125, 0, 0, 20));
         izquierda.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         accionBotonSubida(botonSubida);
@@ -59,6 +62,8 @@ public class VistaGestorArchivos extends JFrame {
         derecha.add(Box.createRigidArea(new Dimension(0, 10)));
         derecha.add(botonBorrarCarpeta);
 
+        izquierda.add(user);
+        izquierda.add(Box.createRigidArea(new Dimension(0, 20)));
         izquierda.add(titulo);
         izquierda.add(Box.createRigidArea(new Dimension(0, 10)));
         izquierda.add(botonVolver);
