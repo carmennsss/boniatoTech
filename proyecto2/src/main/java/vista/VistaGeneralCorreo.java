@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -24,6 +25,7 @@ public class VistaGeneralCorreo extends JFrame {
 	private JPanel panel;
 	private String correo;
 	private JButton botonEnviarCorreo;
+	private JButton botonRecargar;
 	private DefaultTableModel tablaModelo;
 	private JTable emailTabla;
 
@@ -82,23 +84,37 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	private void inicializarVista() {
-		JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
-
+		JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 10));
+		
 		JLabel etiquetaCorreo = new JLabel("Bandeja de entrada de " + correo);
-		etiquetaCorreo.setPreferredSize(new Dimension(400, 40));
-		etiquetaCorreo.setFont(new Font("Arial", Font.ITALIC, 12));
+		etiquetaCorreo.setPreferredSize(new Dimension(600, 20));
+		etiquetaCorreo.setFont(new Font("Comic Sans MS", Font.ITALIC, 16));
+		etiquetaCorreo.setAlignmentX(SwingConstants.CENTER);
+		
+		
+		panelSuperior.add(etiquetaCorreo);
+		
+		panel.add(panelSuperior, BorderLayout.NORTH);
+
+		JPanel panelMedio = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
+
+		botonRecargar = new JButton("Refresh");
+		botonRecargar.setPreferredSize(new Dimension(120, 30));
+
 
 		botonEnviarCorreo = new JButton("Enviar correo");
 		botonEnviarCorreo.setPreferredSize(new Dimension(120, 30));
 
-		panelSuperior.add(etiquetaCorreo);
-		panelSuperior.add(botonEnviarCorreo);
+		panelMedio.add(botonRecargar);
+		panelMedio.add(botonEnviarCorreo);
+		
 
-		panel.add(panelSuperior, BorderLayout.NORTH);
+		panel.add(panelMedio, BorderLayout.SOUTH);
 	}
 
 	public void cargarCorreos(ArrayList<Correo> correos) {
 		tablaModelo.setRowCount(0);
+		//Ordenar el array por fecha
 		Collections.sort(
 			    correos,
 			    Comparator.comparing(Correo::getFecha).reversed()
@@ -137,4 +153,13 @@ public class VistaGeneralCorreo extends JFrame {
 		this.emailTabla = emailTabla;
 	}
 
+	public JButton getBotonRecargar() {
+		return botonRecargar;
+	}
+
+	public void setBotonRecargar(JButton botonRecargar) {
+		this.botonRecargar = botonRecargar;
+	}
+
+	
 }
