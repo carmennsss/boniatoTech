@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -97,7 +99,10 @@ public class VistaGeneralCorreo extends JFrame {
 
 	public void cargarCorreos(ArrayList<Correo> correos) {
 		tablaModelo.setRowCount(0);
-
+		Collections.sort(
+			    correos,
+			    Comparator.comparing(Correo::getFecha).reversed()
+			);
 		for (Correo c : correos) {
 			Object[] fila = new Object[3];
 			fila[0] = c.getRemitente();
