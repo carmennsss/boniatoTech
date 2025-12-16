@@ -1,13 +1,23 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,89 +27,147 @@ import javax.swing.border.EmptyBorder;
 import controlador.CoPrincipal;
 import modelo.ModeloClienteFTP;
 
-
-public class VistaMenuPrincipal extends JFrame{
+public class VistaMenuPrincipal extends JFrame {
 	ModeloClienteFTP client;
 	JButton botonCRUD;
 	JButton botonFileManager;
 	JButton botonCerrarSesion;
 	ViMain vista;
+
 	public VistaMenuPrincipal(ModeloClienteFTP client, ViMain vista) {
-		this.client=client;
-		this.vista=vista;
+		this.client = client;
+		this.vista = vista;
 		this.setTitle("Main Menu");
-		this.setLayout(new BorderLayout());
-		
-		JPanel contenedor = new JPanel(new FlowLayout(FlowLayout.CENTER));
-	    contenedor.setLayout(new BoxLayout(contenedor, BoxLayout.Y_AXIS));
-		JPanel layoutOpciones = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		JPanel layoutBotones = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		layoutBotones.setLayout(new BoxLayout(layoutBotones, BoxLayout.Y_AXIS));
-		layoutBotones.setBorder(new EmptyBorder(0, 0, 20, 0));
-		
-		JLabel text = new JLabel("Welcome, please select what do you want to do");
-		Font fuenteText = new Font("Arial", Font.BOLD, 30);
-		botonCRUD = new JButton("CRUD");
-		botonFileManager = new JButton("File Manager");
-		botonCerrarSesion =  new JButton("Log out");
-		botonCRUD.setPreferredSize(new Dimension(300, 120)); 
-		botonFileManager.setPreferredSize(new Dimension(300, 120));
-		text.setFont(fuenteText);
-		
-		accionBotonCerrarSesion(botonCerrarSesion);
-		
-		contenedor.add(text);
-		layoutOpciones.add(botonCRUD);
-		layoutOpciones.add(botonFileManager);
-		layoutBotones.add(layoutOpciones);
-		layoutBotones.add(botonCerrarSesion);
-		contenedor.add(layoutBotones);
-		
-		this.add(contenedor);
-		this.setSize(1000, 300);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(false);
+		this.setSize(1000, 600);
+		this.setLocationRelativeTo(null);
+
+		Color colorFondo = new Color(248, 245, 242);
+		Color colorTexto = new Color(74, 88, 89);
+		Color colorBoton = new Color(196, 164, 132);
+		Color colorHover = new Color(160, 130, 100);
+
+		JPanel mainPanel = new JPanel(new GridBagLayout());
+		mainPanel.setBackground(colorFondo);
+		setContentPane(mainPanel);
+
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+
+		JPanel sidePanel = new JPanel() {
+			private Image imagen;
+			{
+				URL url = getClass().getResource("/lateral_menu.jpg");
+				if (url != null) {
+					imagen = new ImageIcon(url).getImage();
+				}
+			}
+
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				if (imagen != null) {
+					double scale = Math.max((double) getWidth() / imagen.getWidth(this),
+							(double) getHeight() / imagen.getHeight(this));
+					int w = (int) (imagen.getWidth(this) * scale);
+					int h = (int) (imagen.getHeight(this) * scale);
+					g.drawImage(imagen, 0, 0, w, h, this);
+				}
+			}
+		};
+
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weightx = 0.4;
+		gbc.weighty = 1.0;
+		mainPanel.add(sidePanel, gbc);
+
+		JPanel contentPanel = new JPanel();
+		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+		contentPanel.setBackground(colorFondo);
+		contentPanel.setBorder(new EmptyBorder(50, 50, 50, 50));
+
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		gbc.weightx = 0.6;
+		gbc.weighty = 1.0;
+		mainPanel.add(contentPanel, gbc);
+
+		JLabel text = new JLabel("Zoo Manager");
+		text.setFont(new Font("Segoe UI", Font.BOLD, 42));
+		text.setForeground(new Color(60, 70, 60));
+		text.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		JLabel subtext = new JLabel("Select an option");
+		subtext.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		subtext.setForeground(colorTexto);
+		subtext.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		botonCRUD = new JButton("Manage Data");
+		botonFileManager = new JButton("File Manager");
+		botonCerrarSesion = new JButton("Log out");
+
+		estilarBoton(botonCRUD, colorBoton, Color.WHITE);
+		estilarBoton(botonFileManager, colorBoton, Color.WHITE);
+		estilarBoton(botonCerrarSesion, new Color(200, 100, 100), Color.WHITE);
+
+		contentPanel.add(Box.createVerticalGlue());
+		contentPanel.add(text);
+		contentPanel.add(Box.createVerticalStrut(10));
+		contentPanel.add(subtext);
+		contentPanel.add(Box.createVerticalStrut(60));
+		contentPanel.add(botonCRUD);
+		contentPanel.add(Box.createVerticalStrut(20));
+		contentPanel.add(botonFileManager);
+		contentPanel.add(Box.createVerticalGlue());
+		contentPanel.add(botonCerrarSesion);
+		contentPanel.add(Box.createVerticalStrut(20));
+
+		accionBotonCerrarSesion(botonCerrarSesion);
 	}
-	
+
+	private void estilarBoton(JButton btn, Color bgColor, Color fgColor) {
+		btn.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		btn.setBackground(bgColor);
+		btn.setForeground(fgColor);
+		btn.setFocusPainted(false);
+		btn.setBorderPainted(false);
+		btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btn.setMaximumSize(new Dimension(300, 50)); // Ancho fijo, altura fija
+		btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+	}
+
 	public void accionBotonCerrarSesion(JButton boton) {
 		boton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	client.desconectar();
-            	VistaMenuPrincipal.this.setVisible(false);
-            	vista.setVisible(true);
-                vista.getPanelLogin().getCajas().get(0).setText("");
-                vista.getPanelLogin().getCajas().get(1).setText("");
-                vista.mostrarLogin();
-            }
-    	});
+			public void actionPerformed(ActionEvent e) {
+				client.desconectar();
+				VistaMenuPrincipal.this.setVisible(false);
+				vista.setVisible(true);
+				vista.getPanelLogin().getCajas().get(0).setText("");
+				vista.getPanelLogin().getCajas().get(1).setText("");
+				vista.mostrarLogin();
+			}
+		});
 	}
-	
+
 	public JButton getBotonFileManager() {
 		return botonFileManager;
 	}
-
-
 
 	public void setBotonFileManager(JButton botonFileManager) {
 		this.botonFileManager = botonFileManager;
 	}
 
-
-
 	public JButton getBotonCRUD() {
 		return botonCRUD;
 	}
-
-
 
 	public void setBotonCRUD(JButton botonCRUD) {
 		this.botonCRUD = botonCRUD;
 	}
 
-
-
 	public void hacerVisible() {
 		setVisible(true);
 	}
-	
+
 }

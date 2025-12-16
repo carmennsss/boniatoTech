@@ -13,10 +13,11 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.border.EmptyBorder;
+import java.net.URL;
 
 public class VistaGestorArchivos extends JFrame {
-	
-	private VistaMenuPrincipal menu;
+
+    private VistaMenuPrincipal menu;
     private DefaultListModel<FTPFile> listaModel;
     private JList<FTPFile> listaArchivos;
     private ModeloClienteFTP client;
@@ -24,34 +25,141 @@ public class VistaGestorArchivos extends JFrame {
     private String rutaActual = "/";
 
     public VistaGestorArchivos(ModeloClienteFTP client, VistaMenuPrincipal menu) {
-    	this.client=client;
-    	this.menu=menu;
-    	ftp = new FileManager("13.62.51.110", 21, client.getUser(), client.getPass());
+        this.client = client;
+        this.menu = menu;
+        ftp = new FileManager("13.62.51.110", 21, client.getUser(), client.getPass());
         this.setTitle("File Manager");
-        this.setLayout(new BorderLayout());
-        Font fuenteUser = new Font("Arial", Font.BOLD, 25);
-        JLabel user = new JLabel("Welcome!");
-        Font fuenteTitulo = new Font("Arial", Font.BOLD, 20);
-        JLabel titulo = new JLabel("Server Files: ");
-        user.setFont(fuenteUser);
-        titulo.setFont(fuenteTitulo);
-        
-        JButton botonSubida = new JButton("Upload File");
-        JButton botonDescarga = new JButton("Download File");
-        JButton botonEliminar = new JButton("Delete File");
-        JButton botonCrearCarpeta = new JButton("Create Folder");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(1000, 650);
+        this.setLocationRelativeTo(null);
+
+        Color colorFondo = new Color(248, 245, 242);
+        Color colorTexto = new Color(74, 88, 89);
+        Color colorBotonAccion = new Color(110, 137, 115);
+        Color colorBotonNav = new Color(200, 190, 170);
+
+        JPanel mainPanel = new JPanel(new GridBagLayout());
+        mainPanel.setBackground(colorFondo);
+        setContentPane(mainPanel);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+
+        JPanel sidePanel = new JPanel() {
+            private Image imagen;
+            {
+                URL url = getClass().getResource("/lateral_files.jpg");
+                if (url != null) {
+                    imagen = new ImageIcon(url).getImage();
+                }
+            }
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (imagen != null) {
+                    double scale = Math.max((double) getWidth() / imagen.getWidth(this),
+                            (double) getHeight() / imagen.getHeight(this));
+                    int w = (int) (imagen.getWidth(this) * scale);
+                    int h = (int) (imagen.getHeight(this) * scale);
+                    g.drawImage(imagen, 0, 0, w, h, this);
+                }
+            }
+        };
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.3;
+        gbc.weighty = 1.0;
+        mainPanel.add(sidePanel, gbc);
+
+        JPanel contentPanel = new JPanel(new BorderLayout());
+        contentPanel.setBackground(colorFondo);
+        contentPanel.setBorder(new EmptyBorder(30, 30, 30, 30));
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 0.7;
+        gbc.weighty = 1.0;
+        mainPanel.add(contentPanel, gbc);
+
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        header.setBackground(colorFondo);
+        header.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel title = new JLabel("File Repository");
+        title.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        title.setForeground(colorTexto);
+
+        JLabel subtitle = new JLabel("Manage your server files efficiently");
+        subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        subtitle.setForeground(new Color(150, 150, 150));
+
+        header.add(title);
+        header.add(Box.createVerticalStrut(5));
+        header.add(subtitle);
+        header.add(Box.createVerticalStrut(20));
+
+        contentPanel.add(header, BorderLayout.NORTH);
+
+        listaModel = new DefaultListModel<>();
+        listaArchivos = new JList<>(listaModel);
+        listaArchivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        listaArchivos.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        listaArchivos.setFixedCellHeight(30);
+        listaArchivos.setBackground(Color.WHITE);
+        listaArchivos.setBorder(new EmptyBorder(5, 5, 5, 5));
+        detectarDobleClick(listaArchivos);
+
+        JScrollPane scrollPane = new JScrollPane(listaArchivos);
+        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220)));
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
+
+        JPanel centerContainer = new JPanel(new BorderLayout(20, 0));
+        centerContainer.setBackground(colorFondo);
+        centerContainer.add(scrollPane, BorderLayout.CENTER);
+
+        JPanel botonesPanel = new JPanel();
+        botonesPanel.setLayout(new BoxLayout(botonesPanel, BoxLayout.Y_AXIS));
+        botonesPanel.setBackground(colorFondo);
+
+        JButton botonSubida = new JButton("Upload");
+        JButton botonDescarga = new JButton("Download");
+        JButton botonEliminar = new JButton("Delete");
+        JButton botonCrearCarpeta = new JButton("New Folder");
         JButton botonBorrarCarpeta = new JButton("Delete Folder");
+
+        estilarBoton(botonSubida, colorBotonAccion, Color.WHITE);
+        estilarBoton(botonDescarga, colorBotonAccion, Color.WHITE);
+        estilarBoton(botonEliminar, new Color(200, 100, 100), Color.WHITE);
+        estilarBoton(botonCrearCarpeta, colorBotonAccion, Color.WHITE);
+        estilarBoton(botonBorrarCarpeta, new Color(200, 100, 100), Color.WHITE);
+
+        botonesPanel.add(new JLabel("Actions"));
+        botonesPanel.add(Box.createVerticalStrut(10));
+        botonesPanel.add(botonSubida);
+        botonesPanel.add(Box.createVerticalStrut(10));
+        botonesPanel.add(botonDescarga);
+        botonesPanel.add(Box.createVerticalStrut(10));
+        botonesPanel.add(botonEliminar);
+        botonesPanel.add(Box.createVerticalStrut(10));
+        botonesPanel.add(botonCrearCarpeta);
+        botonesPanel.add(Box.createVerticalStrut(10));
+        botonesPanel.add(botonBorrarCarpeta);
+        botonesPanel.add(Box.createVerticalGlue());
+
+        centerContainer.add(botonesPanel, BorderLayout.EAST);
+        contentPanel.add(centerContainer, BorderLayout.CENTER);
+
+        JPanel footer = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        footer.setBackground(colorFondo);
+
         JButton botonVolver = new JButton("Back");
         JButton botonVolverMenuPrincipal = new JButton("Main Menu");
-        
-        JPanel derecha = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JPanel izquierda = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        derecha.setLayout(new BoxLayout(derecha, BoxLayout.Y_AXIS));
-        izquierda.setLayout(new BoxLayout(izquierda, BoxLayout.Y_AXIS));
-
-        derecha.setBorder(new EmptyBorder(125, 0, 0, 20));
-        izquierda.setBorder(new EmptyBorder(10, 10, 10, 10));
+        estilarBoton(botonVolver, colorBotonNav, Color.BLACK);
+        estilarBoton(botonVolverMenuPrincipal, colorBotonNav, Color.BLACK);
 
         accionBotonSubida(botonSubida);
         accionBotonDescarga(botonDescarga);
@@ -61,50 +169,30 @@ public class VistaGestorArchivos extends JFrame {
         accionBotonVolver(botonVolver);
         accionBotonVolverMenuPrincipal(botonVolverMenuPrincipal);
 
-        derecha.add(botonSubida);
-        derecha.add(Box.createRigidArea(new Dimension(0, 10)));
-        derecha.add(botonDescarga);
-        derecha.add(Box.createRigidArea(new Dimension(0, 10)));
-        derecha.add(botonEliminar);
-        derecha.add(Box.createRigidArea(new Dimension(0, 10)));
-        derecha.add(botonCrearCarpeta);
-        derecha.add(Box.createRigidArea(new Dimension(0, 10)));
-        derecha.add(botonBorrarCarpeta);
+        footer.add(botonVolverMenuPrincipal);
+        footer.add(botonVolver);
 
-        izquierda.add(user);
-        izquierda.add(Box.createRigidArea(new Dimension(0, 20)));
-        izquierda.add(titulo);
-        izquierda.add(Box.createRigidArea(new Dimension(0, 10)));
-        izquierda.add(botonVolverMenuPrincipal);
-        izquierda.add(botonVolver);
-        izquierda.add(Box.createRigidArea(new Dimension(0, 10)));
+        contentPanel.add(footer, BorderLayout.SOUTH);
+    }
 
-        listaModel = new DefaultListModel<>();
-        listaArchivos = new JList<>(listaModel);
-        listaArchivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        detectarDobleClick(listaArchivos);
-
-        JScrollPane scrollPane = new JScrollPane(listaArchivos);
-        scrollPane.setPreferredSize(new Dimension(400, 400));
-        izquierda.add(scrollPane);
-
-        this.add(derecha, BorderLayout.EAST);
-        this.add(izquierda, BorderLayout.WEST);
-
-        this.setSize(700, 500);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setVisible(false);
-
-
+    private void estilarBoton(JButton btn, Color bg, Color fg) {
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        btn.setBackground(bg);
+        btn.setForeground(fg);
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        btn.setMaximumSize(new Dimension(120, 35));
+        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }
 
     public void inicializarFileManager() {
-    	ftp = new FileManager("13.62.51.110", 21, client.getUser(), client.getPass());
+        ftp = new FileManager("13.62.51.110", 21, client.getUser(), client.getPass());
         actualizarListaFTP();
 
     }
 
-	public void accionBotonSubida(JButton boton) {
+    public void accionBotonSubida(JButton boton) {
 
         boton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -189,6 +277,7 @@ public class VistaGestorArchivos extends JFrame {
 
         boton.addActionListener(new ActionListener() {
             FTPFile select;
+
             public void actionPerformed(ActionEvent e) {
 
                 select = listaArchivos.getSelectedValue();
@@ -249,33 +338,32 @@ public class VistaGestorArchivos extends JFrame {
     }
 
     public void accionBotonVolver(JButton boton) {
-    	boton.addActionListener(new ActionListener() {
+        boton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	 String rutaPadre;
-                 if (!rutaActual.equals("/")) {
-                     rutaPadre = rutaActual.substring(0, rutaActual.lastIndexOf('/'));
-                     if (rutaPadre.isEmpty())
-                         rutaPadre = "/";
-                     actualizarListaFTP(rutaPadre);
-                 }
+                String rutaPadre;
+                if (!rutaActual.equals("/")) {
+                    rutaPadre = rutaActual.substring(0, rutaActual.lastIndexOf('/'));
+                    if (rutaPadre.isEmpty())
+                        rutaPadre = "/";
+                    actualizarListaFTP(rutaPadre);
+                }
             }
-    	});
+        });
 
     }
 
     public void accionBotonVolverMenuPrincipal(JButton boton) {
-    	boton.addActionListener(new ActionListener() {
+        boton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	setVisible(false);
-            	menu.hacerVisible();
+                setVisible(false);
+                menu.hacerVisible();
             }
-    	});
+        });
 
-    	
-	}
-    
+    }
+
     public void hacerVisible() {
-		setVisible(true);
-	}
-    
+        setVisible(true);
+    }
+
 }
