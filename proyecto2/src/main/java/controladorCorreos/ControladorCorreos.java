@@ -12,15 +12,17 @@ import vista.VistaGeneralCorreo;
 
 public class ControladorCorreos {
 	
-	private static String CORREO = "pablo.pruebas.mail@gmail.com";
-	private static final String PASSWORD_APLICACION = "bqas bwag dasl kcjj";
+	private String CORREO;
+	private String PASSWORD_APLICACION;
 	private static final String HOST = "pop.gmail.com";
 	private ArrayList<Correo> correos = new ArrayList<>();
 	private VistaGeneralCorreo vistaGeneral;
 	private static GestionPOP3 gestion;
 
 	
-	public ControladorCorreos() {
+	public ControladorCorreos(String CORREO, String PASSWORD_APLICACION) {
+		this.CORREO = CORREO;
+		this.PASSWORD_APLICACION = PASSWORD_APLICACION;
 		gestion = new GestionPOP3();
 		configurarVistaGeneral();
 		
@@ -69,7 +71,7 @@ public class ControladorCorreos {
 	private void configurarVistaGeneral() {
 		vistaGeneral = new VistaGeneralCorreo(CORREO);
 		vistaGeneral.setVisible(true);
-		vistaGeneral.getBotonEnviarCorreo().addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo()));
+		vistaGeneral.getBotonEnviarCorreo().addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo(), PASSWORD_APLICACION));
 		vistaGeneral.getEmailTabla().addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this));
 	}
 
@@ -123,7 +125,7 @@ public class ControladorCorreos {
 	
 
 
-	public static String getPasswordAplicacion() {
+	public String getPasswordAplicacion() {
 		return PASSWORD_APLICACION;
 	}
 	
