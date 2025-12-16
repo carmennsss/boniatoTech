@@ -41,7 +41,7 @@ public class VistaLogin extends JPanel {
 
 		gbc.gridwidth = 1;
 
-		JLabel lblUser = new JLabel("Usuario:");
+		JLabel lblUser = new JLabel("User:");
 		lblUser.setFont(Estilos.FONT_TEXTO);
 		lblUser.setForeground(Estilos.COLOR_LABEL);
 		textos.add(lblUser);
@@ -58,7 +58,7 @@ public class VistaLogin extends JPanel {
 		gbc.gridy = 1;
 		panelCentral.add(txtUser, gbc);
 
-		JLabel lblPass = new JLabel("Contraseña:");
+		JLabel lblPass = new JLabel("Password:");
 		lblPass.setFont(Estilos.FONT_TEXTO);
 		lblPass.setForeground(Estilos.COLOR_LABEL);
 		textos.add(lblPass);
@@ -75,7 +75,7 @@ public class VistaLogin extends JPanel {
 		gbc.gridy = 2;
 		panelCentral.add(txtPass, gbc);
 
-		JButton btnLogin = new JButton("Entrar");
+		JButton btnLogin = new JButton("Enter");
 		btnLogin.setFont(Estilos.FONT_BOTON);
 		btnLogin.setBackground(Estilos.DARK_SPRUCE);
 		btnLogin.setForeground(Color.WHITE);

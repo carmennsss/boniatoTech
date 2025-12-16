@@ -41,7 +41,7 @@ public class VistaMenuPrincipal extends JFrame{
 		Font fuenteText = new Font("Arial", Font.BOLD, 30);
 		botonCRUD = new JButton("CRUD");
 		botonFileManager = new JButton("File Manager");
-		botonCerrarSesion =  new JButton("Cerrar sesión");
+		botonCerrarSesion =  new JButton("Log out");
 		botonCRUD.setPreferredSize(new Dimension(300, 120)); 
 		botonFileManager.setPreferredSize(new Dimension(300, 120));
 		text.setFont(fuenteText);
@@ -67,8 +67,9 @@ public class VistaMenuPrincipal extends JFrame{
             	client.desconectar();
             	VistaMenuPrincipal.this.setVisible(false);
             	vista.setVisible(true);
-            	vista.mostrarLogin();
-            	
+                vista.getPanelLogin().getCajas().get(0).setText("");
+                vista.getPanelLogin().getCajas().get(1).setText("");
+                vista.mostrarLogin();
             }
     	});
 	}
