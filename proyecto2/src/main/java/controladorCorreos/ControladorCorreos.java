@@ -18,6 +18,7 @@ public class ControladorCorreos {
 	private ArrayList<Correo> correos = new ArrayList<>();
 	private VistaGeneralCorreo vistaGeneral;
 	private static GestionPOP3 gestion;
+	private Thread hiloRecepcion;
 
 	
 	public ControladorCorreos(String CORREO, String PASSWORD_APLICACION) {
@@ -27,14 +28,11 @@ public class ControladorCorreos {
 		configurarVistaGeneral();
 		
 		cargarCorreos();
-		
-		asignarBotonRecargar();
-		
+				
 	}
 
 	protected void cargarCorreos() {
 		new Thread(() -> {
-			vistaGeneral.getBotonRecargar().setEnabled(false);
 
 	        System.out.println("Conectando con Gmail...");
 	        correos.clear();
@@ -43,22 +41,26 @@ public class ControladorCorreos {
 	        // Una vez descargados, actualizamos la tabla en el hilo de Swing
 	        javax.swing.SwingUtilities.invokeLater(() -> {
 	            vistaGeneral.cargarCorreos(correos);
+	            
+	            if (hiloRecepcion == null || !hiloRecepcion.isAlive()) {
+	                HiloRecepcionCorreos hilo = new HiloRecepcionCorreos(
+	                        gestion, HOST, "recent:" + CORREO, PASSWORD_APLICACION, vistaGeneral
+	                );
+	                hiloRecepcion = new Thread(hilo, "Hilo-Recepcion-Correos");
+	                hiloRecepcion.start();
+	            }
 
-	            System.out.println("Correos cargados.");
-				vistaGeneral.getBotonRecargar().setEnabled(true);
 
 	        });
 	    }).start();
 	}
-
-
-
-
-	private void asignarBotonRecargar() {
-		vistaGeneral.getBotonRecargar().addActionListener(new OyenteRecargar(vistaGeneral, correos, this));
+	
+	// Metodo para detener el hilo cuando se cierre la ventana
+	public void detenerHiloRecepcion() {
+	    if (hiloRecepcion != null && hiloRecepcion.isAlive()) {
+	        hiloRecepcion.interrupt();
+	    }
 	}
-
-
 
 
 	public ArrayList<Correo> obtenerCorreos() {
