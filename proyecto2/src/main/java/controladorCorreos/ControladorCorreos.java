@@ -12,15 +12,17 @@ import vista.VistaGeneralCorreo;
 
 public class ControladorCorreos {
 	
-	private static String CORREO = "miguelroblesp.sanjosemlg@fundacionloyola.net";
-	private static final String PASSWORD_APLICACION = "ggdc pual ncaq qrvy";
+	private String CORREO;
+	private String PASSWORD_APLICACION;
 	private static final String HOST = "pop.gmail.com";
 	private ArrayList<Correo> correos = new ArrayList<>();
 	private VistaGeneralCorreo vistaGeneral;
 	private static GestionPOP3 gestion;
 
 	
-	public ControladorCorreos() {
+	public ControladorCorreos(String CORREO, String PASSWORD_APLICACION) {
+		this.CORREO = CORREO;
+		this.PASSWORD_APLICACION = PASSWORD_APLICACION;
 		gestion = new GestionPOP3();
 		configurarVistaGeneral();
 		
@@ -69,28 +71,28 @@ public class ControladorCorreos {
 	private void configurarVistaGeneral() {
 		vistaGeneral = new VistaGeneralCorreo(CORREO);
 		vistaGeneral.setVisible(true);
-		vistaGeneral.getBotonEnviarCorreo().addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo()));
+		vistaGeneral.getBotonEnviarCorreo().addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo(), PASSWORD_APLICACION));
 		vistaGeneral.getEmailTabla().addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this));
 	}
 
 
 	public void eliminarCorreoSeleccionado(Correo correo) {
 	    try {
-	    	Collections.sort(
-				    correos,
-				    Comparator.comparing(Correo::getFecha).reversed()
-				);
-	    	int indiceReal = correos.indexOf(correo);
-	        if (indiceReal == -1) return;
+	    	
+	    	int indiceEnLista = correos.indexOf(correo);
+	        if (indiceEnLista == -1) return;
+	        
+	        int totalCorreos = correos.size();
+	        int indiceServidor = totalCorreos - indiceEnLista; 
 
 	        gestion.eliminarCorreoPOP3(
 	                HOST,
 	                "recent:" + CORREO,
 	                PASSWORD_APLICACION,
-	                indiceReal
+	                indiceServidor - 1 
 	        );
 
-	        correos.remove(indiceReal);
+	        correos.remove(indiceEnLista);
 	        vistaGeneral.cargarCorreos(correos);
 
 	    } catch (Exception e) {
@@ -99,14 +101,31 @@ public class ControladorCorreos {
 	}
 
 	
-	public static void marcarCorreoLeido(Correo correo) throws Exception {
-		correo.getMessage().setFlag(Flags.Flag.SEEN, true);
+	public void marcarCorreoLeido(Correo correo) throws Exception {
+		try {
+			    	
+	    	int indiceEnLista = correos.indexOf(correo);
+	        if (indiceEnLista == -1) return;
+	        
+	        int totalCorreos = correos.size();
+	        int indiceServidor = totalCorreos - indiceEnLista; 
+
+	        gestion.marcarLeidoPOP3(
+	                HOST,
+	                "recent:" + CORREO,
+	                PASSWORD_APLICACION,
+	                indiceServidor - 1 
+	        );
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	
 
 
-	public static String getPasswordAplicacion() {
+	public String getPasswordAplicacion() {
 		return PASSWORD_APLICACION;
 	}
 	

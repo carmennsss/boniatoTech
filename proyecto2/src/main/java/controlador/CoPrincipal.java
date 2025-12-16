@@ -43,7 +43,7 @@ public class CoPrincipal {
     }
 
     private void asignarEventosCRUD() {
-        OyenteBot oyB = new OyenteBot(this, vista, modeloVista);
+        OyenteBot oyB = new OyenteBot(this, vista, modeloVista, vistaMenuPrincipal);
         OyenteTabla oyT = new OyenteTabla(this, vista, modeloVista);
 
         for (JButton btn : vista.getPanelMenu().getBotones()) {

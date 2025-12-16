@@ -7,6 +7,8 @@ import modelo.Correo;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Properties;
 
 public class GestionPOP3 {
@@ -15,42 +17,39 @@ public class GestionPOP3 {
         ArrayList<Correo> listaCorreos = new ArrayList<>();
 
         try {
-            // 1. Configurar Propiedades para POP3S (POP3 Seguro con SSL)
             Properties properties = new Properties();
             properties.put("mail.pop3.host", host);
             properties.put("mail.pop3.port", "995");
             properties.put("mail.pop3.starttls.enable", "true");
             
-            // 2. Obtener Sesi�n
+            // Obtener Sesi�n
             Session emailSession = Session.getDefaultInstance(properties);
 
-            // 3. Crear el Store y conectar
-            // Usamos "pop3s" para SSL. Si tu servidor no usa SSL (raro hoy en d�a), usa "pop3"
+            // Crear el Store y conectar
             Store store = emailSession.getStore("pop3s");
             store.connect(host, user, password);
 
-            // 4. Abrir la carpeta INBOX
+            // Abrir la carpeta INBOX
             Folder emailFolder = store.getFolder("INBOX");
             emailFolder.open(Folder.READ_ONLY); // READ_ONLY evita borrar correos accidentalmente
 
-            // 5. Obtener mensajes
+            // Obtener mensajes
             Message[] messages = emailFolder.getMessages();
             System.out.println("Total de mensajes encontrados: " + messages.length);
 
-            // 6. Recorrer mensajes y extraer datos
-            // NOTA: En producci�n, limita este bucle (ej. �ltimos 10) para no saturar la memoria
+            // Recorrer mensajes y extraer datos
             for (Message message : messages) {
                 
                 String remitente = message.getFrom()[0].toString();
                 String asunto = message.getSubject();
                 java.util.Date fecha = message.getSentDate();
-                String cuerpo = getTextFromMessage(message); // M�todo auxiliar m�gico
+                String cuerpo = getTextFromMessage(message); 
 
                 // A�adir al ArrayList
                 listaCorreos.add(new Correo(remitente, asunto, fecha, cuerpo, message));
             }
 
-            // 7. Cerrar conexiones
+            // Cerrar conexiones
             emailFolder.close(false);
             store.close();
 
@@ -75,11 +74,42 @@ public class GestionPOP3 {
         Folder inbox = store.getFolder("INBOX");
         inbox.open(Folder.READ_WRITE);
 
-        Message mensaje = inbox.getMessage(indice + 1); // POP3 empieza en 1
+        Message mensaje = inbox.getMessage(indice + 1);
         mensaje.setFlag(Flags.Flag.DELETED, true);
 
         inbox.close(true);
         store.close();
+    }
+    
+    public void marcarLeidoPOP3(String host, String user, String password, int indice) {
+        try {
+            Properties properties = new Properties();
+            properties.put("mail.pop3.host", host);
+            properties.put("mail.pop3.port", "995");
+            properties.put("mail.pop3.starttls.enable", "true");
+
+            Session session = Session.getInstance(properties);
+            Store store = session.getStore("pop3s");
+            store.connect(host, user, password);
+
+            Folder inbox = store.getFolder("INBOX");
+            // Abrir en READ_WRITE para poder modificar estados
+            inbox.open(Folder.READ_WRITE);
+
+            // Obtenemos el mensaje por su número (1-based index)
+            Message mensaje = inbox.getMessage(indice + 1);
+            
+            // Aplicamos el flag SEEN
+            mensaje.setFlag(Flags.Flag.SEEN, true);
+
+            // Al cerrar con true, se intentan persistir los cambios en la carpeta
+            inbox.close(true);
+            store.close();
+            System.out.println("Flag SEEN aplicado al mensaje " + (indice + 1));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -103,10 +133,9 @@ public class GestionPOP3 {
             BodyPart bodyPart = mimeMultipart.getBodyPart(i);
             if (bodyPart.isMimeType("text/plain")) {
                 result.append("\n").append(bodyPart.getContent());
-                break; // Si encontramos texto plano, solemos preferirlo sobre el HTML
+                break; 
             } else if (bodyPart.isMimeType("text/html")) {
                 String html = (String) bodyPart.getContent();
-                // Opcional: Usar Jsoup para limpiar tags HTML si solo quieres texto
                 result.append("\n").append(html); 
             } else if (bodyPart.getContent() instanceof MimeMultipart){
                 result.append(getTextFromMimeMultipart((MimeMultipart)bodyPart.getContent()));

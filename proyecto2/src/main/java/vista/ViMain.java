@@ -1,82 +1,57 @@
 package vista;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.awt.Component;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JOptionPane;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class ViMain extends JFrame {
-	private CardLayout cardLayout;
-	private JPanel panelPrincipal;
-
-	private JPanel panelCRUD;
-	private ViBotones panelMenu;
-	private ViTabla panelTabla;
-	private ViBotones panelAcciones;
+public class ViMain {
+	private VistaLogin vistaLogin;
+	private VistaCRUD vistaCRUD;
 	private ViFormulario ventanaFormulario;
 
-	private VistaLogin panelLogin;
-
 	public ViMain() {
-		super("Gestión Serwo - Animales");
-		setSize(900, 600);
-		setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-
-		cardLayout = new CardLayout();
-		panelPrincipal = new PanelFondo();
-		panelPrincipal.setLayout(cardLayout);
-
-		panelLogin = new VistaLogin();
-
-		panelCRUD = new JPanel(new BorderLayout());
-		panelCRUD.setOpaque(false);
-
-		ArrayList<String> textosMenu = new ArrayList<>(Arrays.asList("ESPECIES", "RECINTOS", "CUIDADORES", "ANIMALES"));
-		panelMenu = new ViBotones(textosMenu);
-
-		panelTabla = new ViTabla();
-
-		ArrayList<String> textosAcciones = new ArrayList<>(Arrays.asList("Nuevo", "Cerrar Sesión"));
-		panelAcciones = new ViBotones(textosAcciones);
-
-		panelCRUD.add(panelMenu, BorderLayout.NORTH);
-		panelCRUD.add(panelTabla, BorderLayout.CENTER);
-		panelCRUD.add(panelAcciones, BorderLayout.SOUTH);
-
+		vistaLogin = new VistaLogin();
+		vistaCRUD = new VistaCRUD();
 		ventanaFormulario = new ViFormulario();
-
-		panelPrincipal.add(panelLogin, "LOGIN");
-		panelPrincipal.add(panelCRUD, "CRUD");
-
-		add(panelPrincipal);
 	}
 
 	public void hacerVisible() {
-		setVisible(true);
+		mostrarLogin();
 	}
 
 	public void mostrarLogin() {
-		cardLayout.show(panelPrincipal, "LOGIN");
+		vistaCRUD.setVisible(false);
+		ventanaFormulario.setVisible(false);
+		vistaLogin.setVisible(true);
 	}
 
 	public void mostrarCRUD() {
-		cardLayout.show(panelPrincipal, "CRUD");
+		vistaLogin.setVisible(false);
+		vistaCRUD.setVisible(true);
+	}
+
+	public void setVisible(boolean b) {
+		if (!b) {
+			vistaLogin.setVisible(false);
+			vistaCRUD.setVisible(false);
+			ventanaFormulario.setVisible(false);
+		} else {
+			mostrarLogin();
+		}
 	}
 
 	public ViBotones getPanelMenu() {
-		return panelMenu;
+		return vistaCRUD.getPanelMenu();
 	}
 
 	public ViTabla getPanelTabla() {
-		return panelTabla;
+		return vistaCRUD.getPanelTabla();
 	}
 
 	public ViBotones getPanelAcciones() {
-		return panelAcciones;
+		return vistaCRUD.getPanelAcciones();
 	}
 
 	public ViFormulario getVentanaFormulario() {
@@ -84,25 +59,119 @@ public class ViMain extends JFrame {
 	}
 
 	public VistaLogin getPanelLogin() {
-		return panelLogin;
+		return vistaLogin;
+	}
+
+	private Component getVentanaActual() {
+		if (vistaLogin.isVisible())
+			return vistaLogin;
+		if (vistaCRUD.isVisible())
+			return vistaCRUD;
+		if (ventanaFormulario.isVisible())
+			return ventanaFormulario;
+		return null;
 	}
 
 	public void mostrarMensajeExito(String mensaje) {
-		JOptionPane.showMessageDialog(this, mensaje);
+		JOptionPane.showMessageDialog(getVentanaActual(), mensaje);
 	}
 
 	public void mostrarMensajeError(String mensaje) {
-		JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(getVentanaActual(), mensaje, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public boolean mostrarConfirmacion(String mensaje) {
-		int confirmacion = JOptionPane.showConfirmDialog(this, mensaje, "Confirmar", JOptionPane.YES_NO_OPTION);
+		int confirmacion = JOptionPane.showConfirmDialog(getVentanaActual(), mensaje, "Confirmar",
+				JOptionPane.YES_NO_OPTION);
 		return confirmacion == JOptionPane.YES_OPTION;
 	}
 
 	public int mostrarOpcionesTabla() {
-		String[] opciones = { "Nuevo", "Actualizar", "Eliminar", "Cancelar" };
-		return JOptionPane.showOptionDialog(this, "Seleccione una acción", "Opciones", JOptionPane.DEFAULT_OPTION,
-				JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+		final javax.swing.JDialog dialog = new javax.swing.JDialog(
+				(javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(getVentanaActual()),
+				"Options",
+				true);
+
+		dialog.setUndecorated(true);
+		dialog.setLayout(new java.awt.BorderLayout());
+
+		javax.swing.JPanel panel = new javax.swing.JPanel();
+		panel.setBackground(new java.awt.Color(248, 245, 242));
+		panel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 88, 89), 2));
+		panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.Y_AXIS));
+		panel.setBorder(new javax.swing.border.EmptyBorder(20, 20, 20, 20));
+
+		javax.swing.JLabel lblTitulo = new javax.swing.JLabel("Select Action");
+		lblTitulo.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 18));
+		lblTitulo.setForeground(new java.awt.Color(74, 88, 89));
+		lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(lblTitulo);
+		panel.add(javax.swing.Box.createVerticalStrut(20));
+
+		final int[] result = { -1 };
+
+		java.awt.Color colorBtn = new java.awt.Color(110, 137, 115);
+		java.awt.Color colorCancel = new java.awt.Color(200, 100, 100);
+
+		javax.swing.JButton btnNew = crearBotonDialogo("Create New", colorBtn);
+		javax.swing.JButton btnUpdate = crearBotonDialogo("Update", colorBtn);
+		javax.swing.JButton btnDelete = crearBotonDialogo("Delete", colorCancel);
+		javax.swing.JButton btnCancel = crearBotonDialogo("Cancel", java.awt.Color.GRAY);
+
+		btnNew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				result[0] = 0;
+				dialog.dispose();
+			}
+		});
+
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				result[0] = 1;
+				dialog.dispose();
+			}
+		});
+
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				result[0] = 2;
+				dialog.dispose();
+			}
+		});
+
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				result[0] = 3;
+				dialog.dispose();
+			}
+		});
+
+		panel.add(btnNew);
+		panel.add(javax.swing.Box.createVerticalStrut(10));
+		panel.add(btnUpdate);
+		panel.add(javax.swing.Box.createVerticalStrut(10));
+		panel.add(btnDelete);
+		panel.add(javax.swing.Box.createVerticalStrut(20));
+		panel.add(btnCancel);
+
+		dialog.add(panel);
+		dialog.pack();
+		dialog.setLocationRelativeTo(getVentanaActual());
+		dialog.setVisible(true);
+
+		return result[0];
+	}
+
+	private javax.swing.JButton crearBotonDialogo(String texto, java.awt.Color color) {
+		javax.swing.JButton btn = new javax.swing.JButton(texto);
+		btn.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+		btn.setBackground(color);
+		btn.setForeground(java.awt.Color.WHITE);
+		btn.setFocusPainted(false);
+		btn.setBorderPainted(false);
+		btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btn.setMaximumSize(new java.awt.Dimension(200, 40));
+		btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+		return btn;
 	}
 }

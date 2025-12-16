@@ -144,6 +144,14 @@ public class VistaCorreoBase extends JFrame {
 	public void setBotonEliminar(JButton botonEliminar) {
 		this.botonEliminar = botonEliminar;
 	}
+
+	public JButton getBotonLeido() {
+		return botonLeido;
+	}
+
+	public void setBotonLeido(JButton botonLeido) {
+		this.botonLeido = botonLeido;
+	}
 	
 	
     
