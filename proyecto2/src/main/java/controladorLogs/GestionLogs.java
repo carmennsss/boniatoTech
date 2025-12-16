@@ -22,9 +22,7 @@ public class GestionLogs {
 		this.conn = conn;
 	}
 
-	public static void writeLog(User user, String action, boolean exito) {
-		String resultado = exito ? "success" : "error";
-		Log log = new Log(action, user.getCorreo(), resultado);
+	public static void writeLog(Log log) {
 
 		// Conectar y registrar log en db
 
@@ -33,7 +31,7 @@ public class GestionLogs {
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setString(1, log.getAction());
 			ps.setString(2, log.getResult());
-			ps.setString(3, user.getCorreo());
+			ps.setString(3, log.getUser().getCorreo());
 			ps.executeUpdate();
 
 			System.out.println("Log registrado correctamente.");
@@ -74,11 +72,16 @@ public class GestionLogs {
 	public boolean exportLogs(File file) {
         ArrayList<Log> logs = consultLogs();
         
+        
         // Usamos try-with-resources para cerrar el FileWriter automáticamente
         try (FileWriter fw = new FileWriter(file)) {
             
-            // Opcional: Escribir cabecera
+        	if (logs.isEmpty()) {
+            	fw.write("There isn´t logs registered in the database.");
+            }
             fw.write("Date,User,Action,Result\n");
+            
+           
             
             for (Log log : logs) {
                 fw.write(log.toString());

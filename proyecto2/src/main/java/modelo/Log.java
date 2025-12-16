@@ -16,16 +16,17 @@ public class Log {
 		this.result = result;
 	}
 
-	public Log(String action, String correo, String result) {
+	public Log(String action, User user, boolean exito) {
+		String resultado = exito ? "success" : "error";
+
 		this.action = action;
-		this.user.setCorreo(correo);
-		this.result = result;
+		this.user = user;
+		this.setResult(resultado);
 	}
 
 	public Log(int id, String action, String correo, String date, String result) {
 		this.id = id;
 		this.action = action;
-		this.user = new User();
 		this.user.setCorreo(correo);
 		this.date = date;
 		this.result = result;
