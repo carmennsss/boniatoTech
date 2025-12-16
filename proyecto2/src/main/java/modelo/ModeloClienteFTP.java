@@ -14,6 +14,12 @@ public class ModeloClienteFTP {
     private FTPClient cliente;
     private String servidor = "13.62.51.110";
     private int puerto = 21;
+    private String user = "";
+    private String pass = "";
+
+    public String getUser() {
+        return user;
+    }
 
     // --- CONFIGURACIÓN DE RED ---
     // NOTA: En Java, para escribir "\\" tienes que poner "\\\\"
@@ -23,6 +29,18 @@ public class ModeloClienteFTP {
     // DATOS DE WINDOWS DE LA MÁQUINA VIRTUAL (Para poder entrar en la carpeta)
     private static final String USUARIO_WINDOWS_VM = "Administrator";
     private static final String PASS_WINDOWS_VM = "-riMth%@$GAW2NmZVsjKG@px.gxfflrx";
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
 
     public ModeloClienteFTP() {
         cliente = new FTPClient();

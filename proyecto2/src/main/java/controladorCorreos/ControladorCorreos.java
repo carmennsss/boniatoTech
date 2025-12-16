@@ -1,7 +1,11 @@
 package controladorCorreos;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+
+import javax.mail.Flags;
 
 import modelo.Correo;
 import vista.VistaGeneralCorreo;
@@ -13,35 +17,50 @@ public class ControladorCorreos {
 	private static final String HOST = "pop.gmail.com";
 	private ArrayList<Correo> correos = new ArrayList<>();
 	private VistaGeneralCorreo vistaGeneral;
+	private static GestionPOP3 gestion;
 
 	
 	public ControladorCorreos() {
+		gestion = new GestionPOP3();
 		configurarVistaGeneral();
 		
+		cargarCorreos();
+		
+		asignarBotonRecargar();
+		
+	}
+
+	protected void cargarCorreos() {
 		new Thread(() -> {
+			vistaGeneral.getBotonRecargar().setEnabled(false);
+
 	        System.out.println("Conectando con Gmail...");
-	        correos = obtenerCorreos();
+	        correos.clear();
+	        correos.addAll(obtenerCorreos());
 	        
 	        // Una vez descargados, actualizamos la tabla en el hilo de Swing
 	        javax.swing.SwingUtilities.invokeLater(() -> {
 	            vistaGeneral.cargarCorreos(correos);
-	            // Re-asignamos el oyente porque 'correos' ahora tiene datos
-	            // O mejor: pasa la lista 'correos' al oyente al principio y solo llénala aquí.
-	            vistaGeneral.getEmailTabla().addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos));
+
 	            System.out.println("Correos cargados.");
+				vistaGeneral.getBotonRecargar().setEnabled(true);
+
 	        });
 	    }).start();
-		
-		
-		
 	}
 
 
 
 
-	private ArrayList<Correo> obtenerCorreos() {
-		ReceptorCorreo receptor = new ReceptorCorreo();
-		ArrayList<Correo> listaCorreos = receptor.recibirCorreosPOP3(HOST, "recent:" + CORREO, PASSWORD_APLICACION);		
+	private void asignarBotonRecargar() {
+		vistaGeneral.getBotonRecargar().addActionListener(new OyenteRecargar(vistaGeneral, correos, this));
+	}
+
+
+
+
+	public ArrayList<Correo> obtenerCorreos() {
+		ArrayList<Correo> listaCorreos = gestion.recibirCorreosPOP3(HOST, "recent:" + CORREO, PASSWORD_APLICACION);		
 		
 		return listaCorreos;
 	}
@@ -51,10 +70,40 @@ public class ControladorCorreos {
 		vistaGeneral = new VistaGeneralCorreo(CORREO);
 		vistaGeneral.setVisible(true);
 		vistaGeneral.getBotonEnviarCorreo().addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo()));
-		vistaGeneral.getEmailTabla().addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos));
+		vistaGeneral.getEmailTabla().addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this));
 	}
 
 
+	public void eliminarCorreoSeleccionado(Correo correo) {
+	    try {
+	    	Collections.sort(
+				    correos,
+				    Comparator.comparing(Correo::getFecha).reversed()
+				);
+	    	int indiceReal = correos.indexOf(correo);
+	        if (indiceReal == -1) return;
+
+	        gestion.eliminarCorreoPOP3(
+	                HOST,
+	                "recent:" + CORREO,
+	                PASSWORD_APLICACION,
+	                indiceReal
+	        );
+
+	        correos.remove(indiceReal);
+	        vistaGeneral.cargarCorreos(correos);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	
+	public static void marcarCorreoLeido(Correo correo) throws Exception {
+		correo.getMessage().setFlag(Flags.Flag.SEEN, true);
+	}
+	
+	
 
 
 	public static String getPasswordAplicacion() {

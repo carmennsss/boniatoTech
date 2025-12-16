@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,6 +25,7 @@ public class VistaGeneralCorreo extends JFrame {
 	private JPanel panel;
 	private String correo;
 	private JButton botonEnviarCorreo;
+	private JButton botonRecargar;
 	private DefaultTableModel tablaModelo;
 	private JTable emailTabla;
 
@@ -37,7 +41,7 @@ public class VistaGeneralCorreo extends JFrame {
 	private void inicializarTabla() {
 		JPanel panelTabla = new JPanel(new BorderLayout());
 
-		String[] nombresColumnas = { "De", "Asunto", "Fecha" };
+		String[] nombresColumnas = { "Asunto", "De", "Fecha" };
 
 		tablaModelo = new DefaultTableModel(nombresColumnas, 0) {
 	        @Override
@@ -80,28 +84,46 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	private void inicializarVista() {
-		JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
+		JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 10));
+		
+		JLabel etiquetaCorreo = new JLabel("Bandeja de entrada de " + correo);
+		etiquetaCorreo.setPreferredSize(new Dimension(600, 20));
+		etiquetaCorreo.setFont(new Font("Comic Sans MS", Font.ITALIC, 16));
+		etiquetaCorreo.setAlignmentX(SwingConstants.CENTER);
+		
+		
+		panelSuperior.add(etiquetaCorreo);
+		
+		panel.add(panelSuperior, BorderLayout.NORTH);
 
-		JLabel etiquetaCorreo = new JLabel("Correo de " + correo);
-		etiquetaCorreo.setPreferredSize(new Dimension(250, 40));
-		etiquetaCorreo.setFont(new Font("Arial", Font.BOLD, 12));
+		JPanel panelMedio = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
+
+		botonRecargar = new JButton("Refresh");
+		botonRecargar.setPreferredSize(new Dimension(120, 30));
+
 
 		botonEnviarCorreo = new JButton("Enviar correo");
 		botonEnviarCorreo.setPreferredSize(new Dimension(120, 30));
 
-		panelSuperior.add(etiquetaCorreo);
-		panelSuperior.add(botonEnviarCorreo);
+		panelMedio.add(botonRecargar);
+		panelMedio.add(botonEnviarCorreo);
+		
 
-		panel.add(panelSuperior, BorderLayout.NORTH);
+		panel.add(panelMedio, BorderLayout.SOUTH);
 	}
 
 	public void cargarCorreos(ArrayList<Correo> correos) {
 		tablaModelo.setRowCount(0);
-
+		//Ordenar el array por fecha
+		Collections.sort(
+			    correos,
+			    Comparator.comparing(Correo::getFecha).reversed()
+			);
 		for (Correo c : correos) {
 			Object[] fila = new Object[3];
-			fila[0] = c.getRemitente();
-			fila[1] = c.getAsunto();
+			fila[0] = c.getAsunto();
+			fila[1] = c.getRemitente();
+
 			fila[2] = c.getFecha();
 
 			tablaModelo.addRow(fila);
@@ -132,4 +154,13 @@ public class VistaGeneralCorreo extends JFrame {
 		this.emailTabla = emailTabla;
 	}
 
+	public JButton getBotonRecargar() {
+		return botonRecargar;
+	}
+
+	public void setBotonRecargar(JButton botonRecargar) {
+		this.botonRecargar = botonRecargar;
+	}
+
+	
 }

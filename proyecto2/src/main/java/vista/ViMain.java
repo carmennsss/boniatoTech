@@ -40,7 +40,7 @@ public class ViMain extends JFrame {
 
 		panelTabla = new ViTabla();
 
-		ArrayList<String> textosAcciones = new ArrayList<>(Arrays.asList("Nuevo", "Cerrar Sesión"));
+		ArrayList<String> textosAcciones = new ArrayList<>(Arrays.asList("New", "Main menu"));
 		panelAcciones = new ViBotones(textosAcciones);
 
 		panelCRUD.add(panelMenu, BorderLayout.NORTH);

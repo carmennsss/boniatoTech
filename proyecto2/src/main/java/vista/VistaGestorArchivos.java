@@ -4,6 +4,8 @@ import javax.swing.*;
 
 import org.apache.commons.net.ftp.FTPFile;
 
+import controlador.CoPrincipal;
+import modelo.ModeloClienteFTP;
 import servidor.FileManager;
 
 import java.io.*;
@@ -13,29 +15,35 @@ import java.awt.event.*;
 import javax.swing.border.EmptyBorder;
 
 public class VistaGestorArchivos extends JFrame {
-
+	
+	private VistaMenuPrincipal menu;
     private DefaultListModel<FTPFile> listaModel;
     private JList<FTPFile> listaArchivos;
-    private FileManager ftp = new FileManager("127.0.0.1", 21, "juan", "");
+    private ModeloClienteFTP client;
+    private FileManager ftp;
     private String rutaActual = "/";
 
-    public VistaGestorArchivos() {
+    public VistaGestorArchivos(ModeloClienteFTP client, VistaMenuPrincipal menu) {
+    	this.client=client;
+    	this.menu=menu;
+    	ftp = new FileManager("13.62.51.110", 21, client.getUser(), client.getPass());
         this.setTitle("File Manager");
         this.setLayout(new BorderLayout());
         Font fuenteUser = new Font("Arial", Font.BOLD, 25);
-        JLabel user = new JLabel("Welcome, "+ftp.getUserName());
+        JLabel user = new JLabel("Welcome!");
         Font fuenteTitulo = new Font("Arial", Font.BOLD, 20);
         JLabel titulo = new JLabel("Server Files: ");
         user.setFont(fuenteUser);
         titulo.setFont(fuenteTitulo);
-
+        
         JButton botonSubida = new JButton("Upload File");
         JButton botonDescarga = new JButton("Download File");
         JButton botonEliminar = new JButton("Delete File");
         JButton botonCrearCarpeta = new JButton("Create Folder");
         JButton botonBorrarCarpeta = new JButton("Delete Folder");
         JButton botonVolver = new JButton("Back");
-
+        JButton botonVolverMenuPrincipal = new JButton("Main Menu");
+        
         JPanel derecha = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JPanel izquierda = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -51,6 +59,7 @@ public class VistaGestorArchivos extends JFrame {
         accionBotonCrearCarpeta(botonCrearCarpeta);
         accionBotonBorrarCarpeta(botonBorrarCarpeta);
         accionBotonVolver(botonVolver);
+        accionBotonVolverMenuPrincipal(botonVolverMenuPrincipal);
 
         derecha.add(botonSubida);
         derecha.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -66,6 +75,7 @@ public class VistaGestorArchivos extends JFrame {
         izquierda.add(Box.createRigidArea(new Dimension(0, 20)));
         izquierda.add(titulo);
         izquierda.add(Box.createRigidArea(new Dimension(0, 10)));
+        izquierda.add(botonVolverMenuPrincipal);
         izquierda.add(botonVolver);
         izquierda.add(Box.createRigidArea(new Dimension(0, 10)));
 
@@ -83,13 +93,18 @@ public class VistaGestorArchivos extends JFrame {
 
         this.setSize(700, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setVisible(true);
+        this.setVisible(false);
 
+
+    }
+
+    public void inicializarFileManager() {
+    	ftp = new FileManager("13.62.51.110", 21, client.getUser(), client.getPass());
         actualizarListaFTP();
 
     }
 
-    public void accionBotonSubida(JButton boton) {
+	public void accionBotonSubida(JButton boton) {
 
         boton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -233,17 +248,34 @@ public class VistaGestorArchivos extends JFrame {
 
     }
 
-    private void accionBotonVolver(JButton boton) {
-        boton.addActionListener(e -> {
-            String rutaPadre;
-            if (!rutaActual.equals("/")) {
-                rutaPadre = rutaActual.substring(0, rutaActual.lastIndexOf('/'));
-                if (rutaPadre.isEmpty())
-                    rutaPadre = "/";
-                actualizarListaFTP(rutaPadre);
+    public void accionBotonVolver(JButton boton) {
+    	boton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	 String rutaPadre;
+                 if (!rutaActual.equals("/")) {
+                     rutaPadre = rutaActual.substring(0, rutaActual.lastIndexOf('/'));
+                     if (rutaPadre.isEmpty())
+                         rutaPadre = "/";
+                     actualizarListaFTP(rutaPadre);
+                 }
             }
-        });
+    	});
 
     }
 
+    public void accionBotonVolverMenuPrincipal(JButton boton) {
+    	boton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	setVisible(false);
+            	menu.hacerVisible();
+            }
+    	});
+
+    	
+	}
+    
+    public void hacerVisible() {
+		setVisible(true);
+	}
+    
 }

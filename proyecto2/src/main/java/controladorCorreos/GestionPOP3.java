@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class ReceptorCorreo {
+public class GestionPOP3 {
 
     public ArrayList<Correo> recibirCorreosPOP3(String host, String user, String password) {
         ArrayList<Correo> listaCorreos = new ArrayList<>();
@@ -21,11 +21,11 @@ public class ReceptorCorreo {
             properties.put("mail.pop3.port", "995");
             properties.put("mail.pop3.starttls.enable", "true");
             
-            // 2. Obtener Sesión
+            // 2. Obtener Sesiï¿½n
             Session emailSession = Session.getDefaultInstance(properties);
 
             // 3. Crear el Store y conectar
-            // Usamos "pop3s" para SSL. Si tu servidor no usa SSL (raro hoy en día), usa "pop3"
+            // Usamos "pop3s" para SSL. Si tu servidor no usa SSL (raro hoy en dï¿½a), usa "pop3"
             Store store = emailSession.getStore("pop3s");
             store.connect(host, user, password);
 
@@ -38,16 +38,16 @@ public class ReceptorCorreo {
             System.out.println("Total de mensajes encontrados: " + messages.length);
 
             // 6. Recorrer mensajes y extraer datos
-            // NOTA: En producción, limita este bucle (ej. últimos 10) para no saturar la memoria
+            // NOTA: En producciï¿½n, limita este bucle (ej. ï¿½ltimos 10) para no saturar la memoria
             for (Message message : messages) {
                 
                 String remitente = message.getFrom()[0].toString();
                 String asunto = message.getSubject();
                 java.util.Date fecha = message.getSentDate();
-                String cuerpo = getTextFromMessage(message); // Método auxiliar mágico
+                String cuerpo = getTextFromMessage(message); // Mï¿½todo auxiliar mï¿½gico
 
-                // Añadir al ArrayList
-                listaCorreos.add(new Correo(remitente, asunto, fecha, cuerpo));
+                // Aï¿½adir al ArrayList
+                listaCorreos.add(new Correo(remitente, asunto, fecha, cuerpo, message));
             }
 
             // 7. Cerrar conexiones
@@ -60,6 +60,28 @@ public class ReceptorCorreo {
 
         return listaCorreos;
     }
+    
+    public void eliminarCorreoPOP3(String host, String user, String password, int indice) throws Exception {
+
+        Properties properties = new Properties();
+        properties.put("mail.pop3.host", host);
+        properties.put("mail.pop3.port", "995");
+        properties.put("mail.pop3.starttls.enable", "true");
+
+        Session session = Session.getInstance(properties);
+        Store store = session.getStore("pop3s");
+        store.connect(host, user, password);
+
+        Folder inbox = store.getFolder("INBOX");
+        inbox.open(Folder.READ_WRITE);
+
+        Message mensaje = inbox.getMessage(indice + 1); // POP3 empieza en 1
+        mensaje.setFlag(Flags.Flag.DELETED, true);
+
+        inbox.close(true);
+        store.close();
+    }
+
 
     private String getTextFromMessage(Message message) throws MessagingException, IOException {
         String result = "";

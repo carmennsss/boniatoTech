@@ -15,6 +15,8 @@ public class VistaCorreoBase extends JFrame {
     private JTextField textoAsunto;
     private JTextArea textoCuerpo;
     private JButton botonEnviar;
+    private JButton botonEliminar;
+    private JButton botonLeido;
     private String remitente;
 
     // CONSTRUCTOR ENVIAR/REDACTAR
@@ -50,6 +52,9 @@ public class VistaCorreoBase extends JFrame {
         textoAsunto.setEditable(false);
         textoCuerpo.setEditable(false);
         
+        JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelBoton.add(botonEliminar);
+        
         ensamblarVista(false, null, correo.getRemitente()); 
 
         this.setVisible(true);
@@ -63,6 +68,8 @@ public class VistaCorreoBase extends JFrame {
         textoCuerpo.setLineWrap(true);
         textoCuerpo.setWrapStyleWord(true);
         botonEnviar = new JButton("Enviar");
+        botonEliminar = new JButton("Delete");
+        botonLeido = new JButton("Marcar Leido");
         botonEnviar.setPreferredSize(new Dimension(100, 30)); // Más grande
     }
 
@@ -95,11 +102,16 @@ public class VistaCorreoBase extends JFrame {
         
         panelPrincipal.add(panelCuerpo, BorderLayout.CENTER);
 
+        JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
         if (esEnvio) {
-            JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             panelBoton.add(botonEnviar);
-            panelPrincipal.add(panelBoton, BorderLayout.SOUTH);
+        } else {
+        	panelBoton.add(botonLeido);
+            panelBoton.add(botonEliminar);
         }
+        panelPrincipal.add(panelBoton, BorderLayout.SOUTH);
+
         
         this.add(panelPrincipal);
     }
@@ -124,5 +136,15 @@ public class VistaCorreoBase extends JFrame {
 	public void setRemitente(String remitente) {
 		this.remitente = remitente;
 	}
+
+	public JButton getBotonEliminar() {
+		return botonEliminar;
+	}
+
+	public void setBotonEliminar(JButton botonEliminar) {
+		this.botonEliminar = botonEliminar;
+	}
+	
+	
     
 }
