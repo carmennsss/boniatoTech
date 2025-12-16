@@ -3,6 +3,7 @@ package controladorLogs;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -11,6 +12,13 @@ import modelo.User;
 import vista.VistaLogs;
 
 public class GestionLogs {
+
+	private Connection conn;
+
+	public GestionLogs(Connection conn) {
+		super();
+		this.conn = conn;
+	}
 
 	public void writeLog(User user, String action, boolean exito) {
 		String fecha = LocalDateTime.now().toString();
@@ -44,10 +52,10 @@ public class GestionLogs {
 		}
 
 	}
-	
+
 	public void mostrarLogs() {
 		ArrayList<Log> logs = new ArrayList<>();
-		
+
 	}
 
 }
