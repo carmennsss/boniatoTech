@@ -76,21 +76,21 @@ public class ControladorCorreos {
 
 	public void eliminarCorreoSeleccionado(Correo correo) {
 	    try {
-	    	Collections.sort(
-				    correos,
-				    Comparator.comparing(Correo::getFecha).reversed()
-				);
-	    	int indiceReal = correos.indexOf(correo);
-	        if (indiceReal == -1) return;
+	    	
+	    	int indiceEnLista = correos.indexOf(correo);
+	        if (indiceEnLista == -1) return;
+	        
+	        int totalCorreos = correos.size();
+	        int indiceServidor = totalCorreos - indiceEnLista; 
 
 	        gestion.eliminarCorreoPOP3(
 	                HOST,
 	                "recent:" + CORREO,
 	                PASSWORD_APLICACION,
-	                indiceReal
+	                indiceServidor - 1 
 	        );
 
-	        correos.remove(indiceReal);
+	        correos.remove(indiceEnLista);
 	        vistaGeneral.cargarCorreos(correos);
 
 	    } catch (Exception e) {
@@ -99,8 +99,25 @@ public class ControladorCorreos {
 	}
 
 	
-	public static void marcarCorreoLeido(Correo correo) throws Exception {
-		correo.getMessage().setFlag(Flags.Flag.SEEN, true);
+	public void marcarCorreoLeido(Correo correo) throws Exception {
+		try {
+			    	
+	    	int indiceEnLista = correos.indexOf(correo);
+	        if (indiceEnLista == -1) return;
+	        
+	        int totalCorreos = correos.size();
+	        int indiceServidor = totalCorreos - indiceEnLista; 
+
+	        gestion.marcarLeidoPOP3(
+	                HOST,
+	                "recent:" + CORREO,
+	                PASSWORD_APLICACION,
+	                indiceServidor - 1 
+	        );
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	
