@@ -60,9 +60,9 @@ public class VistaCorreoBase extends JFrame {
         this.setVisible(true);
     }
     
-    // Método para inicializar todos los componentes una sola vez
+    // M�todo para inicializar todos los componentes una sola vez
     private void inicializarComponentes() {
-        textoPara = new JTextField(40); // Más ancho por defecto
+        textoPara = new JTextField(40); // M�s ancho por defecto
         textoAsunto = new JTextField(40);
         textoCuerpo = new JTextArea(15, 50);
         textoCuerpo.setLineWrap(true);

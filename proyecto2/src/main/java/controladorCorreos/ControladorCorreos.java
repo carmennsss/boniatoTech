@@ -12,8 +12,8 @@ import vista.VistaGeneralCorreo;
 
 public class ControladorCorreos {
 	
-	private static String CORREO = "pablo.pruebas.mail@gmail.com";
-	private static final String PASSWORD_APLICACION = "bqas bwag dasl kcjj";
+	private static String CORREO = "miguelroblesp.sanjosemlg@fundacionloyola.net";
+	private static final String PASSWORD_APLICACION = "ggdc pual ncaq qrvy";
 	private static final String HOST = "pop.gmail.com";
 	private ArrayList<Correo> correos = new ArrayList<>();
 	private VistaGeneralCorreo vistaGeneral;
