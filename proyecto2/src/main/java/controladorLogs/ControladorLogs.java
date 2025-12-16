@@ -10,6 +10,8 @@ public class ControladorLogs {
 			VistaLogs vistaLogs=new VistaLogs();
 			vistaLogs.setVisible(true);
 		
+			
+			
 
 	}
 
