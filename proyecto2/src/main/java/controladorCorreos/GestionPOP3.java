@@ -46,7 +46,7 @@ public class GestionPOP3 {
                 String cuerpo = getTextFromMessage(message); 
 
                 // A�adir al ArrayList
-                listaCorreos.add(new Correo(remitente, asunto, fecha, cuerpo, message));
+                listaCorreos.add(new Correo(remitente, asunto, fecha, cuerpo));
             }
 
             // Cerrar conexiones

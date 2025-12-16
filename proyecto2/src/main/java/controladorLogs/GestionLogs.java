@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -33,6 +36,29 @@ public class GestionLogs {
 	public ArrayList<Log> consultLogs() {
 		ArrayList<Log> logs = new ArrayList<>();
 		// Consultar en db los logs
+
+		String sql = "SELECT id_logs, accion, fecha, resultado, email_usuario FROM logs";
+
+		try (
+				// Connection conn = DriverManager.getConnection(url, user, password);
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ResultSet rs = ps.executeQuery();) {
+
+			while (rs.next()) {
+				int id = rs.getInt("id_logs");
+				String accion = rs.getString("accion");
+				String fecha = rs.getString("fecha");
+				String resultado = rs.getString("resultado");
+				String email = rs.getString("email_usuario");
+
+				Log log = new Log(id, accion, fecha, resultado, email);
+
+				logs.add(log);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 		return logs;
 	}
