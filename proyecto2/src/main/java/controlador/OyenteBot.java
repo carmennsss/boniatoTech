@@ -2,6 +2,7 @@ package controlador;
 
 import modelo.MoView;
 import vista.ViMain;
+import vista.VistaMenuPrincipal;
 
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
@@ -10,12 +11,14 @@ import java.awt.event.ActionListener;
 public class OyenteBot implements ActionListener {
     private CoPrincipal controlador;
     private ViMain vista;
+    private VistaMenuPrincipal menuPrincipal;
     private MoView modeloVista;
 
-    public OyenteBot(CoPrincipal controlador, ViMain vista, MoView modeloVista) {
+    public OyenteBot(CoPrincipal controlador, ViMain vista, MoView modeloVista, VistaMenuPrincipal menuPrincipal) {
         this.controlador = controlador;
         this.vista = vista;
         this.modeloVista = modeloVista;
+        this.menuPrincipal=menuPrincipal;
     }
 
     @Override
@@ -42,9 +45,8 @@ public class OyenteBot implements ActionListener {
             controlador.mostrarFormularioNuevo();
 
         } else if (boton == vista.getPanelAcciones().getBotones().get(1)) {
-            vista.mostrarLogin();
-            vista.getPanelLogin().getCajas().get(0).setText("");
-            vista.getPanelLogin().getCajas().get(1).setText("");
+            menuPrincipal.hacerVisible();
+            vista.setVisible(false);
             controlador.rellenarTabla("");
         }
     }
