@@ -15,26 +15,27 @@ public class OyenteLogin implements ActionListener {
 	private ViMain viMain;
 	private ModeloClienteFTP modelo;
 	private CoPrincipal controladorPrincipal;
-    private VistaGestorArchivos vistaArchivo;
-    private VistaMenuPrincipal vistaMenuPrincipal;	
-	
-	public OyenteLogin(ViMain viMain, ModeloClienteFTP modelo, CoPrincipal ctrl, VistaGestorArchivos vistaArchivo, VistaMenuPrincipal vistaMenuPrincipal) {
+	private VistaGestorArchivos vistaArchivo;
+	private VistaMenuPrincipal vistaMenuPrincipal;
+
+	public OyenteLogin(ViMain viMain, ModeloClienteFTP modelo, CoPrincipal ctrl, VistaGestorArchivos vistaArchivo,
+			VistaMenuPrincipal vistaMenuPrincipal) {
 		this.viMain = viMain;
 		this.modelo = modelo;
 		this.controladorPrincipal = ctrl;
-		this.vistaArchivo=vistaArchivo;
-		this.vistaMenuPrincipal=vistaMenuPrincipal;
+		this.vistaArchivo = vistaArchivo;
+		this.vistaMenuPrincipal = vistaMenuPrincipal;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton button = (JButton) e.getSource();
-		if(button.getText().equalsIgnoreCase("Entrar")) {
+		if (button.getText().equalsIgnoreCase("Enter")) {
 			login();
-		}else if(button.getText().equalsIgnoreCase("File Manager")) {
+		} else if (button.getText().equalsIgnoreCase("File Manager")) {
 			vistaArchivo.hacerVisible();
 			vistaMenuPrincipal.setVisible(false);
-		}else if(button.getText().equalsIgnoreCase("CRUD")){
+		} else if (button.getText().equalsIgnoreCase("Manage Data")) {
 			viMain.hacerVisible();
 			viMain.mostrarCRUD();
 			vistaMenuPrincipal.setVisible(false);
@@ -45,7 +46,7 @@ public class OyenteLogin implements ActionListener {
 	private void login() {
 		if (viMain.getPanelLogin().getCajas().get(0).getText().trim().isEmpty()
 				|| viMain.getPanelLogin().getCajas().get(1).getText().trim().isEmpty()) {
-			JOptionPane.showMessageDialog(viMain, "Por favor, rellene todos los campos", "Error",
+			JOptionPane.showMessageDialog(viMain.getPanelLogin(), "Por favor, rellene todos los campos", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -57,17 +58,18 @@ public class OyenteLogin implements ActionListener {
 		try {
 			modelo.establecerConexion();
 			if (modelo.getCliente().login(usuario, contrasenia)) {
-				
+
 				vistaMenuPrincipal.hacerVisible();
 				viMain.setVisible(false);
 
 			} else {
-				JOptionPane.showMessageDialog(viMain, "Credenciales incorrectas", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(viMain.getPanelLogin(), "Credenciales incorrectas", "Error",
+						JOptionPane.ERROR_MESSAGE);
 				System.out.println(modelo.getCliente().getReplyString());
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(viMain, "Error de conexión: " + ex.getMessage(), "Error",
+			JOptionPane.showMessageDialog(viMain.getPanelLogin(), "Error de conexión: " + ex.getMessage(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
