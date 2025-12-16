@@ -13,7 +13,7 @@ import javax.mail.internet.MimeMessage;
 public class EnviarCorreo {
 	
 
-    public static void enviarCorreo(String miCorreo, String asunto, String mensaje, String receptor) throws Exception {
+    public static void enviarCorreo(String miCorreo, String asunto, String mensaje, String receptor, String passwordAplicacion) throws Exception {
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -21,13 +21,13 @@ public class EnviarCorreo {
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
 
-        // Autenticación CORRECTA
+        // Autenticaciï¿½n CORRECTA
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(
                         miCorreo,
-                        ControladorCorreos.getPasswordAplicacion()  // Contraseña de aplicación correcta
+                        passwordAplicacion  // Contraseï¿½a de aplicaciï¿½n correcta
                 );
             }
         });
