@@ -76,11 +76,16 @@ public class GestionLogs {
 	public boolean exportLogs(File file) {
         ArrayList<Log> logs = consultLogs();
         
+        
         // Usamos try-with-resources para cerrar el FileWriter automáticamente
         try (FileWriter fw = new FileWriter(file)) {
             
-            // Opcional: Escribir cabecera
+        	if (logs.isEmpty()) {
+            	fw.write("There isn´t logs registered in the database.");
+            }
             fw.write("Date,User,Action,Result\n");
+            
+           
             
             for (Log log : logs) {
                 fw.write(log.toString());
