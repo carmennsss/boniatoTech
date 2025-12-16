@@ -7,6 +7,8 @@ import modelo.Correo;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Properties;
 
 public class GestionPOP3 {
@@ -75,11 +77,42 @@ public class GestionPOP3 {
         Folder inbox = store.getFolder("INBOX");
         inbox.open(Folder.READ_WRITE);
 
-        Message mensaje = inbox.getMessage(indice + 1); // POP3 empieza en 1
+        Message mensaje = inbox.getMessage(indice + 1);
         mensaje.setFlag(Flags.Flag.DELETED, true);
 
         inbox.close(true);
         store.close();
+    }
+    
+    public void marcarLeidoPOP3(String host, String user, String password, int indice) {
+        try {
+            Properties properties = new Properties();
+            properties.put("mail.pop3.host", host);
+            properties.put("mail.pop3.port", "995");
+            properties.put("mail.pop3.starttls.enable", "true");
+
+            Session session = Session.getInstance(properties);
+            Store store = session.getStore("pop3s");
+            store.connect(host, user, password);
+
+            Folder inbox = store.getFolder("INBOX");
+            // IMPORTANTE: Abrir en READ_WRITE para poder modificar estados
+            inbox.open(Folder.READ_WRITE);
+
+            // Obtenemos el mensaje por su número (1-based index)
+            Message mensaje = inbox.getMessage(indice + 1);
+            
+            // Aplicamos el flag SEEN
+            mensaje.setFlag(Flags.Flag.SEEN, true);
+
+            // Al cerrar con true, se intentan persistir los cambios en la carpeta
+            inbox.close(true);
+            store.close();
+            System.out.println("Flag SEEN aplicado al mensaje " + (indice + 1));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
