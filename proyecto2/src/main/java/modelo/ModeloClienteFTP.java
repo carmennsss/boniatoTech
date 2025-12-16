@@ -21,12 +21,12 @@ public class ModeloClienteFTP {
         return user;
     }
 
-    // --- CONFIGURACIÓN DE RED ---
+    // --- CONFIGURACIÃ“N DE RED ---
     // NOTA: En Java, para escribir "\\" tienes que poner "\\\\"
     private static final String RUTA_REMOTA = "\\\\13.62.51.110\\FileZillaFTP";
     private static final String RUTA_XML = RUTA_REMOTA + "\\FileZilla Server.xml";
 
-    // DATOS DE WINDOWS DE LA MÁQUINA VIRTUAL (Para poder entrar en la carpeta)
+    // DATOS DE WINDOWS DE LA MÃ�QUINA VIRTUAL (Para poder entrar en la carpeta)
     private static final String USUARIO_WINDOWS_VM = "Administrator";
     private static final String PASS_WINDOWS_VM = "-riMth%@$GAW2NmZVsjKG@px.gxfflrx";
 
@@ -46,7 +46,7 @@ public class ModeloClienteFTP {
         cliente = new FTPClient();
     }
 
-    // ... (Tus métodos de conectar y desconectar FTP siguen igual) ...
+    // ... (Tus mÃ©todos de conectar y desconectar FTP siguen igual) ...
 
     public void establecerConexion() throws IOException {
         if (!cliente.isConnected()) {
@@ -65,7 +65,7 @@ public class ModeloClienteFTP {
         }
     }
 
-    // --- MÉTODO MÁGICO PARA CONECTAR SIN UNIDAD Z ---
+    // --- MÃ‰TODO MÃ�GICO PARA CONECTAR SIN UNIDAD Z ---
     private void conectarCarpetaCompartida() {
         try {
             // Este comando hace un "login" silencioso en la carpeta de red sin crear unidad
@@ -73,7 +73,7 @@ public class ModeloClienteFTP {
             String comando = "net use \"" + RUTA_REMOTA + "\" /user:" + USUARIO_WINDOWS_VM + " " + PASS_WINDOWS_VM;
             Process p = Runtime.getRuntime().exec(comando);
             p.waitFor(); // Esperar a que se conecte
-            System.out.println("Conexión a carpeta compartida establecida.");
+            System.out.println("ConexiÃ³n a carpeta compartida establecida.");
         } catch (Exception e) {
             System.err.println("No se pudo conectar a la carpeta de red: " + e.getMessage());
         }
@@ -90,11 +90,11 @@ public class ModeloClienteFTP {
 
             if (!xmlFile.exists()) {
                 System.err.println("ERROR: No encuentro el archivo en: " + RUTA_XML);
-                System.err.println("Asegúrate de que la carpeta 'FileZillaFTP' está compartida en la VM.");
+                System.err.println("AsegÃºrate de que la carpeta 'FileZillaFTP' estÃ¡ compartida en la VM.");
                 return;
             }
 
-            // ... (A PARTIR DE AQUÍ TODO ES IGUAL QUE ANTES) ...
+            // ... (A PARTIR DE AQUÃ� TODO ES IGUAL QUE ANTES) ...
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -151,10 +151,10 @@ public class ModeloClienteFTP {
             StreamResult result = new StreamResult(xmlFile);
             transformer.transform(source, result);
 
-            System.out.println("Usuario añadido correctamente al XML remoto.");
+            System.out.println("Usuario aÃ±adido correctamente al XML remoto.");
 
-            // NOTA: No podemos recargar el servidor automáticamente porque estamos en red.
-            // Tendrás que recargarlo manualmente en la VM o esperar a que FileZilla lo
+            // NOTA: No podemos recargar el servidor automÃ¡ticamente porque estamos en red.
+            // TendrÃ¡s que recargarlo manualmente en la VM o esperar a que FileZilla lo
             // detecte.
 
         } catch (Exception e) {

@@ -16,7 +16,7 @@ import vista.VistaLogs;
 
 public class GestionLogs {
 
-	private Connection conn;
+	private static Connection conn;
 
 	public GestionLogs(Connection conn) {
 		super();
@@ -33,16 +33,14 @@ public class GestionLogs {
 
 	}
 
-	public ArrayList<Log> consultLogs() {
+	public static ArrayList<Log> consultLogs() {
 		ArrayList<Log> logs = new ArrayList<>();
-		// Consultar en db los logs
 
 		String sql = "SELECT id_logs, accion, fecha, resultado, email_usuario FROM logs";
 
-		try (
-				// Connection conn = DriverManager.getConnection(url, user, password);
+		try (Connection conn = java.sql.DriverManager.getConnection(URL, USUARIO, PASSWORD);
 				PreparedStatement ps = conn.prepareStatement(sql);
-				ResultSet rs = ps.executeQuery();) {
+				ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
 				int id = rs.getInt("id_logs");
@@ -52,7 +50,6 @@ public class GestionLogs {
 				String email = rs.getString("email_usuario");
 
 				Log log = new Log(id, accion, fecha, resultado, email);
-
 				logs.add(log);
 			}
 
