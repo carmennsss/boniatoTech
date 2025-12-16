@@ -16,20 +16,32 @@ import vista.VistaLogs;
 
 public class GestionLogs {
 
-	private Connection conn;
+	private static Connection conn;
 
 	public GestionLogs(Connection conn) {
-		super();
 		this.conn = conn;
 	}
 
-	public void writeLog(User user, String action, boolean exito) {
-		String fecha = LocalDateTime.now().toString();
-		String resultado = exito ? "EXITO" : "DENEGADO";
-
-		Log log = new Log(action, user.getCorreo(), fecha, resultado);
+	public static void writeLog(User user, String action, boolean exito) {
+		String resultado = exito ? "success" : "error";
+		Log log = new Log(action, user.getCorreo(), resultado);
 
 		// Conectar y registrar log en db
+
+		String sql = "INSERT INTO logs (accion, fecha, resultado, email_usuario) VALUES (?,CURRENT_TIMESTAMP,?,?)";
+
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, log.getAction());
+			ps.setString(2, log.getResult());
+			ps.setString(3, user.getCorreo());
+			ps.executeUpdate();
+
+			System.out.println("Log registrado correctamente.");
+
+		} catch (SQLException e) {
+			System.err.println("Error al insertar log: " + e.getMessage());
+			e.printStackTrace();
+		}
 
 	}
 
@@ -40,10 +52,9 @@ public class GestionLogs {
 		String sql = "SELECT id_logs, accion, fecha, resultado, email_usuario FROM logs";
 
 		try (
-				// Connection conn = DriverManager.getConnection(url, user, password);
-				PreparedStatement ps = conn.prepareStatement(sql);
-				ResultSet rs = ps.executeQuery();) {
-
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();)
+		{
 			while (rs.next()) {
 				int id = rs.getInt("id_logs");
 				String accion = rs.getString("accion");
@@ -55,7 +66,6 @@ public class GestionLogs {
 
 				logs.add(log);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -63,21 +73,24 @@ public class GestionLogs {
 		return logs;
 	}
 
-	public void exportLogs() {
-		ArrayList<Log> logs = new ArrayList<>();
-		File file = new File("logs.csv");
-
-		logs = consultLogs();
-
-		try (FileWriter fw = new FileWriter(file, true)) {
-			for (Log log : logs) {
-				fw.write(log.toString());
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
+	public boolean exportLogs(File file) {
+        ArrayList<Log> logs = consultLogs();
+        
+        // Usamos try-with-resources para cerrar el FileWriter automáticamente
+        try (FileWriter fw = new FileWriter(file)) {
+            
+            // Opcional: Escribir cabecera
+            fw.write("Date,User,Action,Result\n");
+            
+            for (Log log : logs) {
+                fw.write(log.toString());
+            }
+            return true; // Éxito
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false; // Error
+        }
+    }
 
 	public void mostrarLogs() {
 		ArrayList<Log> logs = new ArrayList<>();
