@@ -36,7 +36,8 @@ public class OyenteTabla implements MouseListener {
                 Correo correoSeleccionado = correos.get(filaSeleccionada);
                 
                 VistaCorreoBase vistaLectura = new VistaCorreoBase(correoSeleccionado);
-                vistaLectura.getBotonEliminar().addActionListener(new OyenteBotonEliminar(correoSeleccionado, controladorCorreos));
+                vistaLectura.getBotonEliminar().addActionListener(new OyenteBotonEliminar(correoSeleccionado, controladorCorreos, vistaLectura));
+                vistaLectura.getBotonLeido().addActionListener(new OyenteBotonLeido(correoSeleccionado, controladorCorreos));
                 vistaLectura.setVisible(true);
             }
         }

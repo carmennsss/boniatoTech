@@ -9,10 +9,12 @@ import vista.VistaCorreoBase;
 
 public class OyenteEnviarCorreo implements ActionListener {
 
-	VistaCorreoBase v;
+	private String passwordAplicacion;
+	private VistaCorreoBase v;
 	
-	public OyenteEnviarCorreo(VistaCorreoBase v) {
+	public OyenteEnviarCorreo(VistaCorreoBase v, String passwordAplicacion) {
 		this.v = v;
+		this.passwordAplicacion = passwordAplicacion;
 	}
 
 	@Override
@@ -28,15 +30,13 @@ public class OyenteEnviarCorreo implements ActionListener {
 		}
 		
 		try {
-			EnviarCorreo.enviarCorreo(remitente, asunto, cuerpoMensaje, receptor);
+			EnviarCorreo.enviarCorreo(remitente, asunto, cuerpoMensaje, receptor, passwordAplicacion);
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(v, "El mensaje no se pudo enviar, verifica la existencia del correo del receptor");
 			e1.printStackTrace();
 		}
 		
-		v.getTextoAsunto().setText("");
-		v.getTextoPara().setText("");
-		v.getTextoCuerpo().setText("");
+		v.dispose();
 	}
 
 }
