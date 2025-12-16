@@ -5,16 +5,12 @@ public class User {
 	private String username;
 	private String correo;
 	private String password;
-	private Rol rol;
 	
-	public User() {
-		
-	}
-	public User(String username, String correo, String password, Rol rol) {
+	
+	public User(String username, String correo, String password) {
 		this.username = username;
 		this.correo = correo;
 		this.password = password;
-		this.rol = rol;
 	}
 	
 	
@@ -36,14 +32,6 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Rol getRol() {
-		return rol;
-	}
-	public void setRol(Rol rol) {
-		this.rol = rol;
-	}
-	
-	
 	
 
 }

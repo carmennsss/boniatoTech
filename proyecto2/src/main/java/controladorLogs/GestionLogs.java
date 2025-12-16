@@ -22,9 +22,7 @@ public class GestionLogs {
 		this.conn = conn;
 	}
 
-	public static void writeLog(User user, String action, boolean exito) {
-		String resultado = exito ? "success" : "error";
-		Log log = new Log(action, user.getCorreo(), resultado);
+	public static void writeLog(Log log) {
 
 		// Conectar y registrar log en db
 
@@ -33,7 +31,7 @@ public class GestionLogs {
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setString(1, log.getAction());
 			ps.setString(2, log.getResult());
-			ps.setString(3, user.getCorreo());
+			ps.setString(3, log.getUser().getCorreo());
 			ps.executeUpdate();
 
 			System.out.println("Log registrado correctamente.");

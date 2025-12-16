@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import modelo.Log;
+import modelo.User;
 import vista.VistaLogs;
 
 public class ControladorLogs {
