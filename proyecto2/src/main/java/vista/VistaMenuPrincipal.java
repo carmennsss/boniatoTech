@@ -1,16 +1,13 @@
 package vista;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -24,7 +21,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import controlador.CoPrincipal;
 import modelo.ModeloClienteFTP;
 
 public class VistaMenuPrincipal extends JFrame {
@@ -32,6 +28,7 @@ public class VistaMenuPrincipal extends JFrame {
 	JButton botonCRUD;
 	JButton botonFileManager;
 	JButton botonCerrarSesion;
+	JButton botonAdmin;
 	ViMain vista;
 
 	public VistaMenuPrincipal(ModeloClienteFTP client, ViMain vista) {
@@ -45,7 +42,6 @@ public class VistaMenuPrincipal extends JFrame {
 		Color colorFondo = new Color(248, 245, 242);
 		Color colorTexto = new Color(74, 88, 89);
 		Color colorBoton = new Color(196, 164, 132);
-		Color colorHover = new Color(160, 130, 100);
 
 		JPanel mainPanel = new JPanel(new GridBagLayout());
 		mainPanel.setBackground(colorFondo);
@@ -106,9 +102,11 @@ public class VistaMenuPrincipal extends JFrame {
 		botonCRUD = new JButton("Manage Data");
 		botonFileManager = new JButton("File Manager");
 		botonCerrarSesion = new JButton("Log out");
+		botonAdmin = new JButton("Administrate");
 
 		estilarBoton(botonCRUD, colorBoton, Color.WHITE);
 		estilarBoton(botonFileManager, colorBoton, Color.WHITE);
+		estilarBoton(botonAdmin, colorBoton, Color.WHITE);
 		estilarBoton(botonCerrarSesion, new Color(200, 100, 100), Color.WHITE);
 
 		contentPanel.add(Box.createVerticalGlue());
@@ -119,6 +117,8 @@ public class VistaMenuPrincipal extends JFrame {
 		contentPanel.add(botonCRUD);
 		contentPanel.add(Box.createVerticalStrut(20));
 		contentPanel.add(botonFileManager);
+		contentPanel.add(Box.createVerticalStrut(20));
+		contentPanel.add(botonAdmin);
 		contentPanel.add(Box.createVerticalGlue());
 		contentPanel.add(botonCerrarSesion);
 		contentPanel.add(Box.createVerticalStrut(20));
@@ -152,6 +152,9 @@ public class VistaMenuPrincipal extends JFrame {
 
 	public JButton getBotonFileManager() {
 		return botonFileManager;
+	}
+	public JButton getBotonAdmin() {
+		return botonAdmin;
 	}
 
 	public void setBotonFileManager(JButton botonFileManager) {

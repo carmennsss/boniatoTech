@@ -8,8 +8,10 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import modelo.ModeloClienteFTP;
 import vista.ViMain;
+import vista.VistaAdmin;
 import vista.VistaGestorArchivos;
 import vista.VistaMenuPrincipal;
+import vista.VistaRegistroUsuarios;
 
 public class OyenteLogin implements ActionListener {
 	private ViMain viMain;
@@ -17,14 +19,18 @@ public class OyenteLogin implements ActionListener {
 	private CoPrincipal controladorPrincipal;
 	private VistaGestorArchivos vistaArchivo;
 	private VistaMenuPrincipal vistaMenuPrincipal;
+	private VistaAdmin vistaAdmin;
+	private VistaRegistroUsuarios vistaUsuarios;
 
 	public OyenteLogin(ViMain viMain, ModeloClienteFTP modelo, CoPrincipal ctrl, VistaGestorArchivos vistaArchivo,
-			VistaMenuPrincipal vistaMenuPrincipal) {
+			VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin, VistaRegistroUsuarios vistaUsuarios) {
 		this.viMain = viMain;
 		this.modelo = modelo;
 		this.controladorPrincipal = ctrl;
 		this.vistaArchivo = vistaArchivo;
 		this.vistaMenuPrincipal = vistaMenuPrincipal;
+		this.vistaAdmin = vistaAdmin;
+		this.vistaUsuarios = vistaUsuarios;
 	}
 
 	@Override
@@ -40,6 +46,17 @@ public class OyenteLogin implements ActionListener {
 			viMain.mostrarCRUD();
 			vistaMenuPrincipal.setVisible(false);
 			controladorPrincipal.rellenarTabla("animales");
+		}else if (button.getText().equalsIgnoreCase("Administrate")) {
+			if(modelo.getUser().equalsIgnoreCase("admin")) {
+				vistaAdmin.hacerVisible();
+				vistaMenuPrincipal.setVisible(false);
+			}else {
+				JOptionPane.showMessageDialog(viMain.getPanelLogin(), "You are not the administrator", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}else if(button.getText().equalsIgnoreCase("Administrate users")) {
+			vistaUsuarios.hacerVisible();
+			vistaAdmin.setVisible(false);
 		}
 	}
 
