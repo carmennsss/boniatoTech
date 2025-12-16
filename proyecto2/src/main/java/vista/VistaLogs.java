@@ -12,8 +12,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-
-
 public class VistaLogs extends JFrame {
 
 	private JPanel panel;
@@ -77,7 +75,10 @@ public class VistaLogs extends JFrame {
 
 		panelTabla.add(scrollPane, BorderLayout.CENTER);
 
-		panel.add(panelTabla, BorderLayout.CENTER);
+		panel.add(panelTabla, BorderLayout.NORTH);
+		JButton botExport = new JButton("Export");
+		panel.add(botExport, BorderLayout.EAST);
+
 	}
 
 	public void cargarLogs() {
