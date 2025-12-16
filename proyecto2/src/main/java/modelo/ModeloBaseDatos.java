@@ -145,4 +145,17 @@ public class ModeloBaseDatos {
         }
         return valido;
     }
+
+    public boolean registrarUsuario(String correo, String password) {
+        String sql = "INSERT INTO usuarios (correo, password) VALUES (?, ?)";
+        try {
+            PreparedStatement pstmt = getConexion().prepareStatement(sql);
+            pstmt.setString(1, correo);
+            pstmt.setString(2, password);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
