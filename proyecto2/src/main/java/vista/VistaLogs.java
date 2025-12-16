@@ -3,20 +3,32 @@ package vista;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import modelo.Correo;
+import modelo.Log;
 
 public class VistaLogs extends JFrame {
 
 	private JPanel panel;
 	private JTable tabla;
 	private DefaultTableModel tablaModelo;
+	private JButton btnExport;
 
 	public VistaLogs() {
 
@@ -54,7 +66,7 @@ public class VistaLogs extends JFrame {
 		tablaModelo = new DefaultTableModel(nombresColumnas, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				return false; // Esto evita la edición, pero permite la selección
+				return false; // Esto evita la ediciï¿½n, pero permite la selecciï¿½n
 			}
 		};
 
@@ -76,12 +88,60 @@ public class VistaLogs extends JFrame {
 		panelTabla.add(scrollPane, BorderLayout.CENTER);
 
 		panel.add(panelTabla, BorderLayout.NORTH);
-		JButton botExport = new JButton("Export");
-		panel.add(botExport, BorderLayout.EAST);
+		btnExport = new JButton("Export CSV");
+		btnExport.setPreferredSize(new Dimension(100,8));
+		panel.add(btnExport, BorderLayout.EAST);
 
 	}
+	
+	public File seleccionarArchivoGuardar() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save logs");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
+        
+        int userSelection = fileChooser.showSaveDialog(this);
 
-	public void cargarLogs() {
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            // Asegurar extensiÃ³n .csv
+            if (!fileToSave.getAbsolutePath().endsWith(".csv")) {
+                fileToSave = new File(fileToSave.getAbsolutePath() + ".csv");
+            }
+            return fileToSave;
+        }
+        return null;
+    }
+
+	public void cargarLogs(ArrayList<Log> logs) {
+		tablaModelo.setRowCount(0);
+		//Ordenar el array por fecha
+		
+		for (Log log : logs) {
+			Object[] fila = new Object[3];
+			fila[0] = log.getAction();
+			fila[1] = log.getUser().toString();
+
+			fila[2] = log.getDate();
+			fila[3] = log.getResult();
+
+			tablaModelo.addRow(fila);
+		}
+	}
+	
+	public void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje);
+    }
+	public void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+	public JButton getBtnExport() {
+		return btnExport;
 	}
 
+	public void setBtnExport(JButton btnExport) {
+		this.btnExport = btnExport;
+	}
+
+	
 }
