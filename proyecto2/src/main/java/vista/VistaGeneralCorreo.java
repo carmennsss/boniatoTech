@@ -25,7 +25,6 @@ public class VistaGeneralCorreo extends JFrame {
 	private JPanel panel;
 	private String correo;
 	private JButton botonEnviarCorreo;
-	private JButton botonRecargar;
 	private DefaultTableModel tablaModelo;
 	private JTable emailTabla;
 
@@ -98,14 +97,10 @@ public class VistaGeneralCorreo extends JFrame {
 
 		JPanel panelMedio = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
 
-		botonRecargar = new JButton("Refresh");
-		botonRecargar.setPreferredSize(new Dimension(120, 30));
-
 
 		botonEnviarCorreo = new JButton("Enviar correo");
-		botonEnviarCorreo.setPreferredSize(new Dimension(120, 30));
+		botonEnviarCorreo.setPreferredSize(new Dimension(150, 30));
 
-		panelMedio.add(botonRecargar);
 		panelMedio.add(botonEnviarCorreo);
 		
 
@@ -153,14 +148,5 @@ public class VistaGeneralCorreo extends JFrame {
 	public void setEmailTabla(JTable emailTabla) {
 		this.emailTabla = emailTabla;
 	}
-
-	public JButton getBotonRecargar() {
-		return botonRecargar;
-	}
-
-	public void setBotonRecargar(JButton botonRecargar) {
-		this.botonRecargar = botonRecargar;
-	}
-
 	
 }
