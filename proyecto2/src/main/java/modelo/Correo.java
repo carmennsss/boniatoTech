@@ -1,8 +1,6 @@
 package modelo; 
 
-import java.util.Date;
-
-import javax.mail.Message; 
+import java.util.Date; 
 
 public class Correo {
 
@@ -10,16 +8,14 @@ public class Correo {
     private String asunto;
     private Date fecha;
     private String cuerpo;
-    private Message message;
     
 
   
-    public Correo(String remitente, String asunto, Date fecha, String cuerpo, Message message) {
+    public Correo(String remitente, String asunto, Date fecha, String cuerpo) {
         this.remitente = remitente;
         this.asunto = asunto;
         this.fecha = fecha;
         this.cuerpo = cuerpo;
-        this.message = message;
     }
 
 
@@ -39,18 +35,7 @@ public class Correo {
         return cuerpo;
     }
     
-    
-    public Message getMessage() {
-		return message;
-	}
-
-
-	public void setMessage(Message message) {
-		this.message = message;
-	}
-
-
-	@Override
+    @Override
     public String toString() {
         return "Correo [De=" + remitente + ", Asunto=" + asunto + ", Fecha=" + fecha + "]";
     }
