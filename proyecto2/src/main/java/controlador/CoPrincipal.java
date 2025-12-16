@@ -20,6 +20,8 @@ public class CoPrincipal {
     private ViMain vista;
     private VistaGestorArchivos vistaArchivo;
     private VistaMenuPrincipal vistaMenuPrincipal;
+    private VistaAdmin vistaAdmin;
+    private VistaRegistroUsuarios vistaUsuarios;
     private boolean editando;
 
     public CoPrincipal() {
@@ -34,10 +36,14 @@ public class CoPrincipal {
         modelo.ModeloClienteFTP modeloFTP = new modelo.ModeloClienteFTP();
         this.vistaMenuPrincipal = new VistaMenuPrincipal(modeloFTP,vista);
         this.vistaArchivo = new VistaGestorArchivos(modeloFTP, vistaMenuPrincipal);
-        OyenteLogin oyLogin = new OyenteLogin(vista, modeloFTP, this, vistaArchivo, vistaMenuPrincipal);
+        this.vistaAdmin = new VistaAdmin(vistaMenuPrincipal);
+        this.vistaUsuarios = new VistaRegistroUsuarios(vistaAdmin);
+        OyenteLogin oyLogin = new OyenteLogin(vista, modeloFTP, this, vistaArchivo, vistaMenuPrincipal, vistaAdmin, vistaUsuarios);
         vista.getPanelLogin().getBotones().get(0).addActionListener(oyLogin);
         vistaMenuPrincipal.getBotonCRUD().addActionListener(oyLogin);
         vistaMenuPrincipal.getBotonFileManager().addActionListener(oyLogin);
+        vistaMenuPrincipal.getBotonAdmin().addActionListener(oyLogin);
+        vistaAdmin.getBotonCrearUsuario().addActionListener(oyLogin);
         vista.hacerVisible();
         asignarEventosCRUD();
     }
