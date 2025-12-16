@@ -8,19 +8,16 @@ import modelo.Correo;
 public class OyenteBotonEliminar implements ActionListener {
 	
 	private Correo correo;
+	private ControladorCorreos controladorCorreos;
 
-	public OyenteBotonEliminar(Correo correo) {
+	public OyenteBotonEliminar(Correo correo, ControladorCorreos controlador) {
+		this.controladorCorreos = controlador;
 		this.correo = correo;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		try {
-			ControladorCorreos.eliminarCorreo(correo);
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		controladorCorreos.eliminarCorreoSeleccionado(correo);
 		
 	}
 

@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class ReceptorCorreo {
+public class GestionPOP3 {
 
     public ArrayList<Correo> recibirCorreosPOP3(String host, String user, String password) {
         ArrayList<Correo> listaCorreos = new ArrayList<>();
@@ -60,6 +60,28 @@ public class ReceptorCorreo {
 
         return listaCorreos;
     }
+    
+    public void eliminarCorreoPOP3(String host, String user, String password, int indice) throws Exception {
+
+        Properties properties = new Properties();
+        properties.put("mail.pop3.host", host);
+        properties.put("mail.pop3.port", "995");
+        properties.put("mail.pop3.starttls.enable", "true");
+
+        Session session = Session.getInstance(properties);
+        Store store = session.getStore("pop3s");
+        store.connect(host, user, password);
+
+        Folder inbox = store.getFolder("INBOX");
+        inbox.open(Folder.READ_WRITE);
+
+        Message mensaje = inbox.getMessage(indice + 1); // POP3 empieza en 1
+        mensaje.setFlag(Flags.Flag.DELETED, true);
+
+        inbox.close(true);
+        store.close();
+    }
+
 
     private String getTextFromMessage(Message message) throws MessagingException, IOException {
         String result = "";

@@ -1,6 +1,8 @@
 package controladorCorreos;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import javax.mail.Flags;
@@ -15,9 +17,11 @@ public class ControladorCorreos {
 	private static final String HOST = "pop.gmail.com";
 	private ArrayList<Correo> correos = new ArrayList<>();
 	private VistaGeneralCorreo vistaGeneral;
+	private static GestionPOP3 gestion;
 
 	
 	public ControladorCorreos() {
+		gestion = new GestionPOP3();
 		configurarVistaGeneral();
 		
 		cargarCorreos();
@@ -25,13 +29,6 @@ public class ControladorCorreos {
 		asignarBotonRecargar();
 		
 	}
-
-
-
-
-
-
-
 
 	protected void cargarCorreos() {
 		new Thread(() -> {
@@ -63,8 +60,7 @@ public class ControladorCorreos {
 
 
 	public ArrayList<Correo> obtenerCorreos() {
-		ReceptorCorreo receptor = new ReceptorCorreo();
-		ArrayList<Correo> listaCorreos = receptor.recibirCorreosPOP3(HOST, "recent:" + CORREO, PASSWORD_APLICACION);		
+		ArrayList<Correo> listaCorreos = gestion.recibirCorreosPOP3(HOST, "recent:" + CORREO, PASSWORD_APLICACION);		
 		
 		return listaCorreos;
 	}
@@ -74,14 +70,34 @@ public class ControladorCorreos {
 		vistaGeneral = new VistaGeneralCorreo(CORREO);
 		vistaGeneral.setVisible(true);
 		vistaGeneral.getBotonEnviarCorreo().addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo()));
-		vistaGeneral.getEmailTabla().addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos));
+		vistaGeneral.getEmailTabla().addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this));
 	}
 
 
-	public static void eliminarCorreo(Correo correo) throws Exception {
-		correo.getMessage().setFlag(Flags.Flag.DELETED, true);
-		
+	public void eliminarCorreoSeleccionado(Correo correo) {
+	    try {
+	    	Collections.sort(
+				    correos,
+				    Comparator.comparing(Correo::getFecha).reversed()
+				);
+	    	int indiceReal = correos.indexOf(correo);
+	        if (indiceReal == -1) return;
+
+	        gestion.eliminarCorreoPOP3(
+	                HOST,
+	                "recent:" + CORREO,
+	                PASSWORD_APLICACION,
+	                indiceReal
+	        );
+
+	        correos.remove(indiceReal);
+	        vistaGeneral.cargarCorreos(correos);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
+
 	
 	public static void marcarCorreoLeido(Correo correo) throws Exception {
 		correo.getMessage().setFlag(Flags.Flag.SEEN, true);

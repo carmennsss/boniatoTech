@@ -41,7 +41,7 @@ public class VistaGeneralCorreo extends JFrame {
 	private void inicializarTabla() {
 		JPanel panelTabla = new JPanel(new BorderLayout());
 
-		String[] nombresColumnas = { "De", "Asunto", "Fecha" };
+		String[] nombresColumnas = { "Asunto", "De", "Fecha" };
 
 		tablaModelo = new DefaultTableModel(nombresColumnas, 0) {
 	        @Override
@@ -121,8 +121,9 @@ public class VistaGeneralCorreo extends JFrame {
 			);
 		for (Correo c : correos) {
 			Object[] fila = new Object[3];
-			fila[0] = c.getRemitente();
-			fila[1] = c.getAsunto();
+			fila[0] = c.getAsunto();
+			fila[1] = c.getRemitente();
+
 			fila[2] = c.getFecha();
 
 			tablaModelo.addRow(fila);
