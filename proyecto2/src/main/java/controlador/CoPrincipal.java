@@ -35,7 +35,7 @@ public class CoPrincipal {
 
         modelo.ModeloClienteFTP modeloFTP = new modelo.ModeloClienteFTP();
         this.vistaMenuPrincipal = new VistaMenuPrincipal(modeloFTP,vista);
-        this.vistaArchivo = new VistaGestorArchivos(modeloFTP, vistaMenuPrincipal);
+        this.vistaArchivo = new VistaGestorArchivos(modeloFTP, vistaMenuPrincipal,bd);
         this.vistaAdmin = new VistaAdmin(vistaMenuPrincipal);
         this.vistaUsuarios = new VistaRegistroUsuarios(vistaAdmin,modeloFTP, bd);
         OyenteLogin oyLogin = new OyenteLogin(vista, modeloFTP, this, vistaArchivo, vistaMenuPrincipal, vistaAdmin, vistaUsuarios);
