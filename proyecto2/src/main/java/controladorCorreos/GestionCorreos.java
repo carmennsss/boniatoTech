@@ -12,7 +12,7 @@ import java.util.Properties;
 
 public class GestionCorreos {
 
-    // --- MÉTODOS POP3 (RECIBIR Y ELIMINAR) ---
+    // --- MÃTODOS POP3 (RECIBIR Y ELIMINAR) ---
 
     public ArrayList<Correo> recibirCorreosPOP3(String host, String user, String password) {
         ArrayList<Correo> listaCorreos = new ArrayList<>();
@@ -83,16 +83,16 @@ public class GestionCorreos {
         store.close();
     }
     
-    // --- MÉTODO IMAP (SOLO PARA MARCAR LEÍDO) ---
+    // --- MÃTODO IMAP (SOLO PARA MARCAR LEÃDO) ---
 
     /**
-     * IMPORTANTE: El parametro 'host' aquí debe ser el servidor IMAP 
+     * IMPORTANTE: El parametro 'host' aquÃ­ debe ser el servidor IMAP 
      * (ej: imap.gmail.com), NO el servidor POP3.
      */
     public void marcarLeidoIMAP(String imapHost, String user, String password, String messageId) {
         try {
             Properties properties = new Properties();
-            // Configuración específica para IMAP SSL
+            // ConfiguraciÃ³n especÃ­fica para IMAP SSL
             properties.put("mail.store.protocol", "imaps"); 
             properties.put("mail.imap.host", imapHost);
             properties.put("mail.imap.port", "993");
@@ -109,17 +109,17 @@ public class GestionCorreos {
             inbox.open(Folder.READ_WRITE);
 
             if (messageId != null && !messageId.isEmpty()) {
-                // Creamos un término de búsqueda para el Header "Message-ID"
+                // Creamos un termino de busqueda para el Header "Message-ID"
                 SearchTerm searchTerm = new HeaderTerm("Message-ID", messageId);
                 Message[] foundMessages = inbox.search(searchTerm);
 
                 if (foundMessages.length > 0) {
-                    // Si lo encontramos, marcamos el primero (debería ser único)
+                    // Si lo encontramos, marcamos el primero (debera ser unico)
                     Message mensaje = foundMessages[0];
                     mensaje.setFlag(Flags.Flag.SEEN, true);
-                    System.out.println("Correo marcado como LEÍDO (ID: " + messageId + ")");
+                    System.out.println("Correo marcado como LEÃDO (ID: " + messageId + ")");
                 } else {
-                    System.out.println("No se encontró el mensaje con ese ID en IMAP.");
+                    System.out.println("No se encontrÃ³ el mensaje con ese ID en IMAP.");
                 }
             }
 
@@ -129,7 +129,53 @@ public class GestionCorreos {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Error al marcar como leído vía IMAP: " + e.getMessage());
+            System.err.println("Error al marcar como leÃ­do vÃ­a IMAP: " + e.getMessage());
+        }
+    }
+    
+    public void marcarNoLeidoIMAP(String imapHost, String user, String password, String messageId) {
+        try {
+            Properties properties = new Properties();
+            properties.put("mail.store.protocol", "imaps");
+            properties.put("mail.imaps.host", imapHost);
+            properties.put("mail.imaps.port", "993");
+            properties.put("mail.imaps.ssl.enable", "true");
+
+            Session session = Session.getInstance(properties);
+
+            Store store = session.getStore("imaps");
+            store.connect(imapHost, user, password);
+
+            Folder inbox = store.getFolder("INBOX");
+            inbox.open(Folder.READ_WRITE);
+
+            if (messageId != null && !messageId.isEmpty()) {
+
+                SearchTerm searchTerm = new HeaderTerm("Message-ID", messageId);
+                Message[] foundMessages = inbox.search(searchTerm);
+
+                if (foundMessages.length > 0) {
+                    Message mensaje = foundMessages[0];
+
+            
+                    inbox.setFlags(
+                        new Message[]{ mensaje },
+                        new Flags(Flags.Flag.SEEN),
+                        false
+                    );
+
+                    System.out.println("Correo marcado como NO LEÍDO (ID: " + messageId + ")");
+                } else {
+                    System.out.println("No se encontró el mensaje con ese ID en IMAP.");
+                }
+            }
+
+            inbox.close(true);
+            store.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error al marcar como NO leído vía IMAP: " + e.getMessage());
         }
     }
 
