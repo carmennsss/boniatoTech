@@ -35,10 +35,14 @@ public class OyenteTabla implements MouseListener {
             if (filaSeleccionada != -1 && !correosActuales.isEmpty()) {
                 // Ahora el índice coincidirá con la lista y la tabla
                 Correo correoSeleccionado = correosActuales.get(filaSeleccionada);
-                
+                //Nuevo hilo para que marque como leido sin cortar el ritmo del programa
+                new Thread(() -> {
+                    controladorCorreos.marcarCorreoLeido(correoSeleccionado);	
+
+                	}).start();;
+
                 VistaCorreoBase vistaLectura = new VistaCorreoBase(correoSeleccionado);
                 vistaLectura.getBotonEliminar().addActionListener(new OyenteBotonEliminar(correoSeleccionado, controladorCorreos, vistaLectura));
-                vistaLectura.getBotonLeido().addActionListener(new OyenteBotonLeido(correoSeleccionado, controladorCorreos));
         		vistaLectura.getBotonExportar().addActionListener(new OyenteExportarCorreo(correoSeleccionado, vistaLectura, correo));
                 vistaLectura.getBotonNoLeido().addActionListener(new OyenteBotonNoLeido(correoSeleccionado, controladorCorreos));
                 vistaLectura.setVisible(true);
