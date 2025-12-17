@@ -9,7 +9,7 @@ public class OyenteBotonNoLeido implements ActionListener {
 
 	private Correo correo;
 	private ControladorCorreos controladorCorreos;
-	
+
 	public OyenteBotonNoLeido(Correo correo, ControladorCorreos controladorCorreos) {
 		this.controladorCorreos = controladorCorreos;
 		this.correo = correo;
