@@ -17,9 +17,11 @@ public class VistaCorreoBase extends JFrame {
     private JButton botonEnviar;
     private JButton botonEliminar;
     private JButton botonLeido;
+    private JButton botonExportar;
+    private JButton botonNoLeido;
+    private JButton botonAdjuntar;
     private String remitente;
 
-    // CONSTRUCTOR ENVIAR/REDACTAR
     public VistaCorreoBase(String remitente) {
         this.setTitle("Redactar Nuevo Correo");
         this.remitente = remitente;
@@ -27,14 +29,9 @@ public class VistaCorreoBase extends JFrame {
         inicializarComponentes();
         propiedadesGenerales();
 
-        textoPara.setText(""); 
+        // Ya no creamos el panel aquí, dejamos que ensamblarVista lo haga
+        ensamblarVista(true); 
         
-        JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panelBoton.add(botonEnviar);
-
-        ensamblarVista(true, remitente, null); 
-        
-        this.setVisible(true);
     }
 
     // CONSTRUCTOR CONSULTAR
@@ -52,12 +49,8 @@ public class VistaCorreoBase extends JFrame {
         textoAsunto.setEditable(false);
         textoCuerpo.setEditable(false);
         
-        JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panelBoton.add(botonEliminar);
-        
-        ensamblarVista(false, null, correo.getRemitente()); 
+        ensamblarVista(false); 
 
-        this.setVisible(true);
     }
     
     // M�todo para inicializar todos los componentes una sola vez
@@ -67,28 +60,28 @@ public class VistaCorreoBase extends JFrame {
         textoCuerpo = new JTextArea(15, 50);
         textoCuerpo.setLineWrap(true);
         textoCuerpo.setWrapStyleWord(true);
-        botonEnviar = new JButton("Enviar");
+        botonEnviar = new JButton("Send");
         botonEliminar = new JButton("Delete");
-        botonLeido = new JButton("Marcar Leido");
-        botonEnviar.setPreferredSize(new Dimension(100, 30)); // Más grande
+        botonLeido = new JButton("Mark as read");
+        botonNoLeido = new JButton("Mark as unread");
+        botonExportar = new JButton("Export");
+        botonAdjuntar = new JButton("Adjuntar");
     }
 
-    private void ensamblarVista(boolean esEnvio, String remitente, String remitenteCorreo) {
-        panelPrincipal = new JPanel(new BorderLayout(5, 5)); // Espaciado de 5px
-        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Margen
+    private void ensamblarVista(boolean esEnvio) {
+        panelPrincipal = new JPanel(new BorderLayout(5, 5));
+        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JPanel panelDatosSuperiores = new JPanel(new GridLayout(esEnvio ? 2 : 1, 2, 5, 5));
+        // Cambiamos a 0 filas para que crezca según necesite
+        JPanel panelDatosSuperiores = new JPanel(new GridLayout(0, 2, 5, 5));
         
-        // Si es envío, mostramos "Para:" y el campo, si no, De: y el campo
         if (esEnvio) {
             panelDatosSuperiores.add(new JLabel("Para:"));
-            panelDatosSuperiores.add(textoPara);
         } else {
-             panelDatosSuperiores.add(new JLabel("De:"));
-             panelDatosSuperiores.add(textoPara); 
+            panelDatosSuperiores.add(new JLabel("De:"));
         }
+        panelDatosSuperiores.add(textoPara);
 
-        // Asunto va en ambos casos
         panelDatosSuperiores.add(new JLabel("Asunto:"));
         panelDatosSuperiores.add(textoAsunto);
 
@@ -102,17 +95,21 @@ public class VistaCorreoBase extends JFrame {
         
         panelPrincipal.add(panelCuerpo, BorderLayout.CENTER);
 
+        // LÓGICA DE BOTONES CENTRALIZADA
         JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         if (esEnvio) {
+            panelBoton.add(botonAdjuntar);
             panelBoton.add(botonEnviar);
         } else {
-        	panelBoton.add(botonLeido);
+            // Añadimos todos los botones que querías ver en consulta
+            panelBoton.add(botonLeido);
+            panelBoton.add(botonNoLeido);
+            panelBoton.add(botonExportar);
             panelBoton.add(botonEliminar);
         }
-        panelPrincipal.add(panelBoton, BorderLayout.SOUTH);
-
         
+        panelPrincipal.add(panelBoton, BorderLayout.SOUTH);
         this.add(panelPrincipal);
     }
 
@@ -151,6 +148,22 @@ public class VistaCorreoBase extends JFrame {
 
 	public void setBotonLeido(JButton botonLeido) {
 		this.botonLeido = botonLeido;
+	}
+
+	public JButton getBotonExportar() {
+		return botonExportar;
+	}
+
+	public void setBotonExportar(JButton botonExportar) {
+		this.botonExportar = botonExportar;
+	}
+
+	public JButton getBotonNoLeido() {
+		return botonNoLeido;
+	}
+
+	public void setBotonNoLeido(JButton botonNoLeido) {
+		this.botonNoLeido = botonNoLeido;
 	}
 	
 	
