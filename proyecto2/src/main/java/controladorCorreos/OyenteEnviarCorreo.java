@@ -24,13 +24,15 @@ public class OyenteEnviarCorreo implements ActionListener {
 		String remitente = v.getRemitente();
 		String cuerpoMensaje = v.getTextoCuerpo().getText();
 		
-		if (receptor == "" || receptor.isEmpty() || cuerpoMensaje == "" || cuerpoMensaje.isEmpty()) {
+		if (receptor == "" || receptor.isEmpty() || cuerpoMensaje.isEmpty()) {
 			JOptionPane.showMessageDialog(v, "El receptor y el cuerpo del mensaje es obligatorio");
 			return;
 		}
 		
 		try {
-			EnviarCorreo.enviarCorreo(remitente, asunto, cuerpoMensaje, receptor, passwordAplicacion, v.getAdjuntos());		} catch (Exception e1) {
+			EnviarCorreo.enviarCorreo(remitente, asunto, cuerpoMensaje, receptor, passwordAplicacion, v.getAdjuntos());
+			JOptionPane.showMessageDialog(v, "Correo enviado con éxito a " + receptor);
+			} catch (Exception e1) {
 			JOptionPane.showMessageDialog(v, "El mensaje no se pudo enviar, verifica la existencia del correo del receptor");
 			e1.printStackTrace();
 		}

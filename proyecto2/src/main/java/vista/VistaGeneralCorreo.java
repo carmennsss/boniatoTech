@@ -40,7 +40,7 @@ public class VistaGeneralCorreo extends JFrame {
 	private void inicializarTabla() {
 		JPanel panelTabla = new JPanel(new BorderLayout());
 
-		String[] nombresColumnas = { "Asunto", "De", "Fecha" };
+		String[] nombresColumnas = { "Subject", "From", "Date" };
 
 		tablaModelo = new DefaultTableModel(nombresColumnas, 0) {
 	        @Override
@@ -69,7 +69,7 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	private void propiedadesVentana() {
-		this.setTitle("Correos");
+		this.setTitle("Inbox");
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setSize(630, 500);
 		this.setLocationRelativeTo(null);
@@ -85,7 +85,7 @@ public class VistaGeneralCorreo extends JFrame {
 	private void inicializarVista() {
 		JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 10));
 		
-		JLabel etiquetaCorreo = new JLabel("Bandeja de entrada de " + correo);
+		JLabel etiquetaCorreo = new JLabel(correo + " inbox");
 		etiquetaCorreo.setPreferredSize(new Dimension(600, 20));
 		etiquetaCorreo.setFont(new Font("Comic Sans MS", Font.ITALIC, 16));
 		etiquetaCorreo.setAlignmentX(SwingConstants.CENTER);
@@ -98,7 +98,7 @@ public class VistaGeneralCorreo extends JFrame {
 		JPanel panelMedio = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
 
 
-		botonEnviarCorreo = new JButton("Enviar correo");
+		botonEnviarCorreo = new JButton("Send Mail");
 		botonEnviarCorreo.setPreferredSize(new Dimension(150, 30));
 
 		panelMedio.add(botonEnviarCorreo);
