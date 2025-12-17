@@ -20,7 +20,6 @@ public class VistaCorreoBase extends JFrame {
     private JTextArea textoCuerpo;
     private JButton botonEnviar;
     private JButton botonEliminar;
-    private JButton botonLeido;
     private JButton botonExportar;
     private JButton botonNoLeido;
     private JButton botonAdjuntar;
@@ -68,7 +67,6 @@ public class VistaCorreoBase extends JFrame {
         textoCuerpo.setWrapStyleWord(true);
         botonEnviar = new JButton("Send");
         botonEliminar = new JButton("Delete");
-        botonLeido = new JButton("Mark as read");
         botonNoLeido = new JButton("Mark as unread");
         botonExportar = new JButton("Export");
         botonAdjuntar = new JButton("Attach");
@@ -108,7 +106,6 @@ public class VistaCorreoBase extends JFrame {
             panelBoton.add(botonEnviar);
         } else {
             // Añadimos todos los botones que querías ver en consulta
-            panelBoton.add(botonLeido);
             panelBoton.add(botonNoLeido);
             panelBoton.add(botonExportar);
             panelBoton.add(botonEliminar);
@@ -191,14 +188,6 @@ public class VistaCorreoBase extends JFrame {
 
 	public void setBotonEliminar(JButton botonEliminar) {
 		this.botonEliminar = botonEliminar;
-	}
-
-	public JButton getBotonLeido() {
-		return botonLeido;
-	}
-
-	public void setBotonLeido(JButton botonLeido) {
-		this.botonLeido = botonLeido;
 	}
 
 	public JButton getBotonExportar() {
