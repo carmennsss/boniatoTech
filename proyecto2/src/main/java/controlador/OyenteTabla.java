@@ -3,10 +3,11 @@ package controlador;
 import modelo.MoView;
 import vista.ViMain;
 
+import javax.swing.event.TableModelListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class OyenteTabla extends MouseAdapter {
+public class OyenteTabla extends MouseAdapter implements TableModelListener {
     private CoPrincipal controlador;
     private ViMain vista;
     private MoView modeloVista;
@@ -17,6 +18,12 @@ public class OyenteTabla extends MouseAdapter {
         this.modeloVista = modeloVista;
     }
 
+    public void setListaNombresPermisos(java.util.ArrayList<String> listaNombresPermisos) {
+        this.listaNombresPermisos = listaNombresPermisos;
+    }
+
+    private java.util.ArrayList<String> listaNombresPermisos;
+
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
@@ -24,6 +31,22 @@ public class OyenteTabla extends MouseAdapter {
             if (fila != -1) {
                 modeloVista.setFilaSeleccionada(fila);
                 mostrarOpciones();
+            }
+        }
+    }
+
+    @Override
+    public void tableChanged(javax.swing.event.TableModelEvent e) {
+        if (e.getType() == javax.swing.event.TableModelEvent.UPDATE) {
+            int row = e.getFirstRow();
+            int column = e.getColumn();
+            if (row >= 0 && column >= 2 && listaNombresPermisos != null) {
+                javax.swing.table.TableModel model = (javax.swing.table.TableModel) e.getSource();
+                String rolNombre = (String) model.getValueAt(row, 0);
+                String permisoNombre = listaNombresPermisos.get(column - 2);
+                Boolean isChecked = (Boolean) model.getValueAt(row, column);
+
+                controlador.actualizarPermiso(rolNombre, permisoNombre, isChecked);
             }
         }
     }

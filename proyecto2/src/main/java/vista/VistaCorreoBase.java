@@ -3,7 +3,6 @@ package vista;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import javax.swing.*;
 
 import modelo.Correo;
@@ -23,17 +22,17 @@ public class VistaCorreoBase extends JFrame {
     public VistaCorreoBase(String remitente) {
         this.setTitle("Redactar Nuevo Correo");
         this.remitente = remitente;
-        
+
         inicializarComponentes();
         propiedadesGenerales();
 
-        textoPara.setText(""); 
-        
+        textoPara.setText("");
+
         JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panelBoton.add(botonEnviar);
 
-        ensamblarVista(true, remitente, null); 
-        
+        ensamblarVista(true, remitente, null);
+
         this.setVisible(true);
     }
 
@@ -47,22 +46,22 @@ public class VistaCorreoBase extends JFrame {
         textoPara.setText(correo.getRemitente());
         textoAsunto.setText(correo.getAsunto());
         textoCuerpo.setText(correo.getCuerpo());
-        
+
         textoPara.setEditable(false);
         textoAsunto.setEditable(false);
         textoCuerpo.setEditable(false);
-        
+
         JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panelBoton.add(botonEliminar);
-        
-        ensamblarVista(false, null, correo.getRemitente()); 
+
+        ensamblarVista(false, null, correo.getRemitente());
 
         this.setVisible(true);
     }
-    
-    // M�todo para inicializar todos los componentes una sola vez
+
+    // Mtodo para inicializar todos los componentes una sola vez
     private void inicializarComponentes() {
-        textoPara = new JTextField(40); // M�s ancho por defecto
+        textoPara = new JTextField(40); // Ms ancho por defecto
         textoAsunto = new JTextField(40);
         textoCuerpo = new JTextArea(15, 50);
         textoCuerpo.setLineWrap(true);
@@ -74,48 +73,125 @@ public class VistaCorreoBase extends JFrame {
     }
 
     private void ensamblarVista(boolean esEnvio, String remitente, String remitenteCorreo) {
-        panelPrincipal = new JPanel(new BorderLayout(5, 5)); // Espaciado de 5px
-        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Margen
+        panelPrincipal = new JPanel(new BorderLayout());
 
-        JPanel panelDatosSuperiores = new JPanel(new GridLayout(esEnvio ? 2 : 1, 2, 5, 5));
-        
-        // Si es envío, mostramos "Para:" y el campo, si no, De: y el campo
+        // Panel Lateral con Imagen
+        JPanel sidePanel = new JPanel() {
+            private java.awt.Image imagen;
+            {
+                java.net.URL url = getClass().getResource("/lateral_menu.jpg");
+                if (url != null) {
+                    imagen = new javax.swing.ImageIcon(url).getImage();
+                }
+            }
+
+            @Override
+            protected void paintComponent(java.awt.Graphics g) {
+                super.paintComponent(g);
+                if (imagen != null) {
+                    double scale = Math.max((double) getWidth() / imagen.getWidth(this),
+                            (double) getHeight() / imagen.getHeight(this));
+                    int w = (int) (imagen.getWidth(this) * scale);
+                    int h = (int) (imagen.getHeight(this) * scale);
+                    g.drawImage(imagen, 0, 0, w, h, this);
+                } else {
+                    g.setColor(Estilos.COLOR_BOTON_MENU);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                }
+            }
+        };
+        sidePanel.setPreferredSize(new Dimension(150, 0));
+        panelPrincipal.add(sidePanel, BorderLayout.WEST);
+
+        // Panel Central del Formulario
+        JPanel formPanel = new JPanel(new BorderLayout(5, 5));
+        formPanel.setBackground(Estilos.BEIGE_CANVAS);
+        formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JPanel panelDatosSuperiores = new JPanel(new java.awt.GridBagLayout());
+        panelDatosSuperiores.setOpaque(false);
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.insets = new java.awt.Insets(5, 5, 5, 5);
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+
         if (esEnvio) {
-            panelDatosSuperiores.add(new JLabel("Para:"));
-            panelDatosSuperiores.add(textoPara);
+            agregarCampo(panelDatosSuperiores, "Para:", textoPara, gbc, 0);
         } else {
-             panelDatosSuperiores.add(new JLabel("De:"));
-             panelDatosSuperiores.add(textoPara); 
+            agregarCampo(panelDatosSuperiores, "De:", textoPara, gbc, 0);
         }
+        agregarCampo(panelDatosSuperiores, "Asunto:", textoAsunto, gbc, 1);
 
-        // Asunto va en ambos casos
-        panelDatosSuperiores.add(new JLabel("Asunto:"));
-        panelDatosSuperiores.add(textoAsunto);
-
-        panelPrincipal.add(panelDatosSuperiores, BorderLayout.NORTH);
+        formPanel.add(panelDatosSuperiores, BorderLayout.NORTH);
 
         JPanel panelCuerpo = new JPanel(new BorderLayout());
-        panelCuerpo.add(new JLabel("Cuerpo del Mensaje:"), BorderLayout.NORTH);
-        
+        panelCuerpo.setOpaque(false);
+        JLabel lblCuerpo = new JLabel("Cuerpo del Mensaje:");
+        lblCuerpo.setFont(Estilos.FONT_BOTON);
+        lblCuerpo.setForeground(Estilos.COLOR_LABEL);
+        panelCuerpo.add(lblCuerpo, BorderLayout.NORTH);
+
         JScrollPane scrollCuerpo = new JScrollPane(textoCuerpo);
+        scrollCuerpo.setBorder(javax.swing.BorderFactory.createLineBorder(Estilos.COLOR_TABLA_HEADER, 1));
         panelCuerpo.add(scrollCuerpo, BorderLayout.CENTER);
-        
-        panelPrincipal.add(panelCuerpo, BorderLayout.CENTER);
+
+        formPanel.add(panelCuerpo, BorderLayout.CENTER);
 
         JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelBoton.setOpaque(false);
+
+        estilarBoton(botonEnviar);
+        estilarBoton(botonEliminar);
+        estilarBoton(botonLeido);
+        // Special colors
+        botonEliminar.setBackground(new java.awt.Color(200, 100, 100));
 
         if (esEnvio) {
             panelBoton.add(botonEnviar);
         } else {
-        	panelBoton.add(botonLeido);
+            panelBoton.add(botonLeido);
             panelBoton.add(botonEliminar);
         }
-        panelPrincipal.add(panelBoton, BorderLayout.SOUTH);
+        formPanel.add(panelBoton, BorderLayout.SOUTH);
 
-        
-        this.add(panelPrincipal);
+        panelPrincipal.add(formPanel, BorderLayout.CENTER);
+
+        this.setContentPane(panelPrincipal);
     }
 
+    private void agregarCampo(JPanel panel, String texto, javax.swing.JComponent campo, java.awt.GridBagConstraints gbc,
+            int row) {
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        gbc.weightx = 0.0;
+        JLabel lbl = new JLabel(texto);
+        lbl.setFont(Estilos.FONT_BOTON);
+        lbl.setForeground(Estilos.COLOR_LABEL);
+        panel.add(lbl, gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
+        estilarInput(campo);
+        panel.add(campo, gbc);
+    }
+
+    private void estilarInput(javax.swing.JComponent input) {
+        input.setFont(Estilos.FONT_TEXTO);
+        input.setBackground(Estilos.COLOR_INPUT_BG);
+        input.setForeground(Estilos.COLOR_INPUT_TEXT);
+        input.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                javax.swing.BorderFactory.createLineBorder(Estilos.BLUE_SLATE, 1),
+                javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+    }
+
+    private void estilarBoton(JButton btn) {
+        btn.setFont(Estilos.FONT_BOTON);
+        btn.setBackground(Estilos.COLOR_BOTON_MENU);
+        btn.setForeground(java.awt.Color.WHITE);
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn.setPreferredSize(new Dimension(120, 35));
+    }
 
     public void propiedadesGenerales() {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -123,36 +199,45 @@ public class VistaCorreoBase extends JFrame {
         this.setLocationRelativeTo(null);
         this.setMinimumSize(new Dimension(500, 400));
     }
-    
-    public JTextField getTextoPara() { return textoPara; }
-    public JTextField getTextoAsunto() { return textoAsunto; }
-    public JTextArea getTextoCuerpo() { return textoCuerpo; }
-    public JButton getBotonEnviar() { return botonEnviar; }
 
-	public String getRemitente() {
-		return remitente;
-	}
+    public JTextField getTextoPara() {
+        return textoPara;
+    }
 
-	public void setRemitente(String remitente) {
-		this.remitente = remitente;
-	}
+    public JTextField getTextoAsunto() {
+        return textoAsunto;
+    }
 
-	public JButton getBotonEliminar() {
-		return botonEliminar;
-	}
+    public JTextArea getTextoCuerpo() {
+        return textoCuerpo;
+    }
 
-	public void setBotonEliminar(JButton botonEliminar) {
-		this.botonEliminar = botonEliminar;
-	}
+    public JButton getBotonEnviar() {
+        return botonEnviar;
+    }
 
-	public JButton getBotonLeido() {
-		return botonLeido;
-	}
+    public String getRemitente() {
+        return remitente;
+    }
 
-	public void setBotonLeido(JButton botonLeido) {
-		this.botonLeido = botonLeido;
-	}
-	
-	
-    
+    public void setRemitente(String remitente) {
+        this.remitente = remitente;
+    }
+
+    public JButton getBotonEliminar() {
+        return botonEliminar;
+    }
+
+    public void setBotonEliminar(JButton botonEliminar) {
+        this.botonEliminar = botonEliminar;
+    }
+
+    public JButton getBotonLeido() {
+        return botonLeido;
+    }
+
+    public void setBotonLeido(JButton botonLeido) {
+        this.botonLeido = botonLeido;
+    }
+
 }

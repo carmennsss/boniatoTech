@@ -6,7 +6,10 @@ import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+
+import modelo.MoView;
 import modelo.ModeloClienteFTP;
+import modelo.Rol;
 import vista.ViMain;
 import vista.VistaAdmin;
 import vista.VistaGestorArchivos;
@@ -16,18 +19,21 @@ import vista.VistaRegistroUsuarios;
 public class OyenteLogin implements ActionListener {
 	private ViMain viMain;
 	private ModeloClienteFTP modelo;
+	private MoView modeloVista;
 	private CoPrincipal controladorPrincipal;
 	private VistaGestorArchivos vistaArchivo;
 	private VistaMenuPrincipal vistaMenuPrincipal;
 	private VistaAdmin vistaAdmin;
 	private VistaRegistroUsuarios vistaUsuarios;
 
-	public OyenteLogin(ViMain viMain, ModeloClienteFTP modelo, CoPrincipal ctrl, VistaGestorArchivos vistaArchivo,
+	public OyenteLogin(MoView modeloVista, ViMain viMain, ModeloClienteFTP modelo, CoPrincipal ctrl,
+			VistaGestorArchivos vistaArchivo,
 			VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin, VistaRegistroUsuarios vistaUsuarios) {
 		this.viMain = viMain;
 		this.modelo = modelo;
 		this.controladorPrincipal = ctrl;
 		this.vistaArchivo = vistaArchivo;
+		this.modeloVista = modeloVista;
 		this.vistaMenuPrincipal = vistaMenuPrincipal;
 		this.vistaAdmin = vistaAdmin;
 		this.vistaUsuarios = vistaUsuarios;
@@ -46,16 +52,40 @@ public class OyenteLogin implements ActionListener {
 			viMain.mostrarCRUD();
 			vistaMenuPrincipal.setVisible(false);
 			controladorPrincipal.rellenarTabla("animales");
-		}else if (button.getText().equalsIgnoreCase("Administrate")) {
-			if(modelo.getUser().equalsIgnoreCase("admin")) {
+		} else if (button.getText().equalsIgnoreCase("Administrate")) {
+			if (modelo.getUser().equalsIgnoreCase("admin")) {
 				vistaAdmin.hacerVisible();
 				vistaMenuPrincipal.setVisible(false);
-			}else {
+			} else {
 				JOptionPane.showMessageDialog(viMain.getPanelLogin(), "You are not the administrator", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
-		}else if(button.getText().equalsIgnoreCase("Administrate users")) {
+		} else if (button.getText().equalsIgnoreCase("Administrate users")) {
 			vistaUsuarios.hacerVisible();
+			vistaAdmin.setVisible(false);
+		} else if (button.getText().equalsIgnoreCase("Administrate roles")) {
+			controladorPrincipal.rellenarVentanaCrearRol();
+			viMain.getViCrearRol().hacerVisible();
+		} else if (button.getText().equalsIgnoreCase("Agregar Rol")) {
+			if (viMain.getViCrearRol().mostrarAgregarRol() == 0) {
+				controladorPrincipal.agregarRol();
+			}
+		} else if (button.getText().equalsIgnoreCase("Desasignar")) {
+			controladorPrincipal.asignarRol(false, modeloVista.getCorreoSeleccionados(),
+					(Rol) viMain.getViAsignarRol().getComboRoles().getSelectedItem());
+			modeloVista.getCorreoSeleccionados().clear();
+			viMain.getViAsignarRol().getTabla().deseleccionarFilas();
+			controladorPrincipal.rellenarTablaUsuarios();
+		} else if (button.getText().equalsIgnoreCase("Asignar")) {
+			controladorPrincipal.asignarRol(true, modeloVista.getCorreoSeleccionados(),
+					(Rol) viMain.getViAsignarRol().getComboRoles().getSelectedItem());
+			modeloVista.getCorreoSeleccionados().clear();
+			viMain.getViAsignarRol().getTabla().deseleccionarFilas();
+			controladorPrincipal.rellenarTablaUsuarios();
+		} else if (button.getText().equalsIgnoreCase("Asign roles")) {
+			controladorPrincipal.rellenarComboRoles();
+			controladorPrincipal.rellenarTablaUsuarios();
+			viMain.getViAsignarRol().setVisible(true);
 			vistaAdmin.setVisible(false);
 		}
 	}

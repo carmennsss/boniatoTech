@@ -10,15 +10,27 @@ public class ViMain {
 	private VistaLogin vistaLogin;
 	private VistaCRUD vistaCRUD;
 	private ViFormulario ventanaFormulario;
+	private ViCrearRol viCrearRol;
+	private VistaAsignarRol viAsignarRol;
 
 	public ViMain() {
+		viCrearRol = new ViCrearRol();
 		vistaLogin = new VistaLogin();
+		viAsignarRol = new VistaAsignarRol();
 		vistaCRUD = new VistaCRUD();
 		ventanaFormulario = new ViFormulario();
 	}
 
+	public VistaAsignarRol getViAsignarRol() {
+		return viAsignarRol;
+	}
+
 	public void hacerVisible() {
 		mostrarLogin();
+	}
+
+	public ViCrearRol getViCrearRol() {
+		return viCrearRol;
 	}
 
 	public void mostrarLogin() {

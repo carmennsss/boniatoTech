@@ -146,6 +146,22 @@ public class ModeloBaseDatos {
         return valido;
     }
 
+    public boolean existeRegistro(String sql, ArrayList<String> parametros) {
+        try {
+            PreparedStatement pstmt = getConexion().prepareStatement(sql);
+            for (int i = 0; i < parametros.size(); i++) {
+                pstmt.setString(i + 1, parametros.get(i));
+            }
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean registrarUsuario(String nombre, String correo, String claveCorreo, String password) {
         String sql = "INSERT INTO usuarios (correo, password) VALUES (?, ?)";
         try {

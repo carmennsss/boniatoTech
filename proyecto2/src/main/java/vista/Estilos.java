@@ -29,4 +29,3 @@ public class Estilos {
     public static final Font FONT_TEXTO = new Font("SansSerif", Font.PLAIN, 14);
     public static final Font FONT_BOTON = new Font("SansSerif", Font.BOLD, 14);
 }
-
