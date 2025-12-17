@@ -1,6 +1,8 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -15,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -44,29 +47,54 @@ public class VistaGeneralCorreo extends JFrame {
 		String[] nombresColumnas = { "Subject", "From", "Date" };
 
 		tablaModelo = new DefaultTableModel(nombresColumnas, 0) {
-	        @Override
-	        public boolean isCellEditable(int row, int column) {
-	            return false; // Esto evita la edición, pero permite la selección
-	        }
-	    };
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false; // Esto evita la edición, pero permite la selección
+			}
+		};
 
 		emailTabla = new JTable(tablaModelo);
 		emailTabla.setRowHeight(35);
-		//emailTabla.setEnabled(false);
+		// emailTabla.setEnabled(false);
 		emailTabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
-
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
-		emailTabla.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-		emailTabla.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-		emailTabla.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 
 		JScrollPane scrollPane = new JScrollPane(emailTabla);
 
 		panelTabla.add(scrollPane, BorderLayout.CENTER);
 
 		panel.add(panelTabla, BorderLayout.CENTER);
+		
+		
+		//_________
+		emailTabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+
+		    @Override
+		    public Component getTableCellRendererComponent(
+		            JTable table,
+		            Object value,
+		            boolean isSelected,
+		            boolean hasFocus,
+		            int row,
+		            int column) {
+
+		        Component comp = super.getTableCellRendererComponent(
+		                table, value, isSelected, hasFocus, row, column);
+
+		        // Obtenemos el correo correspondiente a esa fila
+		        Correo correoFila = ((VistaGeneralCorreo) SwingUtilities
+		                .getWindowAncestor(table))
+		                .getCorreoPorFila(row);
+
+		        if (correoFila != null && !correoFila.isLeido()) {
+		            comp.setFont(comp.getFont().deriveFont(Font.BOLD));
+		        } else {
+		            comp.setFont(comp.getFont().deriveFont(Font.PLAIN));
+		        }
+
+		        return comp;
+		    }
+		});
+
 	}
 
 	private void propiedadesVentana() {
@@ -78,6 +106,18 @@ public class VistaGeneralCorreo extends JFrame {
 
 	}
 
+	
+	public Correo getCorreoPorFila(int fila) {
+	    if (fila >= 0 && fila < correosActuales.size()) {
+	        return correosActuales.get(fila);
+	    }
+	    return null;
+	}
+	
+	
+	
+	
+	
 	private void inicializarPanel() {
 		panel = new JPanel(new BorderLayout());
 		this.add(panel, BorderLayout.CENTER);
@@ -85,19 +125,17 @@ public class VistaGeneralCorreo extends JFrame {
 
 	private void inicializarVista() {
 		JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 10));
-		
+
 		JLabel etiquetaCorreo = new JLabel(correo + " inbox");
 		etiquetaCorreo.setPreferredSize(new Dimension(600, 20));
 		etiquetaCorreo.setFont(new Font("Comic Sans MS", Font.ITALIC, 16));
 		etiquetaCorreo.setAlignmentX(SwingConstants.CENTER);
-		
-		
+
 		panelSuperior.add(etiquetaCorreo);
-		
+
 		panel.add(panelSuperior, BorderLayout.NORTH);
 
 		JPanel panelMedio = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
-
 
 		botonEnviarCorreo = new JButton("Send Mail");
 		botonEnviarCorreo.setPreferredSize(new Dimension(150, 30));
@@ -106,29 +144,41 @@ public class VistaGeneralCorreo extends JFrame {
 
 		panelMedio.add(btnVolver);
 		panelMedio.add(botonEnviarCorreo);
-		
 
 		panel.add(panelMedio, BorderLayout.SOUTH);
 	}
 
-	
-	
+	private ArrayList<Correo> correosActuales = new ArrayList<>();
+
 	public void cargarCorreos(ArrayList<Correo> correos) {
-		tablaModelo.setRowCount(0);
-		//Ordenar el array por fecha
-		Collections.sort(
-			    correos,
-			    Comparator.comparing(Correo::getFecha).reversed()
-			);
-		for (Correo c : correos) {
-			Object[] fila = new Object[3];
-			fila[0] = c.getAsunto();
-			fila[1] = c.getRemitente();
+	    correosActuales.clear();
+	    correosActuales.addAll(correos);
 
-			fila[2] = c.getFecha();
+	    tablaModelo.setRowCount(0);
+	    Collections.sort(correos, Comparator.comparing(Correo::getFecha).reversed());
 
-			tablaModelo.addRow(fila);
-		}
+	    for (Correo c : correos) {
+	        tablaModelo.addRow(new Object[]{
+	            c.getAsunto(),
+	            c.getRemitente(),
+	            c.getFecha()
+	        });
+	    }
+	}
+	public void cambiarColorFila(int fila) {
+		emailTabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
+				Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+				comp.setFont(new Font("Arial", Font.BOLD, 14));
+
+				return comp;
+			}
+		});
+
+		emailTabla.repaint(); // Refresca la tabla para aplicar el cambio
 	}
 
 	public JButton getBotonEnviarCorreo() {
