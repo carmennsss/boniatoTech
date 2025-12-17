@@ -38,11 +38,12 @@ public class CoPrincipal {
     }
 
     private void asignarEventos() {
-        OyenteLogin oyLogin = new OyenteLogin(modeloVista, vista, modeloFTP, this, vistaArchivo, vistaMenuPrincipal,
+        OyenteFTP oyFTP = new OyenteFTP(modeloVista, vista, modeloFTP, this, vistaArchivo, vistaMenuPrincipal,
                 vistaAdmin,
                 vistaUsuarios);
         OyenteTablaRoles oyTablaRoles = new OyenteTablaRoles(this, vista, modeloVista);
-        OyenteBot oyB = new OyenteBot(this, vista, modeloVista, vistaMenuPrincipal);
+        OyenteCRUD oyCRUD = new OyenteCRUD(this, vista, modeloVista, vistaMenuPrincipal);
+        controladorCRUD.setOyente(oyCRUD);
         OyenteTabla oyT = new OyenteTabla(this, vista, modeloVista);
 
         JButton[] botonesLogin = {
@@ -60,17 +61,17 @@ public class CoPrincipal {
         };
 
         for (JButton btn : botonesLogin) {
-            btn.addActionListener(oyLogin);
+            btn.addActionListener(oyFTP);
         }
 
         vista.getViAsignarRol().getTabla().getTabla().addMouseListener(oyTablaRoles);
 
         for (JButton btn : vista.getPanelMenu().getBotones()) {
-            btn.addActionListener(oyB);
+            btn.addActionListener(oyCRUD);
         }
 
         for (JButton btn : vista.getPanelAcciones().getBotones()) {
-            btn.addActionListener(oyB);
+            btn.addActionListener(oyCRUD);
         }
 
         vista.getPanelTabla().getTabla().addMouseListener(oyT);

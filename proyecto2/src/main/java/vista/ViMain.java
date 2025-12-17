@@ -1,10 +1,25 @@
 package vista;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
-
-import javax.swing.JOptionPane;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 
 public class ViMain {
 	private VistaLogin vistaLogin;
@@ -99,36 +114,36 @@ public class ViMain {
 	}
 
 	public int mostrarOpcionesTabla() {
-		final javax.swing.JDialog dialog = new javax.swing.JDialog(
-				(javax.swing.JFrame) javax.swing.SwingUtilities.getWindowAncestor(getVentanaActual()),
+		final JDialog dialog = new JDialog(
+				(JFrame) SwingUtilities.getWindowAncestor(getVentanaActual()),
 				"Options",
 				true);
 
 		dialog.setUndecorated(true);
-		dialog.setLayout(new java.awt.BorderLayout());
+		dialog.setLayout(new BorderLayout());
 
-		javax.swing.JPanel panel = new javax.swing.JPanel();
-		panel.setBackground(new java.awt.Color(248, 245, 242));
-		panel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(74, 88, 89), 2));
-		panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.Y_AXIS));
-		panel.setBorder(new javax.swing.border.EmptyBorder(20, 20, 20, 20));
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(248, 245, 242));
+		panel.setBorder(BorderFactory.createLineBorder(new Color(74, 88, 89), 2));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-		javax.swing.JLabel lblTitulo = new javax.swing.JLabel("Select Action");
-		lblTitulo.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 18));
-		lblTitulo.setForeground(new java.awt.Color(74, 88, 89));
+		JLabel lblTitulo = new JLabel("Select Action");
+		lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		lblTitulo.setForeground(new Color(74, 88, 89));
 		lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(lblTitulo);
-		panel.add(javax.swing.Box.createVerticalStrut(20));
+		panel.add(Box.createVerticalStrut(20));
 
 		final int[] result = { -1 };
 
-		java.awt.Color colorBtn = new java.awt.Color(110, 137, 115);
-		java.awt.Color colorCancel = new java.awt.Color(200, 100, 100);
+		Color colorBtn = new Color(110, 137, 115);
+		Color colorCancel = new Color(200, 100, 100);
 
-		javax.swing.JButton btnNew = crearBotonDialogo("Create New", colorBtn);
-		javax.swing.JButton btnUpdate = crearBotonDialogo("Update", colorBtn);
-		javax.swing.JButton btnDelete = crearBotonDialogo("Delete", colorCancel);
-		javax.swing.JButton btnCancel = crearBotonDialogo("Cancel", java.awt.Color.GRAY);
+		JButton btnNew = crearBotonDialogo("Create New", colorBtn);
+		JButton btnUpdate = crearBotonDialogo("Update", colorBtn);
+		JButton btnDelete = crearBotonDialogo("Delete", colorCancel);
+		JButton btnCancel = crearBotonDialogo("Cancel", Color.GRAY);
 
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -159,11 +174,11 @@ public class ViMain {
 		});
 
 		panel.add(btnNew);
-		panel.add(javax.swing.Box.createVerticalStrut(10));
+		panel.add(Box.createVerticalStrut(10));
 		panel.add(btnUpdate);
-		panel.add(javax.swing.Box.createVerticalStrut(10));
+		panel.add(Box.createVerticalStrut(10));
 		panel.add(btnDelete);
-		panel.add(javax.swing.Box.createVerticalStrut(20));
+		panel.add(Box.createVerticalStrut(20));
 		panel.add(btnCancel);
 
 		dialog.add(panel);
@@ -174,16 +189,16 @@ public class ViMain {
 		return result[0];
 	}
 
-	private javax.swing.JButton crearBotonDialogo(String texto, java.awt.Color color) {
-		javax.swing.JButton btn = new javax.swing.JButton(texto);
-		btn.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+	private JButton crearBotonDialogo(String texto, Color color) {
+		JButton btn = new JButton(texto);
+		btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		btn.setBackground(color);
-		btn.setForeground(java.awt.Color.WHITE);
+		btn.setForeground(Color.WHITE);
 		btn.setFocusPainted(false);
 		btn.setBorderPainted(false);
 		btn.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btn.setMaximumSize(new java.awt.Dimension(200, 40));
-		btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+		btn.setMaximumSize(new Dimension(200, 40));
+		btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		return btn;
 	}
 }

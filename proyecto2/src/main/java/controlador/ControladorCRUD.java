@@ -1,15 +1,11 @@
 package controlador;
 
-import modelo.Animal;
 import modelo.ModeloBaseDatos;
 import modelo.MoView;
-import modelo.Recinto;
-import modelo.Especie;
-import modelo.Cuidador;
 import vista.ViMain;
-import vista.Estilos; // Import needed for OyenteBot refactoring if needed, but logic remains here
 
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,6 +16,11 @@ public class ControladorCRUD {
     private ViMain vista;
     private MoView modeloVista;
     private CoPrincipal coPrincipal; // Reference in case we need to call back
+    private ActionListener oyente;
+
+    public void setOyente(ActionListener oyente) {
+        this.oyente = oyente;
+    }
 
     public ControladorCRUD(CoPrincipal coPrincipal, ModeloBaseDatos bd, ViMain vista, MoView modeloVista) {
         this.coPrincipal = coPrincipal;
@@ -27,6 +28,8 @@ public class ControladorCRUD {
         this.vista = vista;
         this.modeloVista = modeloVista;
     }
+
+    // --- MÉTODOS DE VISTA / LECTURA ---
 
     public void rellenarTabla(String tabla) {
         if (tabla.isEmpty()) {
@@ -78,9 +81,19 @@ public class ControladorCRUD {
 
         configurarCombos(tabla);
 
-        OyenteFormulario oyF = new OyenteFormulario(coPrincipal, vista);
-        vista.getVentanaFormulario().getBotones().get(0).addActionListener(oyF);
-        vista.getVentanaFormulario().getBotones().get(1).addActionListener(oyF);
+        if (this.oyente != null) {
+            for (ActionListener al : vista.getVentanaFormulario().getBotones().get(0)
+                    .getActionListeners()) {
+                vista.getVentanaFormulario().getBotones().get(0).removeActionListener(al);
+            }
+            for (ActionListener al : vista.getVentanaFormulario().getBotones().get(1)
+                    .getActionListeners()) {
+                vista.getVentanaFormulario().getBotones().get(1).removeActionListener(al);
+            }
+
+            vista.getVentanaFormulario().getBotones().get(0).addActionListener(this.oyente);
+            vista.getVentanaFormulario().getBotones().get(1).addActionListener(this.oyente);
+        }
 
         vista.getVentanaFormulario().hacerVisible();
     }
@@ -119,29 +132,24 @@ public class ControladorCRUD {
 
         vista.getVentanaFormulario().rellenarDatos(valores);
 
-        OyenteFormulario oyF = new OyenteFormulario(coPrincipal, vista);
-        vista.getVentanaFormulario().getBotones().get(0).addActionListener(oyF);
-        vista.getVentanaFormulario().getBotones().get(1).addActionListener(oyF);
+        if (this.oyente != null) {
+            for (ActionListener al : vista.getVentanaFormulario().getBotones().get(0)
+                    .getActionListeners()) {
+                vista.getVentanaFormulario().getBotones().get(0).removeActionListener(al);
+            }
+            for (ActionListener al : vista.getVentanaFormulario().getBotones().get(1)
+                    .getActionListeners()) {
+                vista.getVentanaFormulario().getBotones().get(1).removeActionListener(al);
+            }
+
+            vista.getVentanaFormulario().getBotones().get(0).addActionListener(this.oyente);
+            vista.getVentanaFormulario().getBotones().get(1).addActionListener(this.oyente);
+        }
 
         vista.getVentanaFormulario().hacerVisible();
     }
 
-    private void configurarCombos(String tabla) {
-        if (tabla.equals("animales")) {
-            vista.getVentanaFormulario().agregarComboEspecies("especie_id", bd.getEspecies());
-            vista.getVentanaFormulario().agregarComboCuidadores("cuidador_id", bd.getCuidadores());
-            vista.getVentanaFormulario().agregarComboTipos("tipo", Arrays.asList("Male", "Female"));
-        } else if (tabla.equals("especies_recintos")) {
-            vista.getVentanaFormulario().agregarComboEspecies("especie_id", bd.getEspecies());
-            vista.getVentanaFormulario().agregarComboRecintos("recinto_id", bd.getRecintos());
-        } else if (tabla.equals("elementos")) {
-            vista.getVentanaFormulario().agregarComboRecintos("recinto_id", bd.getRecintos());
-        } else if (tabla.equals("traslados")) {
-            vista.getVentanaFormulario().agregarComboAnimales("animal_id", bd.getAnimales());
-            vista.getVentanaFormulario().agregarComboRecintos("recinto_origen_id", bd.getRecintos());
-            vista.getVentanaFormulario().agregarComboRecintos("recinto_destino_id", bd.getRecintos());
-        }
-    }
+    // --- MÉTODOS DE ACCIÓN / ESCRITURA ---
 
     public void guardarNuevo() {
         String tabla = modeloVista.getTablaActual();
@@ -225,7 +233,6 @@ public class ControladorCRUD {
 
         if (vista.mostrarConfirmacion("¿Estás seguro de eliminar este registro?")) {
             String tabla = modeloVista.getTablaActual();
-            Object id = vista.getPanelTabla().getTabla().getValueAt(fila, 0);
             String idCol = vista.getPanelTabla().getTabla().getColumnName(0);
 
             String consulta = "DELETE FROM " + tabla + " WHERE " + idCol + " = ?";
@@ -236,11 +243,10 @@ public class ControladorCRUD {
             }
 
             ArrayList<String> parametros = new ArrayList<>();
-            parametros.add(id.toString());
+            parametros.add(vista.getPanelTabla().getTabla().getValueAt(fila, 0).toString());
 
             if (tabla.equals("especies_recintos")) {
-                Object id2 = vista.getPanelTabla().getTabla().getValueAt(fila, 1);
-                parametros.add(id2.toString());
+                parametros.add(vista.getPanelTabla().getTabla().getValueAt(fila, 1).toString());
             }
 
             if (bd.ejecutarActualizacion(consulta, parametros) > 0) {
@@ -249,6 +255,23 @@ public class ControladorCRUD {
             } else {
                 vista.mostrarMensajeError("Error al eliminar");
             }
+        }
+    }
+
+    private void configurarCombos(String tabla) {
+        if (tabla.equals("animales")) {
+            vista.getVentanaFormulario().agregarComboEspecies("especie_id", bd.getEspecies());
+            vista.getVentanaFormulario().agregarComboCuidadores("cuidador_id", bd.getCuidadores());
+            vista.getVentanaFormulario().agregarComboTipos("tipo", Arrays.asList("Male", "Female"));
+        } else if (tabla.equals("especies_recintos")) {
+            vista.getVentanaFormulario().agregarComboEspecies("especie_id", bd.getEspecies());
+            vista.getVentanaFormulario().agregarComboRecintos("recinto_id", bd.getRecintos());
+        } else if (tabla.equals("elementos")) {
+            vista.getVentanaFormulario().agregarComboRecintos("recinto_id", bd.getRecintos());
+        } else if (tabla.equals("traslados")) {
+            vista.getVentanaFormulario().agregarComboAnimales("animal_id", bd.getAnimales());
+            vista.getVentanaFormulario().agregarComboRecintos("recinto_origen_id", bd.getRecintos());
+            vista.getVentanaFormulario().agregarComboRecintos("recinto_destino_id", bd.getRecintos());
         }
     }
 }

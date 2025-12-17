@@ -24,6 +24,8 @@ public class ControladorRoles {
         this.modeloVista = modeloVista;
     }
 
+    // --- MÉTODOS DE VISTA ---
+
     public void rellenarVentanaCrearRol() {
         DefaultTableModel modeloTabla = new DefaultTableModel() {
             @Override
@@ -159,6 +161,8 @@ public class ControladorRoles {
             e.printStackTrace();
         }
     }
+
+    // --- MÉTODOS DE ACCIÓN ---
 
     public void agregarRol() {
         String nombre = vista.getViCrearRol().getTextFieldNombre().getText();

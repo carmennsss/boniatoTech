@@ -187,7 +187,7 @@ public class VistaGestorArchivos extends JFrame {
 		btn.setBorderPainted(false);
 		btn.setAlignmentX(Component.LEFT_ALIGNMENT);
 		btn.setMaximumSize(new Dimension(120, 35));
-		btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+		btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
 	public void inicializarFileManager() {
@@ -287,9 +287,9 @@ public class VistaGestorArchivos extends JFrame {
 					idPadre = db.obtenerIdPadre(rutaActual);
 					emailUsuario = db.obtenerEmailPorUsuario(client.getUser());
 					if (rutaActual.equals("/")) {
-					    directorioServidor = "/" + nombreCarpeta;
+						directorioServidor = "/" + nombreCarpeta;
 					} else {
-					    directorioServidor = rutaActual + "/" + nombreCarpeta;
+						directorioServidor = rutaActual + "/" + nombreCarpeta;
 					}
 					db.insertarArchivo(nombreCarpeta, directorioServidor, "", "Folder", idPadre, emailUsuario);
 					ftp.crearCarpeta(nombreCarpeta, rutaActual);

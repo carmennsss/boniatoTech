@@ -1,11 +1,14 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel; // Import JPanel
-import java.awt.Image; // Import Image
+import javax.swing.JPanel;
 
 public class VistaCRUD extends JFrame {
     private ViBotones panelMenu;
@@ -16,7 +19,7 @@ public class VistaCRUD extends JFrame {
     public VistaCRUD() {
         super("Gestión Serwo - Animales");
         setSize(900, 600);
-        setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         panelFondo = new JPanel() {
@@ -24,12 +27,12 @@ public class VistaCRUD extends JFrame {
             {
                 java.net.URL url = getClass().getResource("/fondo.jpg");
                 if (url != null) {
-                    imagen = new javax.swing.ImageIcon(url).getImage();
+                    imagen = new ImageIcon(url).getImage();
                 }
             }
 
             @Override
-            protected void paintComponent(java.awt.Graphics g) {
+            protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (imagen != null) {
                     int imgW = imagen.getWidth(this);
