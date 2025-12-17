@@ -162,12 +162,14 @@ public class ModeloBaseDatos {
         return false;
     }
 
-    public boolean registrarUsuario(String nombre, String correo, String claveCorreo, String password) {
-        String sql = "INSERT INTO usuarios (correo, password) VALUES (?, ?)";
+    public boolean registrarUsuario(String correo, String nombre, String password, String claveCorreo) {
+        String sql = "INSERT INTO usuarios (email, nombre_usuario, contrasena, clave_correo) VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement pstmt = getConexion().prepareStatement(sql);
             pstmt.setString(1, correo);
-            pstmt.setString(2, password);
+            pstmt.setString(2, nombre);
+            pstmt.setString(3, password);
+            pstmt.setString(4, claveCorreo);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

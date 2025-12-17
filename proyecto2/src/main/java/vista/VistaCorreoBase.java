@@ -3,6 +3,11 @@ package vista;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.*;
 
 import modelo.Correo;
@@ -15,12 +20,14 @@ public class VistaCorreoBase extends JFrame {
     private JTextArea textoCuerpo;
     private JButton botonEnviar;
     private JButton botonEliminar;
-    private JButton botonLeido;
+    private JButton botonExportar;
+    private JButton botonNoLeido;
+    private JButton botonAdjuntar;
     private String remitente;
+    private List<File> adjuntos = new ArrayList<>();
 
-    // CONSTRUCTOR ENVIAR/REDACTAR
     public VistaCorreoBase(String remitente) {
-        this.setTitle("Redactar Nuevo Correo");
+        this.setTitle("Compose new Mail");
         this.remitente = remitente;
 
         inicializarComponentes();
@@ -34,11 +41,14 @@ public class VistaCorreoBase extends JFrame {
         ensamblarVista(true, remitente, null);
 
         this.setVisible(true);
+        // Ya no creamos el panel aquí, dejamos que ensamblarVista lo haga
+        ensamblarVista(true);
+
     }
 
     // CONSTRUCTOR CONSULTAR
     public VistaCorreoBase(Correo correo) {
-        this.setTitle("Consultar Correo");
+        this.setTitle("Check Mail");
 
         inicializarComponentes();
         propiedadesGenerales();
@@ -56,7 +66,8 @@ public class VistaCorreoBase extends JFrame {
 
         ensamblarVista(false, null, correo.getRemitente());
 
-        this.setVisible(true);
+        ensamblarVista(false);
+
     }
 
     // Mtodo para inicializar todos los componentes una sola vez
@@ -66,10 +77,11 @@ public class VistaCorreoBase extends JFrame {
         textoCuerpo = new JTextArea(15, 50);
         textoCuerpo.setLineWrap(true);
         textoCuerpo.setWrapStyleWord(true);
-        botonEnviar = new JButton("Enviar");
+        botonEnviar = new JButton("Send");
         botonEliminar = new JButton("Delete");
-        botonLeido = new JButton("Marcar Leido");
-        botonEnviar.setPreferredSize(new Dimension(100, 30)); // Más grande
+        botonNoLeido = new JButton("Mark as unread");
+        botonExportar = new JButton("Export");
+        botonAdjuntar = new JButton("Attach");
     }
 
     private void ensamblarVista(boolean esEnvio, String remitente, String remitenteCorreo) {
@@ -129,6 +141,28 @@ public class VistaCorreoBase extends JFrame {
         lblCuerpo.setFont(Estilos.FONT_BOTON);
         lblCuerpo.setForeground(Estilos.COLOR_LABEL);
         panelCuerpo.add(lblCuerpo, BorderLayout.NORTH);
+    }
+
+    private void ensamblarVista(boolean esEnvio) {
+        panelPrincipal = new JPanel(new BorderLayout(5, 5));
+        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JPanel panelDatosSuperiores = new JPanel(new GridLayout(0, 2, 5, 5));
+
+        if (esEnvio) {
+            panelDatosSuperiores.add(new JLabel("For:"));
+        } else {
+            panelDatosSuperiores.add(new JLabel("From:"));
+        }
+        panelDatosSuperiores.add(textoPara);
+
+        panelDatosSuperiores.add(new JLabel("Subject:"));
+        panelDatosSuperiores.add(textoAsunto);
+
+        panelPrincipal.add(panelDatosSuperiores, BorderLayout.NORTH);
+
+        JPanel panelCuerpo = new JPanel(new BorderLayout());
+        panelCuerpo.add(new JLabel("Message:"), BorderLayout.NORTH);
 
         JScrollPane scrollCuerpo = new JScrollPane(textoCuerpo);
         scrollCuerpo.setBorder(javax.swing.BorderFactory.createLineBorder(Estilos.COLOR_TABLA_HEADER, 1));
@@ -136,6 +170,7 @@ public class VistaCorreoBase extends JFrame {
 
         formPanel.add(panelCuerpo, BorderLayout.CENTER);
 
+        // LÓGICA DE BOTONES CENTRALIZADA
         JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panelBoton.setOpaque(false);
 
@@ -146,6 +181,7 @@ public class VistaCorreoBase extends JFrame {
         botonEliminar.setBackground(new java.awt.Color(200, 100, 100));
 
         if (esEnvio) {
+            panelBoton.add(botonAdjuntar);
             panelBoton.add(botonEnviar);
         } else {
             panelBoton.add(botonLeido);
@@ -156,6 +192,13 @@ public class VistaCorreoBase extends JFrame {
         panelPrincipal.add(formPanel, BorderLayout.CENTER);
 
         this.setContentPane(panelPrincipal);
+
+        // Añadimos todos los botones que querías ver en consulta
+        panelBoton.add(botonNoLeido);
+        panelBoton.add(botonExportar);
+        panelBoton.add(botonEliminar);
+        panelPrincipal.add(panelBoton, BorderLayout.SOUTH);
+        this.add(panelPrincipal);
     }
 
     private void agregarCampo(JPanel panel, String texto, javax.swing.JComponent campo, java.awt.GridBagConstraints gbc,
@@ -200,20 +243,47 @@ public class VistaCorreoBase extends JFrame {
         this.setMinimumSize(new Dimension(500, 400));
     }
 
-    public JTextField getTextoPara() {
-        return textoPara;
+    public File exportarCorreo(String nombreSugerido) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Export EML");
+        // Filtro para archivos .eml
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Files (*.eml)", "eml"));
+        fileChooser.setSelectedFile(new File(nombreSugerido + ".eml"));
+
+        int seleccion = fileChooser.showSaveDialog(this);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File f = fileChooser.getSelectedFile();
+            // Forzar extensión .eml si el usuario no la puso
+            if (!f.getName().toLowerCase().endsWith(".eml")) {
+                f = new File(f.getAbsolutePath() + ".eml");
+            }
+            return f;
+        }
+        return null;
     }
 
-    public JTextField getTextoAsunto() {
-        return textoAsunto;
+    public void mostrarMensaje(String mensaje, boolean esError) {
+        JOptionPane.showMessageDialog(this, mensaje,
+                esError ? "Error" : "success",
+                esError ? JOptionPane.ERROR_MESSAGE : JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public JTextArea getTextoCuerpo() {
-        return textoCuerpo;
+    public File mostrarSelectorAdjuntos() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setMultiSelectionEnabled(true);
+        int seleccion = fileChooser.showOpenDialog(this);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            return fileChooser.getSelectedFile();
+        }
+        return null;
     }
 
-    public JButton getBotonEnviar() {
-        return botonEnviar;
+    public void agregarAdjunto(File archivo) {
+        this.adjuntos.add(archivo);
+    }
+
+    public List<File> getAdjuntos() {
+        return adjuntos;
     }
 
     public String getRemitente() {
@@ -240,4 +310,27 @@ public class VistaCorreoBase extends JFrame {
         this.botonLeido = botonLeido;
     }
 
+    public JButton getBotonExportar() {
+        return botonExportar;
+    }
+
+    public void setBotonExportar(JButton botonExportar) {
+        this.botonExportar = botonExportar;
+    }
+
+    public JButton getBotonNoLeido() {
+        return botonNoLeido;
+    }
+
+    public void setBotonNoLeido(JButton botonNoLeido) {
+        this.botonNoLeido = botonNoLeido;
+    }
+
+    public JButton getBotonAdjuntar() {
+        return botonAdjuntar;
+    }
+
+    public void setBotonAdjuntar(JButton botonAdjuntar) {
+        this.botonAdjuntar = botonAdjuntar;
+    }
 }

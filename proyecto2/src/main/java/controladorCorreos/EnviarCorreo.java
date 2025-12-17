@@ -1,5 +1,7 @@
 package controladorCorreos;
 
+import java.io.File;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -8,12 +10,16 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.Multipart;
 
 public class EnviarCorreo {
 	
 
-    public static void enviarCorreo(String miCorreo, String asunto, String mensaje, String receptor, String passwordAplicacion) throws Exception {
+    public static void enviarCorreo(String miCorreo, String asunto, String mensaje, String receptor, 
+            String passwordAplicacion, List<File> archivos) throws Exception {
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -35,16 +41,27 @@ public class EnviarCorreo {
         // Crear mensaje
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress(miCorreo));
-        msg.setRecipients(
-                Message.RecipientType.TO,
-                InternetAddress.parse(receptor)
-        );
+        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receptor));
         msg.setSubject(asunto);
-        msg.setText(mensaje);
 
-        // Enviar
-        Transport.send(msg);
+        // --- LÓGICA PARA ADJUNTOS ---
+        Multipart multipart = new MimeMultipart();
 
-        System.out.println("Correo enviado correctamente.");
+        // 1. Parte del texto
+        MimeBodyPart textoParte = new MimeBodyPart();
+        textoParte.setText(mensaje);
+        multipart.addBodyPart(textoParte);
+
+        // 2. Partes de archivos
+        if (archivos != null) {
+            for (File archivo : archivos) {
+                MimeBodyPart adjuntoParte = new MimeBodyPart();
+                adjuntoParte.attachFile(archivo);
+                multipart.addBodyPart(adjuntoParte);
+            }
+        }
+
+        msg.setContent(multipart);
+        Transport.send(msg);;
     }
 }

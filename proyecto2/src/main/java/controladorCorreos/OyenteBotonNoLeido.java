@@ -5,12 +5,12 @@ import java.awt.event.ActionListener;
 
 import modelo.Correo;
 
-public class OyenteBotonLeido implements ActionListener {
+public class OyenteBotonNoLeido implements ActionListener {
 
 	private Correo correo;
 	private ControladorCorreos controladorCorreos;
 	
-	public OyenteBotonLeido(Correo correo, ControladorCorreos controladorCorreos) {
+	public OyenteBotonNoLeido(Correo correo, ControladorCorreos controladorCorreos) {
 		this.controladorCorreos = controladorCorreos;
 		this.correo = correo;
 	}
@@ -18,9 +18,8 @@ public class OyenteBotonLeido implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
-			controladorCorreos.marcarCorreoLeido(correo);
+			controladorCorreos.marcarCorreoNoLeido(correo);
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
+import controladorLogs.ControladorLogs;
+import controladorLogs.GestionLogs;
 import modelo.Correo;
 import vista.VistaGeneralCorreo;
 
@@ -33,6 +35,8 @@ public class HiloRecepcionCorreos implements Runnable {
 	        	        gestionPop3.recibirCorreosPOP3(host, correo, PASSWORD_APLICACION);
 
 	        	if (nuevos.size() != ultimoNumeroCorreos) {
+//	        		Log log = new Log();
+//	        		GestionLogs.writeLog(log);
 	        	    ultimoNumeroCorreos = nuevos.size();
 	        	    SwingUtilities.invokeLater(() -> {
 	        	    	controlador.actualizarListaDesdeHilo(nuevos);

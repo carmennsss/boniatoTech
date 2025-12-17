@@ -27,6 +27,7 @@ public class VistaGeneralCorreo extends JFrame {
 	private JButton botonEnviarCorreo;
 	private DefaultTableModel tablaModelo;
 	private JTable emailTabla;
+	private JButton btnVolver;
 
 	public VistaGeneralCorreo(String correo) {
 		this.correo = correo;
@@ -37,78 +38,12 @@ public class VistaGeneralCorreo extends JFrame {
 
 	}
 
-	private void inicializarPanel() {
-		// Main container with clean background
-		JPanel mainContent = new JPanel(new BorderLayout());
-		mainContent.setBackground(Estilos.BEIGE_CANVAS);
-		this.setContentPane(mainContent);
-
-		// Header Panel (Solid background to show title clearly)
-		JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 15));
-		panelSuperior.setBackground(Estilos.BEIGE_CANVAS);
-
-		JLabel etiquetaCorreo = new JLabel("Bandeja de entrada de " + correo);
-		etiquetaCorreo.setFont(Estilos.FONT_TITULO);
-		etiquetaCorreo.setForeground(Estilos.COLOR_TITULO_APP);
-		panelSuperior.add(etiquetaCorreo);
-
-		mainContent.add(panelSuperior, BorderLayout.NORTH);
-
-		// Center Panel with Image Background for the table
-		panel = new JPanel() {
-			private java.awt.Image imagen;
-			{
-				java.net.URL url = getClass().getResource("/fondo.jpg");
-				if (url != null) {
-					imagen = new javax.swing.ImageIcon(url).getImage();
-				}
-			}
-
-			@Override
-			protected void paintComponent(java.awt.Graphics g) {
-				super.paintComponent(g);
-				if (imagen != null) {
-					int width = getWidth();
-					int height = getHeight();
-					g.drawImage(imagen, 0, 0, width, height, this);
-				} else {
-					g.setColor(Estilos.FONDO_PRINCIPAL);
-					g.fillRect(0, 0, getWidth(), getHeight());
-				}
-			}
-		};
-		panel.setLayout(new BorderLayout());
-		mainContent.add(panel, BorderLayout.CENTER);
-	}
-
-	private void inicializarVista() {
-		// Buttons panel stays on the image background (South of center panel)
-		JPanel panelMedio = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 15));
-		panelMedio.setOpaque(false);
-
-		botonEnviarCorreo = new JButton("Enviar correo");
-		botonEnviarCorreo.setPreferredSize(new Dimension(180, 40));
-		estilarBoton(botonEnviarCorreo);
-
-		panelMedio.add(botonEnviarCorreo);
-		panel.add(panelMedio, BorderLayout.SOUTH);
-	}
-
-	private void estilarBoton(JButton btn) {
-		btn.setFont(Estilos.FONT_BOTON);
-		btn.setBackground(Estilos.COLOR_BOTON_MENU);
-		btn.setForeground(java.awt.Color.WHITE);
-		btn.setFocusPainted(false);
-		btn.setBorderPainted(false);
-		btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-	}
-
 	private void inicializarTabla() {
 		JPanel panelTabla = new JPanel(new BorderLayout());
 		panelTabla.setOpaque(false);
 		panelTabla.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 40, 0, 40));
 
-		String[] nombresColumnas = { "Asunto", "De", "Fecha" };
+		String[] nombresColumnas = { "Subject", "From", "Date" };
 
 		tablaModelo = new DefaultTableModel(nombresColumnas, 0) {
 			@Override
@@ -143,11 +78,42 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	private void propiedadesVentana() {
-		this.setTitle("Correos");
+		this.setTitle("Inbox");
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setSize(630, 500);
 		this.setLocationRelativeTo(null);
 		this.setMinimumSize(new Dimension(630, 500));
+
+	}
+
+	private void inicializarPanel() {
+		panel = new JPanel(new BorderLayout());
+		this.add(panel, BorderLayout.CENTER);
+	}
+
+	private void inicializarVista() {
+		JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 10));
+
+		JLabel etiquetaCorreo = new JLabel(correo + " inbox");
+		etiquetaCorreo.setPreferredSize(new Dimension(600, 20));
+		etiquetaCorreo.setFont(new Font("Comic Sans MS", Font.ITALIC, 16));
+		etiquetaCorreo.setAlignmentX(SwingConstants.CENTER);
+
+		panelSuperior.add(etiquetaCorreo);
+
+		panel.add(panelSuperior, BorderLayout.NORTH);
+
+		JPanel panelMedio = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
+
+		botonEnviarCorreo = new JButton("Send Mail");
+		botonEnviarCorreo.setPreferredSize(new Dimension(150, 30));
+		btnVolver = new JButton("Back");
+		btnVolver.setPreferredSize(new Dimension(150, 30));
+
+		panelMedio.add(btnVolver);
+		panelMedio.add(botonEnviarCorreo);
+
+		panel.add(panelMedio, BorderLayout.SOUTH);
 	}
 
 	public void cargarCorreos(ArrayList<Correo> correos) {
@@ -189,6 +155,14 @@ public class VistaGeneralCorreo extends JFrame {
 
 	public void setEmailTabla(JTable emailTabla) {
 		this.emailTabla = emailTabla;
+	}
+
+	public JButton getBtnVolver() {
+		return btnVolver;
+	}
+
+	public void setBtnVolver(JButton btnVolver) {
+		this.btnVolver = btnVolver;
 	}
 
 }

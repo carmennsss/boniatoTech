@@ -15,11 +15,13 @@ public class OyenteTabla implements MouseListener {
     private JTable emailTabla;
     private ArrayList<Correo> correos;
     private ControladorCorreos controladorCorreos;
+    private String correo;
 
-    public OyenteTabla(JTable emailTabla, ArrayList<Correo> correos, ControladorCorreos controladorCorreos) {
+    public OyenteTabla(JTable emailTabla, ArrayList<Correo> correos, ControladorCorreos controladorCorreos, String correo) {
         this.emailTabla = emailTabla;
         this.correos = correos;
         this.controladorCorreos = controladorCorreos;
+        this.correo = correo;
     }
 
     @Override
@@ -34,9 +36,20 @@ public class OyenteTabla implements MouseListener {
                 // Ahora el índice coincidirá con la lista y la tabla
                 Correo correoSeleccionado = correosActuales.get(filaSeleccionada);
                 
+                //Si no est� leido leer
+                if (!correoSeleccionado.isLeido()) {
+                	//Nuevo hilo para que marque como leido sin cortar el ritmo del programa
+                    new Thread(() -> {
+                        controladorCorreos.marcarCorreoLeido(correoSeleccionado);	
+                    	}).start();
+                    correos.get(correos.indexOf(correoSeleccionado)).setLeido(true);
+                }
+                
+
                 VistaCorreoBase vistaLectura = new VistaCorreoBase(correoSeleccionado);
                 vistaLectura.getBotonEliminar().addActionListener(new OyenteBotonEliminar(correoSeleccionado, controladorCorreos, vistaLectura));
-                vistaLectura.getBotonLeido().addActionListener(new OyenteBotonLeido(correoSeleccionado, controladorCorreos));
+        		vistaLectura.getBotonExportar().addActionListener(new OyenteExportarCorreo(correoSeleccionado, vistaLectura, correo));
+                vistaLectura.getBotonNoLeido().addActionListener(new OyenteBotonNoLeido(correoSeleccionado, controladorCorreos));
                 vistaLectura.setVisible(true);
             }
         }

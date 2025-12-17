@@ -6,150 +6,87 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import modelo.ModeloBaseDatos;
+import modelo.ModeloClienteFTP;
+import modelo.User;
+
 public class VistaRegistroUsuarios extends JFrame {
 
+	ModeloClienteFTP client;
+	ModeloBaseDatos db;
 	VistaAdmin vistaAdmin;
+	JLabel nombre;
+	JTextField textNombre;
+	JLabel correo;
+	JTextField textCorreo;
+	JLabel claveCorreo;
+	JTextField textClaveCorreo;
+	JLabel contrasena;
+	JPasswordField textContrasena;
+	JLabel confContrasena;
+	JPasswordField textConfContrasena;
 
-	public VistaRegistroUsuarios(VistaAdmin vistaAdmin) {
+	public VistaRegistroUsuarios(VistaAdmin vistaAdmin, ModeloClienteFTP client, ModeloBaseDatos db) {
 		this.vistaAdmin = vistaAdmin;
+		this.client = client;
+		this.db = db;
 
 		this.setTitle("User Register");
-		this.setSize(500, 450); // Adjusted size
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLocationRelativeTo(null);
+		this.setLayout(new BorderLayout());
 
-		// Main content with BorderLayout
-		JPanel mainContent = new JPanel(new java.awt.BorderLayout());
-		this.setContentPane(mainContent);
+		nombre = new JLabel("Name: ");
+		textNombre = new JTextField(20);
 
-		// Side Panel with Image
-		JPanel sidePanel = new JPanel() {
-			private java.awt.Image imagen;
-			{
-				java.net.URL url = getClass().getResource("/lateral_files.jpg");
-				if (url != null) {
-					imagen = new javax.swing.ImageIcon(url).getImage();
-				}
-			}
+		correo = new JLabel("Address: ");
+		textCorreo = new JTextField(20);
 
-			@Override
-			protected void paintComponent(java.awt.Graphics g) {
-				super.paintComponent(g);
-				if (imagen != null) {
-					// Scale image to fill height, keep aspect ratio or simple fill
-					g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
-				} else {
-					g.setColor(Estilos.COLOR_BOTON_MENU);
-					g.fillRect(0, 0, getWidth(), getHeight());
-				}
-			}
-		};
-		sidePanel.setPreferredSize(new java.awt.Dimension(200, 0));
-		mainContent.add(sidePanel, java.awt.BorderLayout.WEST);
+		claveCorreo = new JLabel("Address Key: ");
+		textClaveCorreo = new JTextField(20);
 
-		// Center Panel for Form (Clean background)
-		JPanel panelFondo = new JPanel(new java.awt.GridBagLayout());
-		panelFondo.setBackground(Estilos.BEIGE_CANVAS);
-		mainContent.add(panelFondo, java.awt.BorderLayout.CENTER);
+		contrasena = new JLabel("Password: ");
+		textContrasena = new JPasswordField(20);
 
-		JLabel nombre = new JLabel("Name: ");
-		JTextField textNombre = new JTextField(20);
+		confContrasena = new JLabel("Confirm password: ");
+		textConfContrasena = new JPasswordField(20);
 
-		JLabel correo = new JLabel("Address: ");
-		JTextField textCorreo = new JTextField(20);
-
-		JLabel claveCorreo = new JLabel("Address Key: ");
-		JTextField textClaveCorreo = new JTextField(20);
-
-		JLabel contrasena = new JLabel("Password: ");
-		JPasswordField textContrasena = new JPasswordField(20);
-
-		JLabel confContrasena = new JLabel("Confirm password: ");
-		JPasswordField textConfContrasena = new JPasswordField(20);
-
-		JButton anadir = new JButton("Register user");
+		JButton aniadir = new JButton("Register user");
 		JButton volver = new JButton("Admin Menu");
 
-		// Estilo
-		estilarLabel(nombre);
-		estilarLabel(correo);
-		estilarLabel(claveCorreo);
-		estilarLabel(contrasena);
-		estilarLabel(confContrasena);
-		estilarInput(textNombre);
-		estilarInput(textCorreo);
-		estilarInput(textClaveCorreo);
-		estilarInput(textContrasena);
-		estilarInput(textConfContrasena);
-		estilarBoton(anadir, Estilos.COLOR_TITULO_APP);
-		estilarBoton(volver, new java.awt.Color(200, 100, 100));
+		JPanel contenedor = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel layout = new JPanel(new GridLayout(5, 2, 10, 10));
+		layout.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-		JPanel contenedorForm = new JPanel(new java.awt.GridBagLayout());
-		contenedorForm.setOpaque(true);
-		contenedorForm.setBackground(new java.awt.Color(255, 255, 255, 200)); // Semi-transparent white
-		contenedorForm.setBorder(new EmptyBorder(20, 30, 20, 30));
+		layout.add(nombre);
+		layout.add(textNombre);
 
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.insets = new java.awt.Insets(5, 5, 5, 5);
-		gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+		layout.add(correo);
+		layout.add(textCorreo);
 
-		agregarCampo(contenedorForm, nombre, textNombre, gbc, 0);
-		agregarCampo(contenedorForm, correo, textCorreo, gbc, 1);
-		agregarCampo(contenedorForm, claveCorreo, textClaveCorreo, gbc, 2);
-		agregarCampo(contenedorForm, contrasena, textContrasena, gbc, 3);
-		agregarCampo(contenedorForm, confContrasena, textConfContrasena, gbc, 4);
+		layout.add(claveCorreo);
+		layout.add(textClaveCorreo);
+
+		layout.add(contrasena);
+		layout.add(textContrasena);
+
+		layout.add(confContrasena);
+		layout.add(textConfContrasena);
 
 		accionBotonVolver(volver);
+		accionBotonAniadir(aniadir);
 
-		JPanel panelBotones = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 0));
-		panelBotones.setOpaque(false);
-		panelBotones.add(anadir);
-		panelBotones.add(volver);
+		contenedor.add(layout);
+		contenedor.add(aniadir);
+		contenedor.add(volver);
 
-		gbc.gridx = 0;
-		gbc.gridy = 5;
-		gbc.gridwidth = 2;
-		gbc.insets = new java.awt.Insets(20, 5, 5, 5);
-		contenedorForm.add(panelBotones, gbc);
-
-		panelFondo.add(contenedorForm);
-	}
-
-	private void agregarCampo(JPanel panel, JLabel label, javax.swing.JComponent campo, java.awt.GridBagConstraints gbc,
-			int row) {
-		gbc.gridx = 0;
-		gbc.gridy = row;
-		gbc.gridwidth = 1;
-		gbc.weightx = 0.3;
-		panel.add(label, gbc);
-		gbc.gridx = 1;
-		gbc.weightx = 0.7;
-		panel.add(campo, gbc);
-	}
-
-	private void estilarLabel(JLabel lbl) {
-		lbl.setFont(Estilos.FONT_BOTON);
-		lbl.setForeground(Estilos.COLOR_LABEL);
-	}
-
-	private void estilarInput(javax.swing.JComponent input) {
-		input.setFont(Estilos.FONT_TEXTO);
-		input.setBackground(Estilos.COLOR_INPUT_BG);
-		input.setForeground(Estilos.COLOR_INPUT_TEXT);
-	}
-
-	private void estilarBoton(JButton btn, java.awt.Color bg) {
-		btn.setFont(Estilos.FONT_BOTON);
-		btn.setBackground(bg);
-		btn.setForeground(java.awt.Color.WHITE);
-		btn.setFocusPainted(false);
-		btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-		btn.setPreferredSize(new java.awt.Dimension(140, 35));
+		this.add(contenedor, BorderLayout.CENTER);
+		this.setSize(500, 300);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	public void hacerVisible() {
@@ -164,6 +101,51 @@ public class VistaRegistroUsuarios extends JFrame {
 				vistaAdmin.hacerVisible();
 			}
 		});
+	}
+
+	public void accionBotonAniadir(JButton boton) {
+
+		boton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				User usuario;
+				String password;
+				char[] contrasena = textContrasena.getPassword();
+				char[] confContrasena = textConfContrasena.getPassword();
+				if (textNombre.getText().trim().isEmpty() || textCorreo.getText().trim().isEmpty()
+						|| textClaveCorreo.getText().trim().isEmpty()) {
+					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "All fields must be filled", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else if (contrasena.length == 0 || confContrasena.length == 0) {
+					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "All fields must be filled", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else if (!java.util.Arrays.equals(contrasena, confContrasena)) {
+					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "Password doesn't match", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else if (!textClaveCorreo.getText().matches("^[a-z]{4}( [a-z]{4}){3}$")) {
+					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this,
+							"Invalid format for Address Key, it must be: xxxx xxxx xxxx xxxx (all in lowercase)",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				} else if (!textCorreo.getText().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "Invalid email format", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					password = new String(contrasena);
+					usuario = new User(textNombre.getText(), textCorreo.getText(), textClaveCorreo.getText(), password);
+					if (db.registrarUsuario(usuario.getCorreo(), usuario.getNombre(), usuario.getContrasena(),
+							usuario.getClaveCorreo())) {
+						client.aniadirUsuario(usuario.getNombre(), usuario.getContrasena());
+						JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "User registered correctly", "",
+								JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(VistaRegistroUsuarios.this,
+								"User with this name or email already exists", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+
+				}
+
+			}
+		});
+
 	}
 
 }

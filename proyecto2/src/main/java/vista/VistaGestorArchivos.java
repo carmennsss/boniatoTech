@@ -309,8 +309,6 @@ public class VistaGestorArchivos extends JFrame {
             }
             this.rutaActual = ruta;
             this.ftp.desconectar();
-        } else {
-            JOptionPane.showMessageDialog(this, "Could not connect to FTP");
         }
     }
 
