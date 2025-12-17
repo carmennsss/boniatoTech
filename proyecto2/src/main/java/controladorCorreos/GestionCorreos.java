@@ -39,6 +39,13 @@ public class GestionCorreos {
                 Message message = messages[i];
                 
                 String remitente = message.getFrom()[0].toString();
+                
+                String emailLimpio = user.replace("recent:", "");
+                
+                if (remitente.toLowerCase().contains(emailLimpio.toLowerCase())) {
+                    continue;
+                }
+                
                 String asunto = message.getSubject();
                 java.util.Date fecha = message.getSentDate();
                 String cuerpo = getTextFromMessage(message);
