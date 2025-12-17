@@ -2,13 +2,15 @@ package controladorCorreos;
 
 import javax.mail.*;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.search.HeaderTerm;
+import javax.mail.search.SearchTerm;
 import modelo.Correo;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class GestionPOP3 {
+public class GestionCorreos {
 
     // --- MÉTODOS POP3 (RECIBIR Y ELIMINAR) ---
 
@@ -33,13 +35,23 @@ public class GestionPOP3 {
             Message[] messages = emailFolder.getMessages();
             System.out.println("Total de mensajes (POP3): " + messages.length);
 
-            for (Message message : messages) {
+            for (int i = messages.length - 1; i >= 0; i--) {
+                Message message = messages[i];
+                
                 String remitente = message.getFrom()[0].toString();
                 String asunto = message.getSubject();
                 java.util.Date fecha = message.getSentDate();
-                String cuerpo = getTextFromMessage(message); 
-
-                listaCorreos.add(new Correo(remitente, asunto, fecha, cuerpo));
+                String cuerpo = getTextFromMessage(message);
+                
+                // --- CAMBIO: OBTENER MESSAGE-ID ---
+                String messageId = "";
+                String[] headers = message.getHeader("Message-ID");
+                if (headers != null && headers.length > 0) {
+                    messageId = headers[0];
+                }
+                
+                // Pasamos el ID al constructor
+                listaCorreos.add(new Correo(remitente, asunto, fecha, cuerpo, messageId));
             }
 
             emailFolder.close(false);
@@ -77,7 +89,7 @@ public class GestionPOP3 {
      * IMPORTANTE: El parametro 'host' aquí debe ser el servidor IMAP 
      * (ej: imap.gmail.com), NO el servidor POP3.
      */
-    public void marcarLeidoIMAP(String imapHost, String user, String password, int indice) {
+    public void marcarLeidoIMAP(String imapHost, String user, String password, String messageId) {
         try {
             Properties properties = new Properties();
             // Configuración específica para IMAP SSL
@@ -96,19 +108,24 @@ public class GestionPOP3 {
             // READ_WRITE es necesario para cambiar Flags
             inbox.open(Folder.READ_WRITE);
 
-            // Obtenemos el mensaje. 
-            // NOTA: Asegúrate de que el índice IMAP coincida con el POP3. 
-            // Si el buzón cambia mucho, los índices podrían desincronizarse.
-            Message mensaje = inbox.getMessage(indice + 1);
-            
-            // Aplicamos el flag SEEN (Leído)
-            // IMAP sí permite sincronizar esto con el servidor permanentemente
-            mensaje.setFlag(Flags.Flag.SEEN, true);
+            if (messageId != null && !messageId.isEmpty()) {
+                // Creamos un término de búsqueda para el Header "Message-ID"
+                SearchTerm searchTerm = new HeaderTerm("Message-ID", messageId);
+                Message[] foundMessages = inbox.search(searchTerm);
+
+                if (foundMessages.length > 0) {
+                    // Si lo encontramos, marcamos el primero (debería ser único)
+                    Message mensaje = foundMessages[0];
+                    mensaje.setFlag(Flags.Flag.SEEN, true);
+                    System.out.println("Correo marcado como LEÍDO (ID: " + messageId + ")");
+                } else {
+                    System.out.println("No se encontró el mensaje con ese ID en IMAP.");
+                }
+            }
 
             // Cerramos guardando cambios
             inbox.close(true);
             store.close();
-            System.out.println("Correo marcado como LEÍDO usando IMAP (índice " + (indice + 1) + ")");
 
         } catch (Exception e) {
             e.printStackTrace();

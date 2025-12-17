@@ -17,14 +17,14 @@ public class ControladorCorreos {
 	private static final String HOST = "pop.gmail.com";
 	private ArrayList<Correo> correos = new ArrayList<>();
 	private VistaGeneralCorreo vistaGeneral;
-	private static GestionPOP3 gestion;
+	private static GestionCorreos gestion;
 	private Thread hiloRecepcion;
 
 	
 	public ControladorCorreos(String CORREO, String PASSWORD_APLICACION) {
 		this.CORREO = CORREO;
 		this.PASSWORD_APLICACION = PASSWORD_APLICACION;
-		gestion = new GestionPOP3();
+		gestion = new GestionCorreos();
 		configurarVistaGeneral();
 		
 		cargarCorreos();
@@ -95,7 +95,7 @@ public class ControladorCorreos {
 	                indiceServidor - 1 
 	        );
 
-	        correos.remove(indiceEnLista);
+	        correos.remove(correo);
 	        vistaGeneral.cargarCorreos(correos);
 
 	    } catch (Exception e) {
@@ -106,20 +106,19 @@ public class ControladorCorreos {
 	
 	public synchronized void marcarCorreoLeido(Correo correo) {
 	    try {
-	        int indiceEnLista = correos.indexOf(correo);
-	        if (indiceEnLista == -1) return;
-
-	        int indiceServidor = correos.size() - indiceEnLista;
+	    	String idParaMarcar = correo.getMessageId();
 
 	        gestion.marcarLeidoIMAP(
 	            "imap.gmail.com",
 	            CORREO,
 	            PASSWORD_APLICACION,
-	            indiceServidor - 1
+	            idParaMarcar
 	        );
 
 	        correo.setLeido(true);
-	        vistaGeneral.cargarCorreos(correos);
+	        javax.swing.SwingUtilities.invokeLater(() -> {
+                vistaGeneral.cargarCorreos(correos);
+            });
 
 	    } catch (Exception e) {
 	        e.printStackTrace();

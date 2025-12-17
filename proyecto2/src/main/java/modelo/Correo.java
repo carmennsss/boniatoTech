@@ -8,6 +8,7 @@ public class Correo {
     private String asunto;
     private Date fecha;
     private String cuerpo;
+    private String messageId;
     private boolean leido;
     
 
@@ -20,11 +21,12 @@ public class Correo {
         this.leido = leido;
     }
     
-    public Correo(String remitente, String asunto, Date fecha, String cuerpo) {
+    public Correo(String remitente, String asunto, Date fecha, String cuerpo, String messageId) {
     	this.remitente = remitente;
     	this.asunto = asunto;
     	this.fecha = fecha;
     	this.cuerpo = cuerpo;
+    	this.messageId = messageId;
     }
 
 
@@ -55,7 +57,15 @@ public class Correo {
 	public void setLeido(boolean leido) {
 		this.leido = leido;
 	}
+	
 
+	public String getMessageId() {
+		return messageId;
+	}
+
+	public void setMessageId(String messageId) {
+		this.messageId = messageId;
+	}
 
 	@Override
     public String toString() {
