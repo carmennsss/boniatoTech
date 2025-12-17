@@ -20,6 +20,7 @@ public class OyenteBotonEnviar implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		v = new VistaCorreoBase(correo);
 		v.getBotonEnviar().addActionListener(new OyenteEnviarCorreo(v, passwordAplicacion));
+		v.getBotonAdjuntar().addActionListener(new OyenteAdjuntarCorreo(v));
 		v.setVisible(true);
 	}
 

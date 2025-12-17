@@ -15,11 +15,13 @@ public class OyenteTabla implements MouseListener {
     private JTable emailTabla;
     private ArrayList<Correo> correos;
     private ControladorCorreos controladorCorreos;
+    private String correo;
 
-    public OyenteTabla(JTable emailTabla, ArrayList<Correo> correos, ControladorCorreos controladorCorreos) {
+    public OyenteTabla(JTable emailTabla, ArrayList<Correo> correos, ControladorCorreos controladorCorreos, String correo) {
         this.emailTabla = emailTabla;
         this.correos = correos;
         this.controladorCorreos = controladorCorreos;
+        this.correo = correo;
     }
 
     @Override
@@ -37,6 +39,7 @@ public class OyenteTabla implements MouseListener {
                 VistaCorreoBase vistaLectura = new VistaCorreoBase(correoSeleccionado);
                 vistaLectura.getBotonEliminar().addActionListener(new OyenteBotonEliminar(correoSeleccionado, controladorCorreos, vistaLectura));
                 vistaLectura.getBotonLeido().addActionListener(new OyenteBotonLeido(correoSeleccionado, controladorCorreos));
+        		vistaLectura.getBotonExportar().addActionListener(new OyenteExportarCorreo(correoSeleccionado, vistaLectura, correo));
                 vistaLectura.setVisible(true);
             }
         }

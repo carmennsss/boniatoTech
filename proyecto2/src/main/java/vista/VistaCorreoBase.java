@@ -4,6 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.*;
 
 import modelo.Correo;
@@ -21,6 +25,8 @@ public class VistaCorreoBase extends JFrame {
     private JButton botonNoLeido;
     private JButton botonAdjuntar;
     private String remitente;
+    private List<File> adjuntos = new ArrayList<>();
+
 
     public VistaCorreoBase(String remitente) {
         this.setTitle("Redactar Nuevo Correo");
@@ -72,13 +78,12 @@ public class VistaCorreoBase extends JFrame {
         panelPrincipal = new JPanel(new BorderLayout(5, 5));
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Cambiamos a 0 filas para que crezca según necesite
         JPanel panelDatosSuperiores = new JPanel(new GridLayout(0, 2, 5, 5));
         
         if (esEnvio) {
-            panelDatosSuperiores.add(new JLabel("Para:"));
-        } else {
             panelDatosSuperiores.add(new JLabel("De:"));
+        } else {
+            panelDatosSuperiores.add(new JLabel("From:"));
         }
         panelDatosSuperiores.add(textoPara);
 
@@ -88,7 +93,7 @@ public class VistaCorreoBase extends JFrame {
         panelPrincipal.add(panelDatosSuperiores, BorderLayout.NORTH);
 
         JPanel panelCuerpo = new JPanel(new BorderLayout());
-        panelCuerpo.add(new JLabel("Cuerpo del Mensaje:"), BorderLayout.NORTH);
+        panelCuerpo.add(new JLabel("Message:"), BorderLayout.NORTH);
         
         JScrollPane scrollCuerpo = new JScrollPane(textoCuerpo);
         panelCuerpo.add(scrollCuerpo, BorderLayout.CENTER);
@@ -120,6 +125,52 @@ public class VistaCorreoBase extends JFrame {
         this.setLocationRelativeTo(null);
         this.setMinimumSize(new Dimension(500, 400));
     }
+    
+
+    public File exportarCorreo(String nombreSugerido) {
+    	JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Export EML");
+        // Filtro para archivos .eml
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Files (*.eml)", "eml"));
+        fileChooser.setSelectedFile(new File(nombreSugerido + ".eml"));
+        
+        int seleccion = fileChooser.showSaveDialog(this);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File f = fileChooser.getSelectedFile();
+            // Forzar extensión .eml si el usuario no la puso
+            if (!f.getName().toLowerCase().endsWith(".eml")) {
+                f = new File(f.getAbsolutePath() + ".eml");
+            }
+            return f;
+        }
+        return null;
+    }
+
+    public void mostrarMensaje(String mensaje, boolean esError) {
+        JOptionPane.showMessageDialog(this, mensaje, 
+            esError ? "Error" : "success", 
+            esError ? JOptionPane.ERROR_MESSAGE : JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+
+    public File mostrarSelectorAdjuntos() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setMultiSelectionEnabled(true);
+        int seleccion = fileChooser.showOpenDialog(this);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            return fileChooser.getSelectedFile();
+        }
+        return null;
+    }
+
+    public void agregarAdjunto(File archivo) {
+        this.adjuntos.add(archivo);
+    }
+
+    public List<File> getAdjuntos() {
+        return adjuntos;
+    }
+
     
     public JTextField getTextoPara() { return textoPara; }
     public JTextField getTextoAsunto() { return textoAsunto; }
@@ -164,6 +215,14 @@ public class VistaCorreoBase extends JFrame {
 
 	public void setBotonNoLeido(JButton botonNoLeido) {
 		this.botonNoLeido = botonNoLeido;
+	}
+
+	public JButton getBotonAdjuntar() {
+		return botonAdjuntar;
+	}
+
+	public void setBotonAdjuntar(JButton botonAdjuntar) {
+		this.botonAdjuntar = botonAdjuntar;
 	}
 	
 	

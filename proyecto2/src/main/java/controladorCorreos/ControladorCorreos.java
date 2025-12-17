@@ -76,7 +76,7 @@ public class ControladorCorreos {
 		vistaGeneral = new VistaGeneralCorreo(CORREO);
 		vistaGeneral.setVisible(true);
 		vistaGeneral.getBotonEnviarCorreo().addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo(), PASSWORD_APLICACION));
-		vistaGeneral.getEmailTabla().addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this));
+		vistaGeneral.getEmailTabla().addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this, CORREO));
 	}
 
 
