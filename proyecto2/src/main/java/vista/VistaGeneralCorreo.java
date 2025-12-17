@@ -107,6 +107,8 @@ public class VistaGeneralCorreo extends JFrame {
 		panel.add(panelMedio, BorderLayout.SOUTH);
 	}
 
+	
+	
 	public void cargarCorreos(ArrayList<Correo> correos) {
 		tablaModelo.setRowCount(0);
 		//Ordenar el array por fecha
