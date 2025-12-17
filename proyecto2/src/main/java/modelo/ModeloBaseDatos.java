@@ -160,4 +160,74 @@ public class ModeloBaseDatos {
             return false;
         }
     }
+    
+    public boolean insertarArchivo(String nombre,String directorio , String extension, String tipo, Integer id_padre, String email_usuario) {
+        String sql = "INSERT INTO archivos (nombre_archivo, directorio, extension, tipo, id_padre, email_usuario) VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement pstmt = getConexion().prepareStatement(sql);
+            pstmt.setString(1, nombre);
+            pstmt.setString(2, directorio);
+            pstmt.setString(3, extension);
+            pstmt.setString(4, tipo);
+            if (id_padre == null) {
+                pstmt.setNull(5, java.sql.Types.INTEGER);
+            } else {
+                pstmt.setInt(5, id_padre);
+            }
+            pstmt.setString(6, email_usuario);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public Integer obtenerIdPadre(String rutaActual) {
+        if (rutaActual.equals("/")) {
+            return null;
+        }
+        Integer idPadre = null;
+        String consulta = "SELECT id_archivo FROM archivos WHERE directorio = ?";
+        try {
+            PreparedStatement pstmt = getConexion().prepareStatement(consulta);
+            pstmt.setString(1, rutaActual);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs != null && rs.next()) {
+                idPadre = rs.getInt("id_archivo");
+                if (rs.wasNull()) {
+                    idPadre = null;
+                }
+            }
+            rs.close();
+            pstmt.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return idPadre;
+    }
+    public String obtenerEmailPorUsuario(String nombreUsuario) {
+        String email = null;
+        String sql = "SELECT email FROM usuarios WHERE nombre_usuario = ?";
+        try (PreparedStatement pstmt = getConexion().prepareStatement(sql)) {
+            pstmt.setString(1, nombreUsuario);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                email = rs.getString("email");
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return email;
+    }
+    
+    public void eliminarArchivo(String nombreArchivo, String ruta) {
+        String sql = "DELETE FROM archivos WHERE nombre_archivo = ? AND directorio = ?";
+        try (PreparedStatement pstmt = getConexion().prepareStatement(sql)) {
+            pstmt.setString(1, nombreArchivo);
+            pstmt.setString(2, ruta);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
