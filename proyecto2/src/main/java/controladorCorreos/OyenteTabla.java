@@ -36,6 +36,7 @@ public class OyenteTabla implements MouseListener {
                 // Ahora el índice coincidirá con la lista y la tabla
                 Correo correoSeleccionado = correosActuales.get(filaSeleccionada);
                 
+                //Si no est� leido leer
                 if (!correoSeleccionado.isLeido()) {
                 	//Nuevo hilo para que marque como leido sin cortar el ritmo del programa
                     new Thread(() -> {
