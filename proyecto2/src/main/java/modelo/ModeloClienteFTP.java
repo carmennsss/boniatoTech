@@ -79,7 +79,7 @@ public class ModeloClienteFTP {
         }
     }
 
-    public void añadirUsuario(String nombre, String password) {
+    public void aniadirUsuario(String nombre, String password) {
 
         // 1. PRIMERO NOS AUTENTICAMOS EN LA CARPETA
         conectarCarpetaCompartida();
@@ -93,8 +93,6 @@ public class ModeloClienteFTP {
                 System.err.println("Asegúrate de que la carpeta 'FileZillaFTP' está compartida en la VM.");
                 return;
             }
-
-            // ... (A PARTIR DE AQUÍ TODO ES IGUAL QUE ANTES) ...
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -121,6 +119,12 @@ public class ModeloClienteFTP {
             agregarOpcion(doc, newUser, "Comments", "Creado sin unidad Z");
             agregarOpcion(doc, newUser, "ForceSsl", "0");
 
+            // IpFilter (Necesario para que se vea igual que el resto)
+            Element ipFilter = doc.createElement("IpFilter");
+            ipFilter.appendChild(doc.createElement("Disallowed"));
+            ipFilter.appendChild(doc.createElement("Allowed"));
+            newUser.appendChild(ipFilter);
+
             // RUTA HOME (Cuidado, esta ruta es la ruta INTERNA de la VM)
             String carpetaHome = "C:\\xampp\\htdocs\\" + nombre;
 
@@ -128,10 +132,11 @@ public class ModeloClienteFTP {
             Element permission = doc.createElement("Permission");
             permission.setAttribute("Dir", carpetaHome);
 
-            // Permisos full
+            // Permisos full (Incluyendo FileAppend que faltaba)
             agregarOpcion(doc, permission, "FileRead", "1");
-            agregarOpcion(doc, permission, "FileWrite", "1");
+            agregarOpcion(doc, permission, "FileWrite", "0");
             agregarOpcion(doc, permission, "FileDelete", "1");
+            agregarOpcion(doc, permission, "FileAppend", "1");
             agregarOpcion(doc, permission, "DirCreate", "1");
             agregarOpcion(doc, permission, "DirDelete", "1");
             agregarOpcion(doc, permission, "DirList", "1");
@@ -141,24 +146,66 @@ public class ModeloClienteFTP {
 
             permissions.appendChild(permission);
             newUser.appendChild(permissions);
-            usersNode.appendChild(newUser);
 
-            // Guardar cambios
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(xmlFile);
-            transformer.transform(source, result);
+            // SpeedLimits
+            Element speedLimits = doc.createElement("SpeedLimits");
+            speedLimits.setAttribute("DlLimit", "10");
+            speedLimits.setAttribute("DlType", "0");
+            speedLimits.setAttribute("ServerDlLimitBypass", "0");
+            speedLimits.setAttribute("ServerUlLimitBypass", "0");
+            speedLimits.setAttribute("UlLimit", "10");
+            speedLimits.setAttribute("UlType", "0");
+            speedLimits.appendChild(doc.createElement("Download"));
+            speedLimits.appendChild(doc.createElement("Upload"));
+            newUser.appendChild(speedLimits);
+            usersList.item(0).appendChild(newUser);
 
-            System.out.println("Usuario añadido correctamente al XML remoto.");
-
-            // NOTA: No podemos recargar el servidor automáticamente porque estamos en red.
-            // Tendrás que recargarlo manualmente en la VM o esperar a que FileZilla lo
-            // detecte.
+            guardarXML(doc,xmlFile);
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    
+    private void guardarXML(Document doc, File xmlFile) throws Exception {
+        // 1. Limpieza de nodos vacíos (espacios en blanco antiguos) para que no se
+        // dupliquen
+        cleanEmptyTextNodes(doc);
+
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+
+        // Configuración para una indentación perfecta
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt%7Dindent-amount", "4"); // 4 espacios
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+
+        DOMSource source = new DOMSource(doc);
+        StreamResult result = new StreamResult(xmlFile);
+        transformer.transform(source, result);
+    }
+
+    // AÑADE ESTE MÉTODO AUXILIAR
+    // Esto es magia negra para limpiar el XML antes de guardarlo y que no se rompa
+    // el formato
+    private void cleanEmptyTextNodes(Node parentNode) {
+        NodeList childNodes = parentNode.getChildNodes();
+        for (int n = childNodes.getLength() - 1; n >= 0; n--) {
+            Node child = childNodes.item(n);
+            short nodeType = child.getNodeType();
+            if (nodeType == Node.ELEMENT_NODE) {
+                cleanEmptyTextNodes(child);
+            } else if (nodeType == Node.TEXT_NODE) {
+                String trimmedNodeVal = child.getNodeValue().trim();
+                if (trimmedNodeVal.length() == 0) {
+                    parentNode.removeChild(child);
+                } else {
+                    child.setNodeValue(trimmedNodeVal);
+                }
+            } else if (nodeType == Node.COMMENT_NODE) {
+                // Opcional: Si quieres mantener comentarios, no hagas nada
+            }
         }
     }
 
@@ -172,12 +219,13 @@ public class ModeloClienteFTP {
     private String md5(String input) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] messageDigest = md.digest(input.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte b : messageDigest) {
-                sb.append(String.format("%02x", b));
+            byte[] messageDigest = md.digest(input.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            java.math.BigInteger number = new java.math.BigInteger(1, messageDigest);
+            String hashtext = number.toString(16);
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
             }
-            return sb.toString();
+            return hashtext;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
