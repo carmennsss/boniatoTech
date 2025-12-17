@@ -25,15 +25,15 @@ public class OyenteEnviarCorreo implements ActionListener {
 		String cuerpoMensaje = v.getTextoCuerpo().getText();
 		
 		if (receptor == "" || receptor.isEmpty() || cuerpoMensaje.isEmpty()) {
-			JOptionPane.showMessageDialog(v, "El receptor y el cuerpo del mensaje es obligatorio");
+			JOptionPane.showMessageDialog(v, "The recipient and the message body are obligatory");
 			return;
 		}
 		
 		try {
 			EnviarCorreo.enviarCorreo(remitente, asunto, cuerpoMensaje, receptor, passwordAplicacion, v.getAdjuntos());
-			JOptionPane.showMessageDialog(v, "Correo enviado con éxito a " + receptor);
+			JOptionPane.showMessageDialog(v, "Email successfully sent to" + receptor);
 			} catch (Exception e1) {
-			JOptionPane.showMessageDialog(v, "El mensaje no se pudo enviar, verifica la existencia del correo del receptor");
+			JOptionPane.showMessageDialog(v, "The message could not be sent; please check the recipient's email address.");
 			e1.printStackTrace();
 		}
 		

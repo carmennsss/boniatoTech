@@ -27,6 +27,7 @@ public class VistaGeneralCorreo extends JFrame {
 	private JButton botonEnviarCorreo;
 	private DefaultTableModel tablaModelo;
 	private JTable emailTabla;
+	private JButton btnVolver;
 
 	public VistaGeneralCorreo(String correo) {
 		this.correo = correo;
@@ -100,7 +101,10 @@ public class VistaGeneralCorreo extends JFrame {
 
 		botonEnviarCorreo = new JButton("Send Mail");
 		botonEnviarCorreo.setPreferredSize(new Dimension(150, 30));
+		btnVolver = new JButton("Back");
+		btnVolver.setPreferredSize(new Dimension(150, 30));
 
+		panelMedio.add(btnVolver);
 		panelMedio.add(botonEnviarCorreo);
 		
 
@@ -150,5 +154,15 @@ public class VistaGeneralCorreo extends JFrame {
 	public void setEmailTabla(JTable emailTabla) {
 		this.emailTabla = emailTabla;
 	}
+
+	public JButton getBtnVolver() {
+		return btnVolver;
+	}
+
+	public void setBtnVolver(JButton btnVolver) {
+		this.btnVolver = btnVolver;
+	}
+	
+	
 	
 }

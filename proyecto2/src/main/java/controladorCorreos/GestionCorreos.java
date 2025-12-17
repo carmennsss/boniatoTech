@@ -85,10 +85,6 @@ public class GestionCorreos {
     
     // --- MÃTODO IMAP (SOLO PARA MARCAR LEÃDO) ---
 
-    /**
-     * IMPORTANTE: El parametro 'host' aquÃ­ debe ser el servidor IMAP 
-     * (ej: imap.gmail.com), NO el servidor POP3.
-     */
     public void marcarLeidoIMAP(String imapHost, String user, String password, String messageId) {
         try {
             Properties properties = new Properties();
