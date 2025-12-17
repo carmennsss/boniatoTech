@@ -43,9 +43,8 @@ public class GestionLogs {
 
 	}
 
-	public ArrayList<Log> consultLogs() {
+	public static ArrayList<Log> consultLogs() {
 		ArrayList<Log> logs = new ArrayList<>();
-		// Consultar en db los logs
 
 		String sql = "SELECT id_logs, accion, fecha, resultado, email_usuario FROM logs";
 
@@ -61,7 +60,6 @@ public class GestionLogs {
 				String email = rs.getString("email_usuario");
 
 				Log log = new Log(id, accion, fecha, resultado, email);
-
 				logs.add(log);
 			}
 		} catch (SQLException e) {
