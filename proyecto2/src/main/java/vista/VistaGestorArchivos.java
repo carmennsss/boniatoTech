@@ -5,6 +5,7 @@ import javax.swing.*;
 import org.apache.commons.net.ftp.FTPFile;
 
 import controlador.CoPrincipal;
+import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
 import servidor.FileManager;
 
@@ -17,351 +18,383 @@ import java.net.URL;
 
 public class VistaGestorArchivos extends JFrame {
 
-    private VistaMenuPrincipal menu;
-    private DefaultListModel<FTPFile> listaModel;
-    private JList<FTPFile> listaArchivos;
-    private ModeloClienteFTP client;
-    private FileManager ftp;
-    private String rutaActual = "/";
+	private VistaMenuPrincipal menu;
+	private DefaultListModel<FTPFile> listaModel;
+	private JList<FTPFile> listaArchivos;
+	private ModeloClienteFTP client;
+	private ModeloBaseDatos db;
+	private FileManager ftp;
+	private String rutaActual = "/";
 
-    public VistaGestorArchivos(ModeloClienteFTP client, VistaMenuPrincipal menu) {
-        this.client = client;
-        this.menu = menu;
-        ftp = new FileManager("13.62.51.110", 21, client.getUser(), client.getPass());
-        this.setTitle("File Manager");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1000, 650);
-        this.setLocationRelativeTo(null);
+	public VistaGestorArchivos(ModeloClienteFTP client, VistaMenuPrincipal menu, ModeloBaseDatos db) {
+		this.client = client;
+		this.menu = menu;
+		this.db = db;
 
-        Color colorFondo = new Color(248, 245, 242);
-        Color colorTexto = new Color(74, 88, 89);
-        Color colorBotonAccion = new Color(110, 137, 115);
-        Color colorBotonNav = new Color(200, 190, 170);
+		ftp = new FileManager("13.62.51.110", 21, client.getUser(), client.getPass());
+		this.setTitle("File Manager");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(1000, 650);
+		this.setLocationRelativeTo(null);
 
-        JPanel mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setBackground(colorFondo);
-        setContentPane(mainPanel);
+		Color colorFondo = new Color(248, 245, 242);
+		Color colorTexto = new Color(74, 88, 89);
+		Color colorBotonAccion = new Color(110, 137, 115);
+		Color colorBotonNav = new Color(200, 190, 170);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
+		JPanel mainPanel = new JPanel(new GridBagLayout());
+		mainPanel.setBackground(colorFondo);
+		setContentPane(mainPanel);
 
-        JPanel sidePanel = new JPanel() {
-            private Image imagen;
-            {
-                URL url = getClass().getResource("/lateral_files.jpg");
-                if (url != null) {
-                    imagen = new ImageIcon(url).getImage();
-                }
-            }
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
 
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                if (imagen != null) {
-                    double scale = Math.max((double) getWidth() / imagen.getWidth(this),
-                            (double) getHeight() / imagen.getHeight(this));
-                    int w = (int) (imagen.getWidth(this) * scale);
-                    int h = (int) (imagen.getHeight(this) * scale);
-                    g.drawImage(imagen, 0, 0, w, h, this);
-                }
-            }
-        };
+		JPanel sidePanel = new JPanel() {
+			private Image imagen;
+			{
+				URL url = getClass().getResource("/lateral_files.jpg");
+				if (url != null) {
+					imagen = new ImageIcon(url).getImage();
+				}
+			}
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 0.3;
-        gbc.weighty = 1.0;
-        mainPanel.add(sidePanel, gbc);
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				if (imagen != null) {
+					double scale = Math.max((double) getWidth() / imagen.getWidth(this),
+							(double) getHeight() / imagen.getHeight(this));
+					int w = (int) (imagen.getWidth(this) * scale);
+					int h = (int) (imagen.getHeight(this) * scale);
+					g.drawImage(imagen, 0, 0, w, h, this);
+				}
+			}
+		};
 
-        JPanel contentPanel = new JPanel(new BorderLayout());
-        contentPanel.setBackground(colorFondo);
-        contentPanel.setBorder(new EmptyBorder(30, 30, 30, 30));
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weightx = 0.3;
+		gbc.weighty = 1.0;
+		mainPanel.add(sidePanel, gbc);
 
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 0.7;
-        gbc.weighty = 1.0;
-        mainPanel.add(contentPanel, gbc);
+		JPanel contentPanel = new JPanel(new BorderLayout());
+		contentPanel.setBackground(colorFondo);
+		contentPanel.setBorder(new EmptyBorder(30, 30, 30, 30));
 
-        JPanel header = new JPanel();
-        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
-        header.setBackground(colorFondo);
-        header.setAlignmentX(Component.LEFT_ALIGNMENT);
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		gbc.weightx = 0.7;
+		gbc.weighty = 1.0;
+		mainPanel.add(contentPanel, gbc);
 
-        JLabel title = new JLabel("File Repository");
-        title.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        title.setForeground(colorTexto);
+		JPanel header = new JPanel();
+		header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+		header.setBackground(colorFondo);
+		header.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JLabel subtitle = new JLabel("Manage your server files efficiently");
-        subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        subtitle.setForeground(new Color(150, 150, 150));
+		JLabel title = new JLabel("File Repository");
+		title.setFont(new Font("Segoe UI", Font.BOLD, 28));
+		title.setForeground(colorTexto);
 
-        header.add(title);
-        header.add(Box.createVerticalStrut(5));
-        header.add(subtitle);
-        header.add(Box.createVerticalStrut(20));
+		JLabel subtitle = new JLabel("Manage your server files efficiently");
+		subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+		subtitle.setForeground(new Color(150, 150, 150));
 
-        contentPanel.add(header, BorderLayout.NORTH);
+		header.add(title);
+		header.add(Box.createVerticalStrut(5));
+		header.add(subtitle);
+		header.add(Box.createVerticalStrut(20));
 
-        listaModel = new DefaultListModel<>();
-        listaArchivos = new JList<>(listaModel);
-        listaArchivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        listaArchivos.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        listaArchivos.setFixedCellHeight(30);
-        listaArchivos.setBackground(Color.WHITE);
-        listaArchivos.setBorder(new EmptyBorder(5, 5, 5, 5));
-        detectarDobleClick(listaArchivos);
+		contentPanel.add(header, BorderLayout.NORTH);
 
-        JScrollPane scrollPane = new JScrollPane(listaArchivos);
-        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220)));
-        contentPanel.add(scrollPane, BorderLayout.CENTER);
+		listaModel = new DefaultListModel<>();
+		listaArchivos = new JList<>(listaModel);
+		listaArchivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listaArchivos.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+		listaArchivos.setFixedCellHeight(30);
+		listaArchivos.setBackground(Color.WHITE);
+		listaArchivos.setBorder(new EmptyBorder(5, 5, 5, 5));
+		detectarDobleClick(listaArchivos);
 
-        JPanel centerContainer = new JPanel(new BorderLayout(20, 0));
-        centerContainer.setBackground(colorFondo);
-        centerContainer.add(scrollPane, BorderLayout.CENTER);
+		JScrollPane scrollPane = new JScrollPane(listaArchivos);
+		scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220)));
+		contentPanel.add(scrollPane, BorderLayout.CENTER);
 
-        JPanel botonesPanel = new JPanel();
-        botonesPanel.setLayout(new BoxLayout(botonesPanel, BoxLayout.Y_AXIS));
-        botonesPanel.setBackground(colorFondo);
+		JPanel centerContainer = new JPanel(new BorderLayout(20, 0));
+		centerContainer.setBackground(colorFondo);
+		centerContainer.add(scrollPane, BorderLayout.CENTER);
 
-        JButton botonSubida = new JButton("Upload");
-        JButton botonDescarga = new JButton("Download");
-        JButton botonEliminar = new JButton("Delete");
-        JButton botonCrearCarpeta = new JButton("New Folder");
-        JButton botonBorrarCarpeta = new JButton("Delete Folder");
+		JPanel botonesPanel = new JPanel();
+		botonesPanel.setLayout(new BoxLayout(botonesPanel, BoxLayout.Y_AXIS));
+		botonesPanel.setBackground(colorFondo);
 
-        estilarBoton(botonSubida, colorBotonAccion, Color.WHITE);
-        estilarBoton(botonDescarga, colorBotonAccion, Color.WHITE);
-        estilarBoton(botonEliminar, new Color(200, 100, 100), Color.WHITE);
-        estilarBoton(botonCrearCarpeta, colorBotonAccion, Color.WHITE);
-        estilarBoton(botonBorrarCarpeta, new Color(200, 100, 100), Color.WHITE);
+		JButton botonSubida = new JButton("Upload");
+		JButton botonDescarga = new JButton("Download");
+		JButton botonEliminar = new JButton("Delete");
+		JButton botonCrearCarpeta = new JButton("New Folder");
+		JButton botonBorrarCarpeta = new JButton("Delete Folder");
 
-        botonesPanel.add(new JLabel("Actions"));
-        botonesPanel.add(Box.createVerticalStrut(10));
-        botonesPanel.add(botonSubida);
-        botonesPanel.add(Box.createVerticalStrut(10));
-        botonesPanel.add(botonDescarga);
-        botonesPanel.add(Box.createVerticalStrut(10));
-        botonesPanel.add(botonEliminar);
-        botonesPanel.add(Box.createVerticalStrut(10));
-        botonesPanel.add(botonCrearCarpeta);
-        botonesPanel.add(Box.createVerticalStrut(10));
-        botonesPanel.add(botonBorrarCarpeta);
-        botonesPanel.add(Box.createVerticalGlue());
+		estilarBoton(botonSubida, colorBotonAccion, Color.WHITE);
+		estilarBoton(botonDescarga, colorBotonAccion, Color.WHITE);
+		estilarBoton(botonEliminar, new Color(200, 100, 100), Color.WHITE);
+		estilarBoton(botonCrearCarpeta, colorBotonAccion, Color.WHITE);
+		estilarBoton(botonBorrarCarpeta, new Color(200, 100, 100), Color.WHITE);
 
-        centerContainer.add(botonesPanel, BorderLayout.EAST);
-        contentPanel.add(centerContainer, BorderLayout.CENTER);
+		botonesPanel.add(new JLabel("Actions"));
+		botonesPanel.add(Box.createVerticalStrut(10));
+		botonesPanel.add(botonSubida);
+		botonesPanel.add(Box.createVerticalStrut(10));
+		botonesPanel.add(botonDescarga);
+		botonesPanel.add(Box.createVerticalStrut(10));
+		botonesPanel.add(botonEliminar);
+		botonesPanel.add(Box.createVerticalStrut(10));
+		botonesPanel.add(botonCrearCarpeta);
+		botonesPanel.add(Box.createVerticalStrut(10));
+		botonesPanel.add(botonBorrarCarpeta);
+		botonesPanel.add(Box.createVerticalGlue());
 
-        JPanel footer = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        footer.setBackground(colorFondo);
+		centerContainer.add(botonesPanel, BorderLayout.EAST);
+		contentPanel.add(centerContainer, BorderLayout.CENTER);
 
-        JButton botonVolver = new JButton("Back");
-        JButton botonVolverMenuPrincipal = new JButton("Main Menu");
+		JPanel footer = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		footer.setBackground(colorFondo);
 
-        estilarBoton(botonVolver, colorBotonNav, Color.BLACK);
-        estilarBoton(botonVolverMenuPrincipal, colorBotonNav, Color.BLACK);
+		JButton botonVolver = new JButton("Back");
+		JButton botonVolverMenuPrincipal = new JButton("Main Menu");
 
-        accionBotonSubida(botonSubida);
-        accionBotonDescarga(botonDescarga);
-        accionBotonEliminar(botonEliminar);
-        accionBotonCrearCarpeta(botonCrearCarpeta);
-        accionBotonBorrarCarpeta(botonBorrarCarpeta);
-        accionBotonVolver(botonVolver);
-        accionBotonVolverMenuPrincipal(botonVolverMenuPrincipal);
+		estilarBoton(botonVolver, colorBotonNav, Color.BLACK);
+		estilarBoton(botonVolverMenuPrincipal, colorBotonNav, Color.BLACK);
 
-        footer.add(botonVolverMenuPrincipal);
-        footer.add(botonVolver);
+		accionBotonSubida(botonSubida);
+		accionBotonDescarga(botonDescarga);
+		accionBotonEliminar(botonEliminar);
+		accionBotonCrearCarpeta(botonCrearCarpeta);
+		accionBotonBorrarCarpeta(botonBorrarCarpeta);
+		accionBotonVolver(botonVolver);
+		accionBotonVolverMenuPrincipal(botonVolverMenuPrincipal);
 
-        contentPanel.add(footer, BorderLayout.SOUTH);
-    }
+		footer.add(botonVolverMenuPrincipal);
+		footer.add(botonVolver);
 
-    private void estilarBoton(JButton btn, Color bg, Color fg) {
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        btn.setBackground(bg);
-        btn.setForeground(fg);
-        btn.setFocusPainted(false);
-        btn.setBorderPainted(false);
-        btn.setAlignmentX(Component.LEFT_ALIGNMENT);
-        btn.setMaximumSize(new Dimension(120, 35));
-        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-    }
+		contentPanel.add(footer, BorderLayout.SOUTH);
+	}
 
-    public void inicializarFileManager() {
-        ftp = new FileManager("13.62.51.110", 21, client.getUser(), client.getPass());
-        actualizarListaFTP();
+	private void estilarBoton(JButton btn, Color bg, Color fg) {
+		btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
+		btn.setBackground(bg);
+		btn.setForeground(fg);
+		btn.setFocusPainted(false);
+		btn.setBorderPainted(false);
+		btn.setAlignmentX(Component.LEFT_ALIGNMENT);
+		btn.setMaximumSize(new Dimension(120, 35));
+		btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+	}
 
-    }
+	public void inicializarFileManager() {
+		ftp = new FileManager("13.62.51.110", 21, client.getUser(), client.getPass());
+		actualizarListaFTP();
 
-    public void accionBotonSubida(JButton boton) {
+	}
 
-        boton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+	public void accionBotonSubida(JButton boton) {
 
-                JFileChooser fc = new JFileChooser();
-                File file;
-                fc.setDialogTitle("Select the file to upload");
-                fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                int respuesta = fc.showDialog(fc, "OK");
-                if (respuesta == JFileChooser.APPROVE_OPTION) {
-                    file = fc.getSelectedFile();
-                    String archivo = file.getAbsolutePath();
-                    String nombreArchivo = file.getName();
-                    ftp.subirArchivo(archivo, nombreArchivo, rutaActual);
-                    actualizarListaFTP();
-                }
-            }
-        });
+		boton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 
-    }
+				JFileChooser fc = new JFileChooser();
+				File file;
+				String archivo;
+				String nombreArchivo;
+				String extension;
+				Integer idPadre;
+				String tipo;
+				String emailUsuario;
 
-    public void accionBotonDescarga(JButton boton) {
-        boton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+				fc.setDialogTitle("Select the file to upload");
+				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				int respuesta = fc.showDialog(fc, "OK");
+				if (respuesta == JFileChooser.APPROVE_OPTION) {
+					file = fc.getSelectedFile();
+					archivo = file.getAbsolutePath();
+					nombreArchivo = file.getName();
+					extension = "";
+					idPadre = db.obtenerIdPadre(rutaActual);
+					tipo = "File";
+					emailUsuario = db.obtenerEmailPorUsuario(client.getUser());
+					if (!file.isDirectory() && nombreArchivo.contains(".")) {
+						extension = nombreArchivo.substring(nombreArchivo.lastIndexOf(".") + 1);
+					}
+					db.insertarArchivo(nombreArchivo, rutaActual, extension, tipo, idPadre, emailUsuario);
+					ftp.subirArchivo(archivo, nombreArchivo, rutaActual);
+					actualizarListaFTP();
+				}
+			}
+		});
 
-                JFileChooser fc = new JFileChooser();
-                File carpeta;
-                FTPFile select = listaArchivos.getSelectedValue();
-                fc.setDialogTitle("Select where to download the file");
-                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                int respuesta = fc.showDialog(fc, "OK");
-                if (respuesta == JFileChooser.APPROVE_OPTION) {
-                    carpeta = fc.getSelectedFile();
-                    if (select != null) {
-                        ftp.descargarArchivo(select, carpeta.getAbsolutePath(), rutaActual);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Please select a file", "Error",
-                                JOptionPane.INFORMATION_MESSAGE);
-                    }
-                }
-            }
-        });
-    }
+	}
 
-    public void accionBotonEliminar(JButton boton) {
+	public void accionBotonDescarga(JButton boton) {
+		boton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 
-        boton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+				JFileChooser fc = new JFileChooser();
+				File carpeta;
+				FTPFile select = listaArchivos.getSelectedValue();
+				fc.setDialogTitle("Select where to download the file");
+				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				int respuesta = fc.showDialog(fc, "OK");
+				if (respuesta == JFileChooser.APPROVE_OPTION) {
+					carpeta = fc.getSelectedFile();
+					if (select != null) {
+						ftp.descargarArchivo(select, carpeta.getAbsolutePath(), rutaActual);
+					} else {
+						JOptionPane.showMessageDialog(null, "Please select a file", "Error",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+			}
+		});
+	}
 
-                FTPFile select = listaArchivos.getSelectedValue();
-                if (select != null) {
-                    ftp.borrarArchivo(select, rutaActual);
-                    actualizarListaFTP();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Please select a file", "Error",
-                            JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
-        });
+	public void accionBotonEliminar(JButton boton) {
 
-    }
+		boton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 
-    public void accionBotonCrearCarpeta(JButton boton) {
-        boton.addActionListener(new ActionListener() {
-            String nombreCarpeta = "";
+				FTPFile select = listaArchivos.getSelectedValue();
+				if (select != null) {
+					ftp.borrarArchivo(select, rutaActual);
+					db.eliminarArchivo(select.getName(), rutaActual);
+					actualizarListaFTP();
+				} else {
+					JOptionPane.showMessageDialog(null, "Please select a file", "Error",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
 
-            public void actionPerformed(ActionEvent e) {
-                nombreCarpeta = JOptionPane.showInputDialog(null, "Enter the directory name", "");
-                if (nombreCarpeta != null) {
-                    ftp.crearCarpeta(nombreCarpeta, rutaActual);
-                    actualizarListaFTP();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Please enter a name for the folder", "Error",
-                            JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
-        });
+	}
 
-    }
+	public void accionBotonCrearCarpeta(JButton boton) {
+		boton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String nombreCarpeta;
+				Integer idPadre;
+				String emailUsuario;
+				String directorioServidor;
+				nombreCarpeta = JOptionPane.showInputDialog(null, "Enter the directory name", "");
+				if (nombreCarpeta != null) {
+					idPadre = db.obtenerIdPadre(rutaActual);
+					emailUsuario = db.obtenerEmailPorUsuario(client.getUser());
+					if (rutaActual.equals("/")) {
+					    directorioServidor = "/" + nombreCarpeta;
+					} else {
+					    directorioServidor = rutaActual + "/" + nombreCarpeta;
+					}
+					db.insertarArchivo(nombreCarpeta, directorioServidor, "", "Folder", idPadre, emailUsuario);
+					ftp.crearCarpeta(nombreCarpeta, rutaActual);
+					actualizarListaFTP();
+				} else {
+					JOptionPane.showMessageDialog(null, "Please enter a name for the folder", "Error",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
 
-    public void accionBotonBorrarCarpeta(JButton boton) {
+	}
 
-        boton.addActionListener(new ActionListener() {
-            FTPFile select;
+	public void accionBotonBorrarCarpeta(JButton boton) {
 
-            public void actionPerformed(ActionEvent e) {
+		boton.addActionListener(new ActionListener() {
+			FTPFile select;
+			String rutaCarpeta;
 
-                select = listaArchivos.getSelectedValue();
-                if (select == null) {
-                    JOptionPane.showMessageDialog(null, "Please select a folder.", "Error",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
+			public void actionPerformed(ActionEvent e) {
 
-                if (!select.isDirectory()) {
-                    JOptionPane.showMessageDialog(null, "You must select a folder, not a file.", "Error",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
+				select = listaArchivos.getSelectedValue();
+				rutaCarpeta = rutaActual.equals("/") ? "/" + select.getName() : rutaActual + "/" + select.getName();
+				if (select == null) {
+					JOptionPane.showMessageDialog(null, "Please select a folder.", "Error",
+							JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
 
-                ftp.borrarCarpeta(select.getName(), rutaActual);
-                actualizarListaFTP();
-            }
-        });
-    }
+				if (!select.isDirectory()) {
+					JOptionPane.showMessageDialog(null, "You must select a folder, not a file.", "Error",
+							JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				db.eliminarArchivo(select.getName(), rutaCarpeta);
+				ftp.borrarCarpeta(select.getName(), rutaActual);
 
-    public void actualizarListaFTP(String ruta) {
-        FTPFile[] archivos;
-        if (this.ftp.conectar()) {
-            this.listaModel.clear();
-            archivos = ftp.listarArchivos(ruta);
-            for (FTPFile archivo : archivos) {
-                this.listaModel.addElement(archivo);
-            }
-            this.rutaActual = ruta;
-            this.ftp.desconectar();
-        }
-    }
+				actualizarListaFTP();
+			}
+		});
+	}
 
-    public void actualizarListaFTP() {
-        actualizarListaFTP(this.rutaActual);
-    }
+	public void actualizarListaFTP(String ruta) {
+		FTPFile[] archivos;
+		if (this.ftp.conectar()) {
+			this.listaModel.clear();
+			archivos = ftp.listarArchivos(ruta);
+			for (FTPFile archivo : archivos) {
+				this.listaModel.addElement(archivo);
+			}
+			this.rutaActual = ruta;
+			this.ftp.desconectar();
+		}
+	}
 
-    public void detectarDobleClick(JList<FTPFile> listaArchivos) {
+	public void actualizarListaFTP() {
+		actualizarListaFTP(this.rutaActual);
+	}
 
-        listaArchivos.addMouseListener(new MouseAdapter() {
-            FTPFile seleccionado;
-            String nuevaRuta;
+	public void detectarDobleClick(JList<FTPFile> listaArchivos) {
 
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    seleccionado = listaArchivos.getSelectedValue();
-                    if (seleccionado != null && seleccionado.isDirectory()) {
-                        nuevaRuta = rutaActual + "/" + seleccionado.getName();
-                        actualizarListaFTP(nuevaRuta);
-                    }
-                }
-            }
-        });
+		listaArchivos.addMouseListener(new MouseAdapter() {
+			FTPFile seleccionado;
+			String nuevaRuta;
 
-    }
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					seleccionado = listaArchivos.getSelectedValue();
+					if (seleccionado != null && seleccionado.isDirectory()) {
+						nuevaRuta = rutaActual + "/" + seleccionado.getName();
+						actualizarListaFTP(nuevaRuta);
+					}
+				}
+			}
+		});
 
-    public void accionBotonVolver(JButton boton) {
-        boton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String rutaPadre;
-                if (!rutaActual.equals("/")) {
-                    rutaPadre = rutaActual.substring(0, rutaActual.lastIndexOf('/'));
-                    if (rutaPadre.isEmpty())
-                        rutaPadre = "/";
-                    actualizarListaFTP(rutaPadre);
-                }
-            }
-        });
+	}
 
-    }
+	public void accionBotonVolver(JButton boton) {
+		boton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String rutaPadre;
+				if (!rutaActual.equals("/")) {
+					rutaPadre = rutaActual.substring(0, rutaActual.lastIndexOf('/'));
+					if (rutaPadre.isEmpty())
+						rutaPadre = "/";
+					actualizarListaFTP(rutaPadre);
+				}
+			}
+		});
 
-    public void accionBotonVolverMenuPrincipal(JButton boton) {
-        boton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                menu.hacerVisible();
-            }
-        });
+	}
 
-    }
+	public void accionBotonVolverMenuPrincipal(JButton boton) {
+		boton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				menu.hacerVisible();
+			}
+		});
 
-    public void hacerVisible() {
-        setVisible(true);
-    }
+	}
+
+	public void hacerVisible() {
+		setVisible(true);
+	}
 
 }
