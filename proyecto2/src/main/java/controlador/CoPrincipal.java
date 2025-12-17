@@ -37,7 +37,7 @@ public class CoPrincipal {
         this.vistaMenuPrincipal = new VistaMenuPrincipal(modeloFTP,vista);
         this.vistaArchivo = new VistaGestorArchivos(modeloFTP, vistaMenuPrincipal);
         this.vistaAdmin = new VistaAdmin(vistaMenuPrincipal);
-        this.vistaUsuarios = new VistaRegistroUsuarios(vistaAdmin,modeloFTP);
+        this.vistaUsuarios = new VistaRegistroUsuarios(vistaAdmin,modeloFTP, bd);
         OyenteLogin oyLogin = new OyenteLogin(vista, modeloFTP, this, vistaArchivo, vistaMenuPrincipal, vistaAdmin, vistaUsuarios);
         vista.getPanelLogin().getBotones().get(0).addActionListener(oyLogin);
         vistaMenuPrincipal.getBotonCRUD().addActionListener(oyLogin);

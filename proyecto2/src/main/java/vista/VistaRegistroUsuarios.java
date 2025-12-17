@@ -15,12 +15,14 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
 import modelo.User;
 
 public class VistaRegistroUsuarios extends JFrame {
 
 	ModeloClienteFTP client;
+	ModeloBaseDatos db;
 	VistaAdmin vistaAdmin;
 	JLabel nombre;
 	JTextField textNombre;
@@ -33,10 +35,11 @@ public class VistaRegistroUsuarios extends JFrame {
 	JLabel confContrasena;
 	JPasswordField textConfContrasena;
 
-	public VistaRegistroUsuarios(VistaAdmin vistaAdmin, ModeloClienteFTP client) {
+	public VistaRegistroUsuarios(VistaAdmin vistaAdmin, ModeloClienteFTP client, ModeloBaseDatos db) {
 		this.vistaAdmin = vistaAdmin;
 		this.client = client;
-		
+		this.db = db;
+
 		this.setTitle("User Register");
 		this.setLayout(new BorderLayout());
 
@@ -79,7 +82,7 @@ public class VistaRegistroUsuarios extends JFrame {
 
 		accionBotonVolver(volver);
 		accionBotonAniadir(aniadir);
-		
+
 		contenedor.add(layout);
 		contenedor.add(aniadir);
 		contenedor.add(volver);
@@ -108,18 +111,39 @@ public class VistaRegistroUsuarios extends JFrame {
 		boton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				User usuario;
+				String password;
 				char[] contrasena = textContrasena.getPassword();
-	            char[] confContrasena = textConfContrasena.getPassword();
-
-	            if (!java.util.Arrays.equals(contrasena, confContrasena)) {
+				char[] confContrasena = textConfContrasena.getPassword();
+				if (textNombre.getText().trim().isEmpty() || textCorreo.getText().trim().isEmpty()
+						|| textClaveCorreo.getText().trim().isEmpty()) {
+					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "All fields must be filled", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else if (contrasena.length == 0 || confContrasena.length == 0) {
+					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "All fields must be filled", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else if (!java.util.Arrays.equals(contrasena, confContrasena)) {
 					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "Password doesn't match", "Error",
 							JOptionPane.ERROR_MESSAGE);
+				} else if (!textClaveCorreo.getText().matches("^[a-z]{4}( [a-z]{4}){3}$")) {
+					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this,
+							"Invalid format for Address Key, it must be: xxxx xxxx xxxx xxxx (all in lowercase)",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				} else if (!textCorreo.getText().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "Invalid email format", "Error",
+							JOptionPane.ERROR_MESSAGE);
 				} else {
-					usuario = new User(textNombre.getText(), textCorreo.getText(), textClaveCorreo.getText(),
-							textContrasena.getPassword().toString());
-					client.aniadirUsuario(usuario.getNombre(),usuario.getContrasena());
-					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "User registered correctly", "",
-							JOptionPane.INFORMATION_MESSAGE);
+					password = new String(contrasena);
+					usuario = new User(textNombre.getText(), textCorreo.getText(), textClaveCorreo.getText(), password);
+					if (db.registrarUsuario(usuario.getCorreo(), usuario.getNombre(), usuario.getContrasena(),
+							usuario.getClaveCorreo())) {
+						client.aniadirUsuario(usuario.getNombre(), usuario.getContrasena());
+						JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "User registered correctly", "",
+								JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(VistaRegistroUsuarios.this,
+								"User with this name or email already exists", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+
 				}
 
 			}

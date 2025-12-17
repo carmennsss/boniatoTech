@@ -126,7 +126,7 @@ public class ModeloClienteFTP {
             newUser.appendChild(ipFilter);
 
             // RUTA HOME (Cuidado, esta ruta es la ruta INTERNA de la VM)
-            String carpetaHome = "C:\\xampp\\htdocs\\" + nombre;
+            String carpetaHome = "C:\\Users\\Administrator\\Documents\\serwo";
 
             Element permissions = doc.createElement("Permissions");
             Element permission = doc.createElement("Permission");
@@ -135,10 +135,10 @@ public class ModeloClienteFTP {
             // Permisos full (Incluyendo FileAppend que faltaba)
             agregarOpcion(doc, permission, "FileRead", "1");
             agregarOpcion(doc, permission, "FileWrite", "0");
-            agregarOpcion(doc, permission, "FileDelete", "1");
-            agregarOpcion(doc, permission, "FileAppend", "1");
-            agregarOpcion(doc, permission, "DirCreate", "1");
-            agregarOpcion(doc, permission, "DirDelete", "1");
+            agregarOpcion(doc, permission, "FileDelete", "0");
+            agregarOpcion(doc, permission, "FileAppend", "0");
+            agregarOpcion(doc, permission, "DirCreate", "0");
+            agregarOpcion(doc, permission, "DirDelete", "0");
             agregarOpcion(doc, permission, "DirList", "1");
             agregarOpcion(doc, permission, "DirSubdirs", "1");
             agregarOpcion(doc, permission, "IsHome", "1");
@@ -219,13 +219,12 @@ public class ModeloClienteFTP {
     private String md5(String input) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] messageDigest = md.digest(input.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            java.math.BigInteger number = new java.math.BigInteger(1, messageDigest);
-            String hashtext = number.toString(16);
-            while (hashtext.length() < 32) {
-                hashtext = "0" + hashtext;
+            byte[] messageDigest = md.digest(input.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : messageDigest) {
+                sb.append(String.format("%02x", b));
             }
-            return hashtext;
+            return sb.toString();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
