@@ -12,7 +12,7 @@ import vista.VistaGeneralCorreo;
 public class HiloRecepcionCorreos implements Runnable {
 
 	private GestionCorreos gestionPop3;
-	private String host, correo, PASSWORD_APLICACION;
+	private String host,hostImap, correo, PASSWORD_APLICACION;
 	private VistaGeneralCorreo vistaGeneral;
 	private int ultimoNumeroCorreos = -1;
 	private ControladorCorreos controlador;
@@ -32,7 +32,7 @@ public class HiloRecepcionCorreos implements Runnable {
 	        while (!Thread.currentThread().isInterrupted()) {
 
 	        	ArrayList<Correo> nuevos =
-	        	        gestionPop3.recibirCorreosPOP3(host, correo, PASSWORD_APLICACION);
+	        	        gestionPop3.recibirCorreosPOP3(host,hostImap, correo, PASSWORD_APLICACION);
 
 	        	if (nuevos.size() != ultimoNumeroCorreos) {
 //	        		Log log = new Log();
