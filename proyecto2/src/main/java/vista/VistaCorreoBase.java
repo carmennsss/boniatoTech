@@ -29,7 +29,7 @@ public class VistaCorreoBase extends JFrame {
 
 
     public VistaCorreoBase(String remitente) {
-        this.setTitle("Redactar Nuevo Correo");
+        this.setTitle("Compose new Mail");
         this.remitente = remitente;
         
         inicializarComponentes();
@@ -42,7 +42,7 @@ public class VistaCorreoBase extends JFrame {
 
     // CONSTRUCTOR CONSULTAR
     public VistaCorreoBase(Correo correo) {
-        this.setTitle("Consultar Correo");
+        this.setTitle("Check Mail");
 
         inicializarComponentes();
         propiedadesGenerales();
@@ -71,7 +71,7 @@ public class VistaCorreoBase extends JFrame {
         botonLeido = new JButton("Mark as read");
         botonNoLeido = new JButton("Mark as unread");
         botonExportar = new JButton("Export");
-        botonAdjuntar = new JButton("Adjuntar");
+        botonAdjuntar = new JButton("Attach");
     }
 
     private void ensamblarVista(boolean esEnvio) {
@@ -81,13 +81,13 @@ public class VistaCorreoBase extends JFrame {
         JPanel panelDatosSuperiores = new JPanel(new GridLayout(0, 2, 5, 5));
         
         if (esEnvio) {
-            panelDatosSuperiores.add(new JLabel("De:"));
+            panelDatosSuperiores.add(new JLabel("For:"));
         } else {
             panelDatosSuperiores.add(new JLabel("From:"));
         }
         panelDatosSuperiores.add(textoPara);
 
-        panelDatosSuperiores.add(new JLabel("Asunto:"));
+        panelDatosSuperiores.add(new JLabel("Subject:"));
         panelDatosSuperiores.add(textoAsunto);
 
         panelPrincipal.add(panelDatosSuperiores, BorderLayout.NORTH);
