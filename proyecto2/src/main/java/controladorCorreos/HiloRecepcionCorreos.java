@@ -9,13 +9,13 @@ import vista.VistaGeneralCorreo;
 
 public class HiloRecepcionCorreos implements Runnable {
 
-	private GestionPOP3 gestionPop3;
+	private GestionCorreos gestionPop3;
 	private String host, correo, PASSWORD_APLICACION;
 	private VistaGeneralCorreo vistaGeneral;
 	private int ultimoNumeroCorreos = -1;
 	private ControladorCorreos controlador;
 	
-	public HiloRecepcionCorreos(GestionPOP3 gestionPop3, String host, String correo, String PASSWORD_APLICACION, VistaGeneralCorreo vistaGeneral, ControladorCorreos controlador) {
+	public HiloRecepcionCorreos(GestionCorreos gestionPop3, String host, String correo, String PASSWORD_APLICACION, VistaGeneralCorreo vistaGeneral, ControladorCorreos controlador) {
 		this.gestionPop3 = gestionPop3;
 		this.host = host;
 		this.PASSWORD_APLICACION = PASSWORD_APLICACION;
