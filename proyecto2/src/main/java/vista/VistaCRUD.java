@@ -55,7 +55,8 @@ public class VistaCRUD extends JFrame {
         panelFondo.setLayout(new BorderLayout());
         setContentPane(panelFondo);
 
-        ArrayList<String> textosMenu = new ArrayList<>(Arrays.asList("ESPECIES", "RECINTOS", "CUIDADORES", "ANIMALES"));
+        ArrayList<String> textosMenu = new ArrayList<>(Arrays.asList("ESPECIES", "RECINTOS", "CUIDADORES", "ANIMALES",
+                "TRASLADOS", "ESPECIES_RECINTOS", "ELEMENTOS"));
         panelMenu = new ViBotones(textosMenu);
 
         panelTabla = new ViTabla();

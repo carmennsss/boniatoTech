@@ -106,6 +106,22 @@ public class ModeloBaseDatos {
         return lista;
     }
 
+    public ArrayList<Animal> getAnimales() {
+        ArrayList<Animal> lista = new ArrayList<>();
+        try {
+            ResultSet rs = getConsulta("SELECT * FROM animales");
+            if (rs != null) {
+                while (rs.next()) {
+                    lista.add(new Animal(rs.getInt("animal_id"), rs.getString("nombre_animales"),
+                            rs.getString("tipo"), rs.getInt("especie_id"), rs.getInt("cuidador_id")));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
     public ArrayList<String> getNombresColumnas(String tabla) {
         ArrayList<String> columnas = new ArrayList<>();
         try {

@@ -5,12 +5,12 @@ import java.awt.event.ActionListener;
 
 import vista.VistaCorreoBase;
 
-public class OyenteBotonEnviar implements ActionListener{
+public class OyenteBotonEnviar implements ActionListener {
 
 	private VistaCorreoBase v;
 	private String correo;
 	private String passwordAplicacion;
-	
+
 	public OyenteBotonEnviar(String correo, String passwordAplicacion) {
 		this.correo = correo;
 		this.passwordAplicacion = passwordAplicacion;

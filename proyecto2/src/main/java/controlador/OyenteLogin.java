@@ -51,7 +51,7 @@ public class OyenteLogin implements ActionListener {
 			viMain.hacerVisible();
 			viMain.mostrarCRUD();
 			vistaMenuPrincipal.setVisible(false);
-			controladorPrincipal.rellenarTabla("animales");
+			controladorPrincipal.getControladorCRUD().rellenarTabla("animales");
 		} else if (button.getText().equalsIgnoreCase("Administrate")) {
 			if (modelo.getUser().equalsIgnoreCase("admin")) {
 				vistaAdmin.hacerVisible();
@@ -64,27 +64,27 @@ public class OyenteLogin implements ActionListener {
 			vistaUsuarios.hacerVisible();
 			vistaAdmin.setVisible(false);
 		} else if (button.getText().equalsIgnoreCase("Administrate roles")) {
-			controladorPrincipal.rellenarVentanaCrearRol();
+			controladorPrincipal.getControladorRoles().rellenarVentanaCrearRol();
 			viMain.getViCrearRol().hacerVisible();
 		} else if (button.getText().equalsIgnoreCase("Agregar Rol")) {
 			if (viMain.getViCrearRol().mostrarAgregarRol() == 0) {
-				controladorPrincipal.agregarRol();
+				controladorPrincipal.getControladorRoles().agregarRol();
 			}
 		} else if (button.getText().equalsIgnoreCase("Desasignar")) {
-			controladorPrincipal.asignarRol(false, modeloVista.getCorreoSeleccionados(),
+			controladorPrincipal.getControladorRoles().asignarRol(false, modeloVista.getCorreoSeleccionados(),
 					(Rol) viMain.getViAsignarRol().getComboRoles().getSelectedItem());
 			modeloVista.getCorreoSeleccionados().clear();
 			viMain.getViAsignarRol().getTabla().deseleccionarFilas();
-			controladorPrincipal.rellenarTablaUsuarios();
+			controladorPrincipal.getControladorRoles().rellenarTablaUsuarios();
 		} else if (button.getText().equalsIgnoreCase("Asignar")) {
-			controladorPrincipal.asignarRol(true, modeloVista.getCorreoSeleccionados(),
+			controladorPrincipal.getControladorRoles().asignarRol(true, modeloVista.getCorreoSeleccionados(),
 					(Rol) viMain.getViAsignarRol().getComboRoles().getSelectedItem());
 			modeloVista.getCorreoSeleccionados().clear();
 			viMain.getViAsignarRol().getTabla().deseleccionarFilas();
-			controladorPrincipal.rellenarTablaUsuarios();
+			controladorPrincipal.getControladorRoles().rellenarTablaUsuarios();
 		} else if (button.getText().equalsIgnoreCase("Asign roles")) {
-			controladorPrincipal.rellenarComboRoles();
-			controladorPrincipal.rellenarTablaUsuarios();
+			controladorPrincipal.getControladorRoles().rellenarComboRoles();
+			controladorPrincipal.getControladorRoles().rellenarTablaUsuarios();
 			viMain.getViAsignarRol().setVisible(true);
 			vistaAdmin.setVisible(false);
 		}

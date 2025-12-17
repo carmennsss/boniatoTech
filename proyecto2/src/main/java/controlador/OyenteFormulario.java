@@ -21,9 +21,9 @@ public class OyenteFormulario implements ActionListener {
 
         if (texto.equals("Guardar")) {
             if (controlador.isEditando()) {
-                controlador.guardarActualizar();
+                controlador.getControladorCRUD().guardarActualizar();
             } else {
-                controlador.guardarNuevo();
+                controlador.getControladorCRUD().guardarNuevo();
             }
         } else if (texto.equals("Cancelar")) {
             vista.getVentanaFormulario().setVisible(false);

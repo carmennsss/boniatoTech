@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import modelo.Especie;
 import modelo.Cuidador;
 import modelo.Recinto;
+import modelo.Animal;
 
 public class ViFormulario extends JFrame {
     private ArrayList<JLabel> etiquetas;
@@ -107,6 +108,36 @@ public class ViFormulario extends JFrame {
         btn.setFocusPainted(false);
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.setPreferredSize(new Dimension(120, 35));
+    }
+
+    public void agregarComboRecintos(String nombre, ArrayList<Recinto> elementos) {
+        int indice = -1;
+        for (int i = 0; i < etiquetas.size(); i++) {
+            if (etiquetas.get(i).getText().equals(nombre + ":")) {
+                indice = i;
+                break;
+            }
+        }
+
+        if (indice != -1) {
+            JComponent campoAntiguo = campos.get(indice);
+            GridBagLayout layout = (GridBagLayout) panelCentral.getLayout();
+            GridBagConstraints gbc = layout.getConstraints(campoAntiguo);
+
+            panelCentral.remove(campoAntiguo);
+
+            JComboBox<Recinto> combo = new JComboBox<>();
+            combo.setFont(new Font("Arial", Font.PLAIN, 14));
+            for (Recinto elemento : elementos) {
+                combo.addItem(elemento);
+            }
+
+            campos.set(indice, combo);
+            panelCentral.add(combo, gbc);
+
+            revalidate();
+            repaint();
+        }
     }
 
     public void agregarComboEspecies(String nombre, ArrayList<Especie> elementos) {
@@ -220,6 +251,8 @@ public class ViFormulario extends JFrame {
                             match = true;
                         else if (item instanceof Recinto && ((Recinto) item).getRecinto_id() == id)
                             match = true;
+                        else if (item instanceof Animal && ((Animal) item).getAnimal_id() == id)
+                            match = true;
 
                         if (match) {
                             combo.setSelectedIndex(j);
@@ -249,6 +282,8 @@ public class ViFormulario extends JFrame {
                     valores[i] = String.valueOf(((Cuidador) selected).getCuidador_id());
                 } else if (selected instanceof Recinto) {
                     valores[i] = String.valueOf(((Recinto) selected).getRecinto_id());
+                } else if (selected instanceof Animal) {
+                    valores[i] = String.valueOf(((Animal) selected).getAnimal_id());
                 } else {
                     valores[i] = selected != null ? selected.toString() : "";
                 }
@@ -267,5 +302,35 @@ public class ViFormulario extends JFrame {
 
     public ArrayList<JComponent> getCampos() {
         return campos;
+    }
+
+    public void agregarComboAnimales(String nombre, ArrayList<Animal> elementos) {
+        int indice = -1;
+        for (int i = 0; i < etiquetas.size(); i++) {
+            if (etiquetas.get(i).getText().equals(nombre + ":")) {
+                indice = i;
+                break;
+            }
+        }
+
+        if (indice != -1) {
+            JComponent campoAntiguo = campos.get(indice);
+            GridBagLayout layout = (GridBagLayout) panelCentral.getLayout();
+            GridBagConstraints gbc = layout.getConstraints(campoAntiguo);
+
+            panelCentral.remove(campoAntiguo);
+
+            JComboBox<Animal> combo = new JComboBox<>();
+            combo.setFont(new Font("Arial", Font.PLAIN, 14));
+            for (Animal elemento : elementos) {
+                combo.addItem(elemento);
+            }
+
+            campos.set(indice, combo);
+            panelCentral.add(combo, gbc);
+
+            revalidate();
+            repaint();
+        }
     }
 }

@@ -36,17 +36,17 @@ public class OyenteTabla extends MouseAdapter implements TableModelListener {
     }
 
     @Override
-    public void tableChanged(javax.swing.event.TableModelEvent e) {
-        if (e.getType() == javax.swing.event.TableModelEvent.UPDATE) {
-            int row = e.getFirstRow();
-            int column = e.getColumn();
-            if (row >= 0 && column >= 2 && listaNombresPermisos != null) {
-                javax.swing.table.TableModel model = (javax.swing.table.TableModel) e.getSource();
-                String rolNombre = (String) model.getValueAt(row, 0);
-                String permisoNombre = listaNombresPermisos.get(column - 2);
-                Boolean isChecked = (Boolean) model.getValueAt(row, column);
+    public void tableChanged(javax.swing.event.TableModelEvent eventoModelo) {
+        if (eventoModelo.getType() == javax.swing.event.TableModelEvent.UPDATE) {
+            int filaModificada = eventoModelo.getFirstRow();
+            int columnaModificada = eventoModelo.getColumn();
+            if (filaModificada >= 0 && columnaModificada >= 2 && listaNombresPermisos != null) {
+                javax.swing.table.TableModel modeloTabla = (javax.swing.table.TableModel) eventoModelo.getSource();
+                String nombreRol = (String) modeloTabla.getValueAt(filaModificada, 0);
+                String nombrePermiso = listaNombresPermisos.get(columnaModificada - 2);
+                Boolean nuevoValor = (Boolean) modeloTabla.getValueAt(filaModificada, columnaModificada);
 
-                controlador.actualizarPermiso(rolNombre, permisoNombre, isChecked);
+                controlador.getControladorRoles().actualizarPermiso(nombreRol, nombrePermiso, nuevoValor);
             }
         }
     }
@@ -55,11 +55,11 @@ public class OyenteTabla extends MouseAdapter implements TableModelListener {
         int eleccion = vista.mostrarOpcionesTabla();
 
         if (eleccion == 0) {
-            controlador.mostrarFormularioNuevo();
+            controlador.getControladorCRUD().mostrarFormularioNuevo();
         } else if (eleccion == 1) {
-            controlador.mostrarFormularioActualizar();
+            controlador.getControladorCRUD().mostrarFormularioActualizar();
         } else if (eleccion == 2) {
-            controlador.eliminarRegistro();
+            controlador.getControladorCRUD().eliminarRegistro();
         }
     }
 }

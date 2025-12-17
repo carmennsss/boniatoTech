@@ -14,6 +14,11 @@ public class User {
 		this.contrasena = contrasena;
 	}
 
+	public User(String nombre, String correo) {
+		this.nombre = nombre;
+		this.correo = correo;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -31,11 +36,11 @@ public class User {
 	}
 
 	public String getPassword() {
-		return password;
+		return contrasena;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPassword(String contrasena) {
+		this.contrasena = contrasena;
 	}
 
 	public String getClaveCorreo() {

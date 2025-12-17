@@ -6,11 +6,15 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 
+import java.util.ArrayList;
+
 public class ViTabla extends JPanel {
     private JTable tabla;
     private JScrollPane scrollPane;
+    private ArrayList<Integer> filasSeleccionadas;
 
     public ViTabla() {
+        filasSeleccionadas = new ArrayList<>();
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setOpaque(false);
@@ -34,6 +38,24 @@ public class ViTabla extends JPanel {
         header.setBackground(Estilos.COLOR_TABLA_HEADER);
         header.setOpaque(true);
         header.setPreferredSize(new Dimension(0, 40));
+
+        tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
+                Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                if (filasSeleccionadas.contains(row)) {
+                    comp.setBackground(Estilos.COLOR_TABLA_SELECCION);
+                    comp.setForeground(Color.WHITE);
+                } else {
+                    comp.setBackground(Color.WHITE);
+                    comp.setForeground(Estilos.TEXTO_PRINCIPAL);
+                }
+
+                return comp;
+            }
+        });
     }
 
     public void setModelo(DefaultTableModel modelo) {
@@ -45,43 +67,18 @@ public class ViTabla extends JPanel {
     }
 
     public void cambiarColorFila(int fila, boolean seleccionado) {
-        tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                    boolean hasFocus, int row, int column) {
-                Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-                // Si la fila es la que se pasó como parámetro, se pone verde, si no, blanca
-                if (row == fila) {
-                    if (!seleccionado) {
-                        comp.setBackground(Color.GREEN);
-                    } else {
-                        comp.setBackground(Color.WHITE);
-                    }
-                } else {
-                    comp.setBackground(Color.WHITE);
-                }
-
-                return comp;
+        if (!seleccionado) {
+            if (!filasSeleccionadas.contains(fila)) {
+                filasSeleccionadas.add(fila);
             }
-        });
-
-        tabla.repaint(); // Refresca la tabla para aplicar el cambio
+        } else {
+            filasSeleccionadas.remove(Integer.valueOf(fila));
+        }
+        tabla.repaint();
     }
 
     public void deseleccionarFilas() {
-        tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                    boolean hasFocus, int row, int column) {
-                Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-                comp.setBackground(Color.WHITE);
-
-                return comp;
-            }
-        });
-
+        filasSeleccionadas.clear();
         tabla.repaint();
     }
 }

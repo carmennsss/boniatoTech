@@ -200,7 +200,7 @@ public class ModeloClienteFTP {
         agregarOpcion(doc, parent, name, value);
     }
 
-    public void añadirUsuario(String nombre, String password) {
+    public void aniadirUsuario(String nombre, String password) {
 
         // 1. PRIMERO NOS AUTENTICAMOS EN LA CARPETA
         conectarCarpetaCompartida();
@@ -211,7 +211,6 @@ public class ModeloClienteFTP {
 
             if (!xmlFile.exists()) {
                 System.err.println("ERROR: No encuentro el archivo en: " + RUTA_XML);
-                System.err.println("AsegÃºrate de que la carpeta 'FileZillaFTP' estÃ¡ compartida en la VM.");
                 return;
             }
 
