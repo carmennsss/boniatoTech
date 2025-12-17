@@ -29,7 +29,7 @@ public class CoPrincipal {
         this.modeloFTP = new ModeloClienteFTP();
         this.controladorRoles = new ControladorRoles(this, bd, vista, modeloFTP, modeloVista);
         this.vistaMenuPrincipal = new VistaMenuPrincipal(modeloFTP, vista);
-        this.vistaArchivo = new VistaGestorArchivos(modeloFTP, vistaMenuPrincipal);
+        this.vistaArchivo = new VistaGestorArchivos(modeloFTP, vistaMenuPrincipal, bd);
         this.vistaAdmin = new VistaAdmin(vistaMenuPrincipal);
         this.vistaUsuarios = new VistaRegistroUsuarios(vistaAdmin, modeloFTP, bd);
         vista.hacerVisible();

@@ -62,7 +62,7 @@ public class ControladorCorreos {
 	}
 
 	public ArrayList<Correo> obtenerCorreos() {
-		ArrayList<Correo> listaCorreos = gestion.recibirCorreosPOP3(HOST, "recent:" + CORREO, PASSWORD_APLICACION);
+		ArrayList<Correo> listaCorreos = gestion.recibirCorreosPOP3(HOST,HOSTIMAP, "recent:" + CORREO, PASSWORD_APLICACION);
 
 		return listaCorreos;
 	}
