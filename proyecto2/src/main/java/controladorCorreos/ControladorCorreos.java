@@ -15,50 +15,54 @@ public class ControladorCorreos {
 	private String CORREO;
 	private String PASSWORD_APLICACION;
 	private static final String HOST = "pop.gmail.com";
+	private static final String HOSTIMAP = "imap.gmail.com";
 	private ArrayList<Correo> correos = new ArrayList<>();
 	private VistaGeneralCorreo vistaGeneral;
-	private static GestionPOP3 gestion;
+	private static GestionCorreos gestion;
+	private Thread hiloRecepcion;
 
 	
 	public ControladorCorreos(String CORREO, String PASSWORD_APLICACION) {
 		this.CORREO = CORREO;
 		this.PASSWORD_APLICACION = PASSWORD_APLICACION;
-		gestion = new GestionPOP3();
+		gestion = new GestionCorreos();
 		configurarVistaGeneral();
 		
 		cargarCorreos();
-		
-		asignarBotonRecargar();
-		
+				
 	}
 
 	protected void cargarCorreos() {
 		new Thread(() -> {
-			vistaGeneral.getBotonRecargar().setEnabled(false);
 
 	        System.out.println("Conectando con Gmail...");
-	        correos.clear();
-	        correos.addAll(obtenerCorreos());
+	        ArrayList<Correo> listaDescargada = obtenerCorreos();
 	        
 	        // Una vez descargados, actualizamos la tabla en el hilo de Swing
 	        javax.swing.SwingUtilities.invokeLater(() -> {
-	            vistaGeneral.cargarCorreos(correos);
+	        	this.correos.clear();
+	            this.correos.addAll(listaDescargada); // Actualizamos la lista local
+	            vistaGeneral.cargarCorreos(this.correos);
+	            
+	            if (hiloRecepcion == null || !hiloRecepcion.isAlive()) {
+	                HiloRecepcionCorreos hilo = new HiloRecepcionCorreos(
+	                        gestion, HOST, "recent:" + CORREO, PASSWORD_APLICACION, vistaGeneral, this
+	                );
+	                hiloRecepcion = new Thread(hilo, "Hilo-Recepcion-Correos");
+	                hiloRecepcion.start();
+	            }
 
-	            System.out.println("Correos cargados.");
-				vistaGeneral.getBotonRecargar().setEnabled(true);
 
 	        });
 	    }).start();
 	}
-
-
-
-
-	private void asignarBotonRecargar() {
-		vistaGeneral.getBotonRecargar().addActionListener(new OyenteRecargar(vistaGeneral, correos, this));
+	
+	// Metodo para detener el hilo cuando se cierre la ventana
+	public void detenerHiloRecepcion() {
+	    if (hiloRecepcion != null && hiloRecepcion.isAlive()) {
+	        hiloRecepcion.interrupt();
+	    }
 	}
-
-
 
 
 	public ArrayList<Correo> obtenerCorreos() {
@@ -92,7 +96,7 @@ public class ControladorCorreos {
 	                indiceServidor - 1 
 	        );
 
-	        correos.remove(indiceEnLista);
+	        correos.remove(correo);
 	        vistaGeneral.cargarCorreos(correos);
 
 	    } catch (Exception e) {
@@ -101,29 +105,40 @@ public class ControladorCorreos {
 	}
 
 	
-	public void marcarCorreoLeido(Correo correo) throws Exception {
-		try {
-			    	
-	    	int indiceEnLista = correos.indexOf(correo);
-	        if (indiceEnLista == -1) return;
-	        
-	        int totalCorreos = correos.size();
-	        int indiceServidor = totalCorreos - indiceEnLista; 
+	public synchronized void marcarCorreoLeido(Correo correo) {
+	    try {
+	    	String idParaMarcar = correo.getMessageId();
 
-	        gestion.marcarLeidoPOP3(
-	                HOST,
-	                "recent:" + CORREO,
-	                PASSWORD_APLICACION,
-	                indiceServidor - 1 
+	        gestion.marcarLeidoIMAP(
+	            HOSTIMAP,
+	            CORREO,
+	            PASSWORD_APLICACION,
+	            idParaMarcar
 	        );
+
+	        correo.setLeido(true);
+	        javax.swing.SwingUtilities.invokeLater(() -> {
+                vistaGeneral.cargarCorreos(correos);
+            });
 
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
 	}
 	
+	public synchronized void actualizarListaDesdeHilo(ArrayList<Correo> nuevosCorreos) {
+	    this.correos.clear();
+	    this.correos.addAll(nuevosCorreos);
+	    
+	    vistaGeneral.cargarCorreos(this.correos);
+	    
+	    System.out.println("Lista de correos sincronizada. Total: " + this.correos.size());
+	}
 	
-
+	
+	public ArrayList<Correo> getListaCorreosActual() {
+	    return this.correos;
+	}
 
 	public String getPasswordAplicacion() {
 		return PASSWORD_APLICACION;
