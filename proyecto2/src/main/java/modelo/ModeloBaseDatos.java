@@ -146,7 +146,7 @@ public class ModeloBaseDatos {
         return valido;
     }
 
-    public boolean registrarUsuario(String correo, String password) {
+    public boolean registrarUsuario(String nombre, String correo, String claveCorreo, String password) {
         String sql = "INSERT INTO usuarios (correo, password) VALUES (?, ?)";
         try {
             PreparedStatement pstmt = getConexion().prepareStatement(sql);

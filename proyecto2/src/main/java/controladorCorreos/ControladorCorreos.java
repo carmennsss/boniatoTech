@@ -35,16 +35,17 @@ public class ControladorCorreos {
 		new Thread(() -> {
 
 	        System.out.println("Conectando con Gmail...");
-	        correos.clear();
-	        correos.addAll(obtenerCorreos());
+	        ArrayList<Correo> listaDescargada = obtenerCorreos();
 	        
 	        // Una vez descargados, actualizamos la tabla en el hilo de Swing
 	        javax.swing.SwingUtilities.invokeLater(() -> {
-	            vistaGeneral.cargarCorreos(correos);
+	        	this.correos.clear();
+	            this.correos.addAll(listaDescargada); // Actualizamos la lista local
+	            vistaGeneral.cargarCorreos(this.correos);
 	            
 	            if (hiloRecepcion == null || !hiloRecepcion.isAlive()) {
 	                HiloRecepcionCorreos hilo = new HiloRecepcionCorreos(
-	                        gestion, HOST, "recent:" + CORREO, PASSWORD_APLICACION, vistaGeneral
+	                        gestion, HOST, "recent:" + CORREO, PASSWORD_APLICACION, vistaGeneral, this
 	                );
 	                hiloRecepcion = new Thread(hilo, "Hilo-Recepcion-Correos");
 	                hiloRecepcion.start();
@@ -103,29 +104,41 @@ public class ControladorCorreos {
 	}
 
 	
-	public void marcarCorreoLeido(Correo correo) throws Exception {
-		try {
-			    	
-	    	int indiceEnLista = correos.indexOf(correo);
+	public synchronized void marcarCorreoLeido(Correo correo) {
+	    try {
+	        int indiceEnLista = correos.indexOf(correo);
 	        if (indiceEnLista == -1) return;
-	        
-	        int totalCorreos = correos.size();
-	        int indiceServidor = totalCorreos - indiceEnLista; 
 
-	        gestion.marcarLeidoPOP3(
-	                HOST,
-	                "recent:" + CORREO,
-	                PASSWORD_APLICACION,
-	                indiceServidor - 1 
+	        int indiceServidor = correos.size() - indiceEnLista;
+
+	        gestion.marcarLeidoIMAP(
+	            "imap.gmail.com",
+	            CORREO,
+	            PASSWORD_APLICACION,
+	            indiceServidor - 1
 	        );
+
+	        correo.setLeido(true);
+	        vistaGeneral.cargarCorreos(correos);
 
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
 	}
 	
+	public synchronized void actualizarListaDesdeHilo(ArrayList<Correo> nuevosCorreos) {
+	    this.correos.clear();
+	    this.correos.addAll(nuevosCorreos);
+	    
+	    vistaGeneral.cargarCorreos(this.correos);
+	    
+	    System.out.println("Lista de correos sincronizada. Total: " + this.correos.size());
+	}
 	
-
+	
+	public ArrayList<Correo> getListaCorreosActual() {
+	    return this.correos;
+	}
 
 	public String getPasswordAplicacion() {
 		return PASSWORD_APLICACION;

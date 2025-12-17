@@ -13,13 +13,15 @@ public class HiloRecepcionCorreos implements Runnable {
 	private String host, correo, PASSWORD_APLICACION;
 	private VistaGeneralCorreo vistaGeneral;
 	private int ultimoNumeroCorreos = -1;
+	private ControladorCorreos controlador;
 	
-	public HiloRecepcionCorreos(GestionPOP3 gestionPop3, String host, String correo, String PASSWORD_APLICACION, VistaGeneralCorreo vistaGeneral) {
+	public HiloRecepcionCorreos(GestionPOP3 gestionPop3, String host, String correo, String PASSWORD_APLICACION, VistaGeneralCorreo vistaGeneral, ControladorCorreos controlador) {
 		this.gestionPop3 = gestionPop3;
 		this.host = host;
 		this.PASSWORD_APLICACION = PASSWORD_APLICACION;
 		this.correo = correo;
 		this.vistaGeneral = vistaGeneral;
+		this.controlador = controlador;
 	}
 	
 	@Override
@@ -32,10 +34,12 @@ public class HiloRecepcionCorreos implements Runnable {
 
 	        	if (nuevos.size() != ultimoNumeroCorreos) {
 	        	    ultimoNumeroCorreos = nuevos.size();
-	        	    SwingUtilities.invokeLater(() -> vistaGeneral.cargarCorreos(nuevos));
+	        	    SwingUtilities.invokeLater(() -> {
+	        	    	controlador.actualizarListaDesdeHilo(nuevos);
+	        	    	});
 	        	}
 
-	            Thread.sleep(1_000); // 10 segundos
+	            Thread.sleep(5_000); // 5 segundos
 	        }
 	    } catch (InterruptedException e) {
 	        Thread.currentThread().interrupt();

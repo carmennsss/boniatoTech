@@ -26,14 +26,13 @@ public class OyenteTabla implements MouseListener {
     public void mouseClicked(MouseEvent e) {
 
     	if (e.getClickCount() == 2) {
-
-            int filaSeleccionada = emailTabla.getSelectedRow(); 
+            int filaSeleccionada = emailTabla.getSelectedRow();
             
+            ArrayList<Correo> correosActuales = controladorCorreos.getListaCorreosActual();
 
-            if (filaSeleccionada != -1 && !correos.isEmpty()) {
-            	
-                
-                Correo correoSeleccionado = correos.get(filaSeleccionada);
+            if (filaSeleccionada != -1 && !correosActuales.isEmpty()) {
+                // Ahora el índice coincidirá con la lista y la tabla
+                Correo correoSeleccionado = correosActuales.get(filaSeleccionada);
                 
                 VistaCorreoBase vistaLectura = new VistaCorreoBase(correoSeleccionado);
                 vistaLectura.getBotonEliminar().addActionListener(new OyenteBotonEliminar(correoSeleccionado, controladorCorreos, vistaLectura));
