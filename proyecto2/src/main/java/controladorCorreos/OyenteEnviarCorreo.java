@@ -30,8 +30,7 @@ public class OyenteEnviarCorreo implements ActionListener {
 		}
 		
 		try {
-			EnviarCorreo.enviarCorreo(remitente, asunto, cuerpoMensaje, receptor, passwordAplicacion);
-		} catch (Exception e1) {
+			EnviarCorreo.enviarCorreo(remitente, asunto, cuerpoMensaje, receptor, passwordAplicacion, v.getAdjuntos());		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(v, "El mensaje no se pudo enviar, verifica la existencia del correo del receptor");
 			e1.printStackTrace();
 		}
