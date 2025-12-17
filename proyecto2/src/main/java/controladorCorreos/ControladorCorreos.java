@@ -15,6 +15,7 @@ public class ControladorCorreos {
 	private String CORREO;
 	private String PASSWORD_APLICACION;
 	private static final String HOST = "pop.gmail.com";
+	private static final String HOSTIMAP = "imap.gmail.com";
 	private ArrayList<Correo> correos = new ArrayList<>();
 	private VistaGeneralCorreo vistaGeneral;
 	private static GestionCorreos gestion;
@@ -109,7 +110,7 @@ public class ControladorCorreos {
 	    	String idParaMarcar = correo.getMessageId();
 
 	        gestion.marcarLeidoIMAP(
-	            "imap.gmail.com",
+	            HOSTIMAP,
 	            CORREO,
 	            PASSWORD_APLICACION,
 	            idParaMarcar
