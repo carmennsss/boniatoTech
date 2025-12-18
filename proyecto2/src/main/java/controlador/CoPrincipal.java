@@ -94,7 +94,7 @@ public class CoPrincipal {
     
     public void instanciarCorreos() {
     	this.vistaGeneralCorreo = new VistaGeneralCorreo(bd.obtenerEmailPorUsuario(modeloFTP.getUser()));
-        this.controladorCorreos = new ControladorCorreos(bd.obtenerEmailPorUsuario(modeloFTP.getUser()), modeloFTP.getPass(), vistaGeneralCorreo);
+        this.controladorCorreos = new ControladorCorreos(bd.obtenerEmailPorUsuario(modeloFTP.getUser()), vistaGeneralCorreo, bd);
     }
 
     public void setEditando(boolean editando) {
