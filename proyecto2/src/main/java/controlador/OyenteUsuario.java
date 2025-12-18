@@ -2,18 +2,32 @@ package controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
+import modelo.ModeloBaseDatos;
+import modelo.ModeloClienteFTP;
 import modelo.User;
+import vista.VistaEliminarUsuarios;
 import vista.VistaRegistroUsuarios;
 
 public class OyenteUsuario implements ActionListener {
 	private VistaRegistroUsuarios vistaUsuario;
-	public OyenteUsuario(VistaRegistroUsuarios vistaUsuario) {
+	private VistaEliminarUsuarios vistaEliminarUsuarios;
+	private ModeloBaseDatos bd;
+	private ModeloClienteFTP client;
+
+	public OyenteUsuario(VistaRegistroUsuarios vistaUsuario, VistaEliminarUsuarios vistaEliminarUsuarios,
+			ModeloBaseDatos bd, ModeloClienteFTP client) {
 		this.vistaUsuario = vistaUsuario;
+		this.vistaEliminarUsuarios = vistaEliminarUsuarios;
+		this.bd = bd;
+		this.client=client;
 	}
 
 	@Override
@@ -63,11 +77,70 @@ public class OyenteUsuario implements ActionListener {
 
 			}
 
-		} else {
-			 vistaUsuario.setVisible(false);
-			 vistaUsuario.getVistaAdmin().hacerVisible();
+		} else if (btn == vistaUsuario.getEliminar()) {
 
+			vistaUsuario.setVisible(false);
+			vistaEliminarUsuarios.hacerVisible();
+			rellenarTablaUsuarios();
+
+		} else if (btn == vistaEliminarUsuarios.getBtnVolver()) {
+			vistaEliminarUsuarios.setVisible(false);
+			vistaUsuario.hacerVisible();
+		} else if (btn == vistaEliminarUsuarios.getBtnEliminar()) {
+
+			int filaSeleccionada = vistaEliminarUsuarios.getTabla().getTabla().getSelectedRow();
+
+			if (filaSeleccionada == -1) {
+				JOptionPane.showMessageDialog(vistaEliminarUsuarios, "Select a user to delete", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			String nombre = vistaEliminarUsuarios.getTabla().getTabla().getValueAt(filaSeleccionada, 0).toString();
+			String email = vistaEliminarUsuarios.getTabla().getTabla().getValueAt(filaSeleccionada, 1).toString();
+
+			int confirmacion = JOptionPane.showConfirmDialog(vistaEliminarUsuarios,
+					"Are you sure you want to delete this user?", "Confirm", JOptionPane.YES_NO_OPTION);
+
+			if (confirmacion == JOptionPane.YES_OPTION) {
+				if (bd.eliminarUsuario(email)) {
+					client.eliminarUsuario(nombre);
+					JOptionPane.showMessageDialog(vistaEliminarUsuarios, "User deleted successfully", "Success",
+							JOptionPane.INFORMATION_MESSAGE);
+					rellenarTablaUsuarios();
+				} else {
+					JOptionPane.showMessageDialog(vistaEliminarUsuarios, "Error deleting user", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+
+		} else {
+			vistaUsuario.setVisible(false);
+			vistaUsuario.getVistaAdmin().hacerVisible();
 		}
+	}
+
+	public void rellenarTablaUsuarios() {
+		DefaultTableModel modeloTabla = new DefaultTableModel() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		modeloTabla.addColumn("Usuario");
+		modeloTabla.addColumn("Correo");
+		String sql = "SELECT nombre_usuario, email FROM usuarios;";
+		ResultSet rs = bd.getConsulta(sql);
+
+		try {
+			while (rs.next()) {
+				User usuario = new User(rs.getString("nombre_usuario"), rs.getString("email"));
+				modeloTabla.addRow(new Object[] { usuario.getNombre(), usuario.getCorreo() });
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		vistaEliminarUsuarios.getTabla().setModelo(modeloTabla);
 
 	}
+
 }

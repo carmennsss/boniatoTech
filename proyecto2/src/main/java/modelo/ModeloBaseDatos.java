@@ -252,6 +252,17 @@ public class ModeloBaseDatos {
         return email;
     }
     
+    public boolean eliminarUsuario(String email) {
+        String sql = "DELETE FROM usuarios WHERE email = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, email);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     public void eliminarArchivo(String nombreArchivo, String ruta) {
         String sql = "DELETE FROM archivos WHERE nombre_archivo = ? AND directorio = ?";
         try (PreparedStatement pstmt = getConexion().prepareStatement(sql)) {
