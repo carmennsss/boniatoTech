@@ -39,6 +39,7 @@ public class ControladorCorreos {
 		this.CORREO = CORREO;
 		this.PASSWORD_APLICACION = obtenerClaveCorreoPorUsuario(CORREO);
 		gestion = new GestionCorreos();
+		new GestionLogs(db.getConexion());
 		configurarVistaGeneral();
 
 	}
@@ -65,7 +66,11 @@ public class ControladorCorreos {
 	}
 
 	public void cargarCorreos() {
+
 		vistaGeneral.getBtnRefrescar().setEnabled(false);
+
+		// Guardamos cantidad ANTES del refresco
+		int cantidadAnterior = this.correos.size();
 
 		new Thread(() -> {
 			try {
@@ -73,41 +78,29 @@ public class ControladorCorreos {
 				listaDescargada = obtenerCorreos();
 
 				SwingUtilities.invokeLater(() -> {
-					listaDescargadaAnterior = this.correos;
+					int cantidadActual = listaDescargada.size();
 					this.correos.clear();
 					this.correos.addAll(listaDescargada);
 					vistaGeneral.cargarCorreos(this.correos);
-
 					vistaGeneral.getBtnRefrescar().setEnabled(true);
+					if (cantidadActual > cantidadAnterior && cantidadAnterior != 0) {
 
-					// Comparo lista anterior con la actual
-					if (listaDescargadaAnterior.size() < listaDescargada.size()
-							&& listaDescargadaAnterior.size() != 0) {
-
-						controladorLogs.GestionLogs.writeLog(new Log("MAIL_RECEIVED", CORREO, true));
-
+						GestionLogs.writeLog(new Log("MAIL_RECEIVED", CORREO, true));
 					}
-
 					if (hiloRecepcion == null || !hiloRecepcion.isAlive()) {
+
 						HiloRecepcionCorreos hilo = new HiloRecepcionCorreos(gestion, HOST, "recent:" + CORREO,
 								PASSWORD_APLICACION, vistaGeneral, this);
 						hiloRecepcion = new Thread(hilo, "Hilo-Recepcion-Correos");
 						hiloRecepcion.start();
 					}
-
 				});
 
 			} catch (Exception e) {
 				SwingUtilities.invokeLater(() -> vistaGeneral.getBtnRefrescar().setEnabled(true));
+				e.printStackTrace();
 			}
 		}).start();
-
-	}
-
-	public void detenerHiloRecepcion() {
-		if (hiloRecepcion != null && hiloRecepcion.isAlive()) {
-			hiloRecepcion.interrupt();
-		}
 	}
 
 	public ArrayList<Correo> obtenerCorreos() {
@@ -124,6 +117,14 @@ public class ControladorCorreos {
 				.addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this, CORREO));
 		vistaGeneral.getBtnRefrescar().addActionListener(new OyenteRefrescarCorreo(this));
 		vistaGeneral.getBtnVolver().addActionListener(new OyenteBotonVolver(vistaGeneral, vistaMenuPrincipal, this));
+	}
+
+	public void detenerHiloRecepcion() {
+		if (hiloRecepcion != null && hiloRecepcion.isAlive()) {
+			hiloRecepcion.interrupt();
+			hiloRecepcion = null;
+			System.out.println("Hilo de recepcion detenido");
+		}
 	}
 
 	public void eliminarCorreoSeleccionado(Correo correo) {
