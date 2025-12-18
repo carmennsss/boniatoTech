@@ -12,7 +12,10 @@ public class MainCorreos {
 	private static final String PASSWORD_APLICACION = "bqas bwag dasl kcjj";
 
 	public static void main(String[] args) {
-		//new ControladorCorreos(CORREO, PASSWORD_APLICACION);
+		VistaGeneralCorreo vista = new VistaGeneralCorreo(CORREO);
+		vista.setVisible(true);
+		new ControladorCorreos(CORREO, PASSWORD_APLICACION, vista);
+
 	}
 
 }

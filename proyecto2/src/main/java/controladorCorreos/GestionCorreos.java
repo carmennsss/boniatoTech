@@ -153,42 +153,43 @@ public class GestionCorreos {
 		return estados;
 	}
 
-	public void eliminarCorreoPOP3(String pop3Host, String user, String password, Correo correoABorrar) throws Exception {
-		
+	public void eliminarCorreoPOP3(String pop3Host, String user, String password, Correo correoABorrar)
+			throws Exception {
+
 		Properties props = new Properties();
-	    props.put("mail.pop3.host", pop3Host);
-	    props.put("mail.pop3.port", "995");
-	    props.put("mail.pop3.ssl.enable", "true");
+		props.put("mail.pop3.host", pop3Host);
+		props.put("mail.pop3.port", "995");
+		props.put("mail.pop3.ssl.enable", "true");
 
-	    Session session = Session.getInstance(props);
-	    Store store = session.getStore("pop3s");
-	    store.connect(pop3Host, user, password);
+		Session session = Session.getInstance(props);
+		Store store = session.getStore("pop3s");
+		store.connect(pop3Host, user, password);
 
-	    Folder inbox = store.getFolder("INBOX");
-	    inbox.open(Folder.READ_WRITE);
+		Folder inbox = store.getFolder("INBOX");
+		inbox.open(Folder.READ_WRITE);
 
-	    Message[] mensajes = inbox.getMessages();
-	    boolean encontrado = false;
+		Message[] mensajes = inbox.getMessages();
+		boolean encontrado = false;
 
-	    for (int i = 0; i < mensajes.length; i++) {
-	        String[] headers = mensajes[i].getHeader("Message-ID");
-	        if (headers != null && headers.length > 0) {
-	            if (headers[0].equals(correoABorrar.getMessageId())) {
-	                mensajes[i].setFlag(Flags.Flag.DELETED, true);
-	                encontrado = true;
-	                System.out.println("[POP3] Mensaje identificado y marcado para borrar.");
-	                break;
-	            }
-	        }
-	    }
+		for (int i = 0; i < mensajes.length; i++) {
+			String[] headers = mensajes[i].getHeader("Message-ID");
+			if (headers != null && headers.length > 0) {
+				if (headers[0].equals(correoABorrar.getMessageId())) {
+					mensajes[i].setFlag(Flags.Flag.DELETED, true);
+					encontrado = true;
+					System.out.println("[POP3] Mensaje identificado y marcado para borrar.");
+					break;
+				}
+			}
+		}
 
-	    if (!encontrado) {
-	        System.out.println("[POP3] No se encontró el mensaje en el servidor para borrar.");
-	    }
+		if (!encontrado) {
+			System.out.println("[POP3] No se encontró el mensaje en el servidor para borrar.");
+		}
 
-	    // Al cerrar con 'true', se ejecuta el EXPUNGE (borrado físico)
-	    inbox.close(true); 
-	    store.close();
+		// Al cerrar con 'true', se ejecuta el EXPUNGE (borrado físico)
+		inbox.close(true);
+		store.close();
 
 		System.out.println("[POP3] Correo eliminado");
 	}
