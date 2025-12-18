@@ -3,6 +3,7 @@ package vista;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.net.URL;
 import java.util.ArrayList;
 
 import modelo.Especie;
@@ -15,12 +16,18 @@ public class ViFormulario extends JFrame {
     private ArrayList<JComponent> campos;
     private ArrayList<JButton> botones;
     private JPanel panelCentral;
+    private Image imagenFondo;
 
     public ViFormulario() {
         super("Formulario");
         etiquetas = new ArrayList<>();
         campos = new ArrayList<>();
         botones = new ArrayList<>();
+
+        URL url = getClass().getResource("/fondo_verde.png");
+        if (url != null) {
+            imagenFondo = new ImageIcon(url).getImage();
+        }
 
         propiedades();
     }
@@ -37,7 +44,21 @@ public class ViFormulario extends JFrame {
         campos.clear();
         botones.clear();
 
-        panelCentral = new JPanel(new GridBagLayout());
+        panelCentral = new JPanel(new GridBagLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                // Ensure default background (white) is painted first
+                g.setColor(getBackground());
+                g.fillRect(0, 0, getWidth(), getHeight());
+
+                if (imagenFondo != null) {
+                    Graphics2D g2 = (Graphics2D) g.create();
+                    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f)); // Very low opacity
+                    g2.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
+                    g2.dispose();
+                }
+            }
+        };
         panelCentral.setBorder(new EmptyBorder(30, 40, 30, 40));
         panelCentral.setBackground(Color.WHITE);
 

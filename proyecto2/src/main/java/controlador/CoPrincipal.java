@@ -29,7 +29,9 @@ public class CoPrincipal {
         this.modeloFTP = new ModeloClienteFTP();
         this.controladorRoles = new ControladorRoles(this, bd, vista, modeloFTP, modeloVista);
         this.vistaMenuPrincipal = new VistaMenuPrincipal(modeloFTP, vista);
-        this.vistaArchivo = new VistaGestorArchivos(modeloFTP, vistaMenuPrincipal, bd);
+        this.vistaArchivo = new VistaGestorArchivos();
+        OyenteArchivos oyenteArchivos = new OyenteArchivos(vistaArchivo, modeloFTP, bd, vistaMenuPrincipal);
+        vistaArchivo.setControlador(oyenteArchivos);
         this.vistaAdmin = new VistaAdmin(vistaMenuPrincipal);
         this.vistaUsuarios = new VistaRegistroUsuarios(vistaAdmin, modeloFTP, bd);
         vista.hacerVisible();
@@ -40,7 +42,7 @@ public class CoPrincipal {
     private void asignarEventos() {
         OyenteFTP oyFTP = new OyenteFTP(modeloVista, vista, modeloFTP, this, vistaArchivo, vistaMenuPrincipal,
                 vistaAdmin,
-                vistaUsuarios);
+                vistaUsuarios, bd);
         OyenteTablaRoles oyTablaRoles = new OyenteTablaRoles(this, vista, modeloVista);
         OyenteCRUD oyCRUD = new OyenteCRUD(this, vista, modeloVista, vistaMenuPrincipal);
         controladorCRUD.setOyente(oyCRUD);
@@ -53,11 +55,13 @@ public class CoPrincipal {
                 vistaMenuPrincipal.getBotonAdmin(),
                 vistaAdmin.getBotonCrearUsuario(),
                 vista.getViCrearRol().getBotones().get(0),
+                vista.getViCrearRol().getBotones().get(1),
                 vistaAdmin.getBotonCrearRoles(),
                 vistaAdmin.getBotonAsignarRoles(),
                 vista.getViAsignarRol().getBotones().get(0),
                 vista.getViAsignarRol().getBotones().get(1),
-                vista.getViAsignarRol().getBotones().get(2)
+                vista.getViAsignarRol().getBotones().get(2),
+                vistaAdmin.getBotonVolver()
         };
 
         for (JButton btn : botonesLogin) {

@@ -69,7 +69,20 @@ public class VistaCRUD extends JFrame {
 
         panelFondo.add(panelMenu, BorderLayout.NORTH);
         panelFondo.add(panelTabla, BorderLayout.CENTER);
-        panelFondo.add(panelAcciones, BorderLayout.SOUTH);
+
+        JPanel panelSur = new JPanel(new BorderLayout());
+        panelSur.setOpaque(false);
+
+        javax.swing.JLabel lblInstrucciones = new javax.swing.JLabel("Double click on a record to update or delete it.",
+                javax.swing.SwingConstants.CENTER);
+        lblInstrucciones.setForeground(java.awt.Color.WHITE);
+        lblInstrucciones.setFont(Estilos.FONT_BOTON);
+        lblInstrucciones.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 0, 5, 0));
+
+        panelSur.add(lblInstrucciones, BorderLayout.NORTH);
+        panelSur.add(panelAcciones, BorderLayout.CENTER);
+
+        panelFondo.add(panelSur, BorderLayout.SOUTH);
     }
 
     public ViBotones getPanelMenu() {

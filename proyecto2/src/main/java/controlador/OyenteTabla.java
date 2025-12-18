@@ -40,10 +40,22 @@ public class OyenteTabla extends MouseAdapter implements TableModelListener {
         if (eventoModelo.getType() == javax.swing.event.TableModelEvent.UPDATE) {
             int filaModificada = eventoModelo.getFirstRow();
             int columnaModificada = eventoModelo.getColumn();
-            if (filaModificada >= 0 && columnaModificada >= 2 && listaNombresPermisos != null) {
+
+            if (filaModificada >= 0 && columnaModificada >= 3 && listaNombresPermisos != null) {
                 javax.swing.table.TableModel modeloTabla = (javax.swing.table.TableModel) eventoModelo.getSource();
-                String nombreRol = (String) modeloTabla.getValueAt(filaModificada, 0);
-                String nombrePermiso = listaNombresPermisos.get(columnaModificada - 2);
+
+                Object idObj = modeloTabla.getValueAt(filaModificada, 0);
+                int idRol = -1;
+                if (idObj instanceof Integer) {
+                    idRol = (Integer) idObj;
+                }
+
+                if (idRol == 3) {
+                    return;
+                }
+
+                String nombreRol = (String) modeloTabla.getValueAt(filaModificada, 1); // Roles is now col 1
+                String nombrePermiso = listaNombresPermisos.get(columnaModificada - 3); // -3 offset
                 Boolean nuevoValor = (Boolean) modeloTabla.getValueAt(filaModificada, columnaModificada);
 
                 controlador.getControladorRoles().actualizarPermiso(nombreRol, nombrePermiso, nuevoValor);

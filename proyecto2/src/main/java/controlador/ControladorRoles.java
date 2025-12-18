@@ -30,12 +30,27 @@ public class ControladorRoles {
         DefaultTableModel modeloTabla = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column > 1;
+                try {
+                    // Obtener el ID del rol (columna 0)
+                    Object idObj = getValueAt(row, 0);
+                    int idRol = -1;
+                    if (idObj instanceof Integer) {
+                        idRol = (Integer) idObj;
+                    } else if (idObj instanceof String) {
+                        idRol = Integer.parseInt((String) idObj);
+                    }
+                    if (idRol == 3) {
+                        return false;
+                    }
+                } catch (Exception e) {
+                    return false;
+                }
+                return column > 2;
             }
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex > 1) {
+                if (columnIndex > 2) {
                     return Boolean.class;
                 }
                 return String.class;
@@ -47,6 +62,7 @@ public class ControladorRoles {
         String sqlPermisos = "SELECT * FROM permisos ORDER BY nombre_permisos;";
         ResultSet rsPermisos = bd.getConsulta(sqlPermisos);
 
+        modeloTabla.addColumn("ID"); // Nueva columna ID
         modeloTabla.addColumn("Rol");
         modeloTabla.addColumn("Descripción");
 
@@ -60,7 +76,8 @@ public class ControladorRoles {
             e.printStackTrace();
         }
 
-        String sqlDatos = "SELECT r.nombre_roles, r.descripcion_roles, p.nombre_permisos, " +
+        // Modificamos la query para obtener tambien el id_roles
+        String sqlDatos = "SELECT r.id_roles, r.nombre_roles, r.descripcion_roles, p.nombre_permisos, " +
                 "(SELECT COUNT(*) FROM roles_permisos rp WHERE rp.roles_id = r.id_roles AND rp.permisos_id = p.id_permisos) AS activo "
                 +
                 "FROM roles r, permisos p " +
@@ -69,35 +86,38 @@ public class ControladorRoles {
         ResultSet rsDatos = bd.getConsulta(sqlDatos);
 
         try {
-            String ultimoRolProcesado = "";
+            int ultimoRolId = -1;
             Object[] filaActual = null;
 
             while (rsDatos.next()) {
+                int idRol = rsDatos.getInt("id_roles");
                 String rolLeido = rsDatos.getString("nombre_roles");
                 String descLeida = rsDatos.getString("descripcion_roles");
                 String permisoLeido = rsDatos.getString("nombre_permisos");
                 boolean estaActivo = rsDatos.getInt("activo") == 1;
 
-                if (!rolLeido.equals(ultimoRolProcesado)) {
+                if (idRol != ultimoRolId) {
                     if (filaActual != null) {
                         modeloTabla.addRow(filaActual);
                     }
 
-                    filaActual = new Object[2 + listaNombresPermisos.size()];
-                    filaActual[0] = rolLeido;
-                    filaActual[1] = descLeida;
+                    // Tamaño: ID + Rol + Desc + listaPermisos
+                    filaActual = new Object[3 + listaNombresPermisos.size()];
+                    filaActual[0] = idRol;
+                    filaActual[1] = rolLeido;
+                    filaActual[2] = descLeida;
 
-                    for (int i = 2; i < filaActual.length; i++) {
+                    for (int i = 3; i < filaActual.length; i++) {
                         filaActual[i] = false;
                     }
 
-                    ultimoRolProcesado = rolLeido;
+                    ultimoRolId = idRol;
                 }
 
                 int indicePermiso = listaNombresPermisos.indexOf(permisoLeido);
 
                 if (indicePermiso != -1) {
-                    filaActual[indicePermiso + 2] = estaActivo;
+                    filaActual[indicePermiso + 3] = estaActivo;
                 }
             }
 
@@ -113,6 +133,19 @@ public class ControladorRoles {
         modeloTabla.addTableModelListener(oyentePermisos);
 
         vista.getViCrearRol().getPanelTabla().getTabla().setModel(modeloTabla);
+
+        // Ocultar la columna ID (Opcional, pero recomendado para UI limpia)
+        // vista.getViCrearRol().getPanelTabla().getTabla().getColumnModel().getColumn(0).setMinWidth(0);
+        // vista.getViCrearRol().getPanelTabla().getTabla().getColumnModel().getColumn(0).setMaxWidth(0);
+        // vista.getViCrearRol().getPanelTabla().getTabla().getColumnModel().getColumn(0).setWidth(0);
+        // De momento la dejo visible para debug si el usuario quiere, o la oculto?
+        // El usuario dijo "NO LO PUEDES MIRAR POR EL ID", no dijo que lo mostrara.
+        // Pero no tengo acceso directo a la tabla aquí facil sin getters largos, y
+        // arriba ya hago getTabla().
+        // Voy a ocultarla para que se vea igual que antes.
+        vista.getViCrearRol().getPanelTabla().getTabla().getColumnModel().getColumn(0).setMinWidth(0);
+        vista.getViCrearRol().getPanelTabla().getTabla().getColumnModel().getColumn(0).setMaxWidth(0);
+        vista.getViCrearRol().getPanelTabla().getTabla().getColumnModel().getColumn(0).setWidth(0);
     }
 
     public void rellenarTablaUsuarios() {
@@ -166,7 +199,16 @@ public class ControladorRoles {
 
     public void agregarRol() {
         String nombre = vista.getViCrearRol().getTextFieldNombre().getText();
+        if (nombre.isEmpty()) {
+            vista.mostrarMensajeError("El nombre del rol no puede estar vacío");
+            return;
+        }
         String descripcion = vista.getViCrearRol().getTextFieldDescripcion().getText();
+        if (descripcion.isEmpty()) {
+            vista.mostrarMensajeError("La descripción del rol no puede estar vacía");
+            return;
+        }
+
         String sql = "INSERT INTO roles (nombre_roles, descripcion_roles) VALUES (?, ?);";
         ArrayList<String> valores = new ArrayList<>();
         valores.add(nombre);

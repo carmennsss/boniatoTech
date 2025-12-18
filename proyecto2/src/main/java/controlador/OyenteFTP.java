@@ -3,11 +3,14 @@ package controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 import modelo.MoView;
+import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
 import modelo.Rol;
 import vista.ViMain;
@@ -25,10 +28,12 @@ public class OyenteFTP implements ActionListener {
 	private VistaMenuPrincipal vistaMenuPrincipal;
 	private VistaAdmin vistaAdmin;
 	private VistaRegistroUsuarios vistaUsuarios;
+	private ModeloBaseDatos modeloBaseDatos;
 
 	public OyenteFTP(MoView modeloVista, ViMain viMain, ModeloClienteFTP modelo, CoPrincipal ctrl,
 			VistaGestorArchivos vistaArchivo,
-			VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin, VistaRegistroUsuarios vistaUsuarios) {
+			VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin, VistaRegistroUsuarios vistaUsuarios,
+			ModeloBaseDatos modeloBaseDatos) {
 		this.viMain = viMain;
 		this.modelo = modelo;
 		this.controladorPrincipal = ctrl;
@@ -37,6 +42,7 @@ public class OyenteFTP implements ActionListener {
 		this.vistaMenuPrincipal = vistaMenuPrincipal;
 		this.vistaAdmin = vistaAdmin;
 		this.vistaUsuarios = vistaUsuarios;
+		this.modeloBaseDatos = modeloBaseDatos;
 	}
 
 	@Override
@@ -57,10 +63,10 @@ public class OyenteFTP implements ActionListener {
 			case "administrate":
 				verificarAdministrador();
 				break;
-			case "administrate users":
+			case "manage users":
 				abrirAdministrarUsuarios();
 				break;
-			case "administrate roles":
+			case "manage roles":
 				abrirCrearRol();
 				break;
 			case "agregar rol":
@@ -72,12 +78,37 @@ public class OyenteFTP implements ActionListener {
 			case "asignar":
 				asignarRol();
 				break;
-			case "asign roles":
+			case "assign roles":
 				abrirAsignarRoles();
+				break;
+			case "main menu":
+				volverMenuPrincipal();
+				break;
+			case "back":
+				volverAdminDesdeUsuarios();
+				break;
+			case "volver":
+				volverAdminDesdeRoles();
 				break;
 			default:
 				break;
 		}
+	}
+
+	private void volverMenuPrincipal() {
+		vistaAdmin.setVisible(false);
+		vistaMenuPrincipal.hacerVisible();
+	}
+
+	private void volverAdminDesdeUsuarios() {
+		vistaUsuarios.setVisible(false);
+		vistaAdmin.hacerVisible();
+	}
+
+	private void volverAdminDesdeRoles() {
+		viMain.getViCrearRol().setVisible(false);
+		viMain.getViAsignarRol().setVisible(false);
+		vistaAdmin.hacerVisible();
 	}
 
 	private void abrirFileManager() {
@@ -93,7 +124,11 @@ public class OyenteFTP implements ActionListener {
 	}
 
 	private void verificarAdministrador() {
-		if (modelo.getUser().equalsIgnoreCase("admin")) {
+		String sql = "SELECT u.* FROM usuarios u JOIN usuarios_roles ur ON u.email = ur.email_usuario WHERE u.email = ? AND ur.roles_id = 3;";
+		String email = modeloBaseDatos.obtenerEmailPorUsuario(modelo.getUser());
+		boolean existe = false;
+		existe = modeloBaseDatos.existeRegistro(sql, new ArrayList<String>(Arrays.asList(email)));
+		if (existe) {
 			vistaAdmin.hacerVisible();
 			vistaMenuPrincipal.setVisible(false);
 		} else {
@@ -110,6 +145,7 @@ public class OyenteFTP implements ActionListener {
 	private void abrirCrearRol() {
 		controladorPrincipal.getControladorRoles().rellenarVentanaCrearRol();
 		viMain.getViCrearRol().hacerVisible();
+		vistaAdmin.setVisible(false);
 	}
 
 	private void agregarRol() {
@@ -167,9 +203,25 @@ public class OyenteFTP implements ActionListener {
 						JOptionPane.ERROR_MESSAGE);
 				System.out.println(modelo.getCliente().getReplyString());
 			}
+		} catch (org.apache.commons.net.ftp.FTPConnectionClosedException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(viMain.getPanelLogin(),
+					"La conexión con el servidor se ha cerrado inesperadamente.\nPor favor, inténtelo de nuevo.",
+					"Error de Conexión",
+					JOptionPane.ERROR_MESSAGE);
+			try {
+				modelo.desconectar();
+			} catch (Exception ex) {
+				// Ignorar errores al desconectar si ya estaba cerrado
+			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(viMain.getPanelLogin(), "Error de conexión: " + ex.getMessage(), "Error",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(viMain.getPanelLogin(), "Ocurrió un error inesperado: " + ex.getMessage(),
+					"Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}

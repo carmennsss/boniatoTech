@@ -239,26 +239,23 @@ public class ModeloClienteFTP {
             agregarOpcion(doc, newUser, "Comments", "Creado sin unidad Z");
             agregarOpcion(doc, newUser, "ForceSsl", "0");
 
-            // IpFilter (Necesario para que se vea igual que el resto)
             Element ipFilter = doc.createElement("IpFilter");
             ipFilter.appendChild(doc.createElement("Disallowed"));
             ipFilter.appendChild(doc.createElement("Allowed"));
             newUser.appendChild(ipFilter);
 
-            // RUTA HOME (Cuidado, esta ruta es la ruta INTERNA de la VM)
             String carpetaHome = "C:\\Users\\Administrator\\Documents\\serwo";
 
             Element permissions = doc.createElement("Permissions");
             Element permission = doc.createElement("Permission");
             permission.setAttribute("Dir", carpetaHome);
 
-            // Permisos full (Incluyendo FileAppend que faltaba)
             agregarOpcion(doc, permission, "FileRead", "1");
-            agregarOpcion(doc, permission, "FileWrite", "0");
-            agregarOpcion(doc, permission, "FileDelete", "0");
-            agregarOpcion(doc, permission, "FileAppend", "0");
-            agregarOpcion(doc, permission, "DirCreate", "0");
-            agregarOpcion(doc, permission, "DirDelete", "0");
+            agregarOpcion(doc, permission, "FileWrite", "1");
+            agregarOpcion(doc, permission, "FileDelete", "1");
+            agregarOpcion(doc, permission, "FileAppend", "1");
+            agregarOpcion(doc, permission, "DirCreate", "1");
+            agregarOpcion(doc, permission, "DirDelete", "1");
             agregarOpcion(doc, permission, "DirList", "1");
             agregarOpcion(doc, permission, "DirSubdirs", "1");
             agregarOpcion(doc, permission, "IsHome", "1");
@@ -278,7 +275,7 @@ public class ModeloClienteFTP {
             speedLimits.appendChild(doc.createElement("Download"));
             speedLimits.appendChild(doc.createElement("Upload"));
             newUser.appendChild(speedLimits);
-            usersList.item(0).appendChild(newUser);
+            usersNode.appendChild(newUser);
 
             guardarXML(doc, xmlFile);
 

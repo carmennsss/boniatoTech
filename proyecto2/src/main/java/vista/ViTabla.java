@@ -37,6 +37,7 @@ public class ViTabla extends JPanel {
         header.setFont(Estilos.FONT_BOTON);
         header.setBackground(Estilos.COLOR_TABLA_HEADER);
         header.setOpaque(true);
+        header.setForeground(Color.WHITE);
         header.setPreferredSize(new Dimension(0, 40));
 
         tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
