@@ -99,7 +99,7 @@ public class VistaGeneralCorreo extends JFrame {
 
 	private void propiedadesVentana() {
 		this.setTitle("Inbox");
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(630, 500);
 		this.setLocationRelativeTo(null);
 		this.setMinimumSize(new Dimension(630, 500));
