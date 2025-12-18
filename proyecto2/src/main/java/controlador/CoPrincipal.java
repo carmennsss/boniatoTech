@@ -5,6 +5,8 @@ import vista.*;
 
 import javax.swing.*;
 
+import controladorCorreos.ControladorCorreos;
+
 public class CoPrincipal {
     private ModeloBaseDatos bd;
     private MoView modeloVista;
@@ -18,8 +20,11 @@ public class CoPrincipal {
     private boolean editando;
     private ModeloClienteFTP modeloFTP;
 
+    private OyenteWhitelist oyenteWhitelist;
     private ControladorCRUD controladorCRUD;
     private ControladorRoles controladorRoles;
+    private ControladorWhitelist controladorWhitelist;
+    private ControladorCorreos controladorCorreos;
 
     public CoPrincipal() {
         this.bd = new ModeloBaseDatos();
@@ -34,9 +39,11 @@ public class CoPrincipal {
         OyenteArchivos oyenteArchivos = new OyenteArchivos(vistaArchivo, modeloFTP, bd, vistaMenuPrincipal);
         vistaArchivo.setControlador(oyenteArchivos);
         this.vistaAdmin = new VistaAdmin(vistaMenuPrincipal);
+        this.controladorWhitelist = new ControladorWhitelist(vista, bd, modeloVista, vistaAdmin);
         this.vistaUsuarios = new VistaRegistroUsuarios(vistaAdmin, modeloFTP, bd);
         this.vistaEliminarUsuarios = new VistaEliminarUsuarios(vistaUsuarios, modeloFTP, bd);
         this.vistaGeneralCorreo = new VistaGeneralCorreo("hola");
+
         vista.hacerVisible();
         asignarEventos();
 
@@ -45,12 +52,15 @@ public class CoPrincipal {
     private void asignarEventos() {
         OyenteFTP oyFTP = new OyenteFTP(modeloVista, vista, modeloFTP, this, vistaArchivo, vistaMenuPrincipal,
                 vistaAdmin,
-                vistaUsuarios,vistaGeneralCorreo, bd);
+                vistaUsuarios, bd);
         OyenteTablaRoles oyTablaRoles = new OyenteTablaRoles(this, vista, modeloVista);
         OyenteCRUD oyCRUD = new OyenteCRUD(this, vista, modeloVista, vistaMenuPrincipal);
         controladorCRUD.setOyente(oyCRUD);
-        OyenteTabla oyT = new OyenteTabla(this, vista, modeloVista);
-        OyenteUsuario oyU = new OyenteUsuario(vistaUsuarios, vistaEliminarUsuarios, bd);
+        OyenteTablaCRUD oyT = new OyenteTablaCRUD(this, vista, modeloVista);
+
+        this.oyenteWhitelist = new OyenteWhitelist(controladorWhitelist, vista.getViWhitelist());
+
+        OyenteUsuario oyU = new OyenteUsuario(vistaUsuarios);
         vistaUsuarios.getAniadir().addActionListener(oyU);
         vistaUsuarios.getEliminar().addActionListener(oyU);
         vistaUsuarios.getVolver().addActionListener(oyU);
@@ -66,17 +76,23 @@ public class CoPrincipal {
                 vista.getViCrearRol().getBotones().get(1),
                 vistaAdmin.getBotonCrearRoles(),
                 vistaAdmin.getBotonAsignarRoles(),
+                vistaAdmin.getBotonWhitelist(),
                 vista.getViAsignarRol().getBotones().get(0),
                 vista.getViAsignarRol().getBotones().get(1),
                 vista.getViAsignarRol().getBotones().get(2),
                 vistaAdmin.getBotonVolver(),
-                
-                
+
         };
 
         for (JButton btn : botonesLogin) {
             btn.addActionListener(oyFTP);
         }
+
+        // Register OyenteWhitelist
+        vista.getViWhitelist().getBotones().get(0).addActionListener(oyenteWhitelist); // Add
+        vista.getViWhitelist().getBotones().get(1).addActionListener(oyenteWhitelist); // Remove
+        vista.getViWhitelist().getBotones().get(2).addActionListener(oyenteWhitelist); // Back
+        vista.getViWhitelist().getTabla().getTabla().addMouseListener(oyenteWhitelist); // Table Click
 
         vista.getViAsignarRol().getTabla().getTabla().addMouseListener(oyTablaRoles);
 
@@ -89,6 +105,11 @@ public class CoPrincipal {
         }
 
         vista.getPanelTabla().getTabla().addMouseListener(oyT);
+    }
+
+    public void instanciarCorreos() {
+    	this.vistaGeneralCorreo = new VistaGeneralCorreo(bd.obtenerEmailPorUsuario(modeloFTP.getUser()));
+        this.controladorCorreos = new ControladorCorreos(bd.obtenerEmailPorUsuario(modeloFTP.getUser()), vistaGeneralCorreo, bd);
     }
 
     public void setEditando(boolean editando) {
@@ -105,5 +126,21 @@ public class CoPrincipal {
 
     public ControladorRoles getControladorRoles() {
         return controladorRoles;
+    }
+
+    public ControladorWhitelist getControladorWhitelist() {
+        return controladorWhitelist;
+    }
+
+    public ControladorCorreos getControladorCorreos() {
+        return controladorCorreos;
+    }
+
+    public void setControladorCorreos(ControladorCorreos controladorCorreos) {
+        this.controladorCorreos = controladorCorreos;
+    }
+
+    public VistaGeneralCorreo getVistaGeneralCorreo() {
+        return this.vistaGeneralCorreo;
     }
 }

@@ -68,7 +68,7 @@ public class VistaCorreoBase extends JFrame {
         textoCuerpo.setWrapStyleWord(true);
         botonEnviar = new JButton("Send");
         botonEliminar = new JButton("Delete");
-        botonNoLeido = new JButton("Mark as unread");
+        botonNoLeido = new JButton("Mark unread");
         botonExportar = new JButton("Export");
         botonAdjuntar = new JButton("Attach");
     }
@@ -80,13 +80,44 @@ public class VistaCorreoBase extends JFrame {
 
         // --- SIDEBAR (Decorative) ---
         JPanel sidebar = new JPanel() {
+            private java.awt.Image bgImage;
+
+            {
+                try {
+                    java.net.URL url = getClass().getResource("/fondo_verde.png");
+                    if (url != null) {
+                        bgImage = javax.imageio.ImageIO.read(url);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
             @Override
             protected void paintComponent(java.awt.Graphics g) {
                 super.paintComponent(g);
-                try {
-                    java.awt.Image bgImage = javax.imageio.ImageIO.read(getClass().getResource("/lateral_menu.jpg"));
-                    g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
-                } catch (Exception e) {
+                if (bgImage != null) {
+                    int imgW = bgImage.getWidth(this);
+                    int imgH = bgImage.getHeight(this);
+
+                    // Avoid division by zero
+                    if (imgW > 0 && imgH > 0) {
+                        int panelW = getWidth();
+                        int panelH = getHeight();
+
+                        // Scale to cover
+                        double scale = Math.max((double) panelW / imgW, (double) panelH / imgH);
+
+                        int newW = (int) (imgW * scale);
+                        int newH = (int) (imgH * scale);
+
+                        // Center the image
+                        int x = (panelW - newW) / 2;
+                        int y = (panelH - newH) / 2;
+
+                        g.drawImage(bgImage, x, y, newW, newH, this);
+                    }
+                } else {
                     g.setColor(Estilos.DARK_SPRUCE);
                     g.fillRect(0, 0, getWidth(), getHeight());
                 }
@@ -183,14 +214,18 @@ public class VistaCorreoBase extends JFrame {
         btn.setForeground(Color.WHITE);
         btn.setFocusPainted(false);
         btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn.setPreferredSize(new Dimension(140, 35));
+        if (btn.equals(botonNoLeido)) {
+            btn.setPreferredSize(new Dimension(130, 35));
+        } else {
+            btn.setPreferredSize(new Dimension(100, 35));
+        }
     }
 
     public void propiedadesGenerales() {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setSize(700, 500);
+        this.setSize(700, 400);
         this.setLocationRelativeTo(null);
-        this.setMinimumSize(new Dimension(700, 500));
+        this.setMinimumSize(new Dimension(700, 400));
     }
 
     public File exportarCorreo(String nombreSugerido) {

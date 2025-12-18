@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 import modelo.MoView;
@@ -34,7 +33,7 @@ public class OyenteFTP implements ActionListener {
 
 	public OyenteFTP(MoView modeloVista, ViMain viMain, ModeloClienteFTP modelo, CoPrincipal ctrl,
 			VistaGestorArchivos vistaArchivo,
-			VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin, VistaRegistroUsuarios vistaUsuarios,VistaGeneralCorreo vistaGeneralCorreo,
+			VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin, VistaRegistroUsuarios vistaUsuarios,
 			ModeloBaseDatos modeloBaseDatos) {
 		this.viMain = viMain;
 		this.modelo = modelo;
@@ -44,71 +43,60 @@ public class OyenteFTP implements ActionListener {
 		this.vistaMenuPrincipal = vistaMenuPrincipal;
 		this.vistaAdmin = vistaAdmin;
 		this.vistaUsuarios = vistaUsuarios;
-		this.vistaGeneralCorreo=vistaGeneralCorreo;
 		this.modeloBaseDatos = modeloBaseDatos;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JButton button = (JButton) e.getSource();
-		String command = button.getText();
+		Object source = e.getSource();
 
-		switch (command.toLowerCase()) {
-			case "log in":
-				login();
-				break;
-			case "file manager":
-				abrirFileManager();
-				break;
-			case "manage data":
-				abrirManageData();
-				break;
-			case "administrate":
-				verificarAdministrador();
-				break;
-			case "manage users":
-				abrirAdministrarUsuarios();
-				break;
-			case "manage roles":
-				abrirCrearRol();
-				break;
-			case "agregar rol":
-				agregarRol();
-				break;
-			case "desasignar":
-				desasignarRol();
-				break;
-			case "asignar":
-				asignarRol();
-				break;
-			case "assign roles":
-				abrirAsignarRoles();
-				break;
-			case "main menu":
-				volverMenuPrincipal();
-				break;
-			case "back":
-				volverAdminDesdeUsuarios();
-				break;
-			case "volver":
-				volverAdminDesdeRoles();
-				break;
-			case "log out":
-				logOut();
-				break;
-			case "mail controller":
-				abrirCorreo();
-				break;
-			default:
-				break;
+		if (source == viMain.getPanelLogin().getBotones().get(0)) {
+			login();
+			controladorPrincipal.instanciarCorreos();
+		} else if (source == vistaMenuPrincipal.getBotonFileManager()) {
+			abrirFileManager();
+		} else if (source == vistaMenuPrincipal.getBotonCRUD()) {
+			abrirManageData();
+		} else if (source == vistaMenuPrincipal.getBotonAdmin()) {
+			verificarAdministrador();
+		} else if (source == vistaAdmin.getBotonCrearUsuario()) {
+			abrirAdministrarUsuarios();
+		} else if (source == vistaAdmin.getBotonCrearRoles()) {
+			abrirCrearRol();
+		} else if (source == viMain.getViCrearRol().getBotones().get(0)) {
+			agregarRol();
+		} else if (source == viMain.getViAsignarRol().getBotones().get(1)) {
+			manejarDesasignar();
+		} else if (source == viMain.getViAsignarRol().getBotones().get(0)) {
+			asignarRol();
+		} else if (source == vistaAdmin.getBotonAsignarRoles()) {
+			abrirAsignarRoles();
+		} else if (source == vistaAdmin.getBotonVolver()) {
+			volverMenuPrincipal();
+		} else if (source == viMain.getViCrearRol().getBotones().get(1)
+				|| source == viMain.getViAsignarRol().getBotones().get(2)) {
+			manejarVolver();
+		} else if (source == vistaAdmin.getBotonWhitelist()) {
+			abrirWhitelist();
+		} else if (source == vistaMenuPrincipal.getBotonCerrarSesion()) {
+			logOut();
+		} else if (source == vistaMenuPrincipal.getBotonCorreo()) {
+			abrirCorreo();
 		}
 	}
-	
+
 	private void abrirCorreo() {
 
-		vistaMenuPrincipal.setVisible(false);
-		vistaGeneralCorreo.hacerVisible();
-		
+		VistaGeneralCorreo vistaCorr = controladorPrincipal.getVistaGeneralCorreo();
+
+		if (vistaCorr != null) {
+			vistaMenuPrincipal.setVisible(false);
+			vistaCorr.hacerVisible();
+			controladorPrincipal.getControladorCorreos().cargarCorreos();
+		} else {
+			JOptionPane.showMessageDialog(null, "Error: La vista de correos no se ha inicializado correctamente.");
+		}
+
 	}
 
 	private void logOut() {
@@ -118,7 +106,7 @@ public class OyenteFTP implements ActionListener {
 		viMain.getPanelLogin().getCajas().get(0).setText("");
 		viMain.getPanelLogin().getCajas().get(1).setText("");
 		viMain.mostrarLogin();
-		
+
 	}
 
 	private void volverMenuPrincipal() {
@@ -129,6 +117,11 @@ public class OyenteFTP implements ActionListener {
 	private void volverAdminDesdeUsuarios() {
 		vistaUsuarios.setVisible(false);
 		vistaAdmin.hacerVisible();
+	}
+	
+	private void volverMenuDesdeCorreos() {
+		controladorPrincipal.getVistaGeneralCorreo().setVisible(false);
+		vistaMenuPrincipal.hacerVisible();
 	}
 
 	private void volverAdminDesdeRoles() {
@@ -203,6 +196,24 @@ public class OyenteFTP implements ActionListener {
 		controladorPrincipal.getControladorRoles().rellenarTablaUsuarios();
 		viMain.getViAsignarRol().setVisible(true);
 		vistaAdmin.setVisible(false);
+	}
+
+	private void abrirWhitelist() {
+		controladorPrincipal.getControladorWhitelist().rellenarTablaWhitelist();
+		viMain.getViWhitelist().hacerVisible();
+		vistaAdmin.setVisible(false);
+	}
+
+	private void manejarDesasignar() {
+		if (viMain.getViAsignarRol().isVisible()) {
+			desasignarRol();
+		}
+	}
+
+	private void manejarVolver() {
+		if (viMain.getViCrearRol().isVisible() || viMain.getViAsignarRol().isVisible()) {
+			volverAdminDesdeRoles();
+		}
 	}
 
 	private void login() {

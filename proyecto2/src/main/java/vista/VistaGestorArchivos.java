@@ -202,4 +202,32 @@ public class VistaGestorArchivos extends JFrame {
 	public JList<FTPFile> getListaArchivos() {
 		return listaArchivos;
 	}
+
+	public JButton getBotonSubida() {
+		return botonSubida;
+	}
+
+	public JButton getBotonDescarga() {
+		return botonDescarga;
+	}
+
+	public JButton getBotonEliminar() {
+		return botonEliminar;
+	}
+
+	public JButton getBotonCrearCarpeta() {
+		return botonCrearCarpeta;
+	}
+
+	public JButton getBotonBorrarCarpeta() {
+		return botonBorrarCarpeta;
+	}
+
+	public JButton getBotonVolver() {
+		return botonVolver;
+	}
+
+	public JButton getBotonVolverMenuPrincipal() {
+		return botonVolverMenuPrincipal;
+	}
 }
