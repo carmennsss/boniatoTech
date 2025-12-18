@@ -29,6 +29,7 @@ public class VistaAdmin extends JFrame {
 	JButton botonCrearUsuario;
 	JButton botonCrearRoles;
 	JButton botonAsignarRoles;
+	JButton botonWhitelist;
 	JButton botonVolver;
 	private Image imagenFondo;
 
@@ -77,11 +78,13 @@ public class VistaAdmin extends JFrame {
 		botonCrearUsuario = new JButton("Manage Users");
 		botonCrearRoles = new JButton("Manage Roles");
 		botonAsignarRoles = new JButton("Assign Roles");
+		botonWhitelist = new JButton("Manage Whitelist"); // New Button
 		botonVolver = new JButton("Main Menu");
 
 		estilarBoton(botonCrearUsuario, new Color(110, 137, 115));
 		estilarBoton(botonCrearRoles, new Color(110, 137, 115));
 		estilarBoton(botonAsignarRoles, new Color(110, 137, 115));
+		estilarBoton(botonWhitelist, new Color(110, 137, 115)); // New Button Style
 		estilarBoton(botonVolver, new Color(200, 100, 100));
 
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -106,6 +109,9 @@ public class VistaAdmin extends JFrame {
 		panelCentral.add(botonAsignarRoles, gbc);
 
 		gbc.gridy = 4;
+		panelCentral.add(botonWhitelist, gbc); // Add to layout
+
+		gbc.gridy = 5;
 		gbc.insets = new Insets(30, 0, 10, 0);
 		panelCentral.add(botonVolver, gbc);
 
@@ -152,6 +158,14 @@ public class VistaAdmin extends JFrame {
 
 	public void setBotonVolver(JButton botonVolver) {
 		this.botonVolver = botonVolver;
+	}
+
+	public JButton getBotonWhitelist() {
+		return botonWhitelist;
+	}
+
+	public void setBotonWhitelist(JButton botonWhitelist) {
+		this.botonWhitelist = botonWhitelist;
 	}
 
 	public void hacerVisible() {

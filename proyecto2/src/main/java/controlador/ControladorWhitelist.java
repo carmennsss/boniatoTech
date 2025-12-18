@@ -1,0 +1,138 @@
+package controlador;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+import modelo.MoView;
+import modelo.ModeloBaseDatos;
+import vista.ViMain;
+import vista.VistaAdmin;
+import vista.VistaWhitelist;
+
+public class ControladorWhitelist {
+
+    private ViMain viMain;
+    private ModeloBaseDatos modeloBaseDatos;
+    private MoView moView;
+    private VistaAdmin vistaAdmin;
+
+    public ControladorWhitelist(ViMain viMain, ModeloBaseDatos modeloBaseDatos, MoView moView, VistaAdmin vistaAdmin) {
+        this.viMain = viMain;
+        this.modeloBaseDatos = modeloBaseDatos;
+        this.moView = moView;
+        this.vistaAdmin = vistaAdmin;
+    }
+
+    public void anadirUsuario() {
+        VistaWhitelist vista = viMain.getViWhitelist();
+        int result = vista.mostrarAgregarUsuario();
+
+        if (result != 0) {
+            return;
+        }
+
+        String email = vista.getTxtEmail().getText().trim();
+        String nombre = vista.getTxtNombre().getText().trim();
+
+        if (email.isEmpty() || nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(vista, "Please fill in both Email and Name fields.", "Wait",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            JOptionPane.showMessageDialog(vista, "Invalid email format", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (existeEnWhitelist(email)) {
+            JOptionPane.showMessageDialog(vista, "User with this email already exists in Whitelist.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String sql = "INSERT INTO whitelist (correo, nombre, fecha_registro) VALUES (?, ?, NOW())";
+        if (modeloBaseDatos.ejecutarActualizacion(sql, new ArrayList<String>(Arrays.asList(email, nombre))) > 0) {
+            JOptionPane.showMessageDialog(vista, "User added successfully to Whitelist.");
+            vista.getTxtEmail().setText("");
+            vista.getTxtNombre().setText("");
+            rellenarTablaWhitelist();
+        } else {
+            JOptionPane.showMessageDialog(vista, "Error adding user.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private boolean existeEnWhitelist(String email) {
+        String sql = "SELECT * FROM whitelist WHERE correo = ?";
+        return modeloBaseDatos.existeRegistro(sql, new ArrayList<String>(Arrays.asList(email)));
+    }
+
+    public void desasignarUsuarios() {
+        ArrayList<String> seleccionados = moView.getCorreosWhitelist();
+        if (seleccionados.isEmpty()) {
+            JOptionPane.showMessageDialog(viMain.getViWhitelist(), "No users selected to remove.", "Warning",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(viMain.getViWhitelist(),
+                "Are you sure you want to remove " + seleccionados.size() + " user(s) from Whitelist?",
+                "Confirm Removal", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            int eliminados = 0;
+            for (String email : seleccionados) {
+                String sql = "DELETE FROM whitelist WHERE correo = ?";
+                if (modeloBaseDatos.ejecutarActualizacion(sql, new ArrayList<String>(Arrays.asList(email))) > 0) {
+                    eliminados++;
+                }
+            }
+            JOptionPane.showMessageDialog(viMain.getViWhitelist(), "Removed " + eliminados + " users.");
+            seleccionados.clear();
+            rellenarTablaWhitelist();
+        }
+    }
+
+    public void volver() {
+        viMain.getViWhitelist().setVisible(false);
+        vistaAdmin.setVisible(true);
+    }
+
+    public void rellenarTablaWhitelist() {
+        DefaultTableModel modelo = (DefaultTableModel) viMain.getViWhitelist().getTabla().getTabla().getModel();
+        modelo.setRowCount(0);
+        modelo.setColumnCount(0);
+        modelo.addColumn("Email");
+        modelo.addColumn("Name");
+        modelo.addColumn("Registration Date");
+
+        String sql = "SELECT * FROM whitelist";
+        ResultSet rs = modeloBaseDatos.getConsulta(sql);
+        try {
+            while (rs.next()) {
+                modelo.addRow(new Object[] {
+                        rs.getString("correo"),
+                        rs.getString("nombre"),
+                        rs.getString("fecha_registro")
+                });
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        moView.getCorreosWhitelist().clear();
+        viMain.getViWhitelist().getTabla().deseleccionarFilas();
+    }
+
+    public void seleccionarUsuario(String email, int fila) {
+        boolean selected = moView.buscarCorreoWhitelist(email);
+        viMain.getViWhitelist().getTabla().cambiarColorFila(fila, !selected);
+    }
+}

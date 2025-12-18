@@ -77,7 +77,7 @@ public class OyenteFTP implements ActionListener {
 				agregarRol();
 				break;
 			case "desasignar":
-				desasignarRol();
+				manejarDesasignar();
 				break;
 			case "asignar":
 				asignarRol();
@@ -92,8 +92,12 @@ public class OyenteFTP implements ActionListener {
 				volverAdminDesdeUsuarios();
 				break;
 			case "volver":
-				volverAdminDesdeRoles();
+				manejarVolver();
 				break;
+			case "manage whitelist":
+				abrirWhitelist();
+				break;
+
 			case "log out":
 				logOut();
 				break;
@@ -104,19 +108,19 @@ public class OyenteFTP implements ActionListener {
 				break;
 		}
 	}
-	
+
 	private void abrirCorreo() {
 
 		VistaGeneralCorreo vistaCorr = controladorPrincipal.getVistaGeneralCorreo();
 
-	    if (vistaCorr != null) {
-	        vistaMenuPrincipal.setVisible(false);
-	        vistaCorr.hacerVisible();
-	        controladorPrincipal.getControladorCorreos().cargarCorreos();
-	    } else {
-	        JOptionPane.showMessageDialog(null, "Error: La vista de correos no se ha inicializado correctamente.");
-	    }
-		
+		if (vistaCorr != null) {
+			vistaMenuPrincipal.setVisible(false);
+			vistaCorr.hacerVisible();
+			controladorPrincipal.getControladorCorreos().cargarCorreos();
+		} else {
+			JOptionPane.showMessageDialog(null, "Error: La vista de correos no se ha inicializado correctamente.");
+		}
+
 	}
 
 	private void logOut() {
@@ -126,7 +130,7 @@ public class OyenteFTP implements ActionListener {
 		viMain.getPanelLogin().getCajas().get(0).setText("");
 		viMain.getPanelLogin().getCajas().get(1).setText("");
 		viMain.mostrarLogin();
-		
+
 	}
 
 	private void volverMenuPrincipal() {
@@ -211,6 +215,24 @@ public class OyenteFTP implements ActionListener {
 		controladorPrincipal.getControladorRoles().rellenarTablaUsuarios();
 		viMain.getViAsignarRol().setVisible(true);
 		vistaAdmin.setVisible(false);
+	}
+
+	private void abrirWhitelist() {
+		controladorPrincipal.getControladorWhitelist().rellenarTablaWhitelist();
+		viMain.getViWhitelist().hacerVisible();
+		vistaAdmin.setVisible(false);
+	}
+
+	private void manejarDesasignar() {
+		if (viMain.getViAsignarRol().isVisible()) {
+			desasignarRol();
+		}
+	}
+
+	private void manejarVolver() {
+		if (viMain.getViCrearRol().isVisible() || viMain.getViAsignarRol().isVisible()) {
+			volverAdminDesdeRoles();
+		}
 	}
 
 	private void login() {
