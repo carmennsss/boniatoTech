@@ -128,7 +128,7 @@ public class ControladorRoles {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        OyenteTabla oyentePermisos = new OyenteTabla(coPrincipal, vista, modeloVista);
+        OyenteTablaCRUD oyentePermisos = new OyenteTablaCRUD(coPrincipal, vista, modeloVista);
         oyentePermisos.setListaNombresPermisos(listaNombresPermisos);
         modeloTabla.addTableModelListener(oyentePermisos);
 

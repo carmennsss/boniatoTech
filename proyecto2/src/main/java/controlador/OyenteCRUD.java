@@ -8,6 +8,7 @@ import vista.Estilos;
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class OyenteCRUD implements ActionListener {
     private CoPrincipal controlador;
@@ -24,43 +25,39 @@ public class OyenteCRUD implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JButton boton = (JButton) e.getSource();
-        String texto = boton.getText().toUpperCase();
+        Object source = e.getSource();
 
-        switch (texto) {
-            case "ESPECIES":
-            case "RECINTOS":
-            case "CUIDADORES":
-            case "ANIMALES":
-            case "TRASLADOS":
-            case "ESPECIES_RECINTOS":
-            case "ELEMENTOS":
-                String tabla = texto.toLowerCase();
+        // Table Buttons
+        for (JButton btn : vista.getPanelMenu().getBotones()) {
+            if (source == btn) {
+                String tabla = btn.getText().toLowerCase();
                 modeloVista.setTablaActual(tabla);
                 controlador.getControladorCRUD().rellenarTabla(tabla);
                 resetearEstiloBotones();
-                boton.setBackground(Estilos.COLOR_TABLA_SELECCION);
-                break;
-            case "NEW":
-                controlador.getControladorCRUD().mostrarFormularioNuevo();
-                break;
-            case "MAIN MENU":
-                menuPrincipal.hacerVisible();
-                vista.setVisible(false);
-                controlador.getControladorCRUD().rellenarTabla("");
-                break;
-            case "GUARDAR":
+                btn.setBackground(Estilos.COLOR_TABLA_SELECCION);
+                return;
+            }
+        }
+
+        ArrayList<JButton> actionButtons = vista.getPanelAcciones().getBotones();
+        if (actionButtons.size() > 0 && source == actionButtons.get(0)) { // NEW
+            controlador.getControladorCRUD().mostrarFormularioNuevo();
+        } else if (actionButtons.size() > 1 && source == actionButtons.get(1)) { // MAIN MENU
+            menuPrincipal.hacerVisible();
+            vista.setVisible(false);
+            controlador.getControladorCRUD().rellenarTabla("");
+        }
+
+        if (vista.getVentanaFormulario() != null) {
+            if (source == vista.getVentanaFormulario().getBtnGuardar()) {
                 if (controlador.isEditando()) {
                     controlador.getControladorCRUD().guardarActualizar();
                 } else {
                     controlador.getControladorCRUD().guardarNuevo();
                 }
-                break;
-            case "CANCELAR":
+            } else if (source == vista.getVentanaFormulario().getBtnCancelar()) {
                 vista.getVentanaFormulario().setVisible(false);
-                break;
-            default:
-                break;
+            }
         }
     }
 

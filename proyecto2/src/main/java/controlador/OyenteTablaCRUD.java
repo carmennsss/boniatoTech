@@ -7,12 +7,12 @@ import javax.swing.event.TableModelListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class OyenteTabla extends MouseAdapter implements TableModelListener {
+public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener {
     private CoPrincipal controlador;
     private ViMain vista;
     private MoView modeloVista;
 
-    public OyenteTabla(CoPrincipal controlador, ViMain vista, MoView modeloVista) {
+    public OyenteTablaCRUD(CoPrincipal controlador, ViMain vista, MoView modeloVista) {
         this.controlador = controlador;
         this.vista = vista;
         this.modeloVista = modeloVista;

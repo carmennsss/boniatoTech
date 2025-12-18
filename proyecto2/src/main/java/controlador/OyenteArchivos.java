@@ -48,30 +48,22 @@ public class OyenteArchivos implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String comando = e.getActionCommand();
+        Object source = e.getSource();
 
-        switch (comando) {
-            case "Upload":
-                accionBotonSubida();
-                break;
-            case "Download":
-                accionBotonDescarga();
-                break;
-            case "Delete":
-                accionBotonEliminar();
-                break;
-            case "New Folder":
-                accionBotonCrearCarpeta();
-                break;
-            case "Delete Folder":
-                accionBotonBorrarCarpeta();
-                break;
-            case "Back":
-                accionBotonVolver();
-                break;
-            case "Main Menu":
-                accionBotonVolverMenuPrincipal();
-                break;
+        if (source == vista.getBotonSubida()) {
+            accionBotonSubida();
+        } else if (source == vista.getBotonDescarga()) {
+            accionBotonDescarga();
+        } else if (source == vista.getBotonEliminar()) {
+            accionBotonEliminar();
+        } else if (source == vista.getBotonCrearCarpeta()) {
+            accionBotonCrearCarpeta();
+        } else if (source == vista.getBotonBorrarCarpeta()) {
+            accionBotonBorrarCarpeta();
+        } else if (source == vista.getBotonVolver()) {
+            accionBotonVolver();
+        } else if (source == vista.getBotonVolverMenuPrincipal()) {
+            accionBotonVolverMenuPrincipal();
         }
     }
 

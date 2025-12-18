@@ -354,4 +354,16 @@ public class ViFormulario extends JFrame {
             repaint();
         }
     }
+
+    public JButton getBtnGuardar() {
+        if (botones.size() > 0)
+            return botones.get(0);
+        return null;
+    }
+
+    public JButton getBtnCancelar() {
+        if (botones.size() > 1)
+            return botones.get(1);
+        return null;
+    }
 }
