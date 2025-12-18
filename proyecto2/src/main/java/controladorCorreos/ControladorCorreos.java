@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.Date;
 
 import javax.mail.Flags;
+import javax.swing.SwingUtilities;
 
 import modelo.Correo;
 import vista.VistaGeneralCorreo;
@@ -32,26 +33,38 @@ public class ControladorCorreos {
 	}
 
 	protected void cargarCorreos() {
+		vistaGeneral.getBtnRefrescar().setEnabled(false);
+		
 		new Thread(() -> {
+			try {
+				System.out.println("Conectando con Gmail...");
+				ArrayList<Correo> listaDescargada = obtenerCorreos();
 
-			System.out.println("Conectando con Gmail...");
-			ArrayList<Correo> listaDescargada = obtenerCorreos();
+				// Una vez descargados, actualizamos la tabla en el hilo de Swing
+				SwingUtilities.invokeLater(() -> {
+					this.correos.clear();
+					this.correos.addAll(listaDescargada); // Actualizamos la lista local
+					vistaGeneral.cargarCorreos(this.correos);
+					
+					vistaGeneral.getBtnRefrescar().setEnabled(true);
 
-			// Una vez descargados, actualizamos la tabla en el hilo de Swing
-			javax.swing.SwingUtilities.invokeLater(() -> {
-				this.correos.clear();
-				this.correos.addAll(listaDescargada); // Actualizamos la lista local
-				vistaGeneral.cargarCorreos(this.correos);
 
-				if (hiloRecepcion == null || !hiloRecepcion.isAlive()) {
-					HiloRecepcionCorreos hilo = new HiloRecepcionCorreos(gestion, HOST, "recent:" + CORREO,
-							PASSWORD_APLICACION, vistaGeneral, this);
-					hiloRecepcion = new Thread(hilo, "Hilo-Recepcion-Correos");
-					hiloRecepcion.start();
-				}
+					if (hiloRecepcion == null || !hiloRecepcion.isAlive()) {
+						HiloRecepcionCorreos hilo = new HiloRecepcionCorreos(gestion, HOST, "recent:" + CORREO,
+								PASSWORD_APLICACION, vistaGeneral, this);
+						hiloRecepcion = new Thread(hilo, "Hilo-Recepcion-Correos");
+						hiloRecepcion.start();
+					}
 
-			});
+				});
+			
+			} catch (Exception e) {
+				SwingUtilities.invokeLater(() -> vistaGeneral.getBtnRefrescar().setEnabled(true));
+			}
 		}).start();
+			
+
+			
 	}
 
 	// Metodo para detener el hilo cuando se cierre la ventana
@@ -75,6 +88,8 @@ public class ControladorCorreos {
 				.addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo(), PASSWORD_APLICACION));
 		vistaGeneral.getEmailTabla()
 				.addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this, CORREO));
+		vistaGeneral.getBtnRefrescar().addActionListener(new OyenteRefrescarCorreo(this));
+		// vistaGeneral.getBtnVolver().addActionListener(new OyenteBtnVolver());
 	}
 
 	// ELIMINAR
