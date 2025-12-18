@@ -14,8 +14,10 @@ import javax.swing.JList;
 
 import org.apache.commons.net.ftp.FTPFile;
 
+import controladorLogs.GestionLogs;
 import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
+import modelo.Log;
 import modelo.MoTextos;
 import servidor.FileManager;
 import vista.VistaGestorArchivos;
@@ -109,7 +111,7 @@ public class OyenteArchivos implements ActionListener {
         String tipo;
         String emailUsuario;
 
-        fc.setDialogTitle("Select the file to upload"); // Could allow this to remain or externalize later if critical
+        fc.setDialogTitle("Select the file to upload");
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int respuesta = fc.showDialog(fc, "OK");
         if (respuesta == JFileChooser.APPROVE_OPTION) {
@@ -123,8 +125,10 @@ public class OyenteArchivos implements ActionListener {
             if (!file.isDirectory() && nombreArchivo.contains(".")) {
                 extension = nombreArchivo.substring(nombreArchivo.lastIndexOf(".") + 1);
             }
+
             db.insertarArchivo(nombreArchivo, rutaActual, extension, tipo, idPadre, emailUsuario);
             ftp.subirArchivo(archivo, nombreArchivo, rutaActual);
+            GestionLogs.writeLog(new Log("Upload, file uploaded " + nombreArchivo, "", true));
             actualizarListaFTP();
         }
     }
@@ -154,6 +158,7 @@ public class OyenteArchivos implements ActionListener {
         if (respuesta == JFileChooser.APPROVE_OPTION) {
             carpeta = fc.getSelectedFile();
             ftp.descargarArchivo(select, carpeta.getAbsolutePath(), rutaActual);
+            GestionLogs.writeLog(new Log("Download, file downloaded " + select.getName(), "", true));
         }
     }
 
@@ -171,6 +176,7 @@ public class OyenteArchivos implements ActionListener {
             ftp.borrarArchivo(select, rutaActual);
             db.eliminarArchivo(select.getName(), rutaActual);
             actualizarListaFTP();
+            GestionLogs.writeLog(new Log("Delete, file deleted " + select.getName(), "", true));
         } else {
             JOptionPane.showMessageDialog(null, MoTextos.msg_select_file, MoTextos.msg_error_title,
                     JOptionPane.INFORMATION_MESSAGE);
@@ -201,6 +207,7 @@ public class OyenteArchivos implements ActionListener {
             db.insertarArchivo(nombreCarpeta, directorioServidor, "", "Folder", idPadre, emailUsuario);
             ftp.crearCarpeta(nombreCarpeta, rutaActual);
             actualizarListaFTP();
+            GestionLogs.writeLog(new Log("Create, folder created " + nombreCarpeta, "", true));
         } else {
             JOptionPane.showMessageDialog(null, MoTextos.msg_enter_folder_name, MoTextos.msg_error_title,
                     JOptionPane.INFORMATION_MESSAGE);
@@ -234,7 +241,7 @@ public class OyenteArchivos implements ActionListener {
         }
         db.eliminarArchivo(select.getName(), rutaCarpeta);
         ftp.borrarCarpeta(select.getName(), rutaActual);
-
+        GestionLogs.writeLog(new Log("Delete, folder deleted " + select.getName(), "", true));
         actualizarListaFTP();
     }
 
