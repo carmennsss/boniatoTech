@@ -24,8 +24,6 @@ public class GestionLogs {
 
 	public static void writeLog(Log log) {
 
-		// Conectar y registrar log en db
-
 		String sql = "INSERT INTO logs (accion, fecha, resultado, email_usuario) VALUES (?,CURRENT_TIMESTAMP,?,?)";
 
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -43,15 +41,23 @@ public class GestionLogs {
 
 	}
 
-	public static ArrayList<Log> consultLogs() {
+	public static ArrayList<Log> consultLogs(String consulta) {
 		ArrayList<Log> logs = new ArrayList<>();
 
 		String sql = "SELECT id_logs, accion, fecha, resultado, email_usuario FROM logs";
+		if (consulta.equals("actions")) {
+			sql += " ORDER BY accion ASC";
+		} else if (consulta.equals("users")) {
+			sql += " ORDER BY email_usuario ASC";
+		} else if (consulta.equals("dates")) {
+			sql += " ORDER BY fecha ASC";
+		} else if (consulta.equals("results")) {
+			sql += " ORDER BY resultado ASC";
+		}
 
 		try (
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();)
-		{
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ResultSet rs = ps.executeQuery();) {
 			while (rs.next()) {
 				int id = rs.getInt("id_logs");
 				String accion = rs.getString("accion");
@@ -59,7 +65,7 @@ public class GestionLogs {
 				String resultado = rs.getString("resultado");
 				String email = rs.getString("email_usuario");
 
-				Log log = new Log(id, accion, fecha, resultado, email);
+				Log log = new Log(id, accion, email, fecha, resultado);
 				logs.add(log);
 			}
 		} catch (SQLException e) {
@@ -70,28 +76,24 @@ public class GestionLogs {
 	}
 
 	public boolean exportLogs(File file) {
-        ArrayList<Log> logs = consultLogs();
-        
-        
-        // Usamos try-with-resources para cerrar el FileWriter automáticamente
-        try (FileWriter fw = new FileWriter(file)) {
-            
-        	if (logs.isEmpty()) {
-            	fw.write("There isn´t logs registered in the database.");
-            }
-            fw.write("Date,User,Action,Result\n");
-            
-           
-            
-            for (Log log : logs) {
-                fw.write(log.toString());
-            }
-            return true; // Éxito
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false; // Error
-        }
-    }
+		ArrayList<Log> logs = consultLogs("all");
+
+		try (FileWriter fw = new FileWriter(file)) {
+
+			if (logs.isEmpty()) {
+				fw.write("There isn´t logs registered in the database.");
+			}
+			fw.write("Date,User,Action,Result\n");
+
+			for (Log log : logs) {
+				fw.write(log.toString());
+			}
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	public void mostrarLogs() {
 		ArrayList<Log> logs = new ArrayList<>();

@@ -18,13 +18,10 @@ public class OyenteIdioma implements ActionListener {
         JComboBox<?> combo = (JComboBox<?>) e.getSource();
         int index = combo.getSelectedIndex();
 
-        // 0 = English, 1 = Spanish
         MoTextos.setIdioma(index);
 
-        // Update all views
         coPrincipal.actualizarIdiomaGlobal();
 
-        // Verify output for debugging if needed
         System.out.println("Language switched to: " + (index == 0 ? "English" : "Spanish"));
     }
 }
