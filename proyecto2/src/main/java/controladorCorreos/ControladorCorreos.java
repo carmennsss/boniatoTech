@@ -1,5 +1,9 @@
 package controladorCorreos;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,6 +13,7 @@ import javax.mail.Flags;
 import javax.swing.SwingUtilities;
 
 import modelo.Correo;
+import modelo.ModeloBaseDatos;
 import vista.VistaGeneralCorreo;
 
 public class ControladorCorreos {
@@ -21,15 +26,38 @@ public class ControladorCorreos {
 	private VistaGeneralCorreo vistaGeneral;
 	private static GestionCorreos gestion;
 	private Thread hiloRecepcion;
+	private ModeloBaseDatos db;
 
-	public ControladorCorreos(String CORREO, String PASSWORD_APLICACION, VistaGeneralCorreo vistaGeneral) {
+	public ControladorCorreos(String CORREO, VistaGeneralCorreo vistaGeneral, ModeloBaseDatos bd) {
 		this.vistaGeneral = vistaGeneral;
+		this.db = bd;
 		this.CORREO = CORREO;
-		this.PASSWORD_APLICACION = PASSWORD_APLICACION;
+		this.PASSWORD_APLICACION = obtenerClaveCorreoPorUsuario(CORREO);
 		gestion = new GestionCorreos();
 		configurarVistaGeneral();
 
 
+	}
+
+	private String obtenerClaveCorreoPorUsuario(String correo) {
+		String contrasenaAplicacion = null;
+		try {
+		String sql = "SELECT clave_correo FROM usuarios WHERE email = ?";
+		Connection conexion = db.getConexion();
+		
+		PreparedStatement ps = conexion.prepareStatement(sql);
+		
+		ps.setString(1, correo);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			contrasenaAplicacion = rs.getString(1);
+		}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return contrasenaAplicacion;
 	}
 
 	public void cargarCorreos() {
@@ -87,7 +115,6 @@ public class ControladorCorreos {
 		vistaGeneral.getEmailTabla()
 				.addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this, CORREO));
 		vistaGeneral.getBtnRefrescar().addActionListener(new OyenteRefrescarCorreo(this));
-		// vistaGeneral.getBtnVolver().addActionListener(new OyenteBtnVolver());
 	}
 
 	// ELIMINAR
