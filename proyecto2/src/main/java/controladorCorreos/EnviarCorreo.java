@@ -31,10 +31,12 @@ public class EnviarCorreo {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(
                         miCorreo,
-                        passwordAplicacion);
+                        passwordAplicacion  // Contrasenna de aplicacion correcta
+                );
             }
         });
-
+        
+        // Crear mensaje
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress(miCorreo));
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receptor));

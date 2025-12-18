@@ -8,9 +8,9 @@ public class Log {
 	private String correo;
 	private String result;
 
-
 	public Log(String action, String correo, boolean exito) {
 		String resultado = exito ? "success" : "error";
+
 		this.action = action;
 		this.correo = correo;
 		this.setResult(resultado);
@@ -63,6 +63,21 @@ public class Log {
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
-	
+
+	@Override
+	public String toString() {
+	    return csv(date) + "," +
+	           csv(correo) + "," +
+	           csv(action) + "," +
+	           csv(result);
+	}
+
+	private String csv(Object value) {
+	    if (value == null) return "";
+	    String text = value.toString().replace("\"", "\"\"");
+	    return "\"" + text + "\"";
+	}
+
+
 
 }
