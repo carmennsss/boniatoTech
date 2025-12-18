@@ -15,7 +15,7 @@ public class ControladorCRUD {
     private ModeloBaseDatos bd;
     private ViMain vista;
     private MoView modeloVista;
-    private CoPrincipal coPrincipal; // Reference in case we need to call back
+    private CoPrincipal coPrincipal;
     private ActionListener oyente;
 
     public void setOyente(ActionListener oyente) {
@@ -28,8 +28,6 @@ public class ControladorCRUD {
         this.vista = vista;
         this.modeloVista = modeloVista;
     }
-
-    // --- MÉTODOS DE VISTA / LECTURA ---
 
     public void rellenarTabla(String tabla) {
         if (tabla.isEmpty()) {
@@ -148,8 +146,6 @@ public class ControladorCRUD {
 
         vista.getVentanaFormulario().hacerVisible();
     }
-
-    // --- MÉTODOS DE ACCIÓN / ESCRITURA ---
 
     public void guardarNuevo() {
         String tabla = modeloVista.getTablaActual();

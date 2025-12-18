@@ -13,8 +13,11 @@ import java.awt.RenderingHints;
 import java.net.URL;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,7 +33,7 @@ public class VistaWhitelist extends JFrame {
     private JTextField txtEmail;
     private JTextField txtNombre;
     private Image imagenFondo;
-    private JButton btnAnadir; // Exposed for Controller/Main
+    private JButton btnAnadir;
     private JButton btnDesasignar;
     private JButton btnVolver;
     private JLabel titulo;
@@ -45,6 +48,18 @@ public class VistaWhitelist extends JFrame {
     }
 
     public VistaWhitelist() {
+        propiedades();
+    }
+
+    private void propiedades() {
+        configurarVentana();
+        configurarPanelFondo();
+        configurarTitulo();
+        configurarTabla();
+        configurarBotones();
+    }
+
+    private void configurarVentana() {
         this.botones = new ArrayList<>();
         this.tabla = new ViTabla();
 
@@ -54,7 +69,9 @@ public class VistaWhitelist extends JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setLayout(new BorderLayout());
+    }
 
+    private void configurarPanelFondo() {
         URL url = getClass().getResource("/fondo_abstracto_2.png");
         if (url != null) {
             imagenFondo = new ImageIcon(url).getImage();
@@ -77,7 +94,9 @@ public class VistaWhitelist extends JFrame {
         panelFondo.setLayout(new BorderLayout(20, 20));
         panelFondo.setBorder(new EmptyBorder(20, 20, 20, 20));
         this.setContentPane(panelFondo);
+    }
 
+    private void configurarTitulo() {
         titulo = new JLabel(MoTextos.whitelist_title);
         titulo.setFont(Estilos.FONT_TITULO);
         titulo.setForeground(Estilos.DARK_SPRUCE);
@@ -97,9 +116,11 @@ public class VistaWhitelist extends JFrame {
         panelTitulo.setOpaque(false);
         panelTitulo.setBorder(new EmptyBorder(10, 20, 10, 20));
         panelTitulo.add(titulo);
-        panelFondo.add(panelTitulo, BorderLayout.NORTH);
+        getContentPane().add(panelTitulo, BorderLayout.NORTH);
+    }
 
-        // Container for table with semi-transparent background
+    private void configurarTabla() {
+
         JPanel panelTablaContenedor = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -115,18 +136,14 @@ public class VistaWhitelist extends JFrame {
 
         this.tabla.setOpaque(false);
         panelTablaContenedor.add(this.tabla, BorderLayout.CENTER);
-        panelFondo.add(panelTablaContenedor, BorderLayout.CENTER);
+        getContentPane().add(panelTablaContenedor, BorderLayout.CENTER);
+    }
 
-        // Bottom panel for controls
+    private void configurarBotones() {
+
         JPanel panelSur = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         panelSur.setOpaque(false);
 
-        // Fields
-        // Fields - Removed from main view, used in Dialog
-        // txtEmail & txtNombre will be initialized in mostrarAgregarUsuario
-
-        // Buttons
-        // Buttons
         btnAnadir = new JButton(MoTextos.btn_add);
         btnDesasignar = new JButton(MoTextos.btn_unassign);
         btnVolver = new JButton(MoTextos.btn_back_whitelist);
@@ -143,7 +160,7 @@ public class VistaWhitelist extends JFrame {
         panelSur.add(btnDesasignar);
         panelSur.add(btnVolver);
 
-        panelFondo.add(panelSur, BorderLayout.SOUTH);
+        getContentPane().add(panelSur, BorderLayout.SOUTH);
     }
 
     private void estilarBoton(JButton btn, Color bgColor) {
@@ -156,18 +173,18 @@ public class VistaWhitelist extends JFrame {
         btn.setPreferredSize(new Dimension(150, 40));
     }
 
-    private void estilarInput(javax.swing.JComponent input) {
+    private void estilarInput(JComponent input) {
         input.setFont(Estilos.FONT_TEXTO);
         input.setBackground(Estilos.COLOR_INPUT_BG);
         input.setForeground(Estilos.COLOR_INPUT_TEXT);
-        input.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-                javax.swing.BorderFactory.createLineBorder(Estilos.BLUE_SLATE, 1),
-                javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        input.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Estilos.BLUE_SLATE, 1),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         input.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
     }
 
-    private javax.swing.JButton crearBotonDialogo(String texto, Color color) {
-        javax.swing.JButton btn = new javax.swing.JButton(texto);
+    private JButton crearBotonDialogo(String texto, Color color) {
+        JButton btn = new JButton(texto);
         btn.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
         btn.setBackground(color);
         btn.setForeground(Color.WHITE);
@@ -179,7 +196,7 @@ public class VistaWhitelist extends JFrame {
     }
 
     public int mostrarAgregarUsuario() {
-        final javax.swing.JDialog dialog = new javax.swing.JDialog(
+        final JDialog dialog = new JDialog(
                 this,
                 MoTextos.whitelist_dialog_title,
                 true);

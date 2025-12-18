@@ -48,13 +48,13 @@ public class ViFormulario extends JFrame {
         panelCentral = new JPanel(new GridBagLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
-                // Ensure default background (white) is painted first
+
                 g.setColor(getBackground());
                 g.fillRect(0, 0, getWidth(), getHeight());
 
                 if (imagenFondo != null) {
                     Graphics2D g2 = (Graphics2D) g.create();
-                    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f)); // Very low opacity
+                    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f));
                     g2.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
                     g2.dispose();
                 }

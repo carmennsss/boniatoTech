@@ -17,14 +17,14 @@ public class RenderComboIdioma extends DefaultListCellRenderer {
 
         if (value instanceof ImageIcon) {
             label.setIcon((ImageIcon) value);
-            label.setText(""); // No text, just the flag
+            label.setText("");
         }
 
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         if (isSelected) {
-            label.setBackground(new Color(230, 230, 230)); // Light gray for selection
+            label.setBackground(new Color(230, 230, 230));
         } else {
             label.setBackground(Color.WHITE);
         }

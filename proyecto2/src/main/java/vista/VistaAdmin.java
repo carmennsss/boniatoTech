@@ -35,11 +35,16 @@ public class VistaAdmin extends JFrame {
 
 	public VistaAdmin(VistaMenuPrincipal menu) {
 		this.menu = menu;
-		this.setTitle("Administrator Menu");
-		this.setSize(900, 600);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		propiedades();
+	}
 
+	private void propiedades() {
+		configurarVentana();
+		configurarFondo();
+		configurarContenido();
+	}
+
+	private void configurarFondo() {
 		URL url = getClass().getResource("/fondo_zoo_2.png");
 		if (url != null) {
 			imagenFondo = new ImageIcon(url).getImage();
@@ -61,7 +66,9 @@ public class VistaAdmin extends JFrame {
 		};
 		panelFondo.setLayout(new GridBagLayout());
 		setContentPane(panelFondo);
+	}
 
+	private void configurarContenido() {
 		JPanel panelCentral = new JPanel(new GridBagLayout()) {
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -75,19 +82,19 @@ public class VistaAdmin extends JFrame {
 		panelCentral.setOpaque(false);
 		panelCentral.setBorder(new EmptyBorder(40, 60, 40, 60));
 
-		botonLogs = new JButton("Log Manager");
+		botonLogs = new JButton(modelo.MoTextos.logs_title);
 		botonCrearUsuario = new JButton(modelo.MoTextos.btn_manage_users);
 		botonCrearRoles = new JButton(modelo.MoTextos.btn_manage_roles);
 		botonAsignarRoles = new JButton(modelo.MoTextos.roles_title_assign);
-		botonWhitelist = new JButton(modelo.MoTextos.whitelist_title); // New Button
+		botonWhitelist = new JButton(modelo.MoTextos.whitelist_title);
 		botonVolver = new JButton(modelo.MoTextos.btn_main_menu);
 
-		estilarBoton(botonCrearUsuario, new Color(110, 137, 115));
-		estilarBoton(botonCrearRoles, new Color(110, 137, 115));
-		estilarBoton(botonAsignarRoles, new Color(110, 137, 115));
-		estilarBoton(botonLogs, new Color(110, 137, 115));
-		estilarBoton(botonWhitelist, new Color(110, 137, 115));
-		estilarBoton(botonVolver, new Color(200, 100, 100));
+		aniadirEstiloBoton(botonCrearUsuario, new Color(110, 137, 115));
+		aniadirEstiloBoton(botonCrearRoles, new Color(110, 137, 115));
+		aniadirEstiloBoton(botonAsignarRoles, new Color(110, 137, 115));
+		aniadirEstiloBoton(botonLogs, new Color(110, 137, 115));
+		aniadirEstiloBoton(botonWhitelist, new Color(110, 137, 115));
+		aniadirEstiloBoton(botonVolver, new Color(200, 100, 100));
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(15, 0, 15, 0);
@@ -109,7 +116,7 @@ public class VistaAdmin extends JFrame {
 
 		gbc.gridy = 3;
 		panelCentral.add(botonAsignarRoles, gbc);
-		
+
 		gbc.gridy = 4;
 		panelCentral.add(botonLogs, gbc);
 
@@ -120,7 +127,14 @@ public class VistaAdmin extends JFrame {
 		gbc.insets = new Insets(30, 0, 10, 0);
 		panelCentral.add(botonVolver, gbc);
 
-		panelFondo.add(panelCentral);
+		getContentPane().add(panelCentral);
+	}
+
+	private void configurarVentana() {
+		this.setTitle(modelo.MoTextos.admin_title);
+		this.setSize(900, 600);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	public JButton getBotonLogs() {
@@ -131,7 +145,7 @@ public class VistaAdmin extends JFrame {
 		this.botonLogs = botonLogs;
 	}
 
-	private void estilarBoton(JButton btn, Color color) {
+	private void aniadirEstiloBoton(JButton btn, Color color) {
 		btn.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		btn.setBackground(color);
 		btn.setForeground(Color.WHITE);
@@ -186,7 +200,7 @@ public class VistaAdmin extends JFrame {
 	}
 
 	public void actualizarTextos() {
-		this.setTitle("Administrator Menu"); // Maybe externalize this too but app name is okay
+		this.setTitle(modelo.MoTextos.admin_title);
 		titulo.setText(modelo.MoTextos.admin_title);
 		botonCrearUsuario.setText(modelo.MoTextos.btn_manage_users);
 		botonCrearRoles.setText(modelo.MoTextos.btn_manage_roles);

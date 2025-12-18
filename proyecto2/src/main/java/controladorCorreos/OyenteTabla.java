@@ -1,63 +1,50 @@
 package controladorCorreos;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import javax.swing.JTable;
+
 import modelo.Correo;
 import vista.VistaCorreoBase;
 
-public class OyenteTabla implements MouseListener {
-    
-    private JTable emailTabla;
-    private ArrayList<Correo> correos;
-    private ControladorCorreos controladorCorreos;
-    private String correo;
+public class OyenteTabla extends MouseAdapter {
 
-    public OyenteTabla(JTable emailTabla, ArrayList<Correo> correos, ControladorCorreos controladorCorreos, String correo) {
-        this.emailTabla = emailTabla;
+    private JTable tabla;
+    private ArrayList<Correo> correos;
+    private ControladorCorreos controlador;
+    private String miCorreo;
+
+    public OyenteTabla(JTable tabla, ArrayList<Correo> correos, ControladorCorreos controlador, String miCorreo) {
+        this.tabla = tabla;
         this.correos = correos;
-        this.controladorCorreos = controladorCorreos;
-        this.correo = correo;
+        this.controlador = controlador;
+        this.miCorreo = miCorreo;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if (e.getClickCount() == 2) {
+            int fila = tabla.getSelectedRow();
+            if (fila != -1) {
+                Correo correoSeleccionado = correos.get(fila);
 
-    	if (e.getClickCount() == 2) {
-            int filaSeleccionada = emailTabla.getSelectedRow();
-            
-            ArrayList<Correo> correosActuales = controladorCorreos.getListaCorreosActual();
-
-            if (filaSeleccionada != -1 && !correosActuales.isEmpty()) {
-                // Ahora el índice coincidirá con la lista y la tabla
-                Correo correoSeleccionado = correosActuales.get(filaSeleccionada);
-                
-                //Si no est� leido leer
                 if (!correoSeleccionado.isLeido()) {
-                	//Nuevo hilo para que marque como leido sin cortar el ritmo del programa
                     new Thread(() -> {
-                        controladorCorreos.marcarCorreoLeido(correoSeleccionado);	
-                    	}).start();
-                    correos.get(correos.indexOf(correoSeleccionado)).setLeido(true);
+                        controlador.marcarCorreoLeido(correoSeleccionado);
+                    }).start();
                 }
-                
 
                 VistaCorreoBase vistaLectura = new VistaCorreoBase(correoSeleccionado);
-                vistaLectura.getBotonEliminar().addActionListener(new OyenteBotonEliminar(correoSeleccionado, controladorCorreos, vistaLectura));
-        		vistaLectura.getBotonExportar().addActionListener(new OyenteExportarCorreo(correoSeleccionado, vistaLectura, correo));
-                vistaLectura.getBotonNoLeido().addActionListener(new OyenteBotonNoLeido(correoSeleccionado, controladorCorreos));
+                vistaLectura.getBotonEliminar().addActionListener(
+                        new OyenteBotonEliminar(correoSeleccionado, controlador, vistaLectura));
+                vistaLectura.getBotonExportar().addActionListener(
+                        new OyenteExportarCorreo(correoSeleccionado, vistaLectura, miCorreo));
+                vistaLectura.getBotonNoLeido()
+                        .addActionListener(new OyenteBotonNoLeido(correoSeleccionado, controlador));
                 vistaLectura.setVisible(true);
             }
         }
     }
-
-    // M�todos vac�os obligatorios de la interfaz
-    @Override public void mousePressed(MouseEvent e) {}
-    @Override public void mouseReleased(MouseEvent e) {}
-    @Override public void mouseEntered(MouseEvent e) {}
-    @Override public void mouseExited(MouseEvent e) {}
 }
