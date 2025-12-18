@@ -16,9 +16,8 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.Multipart;
 
 public class EnviarCorreo {
-	
 
-    public static void enviarCorreo(String miCorreo, String asunto, String mensaje, String receptor, 
+    public static void enviarCorreo(String miCorreo, String asunto, String mensaje, String receptor,
             String passwordAplicacion, List<File> archivos) throws Exception {
 
         Properties props = new Properties();
@@ -33,7 +32,7 @@ public class EnviarCorreo {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(
                         miCorreo,
-                        passwordAplicacion  // Contrase�a de aplicaci�n correcta
+                        passwordAplicacion // Contrase�a de aplicaci�n correcta
                 );
             }
         });
@@ -62,6 +61,7 @@ public class EnviarCorreo {
         }
 
         msg.setContent(multipart);
-        Transport.send(msg);;
+        Transport.send(msg);
+        ;
     }
 }

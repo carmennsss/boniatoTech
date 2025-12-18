@@ -1,48 +1,44 @@
 package modelo;
 
 public class Rol {
-	
-	private int id;
-	private Permission permission;
-	private String description;
-	
-	
-	public Rol(int id, Permission permission, String description) {
-		this.id = id;
-		this.permission = permission;
-		this.description = description;
+
+	private int id_roles;
+	private String nombre_roles;
+	private String descripcion_roles;
+
+	public Rol(int id_roles, String nombre_roles, String descripcion_roles) {
+		this.id_roles = id_roles;
+		this.nombre_roles = nombre_roles;
+		this.descripcion_roles = descripcion_roles;
 	}
 
-
-	public int getId() {
-		return id;
+	public int getId_roles() {
+		return id_roles;
 	}
 
-
-	public void setId(int id) {
-		this.id = id;
+	@Override
+	public String toString() {
+		return nombre_roles;
 	}
 
-	
-	public Permission getPermission() {
-		return permission;
+	public void setId_roles(int id_roles) {
+		this.id_roles = id_roles;
 	}
 
-
-	public void setPermission(Permission permission) {
-		this.permission = permission;
+	public String getNombre_roles() {
+		return nombre_roles;
 	}
 
-
-	public String getDescription() {
-		return description;
+	public void setNombre_roles(String nombre_roles) {
+		this.nombre_roles = nombre_roles;
 	}
 
-
-	public void setDescription(String description) {
-		this.description = description;
+	public String getDescripcion_roles() {
+		return descripcion_roles;
 	}
-	
-	
+
+	public void setDescripcion_roles(String descripcion_roles) {
+		this.descripcion_roles = descripcion_roles;
+	}
 
 }

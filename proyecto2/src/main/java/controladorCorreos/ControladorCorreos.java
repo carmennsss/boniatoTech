@@ -62,7 +62,8 @@ public class ControladorCorreos {
 	}
 
 	public ArrayList<Correo> obtenerCorreos() {
-		ArrayList<Correo> listaCorreos = gestion.recibirCorreosPOP3(HOST,HOSTIMAP, "recent:" + CORREO, PASSWORD_APLICACION);
+		ArrayList<Correo> listaCorreos = gestion.recibirCorreosPOP3(HOST, HOSTIMAP, "recent:" + CORREO,
+				PASSWORD_APLICACION);
 
 		return listaCorreos;
 	}
@@ -70,11 +71,13 @@ public class ControladorCorreos {
 	private void configurarVistaGeneral() {
 		vistaGeneral = new VistaGeneralCorreo(CORREO);
 		vistaGeneral.setVisible(true);
-		vistaGeneral.getBotonEnviarCorreo().addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo(), PASSWORD_APLICACION));
-		vistaGeneral.getEmailTabla().addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this, CORREO));
+		vistaGeneral.getBotonEnviarCorreo()
+				.addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo(), PASSWORD_APLICACION));
+		vistaGeneral.getEmailTabla()
+				.addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this, CORREO));
 	}
 
-// ELIMINAR
+	// ELIMINAR
 	public void eliminarCorreoSeleccionado(Correo correo) {
 		try {
 
@@ -129,7 +132,7 @@ public class ControladorCorreos {
 		}
 	}
 
-// ACTUALIZAR
+	// ACTUALIZAR
 	public synchronized void actualizarListaDesdeHilo(ArrayList<Correo> nuevosCorreos) {
 		this.correos.clear();
 		this.correos.addAll(nuevosCorreos);

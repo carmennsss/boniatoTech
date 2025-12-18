@@ -14,9 +14,9 @@ public class ViBotones extends JPanel {
 
     public ViBotones(ArrayList<String> textos) {
         this.botones = new ArrayList<>();
-        setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         setBackground(Estilos.COLOR_MENU_FONDO);
-        setBorder(new EmptyBorder(10, 10, 10, 10));
+        setBorder(new EmptyBorder(5, 5, 5, 5));
         crearBotones(textos);
     }
 
@@ -30,11 +30,12 @@ public class ViBotones extends JPanel {
     }
 
     private void estilarBoton(JButton btn) {
-        btn.setFont(Estilos.FONT_BOTON);
+        btn.setFont(new Font("SansSerif", Font.BOLD, 11)); // Smaller font to fit
         btn.setBackground(Estilos.DARK_SPRUCE);
         btn.setForeground(Color.WHITE);
         btn.setFocusPainted(false);
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btn.setPreferredSize(new java.awt.Dimension(115, 35));
     }
 
     public ArrayList<JButton> getBotones() {

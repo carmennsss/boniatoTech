@@ -63,36 +63,35 @@ public class VistaGeneralCorreo extends JFrame {
 		panelTabla.add(scrollPane, BorderLayout.CENTER);
 
 		panel.add(panelTabla, BorderLayout.CENTER);
-		
-		
-		//_________
+
+		// _________
 		emailTabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
 
-		    @Override
-		    public Component getTableCellRendererComponent(
-		            JTable table,
-		            Object value,
-		            boolean isSelected,
-		            boolean hasFocus,
-		            int row,
-		            int column) {
+			@Override
+			public Component getTableCellRendererComponent(
+					JTable table,
+					Object value,
+					boolean isSelected,
+					boolean hasFocus,
+					int row,
+					int column) {
 
-		        Component comp = super.getTableCellRendererComponent(
-		                table, value, isSelected, hasFocus, row, column);
+				Component comp = super.getTableCellRendererComponent(
+						table, value, isSelected, hasFocus, row, column);
 
-		        // Obtenemos el correo correspondiente a esa fila
-		        Correo correoFila = ((VistaGeneralCorreo) SwingUtilities
-		                .getWindowAncestor(table))
-		                .getCorreoPorFila(row);
+				// Obtenemos el correo correspondiente a esa fila
+				Correo correoFila = ((VistaGeneralCorreo) SwingUtilities
+						.getWindowAncestor(table))
+						.getCorreoPorFila(row);
 
-		        if (correoFila != null && !correoFila.isLeido()) {
-		            comp.setFont(comp.getFont().deriveFont(Font.BOLD));
-		        } else {
-		            comp.setFont(comp.getFont().deriveFont(Font.PLAIN));
-		        }
+				if (correoFila != null && !correoFila.isLeido()) {
+					comp.setFont(comp.getFont().deriveFont(Font.BOLD));
+				} else {
+					comp.setFont(comp.getFont().deriveFont(Font.PLAIN));
+				}
 
-		        return comp;
-		    }
+				return comp;
+			}
 		});
 
 	}
@@ -106,18 +105,13 @@ public class VistaGeneralCorreo extends JFrame {
 
 	}
 
-	
 	public Correo getCorreoPorFila(int fila) {
-	    if (fila >= 0 && fila < correosActuales.size()) {
-	        return correosActuales.get(fila);
-	    }
-	    return null;
+		if (fila >= 0 && fila < correosActuales.size()) {
+			return correosActuales.get(fila);
+		}
+		return null;
 	}
-	
-	
-	
-	
-	
+
 	private void inicializarPanel() {
 		panel = new JPanel(new BorderLayout());
 		this.add(panel, BorderLayout.CENTER);
@@ -151,19 +145,19 @@ public class VistaGeneralCorreo extends JFrame {
 	private ArrayList<Correo> correosActuales = new ArrayList<>();
 
 	public void cargarCorreos(ArrayList<Correo> correos) {
-	    correosActuales.clear();
-	    correosActuales.addAll(correos);
+		correosActuales.clear();
+		correosActuales.addAll(correos);
 
-	    tablaModelo.setRowCount(0);
-	    Collections.sort(correos, Comparator.comparing(Correo::getFecha).reversed());
+		tablaModelo.setRowCount(0);
+		Collections.sort(correos, Comparator.comparing(Correo::getFecha).reversed());
 
-	    for (Correo c : correos) {
-	        tablaModelo.addRow(new Object[]{
-	            c.getAsunto(),
-	            c.getRemitente(),
-	            c.getFecha()
-	        });
-	    }
+		for (Correo c : correos) {
+			tablaModelo.addRow(new Object[] {
+					c.getAsunto(),
+					c.getRemitente(),
+					c.getFecha()
+			});
+		}
 	}
 
 	public JButton getBotonEnviarCorreo() {
@@ -197,7 +191,5 @@ public class VistaGeneralCorreo extends JFrame {
 	public void setBtnVolver(JButton btnVolver) {
 		this.btnVolver = btnVolver;
 	}
-	
-	
-	
+
 }

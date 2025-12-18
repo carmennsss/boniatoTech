@@ -65,7 +65,50 @@ public class ModeloClienteFTP {
         }
     }
 
-    // --- MÃ‰TODO MÃ�GICO PARA CONECTAR SIN UNIDAD Z ---
+    public void crearRol(String nombreRol) {
+        conectarCarpetaCompartida();
+        try {
+            File xmlFile = new File(RUTA_XML);
+            if (!xmlFile.exists())
+                return;
+
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(xmlFile);
+            doc.getDocumentElement().normalize();
+
+            NodeList groupsList = doc.getElementsByTagName("Groups");
+            Node groupsNode;
+            if (groupsList.getLength() > 0) {
+                groupsNode = groupsList.item(0);
+            } else {
+                groupsNode = doc.createElement("Groups");
+                doc.getDocumentElement().appendChild(groupsNode);
+            }
+
+            Element newGroup = doc.createElement("Group");
+            newGroup.setAttribute("Name", nombreRol);
+
+            agregarOpcion(doc, newGroup, "Bypass server userlimit", "0");
+            agregarOpcion(doc, newGroup, "User Limit", "0");
+            agregarOpcion(doc, newGroup, "IP Limit", "0");
+            agregarOpcion(doc, newGroup, "Enabled", "1");
+            agregarOpcion(doc, newGroup, "Comments", "");
+            agregarOpcion(doc, newGroup, "ForceSsl", "0");
+
+            Element permissions = doc.createElement("Permissions");
+            newGroup.appendChild(permissions);
+            groupsNode.appendChild(newGroup);
+
+            guardarXML(doc, xmlFile);
+            System.out.println("Rol creado: " + nombreRol);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // --- MÉTODO MÁGICO PARA CONECTAR SIN UNIDAD Z ---
     private void conectarCarpetaCompartida() {
         try {
             // Este comando hace un "login" silencioso en la carpeta de red sin crear unidad
@@ -79,6 +122,84 @@ public class ModeloClienteFTP {
         }
     }
 
+    public void asignarPermiso(String nombreRol, String carpeta, String tipoPermiso, boolean valor) {
+        conectarCarpetaCompartida();
+        try {
+            File xmlFile = new File(RUTA_XML);
+            if (!xmlFile.exists())
+                return;
+
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(xmlFile);
+            doc.getDocumentElement().normalize();
+
+            NodeList groups = doc.getElementsByTagName("Group");
+            Element targetGroup = null;
+
+            for (int i = 0; i < groups.getLength(); i++) {
+                Element group = (Element) groups.item(i);
+                if (group.getAttribute("Name").equals(nombreRol)) {
+                    targetGroup = group;
+                    break;
+                }
+            }
+
+            if (targetGroup == null) {
+                System.err.println("Rol no encontrado: " + nombreRol);
+                return;
+            }
+
+            Element permissionsNode = (Element) targetGroup.getElementsByTagName("Permissions").item(0);
+            if (permissionsNode == null) {
+                permissionsNode = doc.createElement("Permissions");
+                targetGroup.appendChild(permissionsNode);
+            }
+
+            NodeList permissionList = permissionsNode.getElementsByTagName("Permission");
+            Element targetPermission = null;
+
+            for (int i = 0; i < permissionList.getLength(); i++) {
+                Element p = (Element) permissionList.item(i);
+                if (p.getAttribute("Dir").equals(carpeta)) {
+                    targetPermission = p;
+                    break;
+                }
+            }
+
+            if (targetPermission == null) {
+                targetPermission = doc.createElement("Permission");
+                targetPermission.setAttribute("Dir", carpeta);
+                permissionsNode.appendChild(targetPermission);
+            }
+
+            if (tipoPermiso != null) {
+                actualizarOpcion(doc, targetPermission, tipoPermiso, valor ? "1" : "0");
+            } else {
+                System.err.println("Tipo de permiso desconocido: " + tipoPermiso);
+            }
+
+            guardarXML(doc, xmlFile);
+            System.out.println("Permiso asignado en " + carpeta + ": " + tipoPermiso + "=" + valor);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void actualizarOpcion(Document doc, Element parent, String name, String value) {
+        NodeList options = parent.getElementsByTagName("Option");
+        for (int i = 0; i < options.getLength(); i++) {
+            Element opt = (Element) options.item(i);
+            if (opt.getAttribute("Name").equals(name)) {
+                opt.setTextContent(value);
+                return;
+            }
+        }
+        // Si no existe, lo creamos
+        agregarOpcion(doc, parent, name, value);
+    }
+
     public void aniadirUsuario(String nombre, String password) {
 
         // 1. PRIMERO NOS AUTENTICAMOS EN LA CARPETA
@@ -90,7 +211,6 @@ public class ModeloClienteFTP {
 
             if (!xmlFile.exists()) {
                 System.err.println("ERROR: No encuentro el archivo en: " + RUTA_XML);
-                System.err.println("AsegÃºrate de que la carpeta 'FileZillaFTP' estÃ¡ compartida en la VM.");
                 return;
             }
 
@@ -119,26 +239,23 @@ public class ModeloClienteFTP {
             agregarOpcion(doc, newUser, "Comments", "Creado sin unidad Z");
             agregarOpcion(doc, newUser, "ForceSsl", "0");
 
-            // IpFilter (Necesario para que se vea igual que el resto)
             Element ipFilter = doc.createElement("IpFilter");
             ipFilter.appendChild(doc.createElement("Disallowed"));
             ipFilter.appendChild(doc.createElement("Allowed"));
             newUser.appendChild(ipFilter);
 
-            // RUTA HOME (Cuidado, esta ruta es la ruta INTERNA de la VM)
             String carpetaHome = "C:\\Users\\Administrator\\Documents\\serwo";
 
             Element permissions = doc.createElement("Permissions");
             Element permission = doc.createElement("Permission");
             permission.setAttribute("Dir", carpetaHome);
 
-            // Permisos full (Incluyendo FileAppend que faltaba)
             agregarOpcion(doc, permission, "FileRead", "1");
-            agregarOpcion(doc, permission, "FileWrite", "0");
-            agregarOpcion(doc, permission, "FileDelete", "0");
-            agregarOpcion(doc, permission, "FileAppend", "0");
-            agregarOpcion(doc, permission, "DirCreate", "0");
-            agregarOpcion(doc, permission, "DirDelete", "0");
+            agregarOpcion(doc, permission, "FileWrite", "1");
+            agregarOpcion(doc, permission, "FileDelete", "1");
+            agregarOpcion(doc, permission, "FileAppend", "1");
+            agregarOpcion(doc, permission, "DirCreate", "1");
+            agregarOpcion(doc, permission, "DirDelete", "1");
             agregarOpcion(doc, permission, "DirList", "1");
             agregarOpcion(doc, permission, "DirSubdirs", "1");
             agregarOpcion(doc, permission, "IsHome", "1");
@@ -158,15 +275,15 @@ public class ModeloClienteFTP {
             speedLimits.appendChild(doc.createElement("Download"));
             speedLimits.appendChild(doc.createElement("Upload"));
             newUser.appendChild(speedLimits);
-            usersList.item(0).appendChild(newUser);
+            usersNode.appendChild(newUser);
 
-            guardarXML(doc,xmlFile);
+            guardarXML(doc, xmlFile);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     private void guardarXML(Document doc, File xmlFile) throws Exception {
         // 1. Limpieza de nodos vacíos (espacios en blanco antiguos) para que no se
         // dupliquen

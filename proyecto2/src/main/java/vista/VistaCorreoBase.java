@@ -26,17 +26,16 @@ public class VistaCorreoBase extends JFrame {
     private String remitente;
     private List<File> adjuntos = new ArrayList<>();
 
-
     public VistaCorreoBase(String remitente) {
         this.setTitle("Compose new Mail");
         this.remitente = remitente;
-        
+
         inicializarComponentes();
         propiedadesGenerales();
 
         // Ya no creamos el panel aquí, dejamos que ensamblarVista lo haga
-        ensamblarVista(true); 
-        
+        ensamblarVista(true);
+
     }
 
     // CONSTRUCTOR CONSULTAR
@@ -49,15 +48,15 @@ public class VistaCorreoBase extends JFrame {
         textoPara.setText(correo.getRemitente());
         textoAsunto.setText(correo.getAsunto());
         textoCuerpo.setText(correo.getCuerpo());
-        
+
         textoPara.setEditable(false);
         textoAsunto.setEditable(false);
         textoCuerpo.setEditable(false);
-        
-        ensamblarVista(false); 
+
+        ensamblarVista(false);
 
     }
-    
+
     // M�todo para inicializar todos los componentes una sola vez
     private void inicializarComponentes() {
         textoPara = new JTextField(40); // M�s ancho por defecto
@@ -77,7 +76,7 @@ public class VistaCorreoBase extends JFrame {
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JPanel panelDatosSuperiores = new JPanel(new GridLayout(0, 2, 5, 5));
-        
+
         if (esEnvio) {
             panelDatosSuperiores.add(new JLabel("For:"));
         } else {
@@ -92,10 +91,10 @@ public class VistaCorreoBase extends JFrame {
 
         JPanel panelCuerpo = new JPanel(new BorderLayout());
         panelCuerpo.add(new JLabel("Message:"), BorderLayout.NORTH);
-        
+
         JScrollPane scrollCuerpo = new JScrollPane(textoCuerpo);
         panelCuerpo.add(scrollCuerpo, BorderLayout.CENTER);
-        
+
         panelPrincipal.add(panelCuerpo, BorderLayout.CENTER);
 
         // LÓGICA DE BOTONES CENTRALIZADA
@@ -110,11 +109,10 @@ public class VistaCorreoBase extends JFrame {
             panelBoton.add(botonExportar);
             panelBoton.add(botonEliminar);
         }
-        
+
         panelPrincipal.add(panelBoton, BorderLayout.SOUTH);
         this.add(panelPrincipal);
     }
-
 
     public void propiedadesGenerales() {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -122,15 +120,14 @@ public class VistaCorreoBase extends JFrame {
         this.setLocationRelativeTo(null);
         this.setMinimumSize(new Dimension(500, 400));
     }
-    
 
     public File exportarCorreo(String nombreSugerido) {
-    	JFileChooser fileChooser = new JFileChooser();
+        JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Export EML");
         // Filtro para archivos .eml
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Files (*.eml)", "eml"));
         fileChooser.setSelectedFile(new File(nombreSugerido + ".eml"));
-        
+
         int seleccion = fileChooser.showSaveDialog(this);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
@@ -144,11 +141,10 @@ public class VistaCorreoBase extends JFrame {
     }
 
     public void mostrarMensaje(String mensaje, boolean esError) {
-        JOptionPane.showMessageDialog(this, mensaje, 
-            esError ? "Error" : "success", 
-            esError ? JOptionPane.ERROR_MESSAGE : JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, mensaje,
+                esError ? "Error" : "success",
+                esError ? JOptionPane.ERROR_MESSAGE : JOptionPane.INFORMATION_MESSAGE);
     }
-    
 
     public File mostrarSelectorAdjuntos() {
         JFileChooser fileChooser = new JFileChooser();
@@ -168,52 +164,60 @@ public class VistaCorreoBase extends JFrame {
         return adjuntos;
     }
 
-    
-    public JTextField getTextoPara() { return textoPara; }
-    public JTextField getTextoAsunto() { return textoAsunto; }
-    public JTextArea getTextoCuerpo() { return textoCuerpo; }
-    public JButton getBotonEnviar() { return botonEnviar; }
+    public JTextField getTextoPara() {
+        return textoPara;
+    }
 
-	public String getRemitente() {
-		return remitente;
-	}
+    public JTextField getTextoAsunto() {
+        return textoAsunto;
+    }
 
-	public void setRemitente(String remitente) {
-		this.remitente = remitente;
-	}
+    public JTextArea getTextoCuerpo() {
+        return textoCuerpo;
+    }
 
-	public JButton getBotonEliminar() {
-		return botonEliminar;
-	}
+    public JButton getBotonEnviar() {
+        return botonEnviar;
+    }
 
-	public void setBotonEliminar(JButton botonEliminar) {
-		this.botonEliminar = botonEliminar;
-	}
+    public String getRemitente() {
+        return remitente;
+    }
 
-	public JButton getBotonExportar() {
-		return botonExportar;
-	}
+    public void setRemitente(String remitente) {
+        this.remitente = remitente;
+    }
 
-	public void setBotonExportar(JButton botonExportar) {
-		this.botonExportar = botonExportar;
-	}
+    public JButton getBotonEliminar() {
+        return botonEliminar;
+    }
 
-	public JButton getBotonNoLeido() {
-		return botonNoLeido;
-	}
+    public void setBotonEliminar(JButton botonEliminar) {
+        this.botonEliminar = botonEliminar;
+    }
 
-	public void setBotonNoLeido(JButton botonNoLeido) {
-		this.botonNoLeido = botonNoLeido;
-	}
+    public JButton getBotonExportar() {
+        return botonExportar;
+    }
 
-	public JButton getBotonAdjuntar() {
-		return botonAdjuntar;
-	}
+    public void setBotonExportar(JButton botonExportar) {
+        this.botonExportar = botonExportar;
+    }
 
-	public void setBotonAdjuntar(JButton botonAdjuntar) {
-		this.botonAdjuntar = botonAdjuntar;
-	}
-	
-	
-    
+    public JButton getBotonNoLeido() {
+        return botonNoLeido;
+    }
+
+    public void setBotonNoLeido(JButton botonNoLeido) {
+        this.botonNoLeido = botonNoLeido;
+    }
+
+    public JButton getBotonAdjuntar() {
+        return botonAdjuntar;
+    }
+
+    public void setBotonAdjuntar(JButton botonAdjuntar) {
+        this.botonAdjuntar = botonAdjuntar;
+    }
+
 }
