@@ -165,21 +165,6 @@ public class VistaGeneralCorreo extends JFrame {
 	        });
 	    }
 	}
-	public void cambiarColorFila(int fila) {
-		emailTabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-					boolean hasFocus, int row, int column) {
-				Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-				comp.setFont(new Font("Arial", Font.BOLD, 14));
-
-				return comp;
-			}
-		});
-
-		emailTabla.repaint(); // Refresca la tabla para aplicar el cambio
-	}
 
 	public JButton getBotonEnviarCorreo() {
 		return botonEnviarCorreo;
