@@ -112,7 +112,6 @@ public class GestionCorreos {
 		Map<String, Boolean> estados = new HashMap<>();
 
 		if (imapHost == null || imapHost.isEmpty()) {
-			System.out.println("[IMAP] Host IMAP invalido");
 			return estados;
 		}
 
