@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
+import modelo.Log;
 import modelo.MoTextos;
 import modelo.MoView;
 import modelo.ModeloBaseDatos;
@@ -21,6 +22,7 @@ import vista.VistaLogs;
 import vista.VistaMenuPrincipal;
 import vista.VistaRegistroUsuarios;
 import controladorLogs.ControladorLogs;
+import controladorLogs.GestionLogs;
 
 public class OyenteFTP implements ActionListener {
 	private ViMain viMain;
@@ -95,7 +97,7 @@ public class OyenteFTP implements ActionListener {
 	private void abrirLogs() {
 		vistaAdmin.setVisible(false);
 		if (controladorLogs == null) {
-			controladorLogs = new ControladorLogs(modeloBaseDatos.getConexion(), vistaLogs);
+			controladorLogs = new ControladorLogs(ModeloBaseDatos.getConexion(), vistaLogs);
 		}
 		controladorLogs.mostrar();
 	}
@@ -244,15 +246,18 @@ public class OyenteFTP implements ActionListener {
 		String contrasenia = viMain.getPanelLogin().getCajas().get(1).getText();
 		modelo.setUser(usuario);
 		modelo.setPass(contrasenia);
+		vistaArchivo.inicializarFileManager();
 
 		try {
 			modelo.establecerConexion();
 			if (modelo.getCliente().login(usuario, contrasenia)) {
-
+				GestionLogs.writeLog(
+						new Log("Login, correct credentials", modeloBaseDatos.obtenerEmailPorUsuario(usuario), true));
 				vistaMenuPrincipal.hacerVisible();
 				viMain.setVisible(false);
 
 			} else {
+				GestionLogs.writeLog(new Log("Login, incorrect credentials", "", false));
 				JOptionPane.showMessageDialog(viMain.getPanelLogin(), MoTextos.msg_incorrect_creds,
 						MoTextos.msg_error_title,
 						JOptionPane.ERROR_MESSAGE);

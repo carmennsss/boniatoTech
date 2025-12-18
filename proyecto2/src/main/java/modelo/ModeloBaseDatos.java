@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
 public class ModeloBaseDatos {
-    private final String url = "jdbc:mysql://13.62.51.110:3306/serwo?useSSL=false&serverTimezone=UTC";
-    private final String usuario = "appuser";
-    private final String password = "mariaenmiami";
-    private Connection conexion;
+    private final static String url = "jdbc:mysql://13.62.51.110:3306/serwo?useSSL=false&serverTimezone=UTC";
+    private final static String usuario = "appuser";
+    private final static String password = "mariaenmiami";
+    public static Connection conexion;
 
     public void cerrarConexion() {
         try {
@@ -25,7 +25,7 @@ public class ModeloBaseDatos {
         }
     }
 
-    public Connection getConexion() {
+    public static Connection getConexion() {
         try {
             if (conexion == null || conexion.isClosed()) {
                 conexion = DriverManager.getConnection(url, usuario, password);
@@ -192,8 +192,9 @@ public class ModeloBaseDatos {
             return false;
         }
     }
-    
-    public boolean insertarArchivo(String nombre,String directorio , String extension, String tipo, Integer id_padre, String email_usuario) {
+
+    public boolean insertarArchivo(String nombre, String directorio, String extension, String tipo, Integer id_padre,
+            String email_usuario) {
         String sql = "INSERT INTO archivos (nombre_archivo, directorio, extension, tipo, id_padre, email_usuario) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement pstmt = getConexion().prepareStatement(sql);
@@ -213,6 +214,7 @@ public class ModeloBaseDatos {
             return false;
         }
     }
+
     public Integer obtenerIdPadre(String rutaActual) {
         if (rutaActual.equals("/")) {
             return null;
@@ -236,6 +238,7 @@ public class ModeloBaseDatos {
         }
         return idPadre;
     }
+
     public String obtenerEmailPorUsuario(String nombreUsuario) {
         String email = null;
         String sql = "SELECT email FROM usuarios WHERE nombre_usuario = ?";
@@ -251,7 +254,7 @@ public class ModeloBaseDatos {
         }
         return email;
     }
-    
+
     public boolean eliminarUsuario(String email) {
         String sql = "DELETE FROM usuarios WHERE email = ?";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
@@ -262,7 +265,7 @@ public class ModeloBaseDatos {
             return false;
         }
     }
-    
+
     public void eliminarArchivo(String nombreArchivo, String ruta) {
         String sql = "DELETE FROM archivos WHERE nombre_archivo = ? AND directorio = ?";
         try (PreparedStatement pstmt = getConexion().prepareStatement(sql)) {
@@ -273,17 +276,43 @@ public class ModeloBaseDatos {
             e.printStackTrace();
         }
     }
-    
+
     public boolean renombrarArchivoSQL(String nombreActual, String nuevoNombre, String ruta) {
         String sql = "UPDATE archivos SET nombre_archivo = ? WHERE nombre_archivo = ? AND directorio = ?";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, nuevoNombre);    
-            ps.setString(2, nombreActual);   
-            ps.setString(3, ruta);           
-            return ps.executeUpdate() > 0;   
+            ps.setString(1, nuevoNombre);
+            ps.setString(2, nombreActual);
+            ps.setString(3, ruta);
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;                    
+            return false;
+        }
+    }
+
+    public boolean renombrarArchivo(String nombreActual, String nuevoNombre, String ruta, String extension) {
+        String sql = "UPDATE archivos SET nombre_archivo = ?, extension = ? WHERE nombre_archivo = ? AND directorio = ?;";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, nuevoNombre);
+            ps.setString(2, extension);
+            ps.setString(3, nombreActual);
+            ps.setString(4, ruta);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean renombrarCarpeta(String nombreActual, String nuevoNombre, String ruta) {
+        String sql = "UPDATE archivos SET nombre_archivo = ? WHERE nombre_archivo = ?;";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, nuevoNombre);
+            ps.setString(2, nombreActual);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }
