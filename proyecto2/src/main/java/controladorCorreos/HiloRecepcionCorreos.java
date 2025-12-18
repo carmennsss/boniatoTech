@@ -29,27 +29,23 @@ public class HiloRecepcionCorreos implements Runnable {
 	@Override
 	public void run() {
 		try {
-	        while (!Thread.currentThread().isInterrupted() || vistaGeneral.getBtnRefrescar().isEnabled()) {
+	        while (!Thread.currentThread().isInterrupted() && vistaGeneral.isVisible()) {
 
-	            Thread.sleep(25_000); // 25 segundos
+	            Thread.sleep(25_000); 
 
-	            if (vistaGeneral.getBtnRefrescar().isEnabled()) {
-		        	ArrayList<Correo> nuevos =
-		        	        gestionPop3.recibirCorreosPOP3(host,hostImap, correo, PASSWORD_APLICACION);
-	
-		        	if (nuevos.size() != ultimoNumeroCorreos) {
-	//	        		Log log = new Log();
-	//	        		GestionLogs.writeLog(log);
-		        	    ultimoNumeroCorreos = nuevos.size();
-		        	    SwingUtilities.invokeLater(() -> {
-		        	    	controlador.actualizarListaDesdeHilo(nuevos);
-		        	    	});
-		        	}
+	            if (!Thread.currentThread().isInterrupted()) {
+	                ArrayList<Correo> nuevos = gestionPop3.recibirCorreosPOP3(host, hostImap, correo, PASSWORD_APLICACION);
+
+	                if (nuevos != null && nuevos.size() != ultimoNumeroCorreos) {
+	                    ultimoNumeroCorreos = nuevos.size();
+	                    SwingUtilities.invokeLater(() -> {
+	                        controlador.actualizarListaDesdeHilo(nuevos);
+	                    });
+	                }
 	            }
-
 	        }
 	    } catch (InterruptedException e) {
-	        Thread.currentThread().interrupt();
+	    } finally {
 	    }
 
 	}
