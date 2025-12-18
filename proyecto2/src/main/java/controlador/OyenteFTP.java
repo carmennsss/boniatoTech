@@ -15,6 +15,7 @@ import modelo.ModeloClienteFTP;
 import modelo.Rol;
 import vista.ViMain;
 import vista.VistaAdmin;
+import vista.VistaGeneralCorreo;
 import vista.VistaGestorArchivos;
 import vista.VistaMenuPrincipal;
 import vista.VistaRegistroUsuarios;
@@ -28,11 +29,12 @@ public class OyenteFTP implements ActionListener {
 	private VistaMenuPrincipal vistaMenuPrincipal;
 	private VistaAdmin vistaAdmin;
 	private VistaRegistroUsuarios vistaUsuarios;
+	private VistaGeneralCorreo vistaGeneralCorreo;
 	private ModeloBaseDatos modeloBaseDatos;
 
 	public OyenteFTP(MoView modeloVista, ViMain viMain, ModeloClienteFTP modelo, CoPrincipal ctrl,
 			VistaGestorArchivos vistaArchivo,
-			VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin, VistaRegistroUsuarios vistaUsuarios,
+			VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin, VistaRegistroUsuarios vistaUsuarios,VistaGeneralCorreo vistaGeneralCorreo,
 			ModeloBaseDatos modeloBaseDatos) {
 		this.viMain = viMain;
 		this.modelo = modelo;
@@ -42,6 +44,7 @@ public class OyenteFTP implements ActionListener {
 		this.vistaMenuPrincipal = vistaMenuPrincipal;
 		this.vistaAdmin = vistaAdmin;
 		this.vistaUsuarios = vistaUsuarios;
+		this.vistaGeneralCorreo=vistaGeneralCorreo;
 		this.modeloBaseDatos = modeloBaseDatos;
 	}
 
@@ -93,11 +96,21 @@ public class OyenteFTP implements ActionListener {
 			case "log out":
 				logOut();
 				break;
+			case "mail controller":
+				abrirCorreo();
+				break;
 			default:
 				break;
 		}
 	}
 	
+	private void abrirCorreo() {
+
+		vistaMenuPrincipal.setVisible(false);
+		vistaGeneralCorreo.hacerVisible();
+		
+	}
+
 	private void logOut() {
 		modelo.desconectar();
 		vistaMenuPrincipal.setVisible(false);

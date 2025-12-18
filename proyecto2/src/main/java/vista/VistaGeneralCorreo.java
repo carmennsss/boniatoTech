@@ -176,6 +176,10 @@ public class VistaGeneralCorreo extends JFrame {
 		emailTabla.repaint(); // Refresca la tabla para aplicar el cambio
 	}
 
+	public void hacerVisible() {
+		this.setVisible(true);
+	}
+	
 	public JButton getBotonEnviarCorreo() {
 		return botonEnviarCorreo;
 	}
