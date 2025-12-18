@@ -1,8 +1,10 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.File;
 import java.util.ArrayList;
@@ -72,53 +74,123 @@ public class VistaCorreoBase extends JFrame {
     }
 
     private void ensamblarVista(boolean esEnvio) {
-        panelPrincipal = new JPanel(new BorderLayout(5, 5));
-        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        // Main Container
+        panelPrincipal = new JPanel(new BorderLayout());
+        panelPrincipal.setBackground(Estilos.FONDO_PRINCIPAL);
 
-        JPanel panelDatosSuperiores = new JPanel(new GridLayout(0, 2, 5, 5));
+        // --- SIDEBAR (Decorative) ---
+        JPanel sidebar = new JPanel() {
+            @Override
+            protected void paintComponent(java.awt.Graphics g) {
+                super.paintComponent(g);
+                try {
+                    java.awt.Image bgImage = javax.imageio.ImageIO.read(getClass().getResource("/lateral_menu.jpg"));
+                    g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
+                } catch (Exception e) {
+                    g.setColor(Estilos.DARK_SPRUCE);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                }
+            }
+        };
+        sidebar.setPreferredSize(new Dimension(250, 0));
+        sidebar.setBackground(Estilos.DARK_SPRUCE); // Fallback
+
+        panelPrincipal.add(sidebar, BorderLayout.WEST);
+
+        // --- MAIN CONTENT AREA ---
+        JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
+        contentPanel.setBackground(Estilos.FONDO_PRINCIPAL);
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // Header Fields Panel
+        JPanel panelDatosSuperiores = new JPanel(new GridLayout(0, 1, 5, 10));
+        panelDatosSuperiores.setBackground(Estilos.FONDO_PRINCIPAL);
 
         if (esEnvio) {
-            panelDatosSuperiores.add(new JLabel("For:"));
+            panelDatosSuperiores.add(crearCampoLabel("For:", textoPara));
         } else {
-            panelDatosSuperiores.add(new JLabel("From:"));
+            panelDatosSuperiores.add(crearCampoLabel("From:", textoPara));
         }
-        panelDatosSuperiores.add(textoPara);
+        panelDatosSuperiores.add(crearCampoLabel("Subject:", textoAsunto));
 
-        panelDatosSuperiores.add(new JLabel("Subject:"));
-        panelDatosSuperiores.add(textoAsunto);
+        contentPanel.add(panelDatosSuperiores, BorderLayout.NORTH);
 
-        panelPrincipal.add(panelDatosSuperiores, BorderLayout.NORTH);
+        // Body Panel
+        JPanel panelCuerpo = new JPanel(new BorderLayout(5, 5));
+        panelCuerpo.setBackground(Estilos.FONDO_PRINCIPAL);
 
-        JPanel panelCuerpo = new JPanel(new BorderLayout());
-        panelCuerpo.add(new JLabel("Message:"), BorderLayout.NORTH);
+        JLabel lblMessage = new JLabel("Message:");
+        lblMessage.setFont(Estilos.FONT_TEXTO.deriveFont(Font.BOLD));
+        lblMessage.setForeground(Estilos.TEXTO_PRINCIPAL);
+        panelCuerpo.add(lblMessage, BorderLayout.NORTH);
 
         JScrollPane scrollCuerpo = new JScrollPane(textoCuerpo);
+        scrollCuerpo.setBorder(BorderFactory.createLineBorder(Estilos.DARK_SPRUCE));
         panelCuerpo.add(scrollCuerpo, BorderLayout.CENTER);
 
-        panelPrincipal.add(panelCuerpo, BorderLayout.CENTER);
+        contentPanel.add(panelCuerpo, BorderLayout.CENTER);
 
-        // LÓGICA DE BOTONES CENTRALIZADA
+        // Action Buttons Panel
         JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelBoton.setBackground(Estilos.FONDO_PRINCIPAL);
 
         if (esEnvio) {
+            estilarBoton(botonAdjuntar);
+            estilarBoton(botonEnviar);
             panelBoton.add(botonAdjuntar);
             panelBoton.add(botonEnviar);
         } else {
-            // Añadimos todos los botones que querías ver en consulta
+            estilarBoton(botonNoLeido);
+            estilarBoton(botonExportar);
+            estilarBoton(botonEliminar);
             panelBoton.add(botonNoLeido);
             panelBoton.add(botonExportar);
             panelBoton.add(botonEliminar);
         }
 
-        panelPrincipal.add(panelBoton, BorderLayout.SOUTH);
+        contentPanel.add(panelBoton, BorderLayout.SOUTH);
+
+        panelPrincipal.add(contentPanel, BorderLayout.CENTER);
         this.add(panelPrincipal);
+    }
+
+    private JPanel crearCampoLabel(String labelText, JComponent field) {
+        JPanel p = new JPanel(new BorderLayout(5, 5));
+        p.setBackground(Estilos.FONDO_PRINCIPAL);
+
+        JLabel lbl = new JLabel(labelText);
+        lbl.setFont(Estilos.FONT_TEXTO.deriveFont(Font.BOLD));
+        lbl.setForeground(Estilos.TEXTO_PRINCIPAL);
+        lbl.setPreferredSize(new Dimension(80, 25));
+
+        if (field instanceof JTextField) {
+            ((JTextField) field).setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(Estilos.DARK_SPRUCE),
+                    BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+            field.setFont(Estilos.FONT_TEXTO);
+            field.setBackground(Estilos.COLOR_INPUT_BG);
+            field.setForeground(Estilos.COLOR_INPUT_TEXT);
+        }
+
+        p.add(lbl, BorderLayout.WEST);
+        p.add(field, BorderLayout.CENTER);
+        return p;
+    }
+
+    private void estilarBoton(JButton btn) {
+        btn.setFont(Estilos.FONT_BOTON);
+        btn.setBackground(Estilos.DARK_SPRUCE);
+        btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn.setPreferredSize(new Dimension(140, 35));
     }
 
     public void propiedadesGenerales() {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setSize(500, 400);
+        this.setSize(700, 500);
         this.setLocationRelativeTo(null);
-        this.setMinimumSize(new Dimension(500, 400));
+        this.setMinimumSize(new Dimension(700, 500));
     }
 
     public File exportarCorreo(String nombreSugerido) {
