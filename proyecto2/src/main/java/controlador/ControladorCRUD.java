@@ -174,11 +174,11 @@ public class ControladorCRUD {
         ArrayList<String> parametros = new ArrayList<>(Arrays.asList(valores));
 
         if (bd.ejecutarActualizacion(consulta, parametros) > 0) {
-            vista.mostrarMensajeExito("Guardado correctamente");
+            vista.mostrarMensajeExito("Saved successfully");
             vista.getVentanaFormulario().setVisible(false);
             rellenarTabla(tabla);
         } else {
-            vista.mostrarMensajeError("Error al guardar");
+            vista.mostrarMensajeError("Error while saving");
         }
     }
 
@@ -218,11 +218,11 @@ public class ControladorCRUD {
         }
 
         if (bd.ejecutarActualizacion(consulta, parametros) > 0) {
-            vista.mostrarMensajeExito("Actualizado correctamente");
+            vista.mostrarMensajeExito("Updated successfully");
             vista.getVentanaFormulario().setVisible(false);
             rellenarTabla(tabla);
         } else {
-            vista.mostrarMensajeError("Error al actualizar");
+            vista.mostrarMensajeError("Error while updating");
         }
     }
 
@@ -231,7 +231,7 @@ public class ControladorCRUD {
         if (fila == -1)
             return;
 
-        if (vista.mostrarConfirmacion("¿Estás seguro de eliminar este registro?")) {
+        if (vista.mostrarConfirmacion("Are you sure you want to delete this record?")) {
             String tabla = modeloVista.getTablaActual();
             String idCol = vista.getPanelTabla().getTabla().getColumnName(0);
 
@@ -250,10 +250,10 @@ public class ControladorCRUD {
             }
 
             if (bd.ejecutarActualizacion(consulta, parametros) > 0) {
-                vista.mostrarMensajeExito("Eliminado correctamente");
+                vista.mostrarMensajeExito("Deleted successfully");
                 rellenarTabla(tabla);
             } else {
-                vista.mostrarMensajeError("Error al eliminar");
+                vista.mostrarMensajeError("Error while deleting");
             }
         }
     }

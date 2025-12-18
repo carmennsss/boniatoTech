@@ -200,12 +200,12 @@ public class ControladorRoles {
     public void agregarRol() {
         String nombre = vista.getViCrearRol().getTextFieldNombre().getText();
         if (nombre.isEmpty()) {
-            vista.mostrarMensajeError("El nombre del rol no puede estar vacío");
+            vista.mostrarMensajeError("The role name cannot be empty");
             return;
         }
         String descripcion = vista.getViCrearRol().getTextFieldDescripcion().getText();
         if (descripcion.isEmpty()) {
-            vista.mostrarMensajeError("La descripción del rol no puede estar vacía");
+            vista.mostrarMensajeError("The role description cannot be empty");
             return;
         }
 
@@ -273,7 +273,7 @@ public class ControladorRoles {
                         new ArrayList<>(Arrays.asList(correo, String.valueOf(rol.getId_roles()))));
             } else {
                 vista.mostrarMensajeError(
-                        "El usuario " + correo + " ya tiene el rol " + rol.getNombre_roles() + " " + accion);
+                        "The user " + correo + " already has the role " + rol.getNombre_roles() + " " + accion);
             }
         }
     }

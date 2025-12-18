@@ -101,7 +101,7 @@ public class OyenteArchivos implements ActionListener {
 
     public void accionBotonSubida() {
         if (!verificarPermiso(rutaActual, "Subir archivos")) {
-            JOptionPane.showMessageDialog(null, "No tienes permiso para subir archivos.", "Permiso denegado",
+            JOptionPane.showMessageDialog(null, "You do not have permission to upload files.", "Permission denied",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -148,7 +148,8 @@ public class OyenteArchivos implements ActionListener {
 
         String rutaArchivo = rutaActual.equals("/") ? "/" + select.getName() : rutaActual + "/" + select.getName();
         if (!verificarPermiso(rutaArchivo, "Descargar archivos")) {
-            JOptionPane.showMessageDialog(null, "No tienes permiso para descargar este archivo.", "Permiso denegado",
+            JOptionPane.showMessageDialog(null, "You do not have permission to download this file.",
+                    "Permission denied",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -167,7 +168,8 @@ public class OyenteArchivos implements ActionListener {
         if (select != null) {
             String rutaArchivo = rutaActual.equals("/") ? "/" + select.getName() : rutaActual + "/" + select.getName();
             if (!verificarPermiso(rutaArchivo, "Borrar archivos")) {
-                JOptionPane.showMessageDialog(null, "No tienes permiso para borrar este archivo.", "Permiso denegado",
+                JOptionPane.showMessageDialog(null, "You do not have permission to delete this file.",
+                        "Permission denied",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -183,7 +185,7 @@ public class OyenteArchivos implements ActionListener {
 
     public void accionBotonCrearCarpeta() {
         if (!verificarPermiso(rutaActual, "Crear carpeta")) {
-            JOptionPane.showMessageDialog(null, "No tienes permiso para crear carpetas.", "Permiso denegado",
+            JOptionPane.showMessageDialog(null, "You do not have permission to create folders.", "Permission denied",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -223,7 +225,8 @@ public class OyenteArchivos implements ActionListener {
         rutaCarpeta = rutaActual.equals("/") ? "/" + select.getName() : rutaActual + "/" + select.getName();
 
         if (!verificarPermiso(rutaCarpeta, "Borrar carpeta")) {
-            JOptionPane.showMessageDialog(null, "No tienes permiso para borrar esta carpeta.", "Permiso denegado",
+            JOptionPane.showMessageDialog(null, "You do not have permission to delete this folder.",
+                    "Permission denied",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
