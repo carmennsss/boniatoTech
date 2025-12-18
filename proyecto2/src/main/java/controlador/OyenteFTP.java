@@ -6,10 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import controladorCorreos.ControladorCorreos;
 import modelo.MoView;
 import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
@@ -50,62 +48,40 @@ public class OyenteFTP implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JButton button = (JButton) e.getSource();
-		String command = button.getText();
+		Object source = e.getSource();
 
-		switch (command.toLowerCase()) {
-			case "log in":
-				login();
-				controladorPrincipal.instanciarCorreos();
-				break;
-			case "file manager":
-				abrirFileManager();
-				break;
-			case "manage data":
-				abrirManageData();
-				break;
-			case "administrate":
-				verificarAdministrador();
-				break;
-			case "manage users":
-				abrirAdministrarUsuarios();
-				break;
-			case "manage roles":
-				abrirCrearRol();
-				break;
-			case "agregar rol":
-				agregarRol();
-				break;
-			case "desasignar":
-				manejarDesasignar();
-				break;
-			case "asignar":
-				asignarRol();
-				break;
-			case "assign roles":
-				abrirAsignarRoles();
-				break;
-			case "main menu":
-				volverMenuPrincipal();
-				break;
-			case "back":
-				volverAdminDesdeUsuarios();
-				break;
-			case "volver":
-				manejarVolver();
-				break;
-			case "manage whitelist":
-				abrirWhitelist();
-				break;
-
-			case "log out":
-				logOut();
-				break;
-			case "mail controller":
-				abrirCorreo();
-				break;
-			default:
-				break;
+		if (source == viMain.getPanelLogin().getBotones().get(0)) {
+			login();
+			controladorPrincipal.instanciarCorreos();
+		} else if (source == vistaMenuPrincipal.getBotonFileManager()) {
+			abrirFileManager();
+		} else if (source == vistaMenuPrincipal.getBotonCRUD()) {
+			abrirManageData();
+		} else if (source == vistaMenuPrincipal.getBotonAdmin()) {
+			verificarAdministrador();
+		} else if (source == vistaAdmin.getBotonCrearUsuario()) {
+			abrirAdministrarUsuarios();
+		} else if (source == vistaAdmin.getBotonCrearRoles()) {
+			abrirCrearRol();
+		} else if (source == viMain.getViCrearRol().getBotones().get(0)) {
+			agregarRol();
+		} else if (source == viMain.getViAsignarRol().getBotones().get(1)) {
+			manejarDesasignar();
+		} else if (source == viMain.getViAsignarRol().getBotones().get(0)) {
+			asignarRol();
+		} else if (source == vistaAdmin.getBotonAsignarRoles()) {
+			abrirAsignarRoles();
+		} else if (source == vistaAdmin.getBotonVolver()) {
+			volverMenuPrincipal();
+		} else if (source == viMain.getViCrearRol().getBotones().get(1)
+				|| source == viMain.getViAsignarRol().getBotones().get(2)) {
+			manejarVolver();
+		} else if (source == vistaAdmin.getBotonWhitelist()) {
+			abrirWhitelist();
+		} else if (source == vistaMenuPrincipal.getBotonCerrarSesion()) {
+			logOut();
+		} else if (source == vistaMenuPrincipal.getBotonCorreo()) {
+			abrirCorreo();
 		}
 	}
 
@@ -136,11 +112,6 @@ public class OyenteFTP implements ActionListener {
 	private void volverMenuPrincipal() {
 		vistaAdmin.setVisible(false);
 		vistaMenuPrincipal.hacerVisible();
-	}
-
-	private void volverAdminDesdeUsuarios() {
-		vistaUsuarios.setVisible(false);
-		vistaAdmin.hacerVisible();
 	}
 
 	private void volverAdminDesdeRoles() {

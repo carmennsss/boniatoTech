@@ -4,34 +4,29 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.JButton;
 import javax.swing.JTable;
+import vista.VistaWhitelist;
 
 public class OyenteWhitelist implements ActionListener, MouseListener {
 
+    private VistaWhitelist vista;
     private ControladorWhitelist controller;
 
-    public OyenteWhitelist(ControladorWhitelist controller) {
+    public OyenteWhitelist(ControladorWhitelist controller, VistaWhitelist vista) {
         this.controller = controller;
+        this.vista = vista;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JButton btn = (JButton) e.getSource();
-        String comando = btn.getText().toLowerCase();
+        Object source = e.getSource();
 
-        switch (comando) {
-            case "añadir":
-                controller.anadirUsuario();
-                break;
-            case "desasignar":
-                controller.desasignarUsuarios();
-                break;
-            case "volver":
-                controller.volver();
-                break;
-            default:
-                break;
+        if (source == vista.getBotones().get(0)) {
+            controller.anadirUsuario();
+        } else if (source == vista.getBotones().get(1)) {
+            controller.desasignarUsuarios();
+        } else if (source == vista.getBotones().get(2)) {
+            controller.volver();
         }
     }
 
