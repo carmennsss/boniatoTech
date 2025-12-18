@@ -84,8 +84,6 @@ public class VistaAdmin extends JFrame {
 		estilarBoton(botonAsignarRoles, new Color(110, 137, 115));
 		estilarBoton(botonVolver, new Color(200, 100, 100));
 
-		accionBotonVolver(botonVolver);
-
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(15, 0, 15, 0);
 		gbc.gridx = 0;
@@ -158,16 +156,6 @@ public class VistaAdmin extends JFrame {
 
 	public void hacerVisible() {
 		this.setVisible(true);
-	}
-
-	public void accionBotonVolver(JButton boton) {
-		boton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				menu.hacerVisible();
-				VistaAdmin.this.setVisible(false);
-			}
-		});
-
 	}
 
 }

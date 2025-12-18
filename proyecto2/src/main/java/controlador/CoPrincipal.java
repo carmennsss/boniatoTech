@@ -47,12 +47,15 @@ public class CoPrincipal {
         OyenteCRUD oyCRUD = new OyenteCRUD(this, vista, modeloVista, vistaMenuPrincipal);
         controladorCRUD.setOyente(oyCRUD);
         OyenteTabla oyT = new OyenteTabla(this, vista, modeloVista);
-
+        OyenteUsuario oyU = new OyenteUsuario(vistaUsuarios);
+        vistaUsuarios.getAniadir().addActionListener(oyU);
+        vistaUsuarios.getVolver().addActionListener(oyU);
         JButton[] botonesLogin = {
                 vista.getPanelLogin().getBotones().get(0),
                 vistaMenuPrincipal.getBotonCRUD(),
                 vistaMenuPrincipal.getBotonFileManager(),
                 vistaMenuPrincipal.getBotonAdmin(),
+                vistaMenuPrincipal.getBotonCerrarSesion(),
                 vistaAdmin.getBotonCrearUsuario(),
                 vista.getViCrearRol().getBotones().get(0),
                 vista.getViCrearRol().getBotones().get(1),
@@ -61,7 +64,9 @@ public class CoPrincipal {
                 vista.getViAsignarRol().getBotones().get(0),
                 vista.getViAsignarRol().getBotones().get(1),
                 vista.getViAsignarRol().getBotones().get(2),
-                vistaAdmin.getBotonVolver()
+                vistaAdmin.getBotonVolver(),
+                
+                
         };
 
         for (JButton btn : botonesLogin) {
