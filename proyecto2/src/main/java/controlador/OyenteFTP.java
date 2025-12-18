@@ -97,7 +97,7 @@ public class OyenteFTP implements ActionListener {
 	private void abrirLogs() {
 		vistaAdmin.setVisible(false);
 		if (controladorLogs == null) {
-			controladorLogs = new ControladorLogs(modeloBaseDatos.getConexion(), vistaLogs);
+			controladorLogs = new ControladorLogs(ModeloBaseDatos.getConexion(), vistaLogs);
 		}
 		controladorLogs.mostrar();
 	}
@@ -246,6 +246,7 @@ public class OyenteFTP implements ActionListener {
 		String contrasenia = viMain.getPanelLogin().getCajas().get(1).getText();
 		modelo.setUser(usuario);
 		modelo.setPass(contrasenia);
+		vistaArchivo.inicializarFileManager();
 
 		try {
 			modelo.establecerConexion();
