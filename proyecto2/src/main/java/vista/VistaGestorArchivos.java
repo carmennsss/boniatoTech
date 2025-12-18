@@ -19,6 +19,7 @@ public class VistaGestorArchivos extends JFrame {
 	private JButton botonEliminar;
 	private JButton botonCrearCarpeta;
 	private JButton botonBorrarCarpeta;
+	private JButton botonRenombrar;
 	private JButton botonVolver;
 	private JButton botonVolverMenuPrincipal;
 
@@ -132,7 +133,7 @@ public class VistaGestorArchivos extends JFrame {
 		botonEliminar = new JButton(MoTextos.btn_delete);
 		botonCrearCarpeta = new JButton(MoTextos.btn_new_folder);
 		botonBorrarCarpeta = new JButton(MoTextos.btn_delete_folder);
-
+		botonRenombrar = new JButton(MoTextos.btn_rename);
 		Color colorBotonAccion = new Color(110, 137, 115);
 		aniadirEstiloBoton(botonSubida, colorBotonAccion, Color.WHITE);
 		aniadirEstiloBoton(botonDescarga, colorBotonAccion, Color.WHITE);
@@ -152,6 +153,8 @@ public class VistaGestorArchivos extends JFrame {
 		botonesPanel.add(botonCrearCarpeta);
 		botonesPanel.add(Box.createVerticalStrut(10));
 		botonesPanel.add(botonBorrarCarpeta);
+		botonesPanel.add(Box.createVerticalStrut(10));
+		botonesPanel.add(botonRenombrar);
 		botonesPanel.add(Box.createVerticalGlue());
 
 		centerContainer.add(botonesPanel, BorderLayout.EAST);
@@ -182,6 +185,15 @@ public class VistaGestorArchivos extends JFrame {
 		this.setLocationRelativeTo(null);
 	}
 
+	public JButton getBotonRenombrar() {
+		return botonRenombrar;
+	}
+
+	public void setBotonRenombrar(JButton botonRenombrar) {
+		this.botonRenombrar = botonRenombrar;
+	}
+
+	// UI Components for text update
 	private JLabel title;
 	private JLabel subtitle;
 	private JLabel lblActions;
@@ -206,6 +218,7 @@ public class VistaGestorArchivos extends JFrame {
 		botonEliminar.addActionListener(c);
 		botonCrearCarpeta.addActionListener(c);
 		botonBorrarCarpeta.addActionListener(c);
+		botonRenombrar.addActionListener(c);
 		botonVolver.addActionListener(c);
 		botonVolverMenuPrincipal.addActionListener(c);
 	}

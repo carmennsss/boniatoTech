@@ -61,6 +61,8 @@ public class OyenteArchivos implements ActionListener {
             accionBotonCrearCarpeta();
         } else if (source == vista.getBotonBorrarCarpeta()) {
             accionBotonBorrarCarpeta();
+        }else if (source == vista.getBotonRenombrar()) {
+            accionBotonRenombrar();
         } else if (source == vista.getBotonVolver()) {
             accionBotonVolver();
         } else if (source == vista.getBotonVolverMenuPrincipal()) {
@@ -68,7 +70,28 @@ public class OyenteArchivos implements ActionListener {
         }
     }
 
-    public boolean verificarPermiso(String ruta, String accion) {
+    private void accionBotonRenombrar() {
+    	
+    	FTPFile select = vista.getListaArchivos().getSelectedValue();
+        if (select != null) {
+            String nuevoNombre = JOptionPane.showInputDialog(vista, 
+                    "Enter new name for the file:", select.getName());
+
+            if (db.renombrarArchivoSQL(select.getName(), nuevoNombre, rutaActual)) {
+                ftp.renombrar(select, nuevoNombre.trim(), rutaActual);
+                actualizarListaFTP();
+            } else {
+                JOptionPane.showMessageDialog(vista, "Renaming canceled or invalid name.", "Info",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, MoTextos.msg_select_file, MoTextos.msg_error_title,
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+    	
+	}
+    
+	public boolean verificarPermiso(String ruta, String accion) {
         String emailUsuario = db.obtenerEmailPorUsuario(client.getUser());
 
         String sqlPropietario = "SELECT * FROM archivos WHERE email_usuario = ? AND directorio = ?";
