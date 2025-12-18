@@ -13,6 +13,7 @@ public class CoPrincipal {
     private VistaMenuPrincipal vistaMenuPrincipal;
     private VistaAdmin vistaAdmin;
     private VistaRegistroUsuarios vistaUsuarios;
+    private VistaEliminarUsuarios vistaEliminarUsuarios;
     private VistaGeneralCorreo vistaGeneralCorreo;
     private boolean editando;
     private ModeloClienteFTP modeloFTP;
@@ -26,7 +27,6 @@ public class CoPrincipal {
         this.vista = new ViMain();
         this.editando = false;
         this.controladorCRUD = new ControladorCRUD(this, bd, vista, modeloVista);
-
         this.modeloFTP = new ModeloClienteFTP();
         this.controladorRoles = new ControladorRoles(this, bd, vista, modeloFTP, modeloVista);
         this.vistaMenuPrincipal = new VistaMenuPrincipal(modeloFTP, vista);
@@ -35,6 +35,7 @@ public class CoPrincipal {
         vistaArchivo.setControlador(oyenteArchivos);
         this.vistaAdmin = new VistaAdmin(vistaMenuPrincipal);
         this.vistaUsuarios = new VistaRegistroUsuarios(vistaAdmin, modeloFTP, bd);
+        this.vistaEliminarUsuarios = new VistaEliminarUsuarios(vistaUsuarios, modeloFTP, bd);
         this.vistaGeneralCorreo = new VistaGeneralCorreo("hola");
         vista.hacerVisible();
         asignarEventos();
@@ -49,8 +50,9 @@ public class CoPrincipal {
         OyenteCRUD oyCRUD = new OyenteCRUD(this, vista, modeloVista, vistaMenuPrincipal);
         controladorCRUD.setOyente(oyCRUD);
         OyenteTabla oyT = new OyenteTabla(this, vista, modeloVista);
-        OyenteUsuario oyU = new OyenteUsuario(vistaUsuarios);
+        OyenteUsuario oyU = new OyenteUsuario(vistaUsuarios, vistaEliminarUsuarios, bd);
         vistaUsuarios.getAniadir().addActionListener(oyU);
+        vistaUsuarios.getEliminar().addActionListener(oyU);
         vistaUsuarios.getVolver().addActionListener(oyU);
         JButton[] botonesLogin = {
                 vista.getPanelLogin().getBotones().get(0),

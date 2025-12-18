@@ -251,7 +251,6 @@ public class ModeloBaseDatos {
         }
         return email;
     }
-    
     public void eliminarArchivo(String nombreArchivo, String ruta) {
         String sql = "DELETE FROM archivos WHERE nombre_archivo = ? AND directorio = ?";
         try (PreparedStatement pstmt = getConexion().prepareStatement(sql)) {

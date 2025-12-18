@@ -2,18 +2,28 @@ package controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
+import modelo.ModeloBaseDatos;
 import modelo.User;
+import vista.VistaEliminarUsuarios;
 import vista.VistaRegistroUsuarios;
 
 public class OyenteUsuario implements ActionListener {
 	private VistaRegistroUsuarios vistaUsuario;
-	public OyenteUsuario(VistaRegistroUsuarios vistaUsuario) {
+	private VistaEliminarUsuarios vistaEliminarUsuarios;
+	private ModeloBaseDatos bd;
+
+	public OyenteUsuario(VistaRegistroUsuarios vistaUsuario, VistaEliminarUsuarios vistaEliminarUsuarios, ModeloBaseDatos bd) {
 		this.vistaUsuario = vistaUsuario;
+		this.vistaEliminarUsuarios = vistaEliminarUsuarios;
+		this.bd=bd;
 	}
 
 	@Override
@@ -63,11 +73,41 @@ public class OyenteUsuario implements ActionListener {
 
 			}
 
+		} else if (btn == vistaUsuario.getEliminar()) {
+			
+			rellenarTablaUsuarios();
+			vistaUsuario.setVisible(false);
+			vistaEliminarUsuarios.hacerVisible();
+
 		} else {
-			 vistaUsuario.setVisible(false);
-			 vistaUsuario.getVistaAdmin().hacerVisible();
-
+			vistaUsuario.setVisible(false);
+			vistaUsuario.getVistaAdmin().hacerVisible();
 		}
-
 	}
+	
+	public void rellenarTablaUsuarios() {
+	        DefaultTableModel modeloTabla = new DefaultTableModel() {
+	            @Override
+	            public boolean isCellEditable(int row, int column) {
+	                return false;
+	            }
+	        };
+	        modeloTabla.addColumn("Usuario");
+	        modeloTabla.addColumn("Correo");
+	        String sql = "SELECT nombre_usuario, email FROM usuarios;";
+	        ResultSet rs = bd.getConsulta(sql);
+
+	        try {
+	            while (rs.next()) {
+	                User usuario = new User(rs.getString("nombre_usuario"), rs.getString("email"));
+	                modeloTabla.addRow(new Object[] { usuario.getNombre(), usuario.getCorreo()});
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        vistaEliminarUsuarios.getTabla().setModelo(modeloTabla);
+
+	    
+	}
+
 }
