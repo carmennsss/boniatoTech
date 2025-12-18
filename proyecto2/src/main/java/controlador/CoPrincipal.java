@@ -13,6 +13,7 @@ public class CoPrincipal {
     private VistaMenuPrincipal vistaMenuPrincipal;
     private VistaAdmin vistaAdmin;
     private VistaRegistroUsuarios vistaUsuarios;
+    private VistaGeneralCorreo vistaGeneralCorreo;
     private boolean editando;
     private ModeloClienteFTP modeloFTP;
 
@@ -34,6 +35,7 @@ public class CoPrincipal {
         vistaArchivo.setControlador(oyenteArchivos);
         this.vistaAdmin = new VistaAdmin(vistaMenuPrincipal);
         this.vistaUsuarios = new VistaRegistroUsuarios(vistaAdmin, modeloFTP, bd);
+        this.vistaGeneralCorreo = new VistaGeneralCorreo("hola");
         vista.hacerVisible();
         asignarEventos();
 
@@ -42,7 +44,7 @@ public class CoPrincipal {
     private void asignarEventos() {
         OyenteFTP oyFTP = new OyenteFTP(modeloVista, vista, modeloFTP, this, vistaArchivo, vistaMenuPrincipal,
                 vistaAdmin,
-                vistaUsuarios, bd);
+                vistaUsuarios,vistaGeneralCorreo, bd);
         OyenteTablaRoles oyTablaRoles = new OyenteTablaRoles(this, vista, modeloVista);
         OyenteCRUD oyCRUD = new OyenteCRUD(this, vista, modeloVista, vistaMenuPrincipal);
         controladorCRUD.setOyente(oyCRUD);
@@ -54,6 +56,7 @@ public class CoPrincipal {
                 vista.getPanelLogin().getBotones().get(0),
                 vistaMenuPrincipal.getBotonCRUD(),
                 vistaMenuPrincipal.getBotonFileManager(),
+                vistaMenuPrincipal.getBotonCorreo(),
                 vistaMenuPrincipal.getBotonAdmin(),
                 vistaMenuPrincipal.getBotonCerrarSesion(),
                 vistaAdmin.getBotonCrearUsuario(),
