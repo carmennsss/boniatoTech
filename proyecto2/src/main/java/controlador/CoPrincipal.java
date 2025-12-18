@@ -54,9 +54,9 @@ public class CoPrincipal {
         OyenteTablaRoles oyTablaRoles = new OyenteTablaRoles(this, vista, modeloVista);
         OyenteCRUD oyCRUD = new OyenteCRUD(this, vista, modeloVista, vistaMenuPrincipal);
         controladorCRUD.setOyente(oyCRUD);
-        OyenteTabla oyT = new OyenteTabla(this, vista, modeloVista);
+        OyenteTablaCRUD oyT = new OyenteTablaCRUD(this, vista, modeloVista);
 
-        this.oyenteWhitelist = new OyenteWhitelist(controladorWhitelist);
+        this.oyenteWhitelist = new OyenteWhitelist(controladorWhitelist, vista.getViWhitelist());
 
         OyenteUsuario oyU = new OyenteUsuario(vistaUsuarios);
         vistaUsuarios.getAniadir().addActionListener(oyU);
