@@ -5,6 +5,8 @@ import vista.*;
 
 import javax.swing.*;
 
+import controladorCorreos.ControladorCorreos;
+
 public class CoPrincipal {
     private ModeloBaseDatos bd;
     private MoView modeloVista;
@@ -13,6 +15,7 @@ public class CoPrincipal {
     private VistaMenuPrincipal vistaMenuPrincipal;
     private VistaAdmin vistaAdmin;
     private VistaRegistroUsuarios vistaUsuarios;
+    private VistaGeneralCorreo vistaGeneralCorreo;
     private boolean editando;
     private ModeloClienteFTP modeloFTP;
 
@@ -20,6 +23,7 @@ public class CoPrincipal {
     private ControladorCRUD controladorCRUD;
     private ControladorRoles controladorRoles;
     private ControladorWhitelist controladorWhitelist;
+    private ControladorCorreos controladorCorreos;
 
     public CoPrincipal() {
         this.bd = new ModeloBaseDatos();
@@ -37,6 +41,7 @@ public class CoPrincipal {
         this.vistaAdmin = new VistaAdmin(vistaMenuPrincipal);
         this.controladorWhitelist = new ControladorWhitelist(vista, bd, modeloVista, vistaAdmin);
         this.vistaUsuarios = new VistaRegistroUsuarios(vistaAdmin, modeloFTP, bd);
+
         vista.hacerVisible();
         asignarEventos();
 
@@ -53,11 +58,16 @@ public class CoPrincipal {
 
         this.oyenteWhitelist = new OyenteWhitelist(controladorWhitelist);
 
+        OyenteUsuario oyU = new OyenteUsuario(vistaUsuarios);
+        vistaUsuarios.getAniadir().addActionListener(oyU);
+        vistaUsuarios.getVolver().addActionListener(oyU);
         JButton[] botonesLogin = {
                 vista.getPanelLogin().getBotones().get(0),
                 vistaMenuPrincipal.getBotonCRUD(),
                 vistaMenuPrincipal.getBotonFileManager(),
+                vistaMenuPrincipal.getBotonCorreo(),
                 vistaMenuPrincipal.getBotonAdmin(),
+                vistaMenuPrincipal.getBotonCerrarSesion(),
                 vistaAdmin.getBotonCrearUsuario(),
                 vista.getViCrearRol().getBotones().get(0),
                 vista.getViCrearRol().getBotones().get(1),
@@ -67,9 +77,8 @@ public class CoPrincipal {
                 vista.getViAsignarRol().getBotones().get(0),
                 vista.getViAsignarRol().getBotones().get(1),
                 vista.getViAsignarRol().getBotones().get(2),
+                vistaAdmin.getBotonVolver(),
 
-                // Whitelist buttons removed from here to not trigger OyenteFTP
-                vistaAdmin.getBotonVolver()
         };
 
         for (JButton btn : botonesLogin) {
@@ -95,6 +104,12 @@ public class CoPrincipal {
         vista.getPanelTabla().getTabla().addMouseListener(oyT);
     }
 
+    public void instanciarCorreos() {
+        this.vistaGeneralCorreo = new VistaGeneralCorreo(bd.obtenerEmailPorUsuario(modeloFTP.getUser()));
+        this.controladorCorreos = new ControladorCorreos(bd.obtenerEmailPorUsuario(modeloFTP.getUser()),
+                modeloFTP.getPass(), vistaGeneralCorreo);
+    }
+
     public void setEditando(boolean editando) {
         this.editando = editando;
     }
@@ -113,5 +128,17 @@ public class CoPrincipal {
 
     public ControladorWhitelist getControladorWhitelist() {
         return controladorWhitelist;
+    }
+
+    public ControladorCorreos getControladorCorreos() {
+        return controladorCorreos;
+    }
+
+    public void setControladorCorreos(ControladorCorreos controladorCorreos) {
+        this.controladorCorreos = controladorCorreos;
+    }
+
+    public VistaGeneralCorreo getVistaGeneralCorreo() {
+        return this.vistaGeneralCorreo;
     }
 }

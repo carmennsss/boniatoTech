@@ -9,12 +9,14 @@ import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+import controladorCorreos.ControladorCorreos;
 import modelo.MoView;
 import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
 import modelo.Rol;
 import vista.ViMain;
 import vista.VistaAdmin;
+import vista.VistaGeneralCorreo;
 import vista.VistaGestorArchivos;
 import vista.VistaMenuPrincipal;
 import vista.VistaRegistroUsuarios;
@@ -28,6 +30,7 @@ public class OyenteFTP implements ActionListener {
 	private VistaMenuPrincipal vistaMenuPrincipal;
 	private VistaAdmin vistaAdmin;
 	private VistaRegistroUsuarios vistaUsuarios;
+	private VistaGeneralCorreo vistaGeneralCorreo;
 	private ModeloBaseDatos modeloBaseDatos;
 
 	public OyenteFTP(MoView modeloVista, ViMain viMain, ModeloClienteFTP modelo, CoPrincipal ctrl,
@@ -51,8 +54,9 @@ public class OyenteFTP implements ActionListener {
 		String command = button.getText();
 
 		switch (command.toLowerCase()) {
-			case "enter":
+			case "log in":
 				login();
+				controladorPrincipal.instanciarCorreos();
 				break;
 			case "file manager":
 				abrirFileManager();
@@ -94,9 +98,39 @@ public class OyenteFTP implements ActionListener {
 				abrirWhitelist();
 				break;
 
+			case "log out":
+				logOut();
+				break;
+			case "mail controller":
+				abrirCorreo();
+				break;
 			default:
 				break;
 		}
+	}
+
+	private void abrirCorreo() {
+
+		VistaGeneralCorreo vistaCorr = controladorPrincipal.getVistaGeneralCorreo();
+
+		if (vistaCorr != null) {
+			vistaMenuPrincipal.setVisible(false);
+			vistaCorr.hacerVisible();
+			controladorPrincipal.getControladorCorreos().cargarCorreos();
+		} else {
+			JOptionPane.showMessageDialog(null, "Error: La vista de correos no se ha inicializado correctamente.");
+		}
+
+	}
+
+	private void logOut() {
+		modelo.desconectar();
+		vistaMenuPrincipal.setVisible(false);
+		viMain.setVisible(true);
+		viMain.getPanelLogin().getCajas().get(0).setText("");
+		viMain.getPanelLogin().getCajas().get(1).setText("");
+		viMain.mostrarLogin();
+
 	}
 
 	private void volverMenuPrincipal() {

@@ -140,9 +140,9 @@ public class VistaGeneralCorreo extends JFrame {
 	private void propiedadesVentana() {
 		this.setTitle("Inbox");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setSize(630, 500);
+		this.setSize(800, 600);
 		this.setLocationRelativeTo(null);
-		this.setMinimumSize(new Dimension(630, 500));
+		this.setMinimumSize(new Dimension(600, 400));
 	}
 
 	public Correo getCorreoPorFila(int fila) {
@@ -232,7 +232,10 @@ public class VistaGeneralCorreo extends JFrame {
 			});
 		}
 	}
-
+	public void hacerVisible() {
+		this.setVisible(true);
+	}
+	
 	public JButton getBotonEnviarCorreo() {
 		return botonEnviarCorreo;
 	}

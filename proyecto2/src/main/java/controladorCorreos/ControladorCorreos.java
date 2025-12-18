@@ -22,17 +22,17 @@ public class ControladorCorreos {
 	private static GestionCorreos gestion;
 	private Thread hiloRecepcion;
 
-	public ControladorCorreos(String CORREO, String PASSWORD_APLICACION) {
+	public ControladorCorreos(String CORREO, String PASSWORD_APLICACION, VistaGeneralCorreo vistaGeneral) {
+		this.vistaGeneral = vistaGeneral;
 		this.CORREO = CORREO;
 		this.PASSWORD_APLICACION = PASSWORD_APLICACION;
 		gestion = new GestionCorreos();
 		configurarVistaGeneral();
 
-		cargarCorreos();
 
 	}
 
-	protected void cargarCorreos() {
+	public void cargarCorreos() {
 		vistaGeneral.getBtnRefrescar().setEnabled(false);
 		
 		new Thread(() -> {
@@ -82,8 +82,6 @@ public class ControladorCorreos {
 	}
 
 	private void configurarVistaGeneral() {
-		vistaGeneral = new VistaGeneralCorreo(CORREO);
-		vistaGeneral.setVisible(true);
 		vistaGeneral.getBotonEnviarCorreo()
 				.addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo(), PASSWORD_APLICACION));
 		vistaGeneral.getEmailTabla()
@@ -94,18 +92,16 @@ public class ControladorCorreos {
 
 	// ELIMINAR
 	public void eliminarCorreoSeleccionado(Correo correo) {
-		new Thread(() -> {
-	        try {
-	            gestion.eliminarCorreoIMAP(HOSTIMAP, CORREO, PASSWORD_APLICACION, correo.getMessageId());
+		try {
 
-	            SwingUtilities.invokeLater(() -> {
-	                correos.remove(correo);
-	                vistaGeneral.cargarCorreos(new ArrayList<>(correos)); 
-	            });
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    }).start();
+			gestion.eliminarCorreoPOP3(HOST, "recent:" + CORREO, PASSWORD_APLICACION, correo);
+
+	        correos.remove(correo);
+	        vistaGeneral.cargarCorreos(correos);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	// LEIDO

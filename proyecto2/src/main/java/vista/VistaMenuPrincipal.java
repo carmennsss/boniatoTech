@@ -30,6 +30,7 @@ public class VistaMenuPrincipal extends JFrame {
 	JButton botonFileManager;
 	JButton botonCerrarSesion;
 	JButton botonAdmin;
+	JButton botonCorreo;
 	ViMain vista;
 
 	public VistaMenuPrincipal(ModeloClienteFTP client, ViMain vista) {
@@ -104,10 +105,12 @@ public class VistaMenuPrincipal extends JFrame {
 		botonFileManager = new JButton("File Manager");
 		botonCerrarSesion = new JButton("Log out");
 		botonAdmin = new JButton("Administrate");
-
+		botonCorreo = new JButton("Mail controller");
+		
 		estilarBoton(botonCRUD, colorBoton, Color.WHITE);
 		estilarBoton(botonFileManager, colorBoton, Color.WHITE);
 		estilarBoton(botonAdmin, colorBoton, Color.WHITE);
+		estilarBoton(botonCorreo, colorBoton, Color.WHITE);
 		estilarBoton(botonCerrarSesion, new Color(200, 100, 100), Color.WHITE);
 
 		contentPanel.add(Box.createVerticalGlue());
@@ -119,12 +122,29 @@ public class VistaMenuPrincipal extends JFrame {
 		contentPanel.add(Box.createVerticalStrut(20));
 		contentPanel.add(botonFileManager);
 		contentPanel.add(Box.createVerticalStrut(20));
+		contentPanel.add(botonCorreo);
+		contentPanel.add(Box.createVerticalStrut(20));
 		contentPanel.add(botonAdmin);
-		contentPanel.add(Box.createVerticalGlue());
+		contentPanel.add(Box.createVerticalStrut(20));
 		contentPanel.add(botonCerrarSesion);
 		contentPanel.add(Box.createVerticalStrut(20));
 
-		accionBotonCerrarSesion(botonCerrarSesion);
+	}
+
+	public JButton getBotonCorreo() {
+		return botonCorreo;
+	}
+
+	public void setBotonCorreo(JButton botonCorreo) {
+		this.botonCorreo = botonCorreo;
+	}
+
+	public JButton getBotonCerrarSesion() {
+		return botonCerrarSesion;
+	}
+
+	public void setBotonCerrarSesion(JButton botonCerrarSesion) {
+		this.botonCerrarSesion = botonCerrarSesion;
 	}
 
 	private void estilarBoton(JButton btn, Color bgColor, Color fgColor) {
@@ -136,19 +156,6 @@ public class VistaMenuPrincipal extends JFrame {
 		btn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btn.setMaximumSize(new Dimension(300, 50)); // Ancho fijo, altura fija
 		btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-	}
-
-	public void accionBotonCerrarSesion(JButton boton) {
-		boton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				client.desconectar();
-				VistaMenuPrincipal.this.setVisible(false);
-				vista.setVisible(true);
-				vista.getPanelLogin().getCajas().get(0).setText("");
-				vista.getPanelLogin().getCajas().get(1).setText("");
-				vista.mostrarLogin();
-			}
-		});
 	}
 
 	public JButton getBotonFileManager() {

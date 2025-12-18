@@ -136,7 +136,7 @@ public class VistaLogin extends JFrame {
 		gbc.gridy = 2;
 		panelCentral.add(txtPass, gbc);
 
-		JButton btnLogin = new JButton("Enter");
+		JButton btnLogin = new JButton("Log in");
 		btnLogin.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		btnLogin.setBackground(colorBoton);
 		btnLogin.setForeground(Color.WHITE);

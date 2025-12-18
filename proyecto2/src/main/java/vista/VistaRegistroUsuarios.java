@@ -46,7 +46,9 @@ public class VistaRegistroUsuarios extends JFrame {
 	JPasswordField textContrasena;
 	JLabel confContrasena;
 	JPasswordField textConfContrasena;
-
+	JButton aniadir;
+	JButton volver;
+	
 	private Image imagenFondo;
 
 	public VistaRegistroUsuarios(VistaAdmin vistaAdmin, ModeloClienteFTP client, ModeloBaseDatos db) {
@@ -149,14 +151,12 @@ public class VistaRegistroUsuarios extends JFrame {
 		agregarCampo(panelCentral, gbc, 4, contrasena, textContrasena);
 		agregarCampo(panelCentral, gbc, 5, confContrasena, textConfContrasena);
 
-		JButton aniadir = new JButton("Register");
-		JButton volver = new JButton("Back");
+		aniadir = new JButton("Register");
+		volver = new JButton("Back");
 
 		estilarBoton(aniadir, new Color(110, 137, 115));
 		estilarBoton(volver, new Color(200, 100, 100));
 
-		accionBotonVolver(volver);
-		accionBotonAniadir(aniadir);
 
 		gbc.gridx = 0;
 		gbc.gridy = 6;
@@ -172,6 +172,134 @@ public class VistaRegistroUsuarios extends JFrame {
 		panelCentral.add(panelBotones, gbc);
 
 		panelFondo.add(panelCentral);
+	}
+
+	public JButton getAniadir() {
+		return aniadir;
+	}
+
+	public void setAniadir(JButton aniadir) {
+		this.aniadir = aniadir;
+	}
+
+	public JButton getVolver() {
+		return volver;
+	}
+
+	public void setVolver(JButton volver) {
+		this.volver = volver;
+	}
+
+	public ModeloClienteFTP getClient() {
+		return client;
+	}
+
+	public void setClient(ModeloClienteFTP client) {
+		this.client = client;
+	}
+
+	public ModeloBaseDatos getDb() {
+		return db;
+	}
+
+	public void setDb(ModeloBaseDatos db) {
+		this.db = db;
+	}
+
+	public VistaAdmin getVistaAdmin() {
+		return vistaAdmin;
+	}
+
+	public void setVistaAdmin(VistaAdmin vistaAdmin) {
+		this.vistaAdmin = vistaAdmin;
+	}
+
+	public JLabel getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(JLabel nombre) {
+		this.nombre = nombre;
+	}
+
+	public JTextField getTextNombre() {
+		return textNombre;
+	}
+
+	public void setTextNombre(JTextField textNombre) {
+		this.textNombre = textNombre;
+	}
+
+	public JLabel getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(JLabel correo) {
+		this.correo = correo;
+	}
+
+	public JTextField getTextCorreo() {
+		return textCorreo;
+	}
+
+	public void setTextCorreo(JTextField textCorreo) {
+		this.textCorreo = textCorreo;
+	}
+
+	public JLabel getClaveCorreo() {
+		return claveCorreo;
+	}
+
+	public void setClaveCorreo(JLabel claveCorreo) {
+		this.claveCorreo = claveCorreo;
+	}
+
+	public JTextField getTextClaveCorreo() {
+		return textClaveCorreo;
+	}
+
+	public void setTextClaveCorreo(JTextField textClaveCorreo) {
+		this.textClaveCorreo = textClaveCorreo;
+	}
+
+	public JLabel getContrasena() {
+		return contrasena;
+	}
+
+	public void setContrasena(JLabel contrasena) {
+		this.contrasena = contrasena;
+	}
+
+	public JPasswordField getTextContrasena() {
+		return textContrasena;
+	}
+
+	public void setTextContrasena(JPasswordField textContrasena) {
+		this.textContrasena = textContrasena;
+	}
+
+	public JLabel getConfContrasena() {
+		return confContrasena;
+	}
+
+	public void setConfContrasena(JLabel confContrasena) {
+		this.confContrasena = confContrasena;
+	}
+
+	public JPasswordField getTextConfContrasena() {
+		return textConfContrasena;
+	}
+
+	public void setTextConfContrasena(JPasswordField textConfContrasena) {
+		this.textConfContrasena = textConfContrasena;
+	}
+
+	public Image getImagenFondo() {
+		return imagenFondo;
+	}
+
+	public void setImagenFondo(Image imagenFondo) {
+		this.imagenFondo = imagenFondo;
 	}
 
 	private void agregarCampo(JPanel panel, GridBagConstraints gbc, int fila, JLabel label, JTextField campo) {
@@ -200,57 +328,7 @@ public class VistaRegistroUsuarios extends JFrame {
 		this.setVisible(true);
 	}
 
-	public void accionBotonVolver(JButton boton) {
-		boton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				VistaRegistroUsuarios.this.setVisible(false);
-				vistaAdmin.hacerVisible();
-			}
-		});
-	}
+	
 
-	public void accionBotonAniadir(JButton boton) {
-		boton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				User usuario;
-				String password;
-				char[] contrasena = textContrasena.getPassword();
-				char[] confContrasena = textConfContrasena.getPassword();
-				if (textNombre.getText().trim().isEmpty() || textCorreo.getText().trim().isEmpty()
-						|| textClaveCorreo.getText().trim().isEmpty()) {
-					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "All fields must be filled", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				} else if (contrasena.length == 0 || confContrasena.length == 0) {
-					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "All fields must be filled", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				} else if (!Arrays.equals(contrasena, confContrasena)) {
-					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "Password doesn't match", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				} else if (!textClaveCorreo.getText().matches("^[a-z]{4}( [a-z]{4}){3}$")) {
-					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this,
-							"Invalid format for Address Key, it must be: xxxx xxxx xxxx xxxx (all in lowercase)",
-							"Error", JOptionPane.ERROR_MESSAGE);
-				} else if (!textCorreo.getText().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-					JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "Invalid email format", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				} else {
-					password = new String(contrasena);
-					usuario = new User(textNombre.getText(), textCorreo.getText(), textClaveCorreo.getText(), password);
-					if (db.registrarUsuario(usuario.getCorreo(), usuario.getNombre(), usuario.getContrasena(),
-							usuario.getClaveCorreo())) {
-						client.aniadirUsuario(usuario.getNombre(), usuario.getContrasena());
-						JOptionPane.showMessageDialog(VistaRegistroUsuarios.this, "User registered correctly", "",
-								JOptionPane.INFORMATION_MESSAGE);
-					} else {
-						JOptionPane.showMessageDialog(VistaRegistroUsuarios.this,
-								"User with this name or email already exists", "Error", JOptionPane.ERROR_MESSAGE);
-					}
-
-				}
-
-			}
-		});
-
-	}
 
 }
