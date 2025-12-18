@@ -56,6 +56,8 @@ public class OyenteEnviarCorreo implements ActionListener {
 		
 		if (!estaEnWhiteList) {
 			v.mostrarMensaje("The address is not in the whitelist", true);
+			Log log = new Log("MAIL_SEND", controlador.getCORREO(), false);
+			GestionLogs.writeLog(log);
 			return false;
 		}
 		
