@@ -246,7 +246,7 @@ public class OyenteFTP implements ActionListener {
 		String contrasenia = viMain.getPanelLogin().getCajas().get(1).getText();
 		modelo.setUser(usuario);
 		modelo.setPass(contrasenia);
-		// vistaArchivo.inicializarFileManager();
+		vistaArchivo.inicializarFileManager();
 
 		try {
 			modelo.establecerConexion();
