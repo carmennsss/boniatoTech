@@ -62,6 +62,6 @@ public class EnviarCorreo {
 
         msg.setContent(multipart);
         Transport.send(msg);
-        ;
+        
     }
 }

@@ -13,9 +13,9 @@ public class ControladorLogs {
 	private VistaLogs vistaLogs;
 	private GestionLogs gestionLogs;
 
-	public ControladorLogs(Connection conn) {
+	public ControladorLogs(Connection conn, VistaLogs vistaLogs) {
 		this.conn = conn;
-		vistaLogs=new VistaLogs();
+		this.vistaLogs=vistaLogs;
 		cargarLogs();
 		vistaLogs.setVisible(true);
 		asignarOyenteBtnExport();
@@ -33,6 +33,8 @@ public class ControladorLogs {
 	}
 
 	private void asignarOyenteBtnExport() {
-		vistaLogs.getBtnExport().addActionListener(new OyenteBtnExport(gestionLogs, vistaLogs));
+	    vistaLogs.getBtnExport().addActionListener(new OyenteBtnExport(gestionLogs, vistaLogs));
+	    // Añade esto:
+	    vistaLogs.getBtnVolver().addActionListener(new OyenteBotonVolverLogs());
 	}
 }

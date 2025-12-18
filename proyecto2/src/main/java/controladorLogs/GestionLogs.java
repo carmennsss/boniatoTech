@@ -31,7 +31,7 @@ public class GestionLogs {
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setString(1, log.getAction());
 			ps.setString(2, log.getResult());
-			ps.setString(3, log.getUser().getCorreo());
+			ps.setString(3, log.getCorreo());
 			ps.executeUpdate();
 
 			System.out.println("Log registrado correctamente.");

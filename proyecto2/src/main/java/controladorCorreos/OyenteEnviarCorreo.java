@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import controladorLogs.GestionLogs;
+import modelo.Log;
 import modelo.MoTextos;
 
 import vista.VistaCorreoBase;
@@ -56,6 +58,9 @@ public class OyenteEnviarCorreo implements ActionListener {
 			v.mostrarMensaje("The address is not in the whitelist", true);
 			return false;
 		}
+		
+		Log log = new Log("MAIL_SEND", controlador.getCORREO(), true);
+		GestionLogs.writeLog(log);
 		return true;
 	}
 
