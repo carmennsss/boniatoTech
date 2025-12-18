@@ -199,6 +199,50 @@ public class FileManager {
         }
     }
 
+    public void renombrar(FTPFile archivoSeleccionado, String nuevoNombre, String rutaActual) {
+        if (!this.conectar()) {
+            JOptionPane.showMessageDialog(null, "Could not connect to the server", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String rutaVieja = rutaActual;
+        if (!rutaVieja.endsWith("/")) {
+            rutaVieja += "/";
+        }
+        rutaVieja += archivoSeleccionado.getName();
+
+        String rutaNueva = rutaActual;
+        if (!rutaNueva.endsWith("/")) {
+            rutaNueva += "/";
+        }
+        rutaNueva += nuevoNombre;
+
+        int confirmacion = JOptionPane.showConfirmDialog(null,
+                "Do you want to rename the file '" + archivoSeleccionado.getName() + "' to '" + nuevoNombre + "'?",
+                "Confirm Rename", JOptionPane.OK_CANCEL_OPTION);
+
+        if (confirmacion == JOptionPane.OK_OPTION) {
+            try {
+                boolean exito = ftpClient.rename(rutaVieja, rutaNueva);
+                if (exito) {
+                    JOptionPane.showMessageDialog(null, "File renamed successfully.", "",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Could not rename the file.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error renaming the file: " + e.getMessage(), "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        this.desconectar();
+    }
+
+    
     public boolean conectar() {
         try {
             this.ftpClient.connect(this.servidor, this.puerto);
