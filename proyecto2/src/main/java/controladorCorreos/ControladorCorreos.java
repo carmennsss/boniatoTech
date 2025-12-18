@@ -94,23 +94,18 @@ public class ControladorCorreos {
 
 	// ELIMINAR
 	public void eliminarCorreoSeleccionado(Correo correo) {
-		try {
+		new Thread(() -> {
+	        try {
+	            gestion.eliminarCorreoIMAP(HOSTIMAP, CORREO, PASSWORD_APLICACION, correo.getMessageId());
 
-			int indiceEnLista = correos.indexOf(correo);
-			if (indiceEnLista == -1)
-				return;
-
-			int totalCorreos = correos.size();
-			int indiceServidor = totalCorreos - indiceEnLista;
-
-			gestion.eliminarCorreoPOP3(HOST, "recent:" + CORREO, PASSWORD_APLICACION, indiceServidor - 1);
-
-			correos.remove(correo);
-			vistaGeneral.cargarCorreos(correos);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	            SwingUtilities.invokeLater(() -> {
+	                correos.remove(correo);
+	                vistaGeneral.cargarCorreos(new ArrayList<>(correos)); 
+	            });
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }).start();
 	}
 
 	// LEIDO
