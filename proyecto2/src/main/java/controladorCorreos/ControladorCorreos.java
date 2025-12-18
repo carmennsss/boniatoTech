@@ -29,9 +29,10 @@ public class ControladorCorreos {
 	private static GestionCorreos gestion;
 	private Thread hiloRecepcion;
 	private ModeloBaseDatos db;
-	private VistaMenuPrincipal vistaMenuPrincipal; 
+	private VistaMenuPrincipal vistaMenuPrincipal;
 
-	public ControladorCorreos(String CORREO, VistaGeneralCorreo vistaGeneral, ModeloBaseDatos bd, VistaMenuPrincipal vistaMenu) {
+	public ControladorCorreos(String CORREO, VistaGeneralCorreo vistaGeneral, ModeloBaseDatos bd,
+			VistaMenuPrincipal vistaMenu) {
 		this.vistaGeneral = vistaGeneral;
 		this.vistaMenuPrincipal = vistaMenu;
 		this.db = bd;
@@ -115,7 +116,7 @@ public class ControladorCorreos {
 		vistaGeneral.getEmailTabla()
 				.addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this, CORREO));
 		vistaGeneral.getBtnRefrescar().addActionListener(new OyenteRefrescarCorreo(this));
-		vistaGeneral.getBtnVolver().addActionListener(new OyenteBotonVolver(vistaGeneral, vistaMenuPrincipal));
+		vistaGeneral.getBtnVolver().addActionListener(new OyenteBotonVolver(vistaGeneral, vistaMenuPrincipal, this));
 	}
 
 	// ELIMINAR
@@ -188,17 +189,17 @@ public class ControladorCorreos {
 		ArrayList<String> whitelist = new ArrayList<>();
 		try {
 			Connection conexion = db.getConexion();
-			
+
 			Statement sentencia = conexion.createStatement();
 
 			String sql = "SELECT email AS correo FROM usuarios UNION SELECT correo FROM whitelist";
 
 			ResultSet rs = sentencia.executeQuery(sql);
-			
+
 			while (rs.next()) {
 				whitelist.add(rs.getString(1));
 			}
-			
+
 			if (whitelist.contains(receptor)) {
 				return true;
 			} else {

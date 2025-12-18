@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import modelo.MoTextos;
 
 public class ViCrearRol extends JFrame {
     private ArrayList<JLabel> textos;
@@ -14,7 +15,7 @@ public class ViCrearRol extends JFrame {
     private ViTabla panelTabla;
 
     public ViCrearRol() {
-        this.setTitle("Crear Rol");
+        this.setTitle(MoTextos.roles_title_create);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1000, 650);
         this.setLocationRelativeTo(null);
@@ -53,13 +54,13 @@ public class ViCrearRol extends JFrame {
         this.textos = new ArrayList<>();
         this.botones = new ArrayList<>();
 
-        JLabel titulo = new JLabel("Roles disponibles", SwingConstants.CENTER);
+        JLabel titulo = new JLabel(MoTextos.roles_title_available, SwingConstants.CENTER);
         titulo.setFont(Estilos.FONT_TITULO);
         titulo.setForeground(Estilos.COLOR_TITULO_APP);
         this.textos.add(titulo);
 
-        this.botones.add(new JButton("Agregar Rol"));
-        this.botones.add(new JButton("Volver"));
+        this.botones.add(new JButton(MoTextos.roles_btn_create));
+        this.botones.add(new JButton(MoTextos.btn_back_whitelist)); // Reusing "Volver"
 
         JPanel panelCentro = new JPanel(new BorderLayout(20, 20));
         panelCentro.setOpaque(false);
@@ -111,7 +112,7 @@ public class ViCrearRol extends JFrame {
     public int mostrarAgregarRol() {
         final JDialog dialog = new javax.swing.JDialog(
                 this,
-                "Agregar Rol",
+                MoTextos.roles_dialog_title,
                 true);
 
         dialog.setUndecorated(true);
@@ -123,14 +124,14 @@ public class ViCrearRol extends JFrame {
         panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.Y_AXIS));
         panel.setBorder(new javax.swing.border.EmptyBorder(20, 20, 20, 20));
 
-        javax.swing.JLabel lblTitulo = new javax.swing.JLabel("Agregar Rol");
+        javax.swing.JLabel lblTitulo = new javax.swing.JLabel(MoTextos.roles_dialog_title);
         lblTitulo.setFont(Estilos.FONT_TITULO);
         lblTitulo.setForeground(Estilos.COLOR_TITULO_APP);
         lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(lblTitulo);
         panel.add(javax.swing.Box.createVerticalStrut(20));
 
-        JLabel lblNombre = new JLabel("Nombre:");
+        JLabel lblNombre = new JLabel(MoTextos.roles_lbl_name);
         lblNombre.setFont(Estilos.FONT_BOTON);
         lblNombre.setForeground(Estilos.COLOR_LABEL);
 
@@ -141,7 +142,7 @@ public class ViCrearRol extends JFrame {
         panel.add(txtNombre);
         panel.add(javax.swing.Box.createVerticalStrut(20));
 
-        JLabel lblDescripcion = new JLabel("Descripcion:");
+        JLabel lblDescripcion = new JLabel(MoTextos.roles_lbl_desc);
         lblDescripcion.setFont(Estilos.FONT_BOTON);
         lblDescripcion.setForeground(Estilos.COLOR_LABEL);
 
@@ -154,8 +155,8 @@ public class ViCrearRol extends JFrame {
 
         final int[] result = { -1 };
 
-        JButton btnNew = crearBotonDialogo("Agregar", Estilos.COLOR_BOTON_MENU);
-        JButton btnCancel = crearBotonDialogo("Cancelar", new java.awt.Color(200, 100, 100));
+        JButton btnNew = crearBotonDialogo(MoTextos.btn_dialog_add, Estilos.COLOR_BOTON_MENU);
+        JButton btnCancel = crearBotonDialogo(MoTextos.btn_dialog_cancel, new java.awt.Color(200, 100, 100));
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
@@ -234,5 +235,17 @@ public class ViCrearRol extends JFrame {
 
     public ViTabla getPanelTabla() {
         return panelTabla;
+    }
+
+    public void actualizarTextos() {
+        this.setTitle(MoTextos.roles_title_create);
+        if (!textos.isEmpty()) {
+            textos.get(0).setText(MoTextos.roles_title_available);
+        }
+        if (botones.size() >= 2) {
+            botones.get(0).setText(MoTextos.roles_btn_create);
+            botones.get(1).setText(MoTextos.btn_back_whitelist);
+        }
+        repaint();
     }
 }

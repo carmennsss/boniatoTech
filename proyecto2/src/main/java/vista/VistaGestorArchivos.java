@@ -5,9 +5,9 @@ import org.apache.commons.net.ftp.FTPFile;
 import java.awt.*;
 import javax.swing.border.EmptyBorder;
 import java.net.URL;
-import java.util.ArrayList;
 
 import controlador.OyenteArchivos;
+import modelo.MoTextos;
 
 public class VistaGestorArchivos extends JFrame {
 
@@ -23,7 +23,7 @@ public class VistaGestorArchivos extends JFrame {
 	private JButton botonVolverMenuPrincipal;
 
 	public VistaGestorArchivos() {
-		this.setTitle("File Manager");
+		this.setTitle(MoTextos.file_manager_title);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1000, 650);
 		this.setLocationRelativeTo(null);
@@ -83,11 +83,11 @@ public class VistaGestorArchivos extends JFrame {
 		header.setBackground(colorFondo);
 		header.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		JLabel title = new JLabel("File Repository");
+		title = new JLabel(MoTextos.file_repo_title);
 		title.setFont(new Font("Segoe UI", Font.BOLD, 28));
 		title.setForeground(colorTexto);
 
-		JLabel subtitle = new JLabel("Manage your server files efficiently");
+		subtitle = new JLabel(MoTextos.file_repo_subtitle);
 		subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		subtitle.setForeground(new Color(150, 150, 150));
 
@@ -118,11 +118,11 @@ public class VistaGestorArchivos extends JFrame {
 		botonesPanel.setLayout(new BoxLayout(botonesPanel, BoxLayout.Y_AXIS));
 		botonesPanel.setBackground(colorFondo);
 
-		botonSubida = new JButton("Upload");
-		botonDescarga = new JButton("Download");
-		botonEliminar = new JButton("Delete");
-		botonCrearCarpeta = new JButton("New Folder");
-		botonBorrarCarpeta = new JButton("Delete Folder");
+		botonSubida = new JButton(MoTextos.btn_upload);
+		botonDescarga = new JButton(MoTextos.btn_download);
+		botonEliminar = new JButton(MoTextos.btn_delete);
+		botonCrearCarpeta = new JButton(MoTextos.btn_new_folder);
+		botonBorrarCarpeta = new JButton(MoTextos.btn_delete_folder);
 
 		estilarBoton(botonSubida, colorBotonAccion, Color.WHITE);
 		estilarBoton(botonDescarga, colorBotonAccion, Color.WHITE);
@@ -130,7 +130,8 @@ public class VistaGestorArchivos extends JFrame {
 		estilarBoton(botonCrearCarpeta, colorBotonAccion, Color.WHITE);
 		estilarBoton(botonBorrarCarpeta, new Color(200, 100, 100), Color.WHITE);
 
-		botonesPanel.add(new JLabel("Actions"));
+		lblActions = new JLabel(MoTextos.lbl_actions);
+		botonesPanel.add(lblActions);
 		botonesPanel.add(Box.createVerticalStrut(10));
 		botonesPanel.add(botonSubida);
 		botonesPanel.add(Box.createVerticalStrut(10));
@@ -149,8 +150,8 @@ public class VistaGestorArchivos extends JFrame {
 		JPanel footer = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		footer.setBackground(colorFondo);
 
-		botonVolver = new JButton("Back");
-		botonVolverMenuPrincipal = new JButton("Main Menu");
+		botonVolver = new JButton(MoTextos.btn_back);
+		botonVolverMenuPrincipal = new JButton(MoTextos.btn_main_menu);
 
 		estilarBoton(botonVolver, colorBotonNav, Color.BLACK);
 		estilarBoton(botonVolverMenuPrincipal, colorBotonNav, Color.BLACK);
@@ -160,6 +161,11 @@ public class VistaGestorArchivos extends JFrame {
 
 		contentPanel.add(footer, BorderLayout.SOUTH);
 	}
+
+	// UI Components for text update
+	private JLabel title;
+	private JLabel subtitle;
+	private JLabel lblActions;
 
 	private void estilarBoton(JButton btn, Color bg, Color fg) {
 		btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
@@ -229,5 +235,24 @@ public class VistaGestorArchivos extends JFrame {
 
 	public JButton getBotonVolverMenuPrincipal() {
 		return botonVolverMenuPrincipal;
+	}
+
+	public void actualizarTextos() {
+		setTitle(MoTextos.file_manager_title);
+		title.setText(MoTextos.file_repo_title);
+		subtitle.setText(MoTextos.file_repo_subtitle);
+
+		botonSubida.setText(MoTextos.btn_upload);
+		botonDescarga.setText(MoTextos.btn_download);
+		botonEliminar.setText(MoTextos.btn_delete);
+		botonCrearCarpeta.setText(MoTextos.btn_new_folder);
+		botonBorrarCarpeta.setText(MoTextos.btn_delete_folder);
+
+		lblActions.setText(MoTextos.lbl_actions);
+
+		botonVolver.setText(MoTextos.btn_back);
+		botonVolverMenuPrincipal.setText(MoTextos.btn_main_menu);
+
+		repaint();
 	}
 }

@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import modelo.MoTextos;
+
 import vista.VistaCorreoBase;
 
 public class OyenteEnviarCorreo implements ActionListener {
@@ -27,7 +29,7 @@ public class OyenteEnviarCorreo implements ActionListener {
 		String cuerpoMensaje = v.getTextoCuerpo().getText();
 
 		if (receptor == "" || receptor.isEmpty() || cuerpoMensaje.isEmpty()) {
-			JOptionPane.showMessageDialog(v, "The recipient and the message body are obligatory");
+			JOptionPane.showMessageDialog(v, MoTextos.mail_msg_recipient_obligatory);
 			return;
 		}
 
@@ -36,10 +38,10 @@ public class OyenteEnviarCorreo implements ActionListener {
 				return;
 			}
 			EnviarCorreo.enviarCorreo(remitente, asunto, cuerpoMensaje, receptor, passwordAplicacion, v.getAdjuntos());
-			JOptionPane.showMessageDialog(v, "Email successfully sent to" + receptor);
+			JOptionPane.showMessageDialog(v, MoTextos.mail_msg_sent_prefix + receptor);
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(v,
-					"The message could not be sent; please check the recipient's email address.");
+					MoTextos.mail_msg_sent_error_recipient);
 			e1.printStackTrace();
 		}
 

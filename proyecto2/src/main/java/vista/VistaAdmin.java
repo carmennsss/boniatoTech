@@ -11,8 +11,6 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -33,6 +31,7 @@ public class VistaAdmin extends JFrame {
 	JButton botonLogs;
 	JButton botonVolver;
 	private Image imagenFondo;
+	private JLabel titulo;
 
 	public VistaAdmin(VistaMenuPrincipal menu) {
 		this.menu = menu;
@@ -76,12 +75,12 @@ public class VistaAdmin extends JFrame {
 		panelCentral.setOpaque(false);
 		panelCentral.setBorder(new EmptyBorder(40, 60, 40, 60));
 
-		botonCrearUsuario = new JButton("Manage Users");
-		botonCrearRoles = new JButton("Manage Roles");
-		botonAsignarRoles = new JButton("Assign Roles");
-		botonWhitelist = new JButton("Manage Whitelist");
 		botonLogs = new JButton("Log Manager");
-		botonVolver = new JButton("Main Menu");
+		botonCrearUsuario = new JButton(modelo.MoTextos.btn_manage_users);
+		botonCrearRoles = new JButton(modelo.MoTextos.btn_manage_roles);
+		botonAsignarRoles = new JButton(modelo.MoTextos.roles_title_assign);
+		botonWhitelist = new JButton(modelo.MoTextos.whitelist_title); // New Button
+		botonVolver = new JButton(modelo.MoTextos.btn_main_menu);
 
 		estilarBoton(botonCrearUsuario, new Color(110, 137, 115));
 		estilarBoton(botonCrearRoles, new Color(110, 137, 115));
@@ -94,7 +93,7 @@ public class VistaAdmin extends JFrame {
 		gbc.insets = new Insets(15, 0, 15, 0);
 		gbc.gridx = 0;
 
-		JLabel titulo = new JLabel("Administration", SwingConstants.CENTER);
+		titulo = new JLabel(modelo.MoTextos.admin_title, SwingConstants.CENTER);
 		titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
 		titulo.setForeground(new Color(60, 70, 60));
 
@@ -186,4 +185,14 @@ public class VistaAdmin extends JFrame {
 		this.setVisible(true);
 	}
 
+	public void actualizarTextos() {
+		this.setTitle("Administrator Menu"); // Maybe externalize this too but app name is okay
+		titulo.setText(modelo.MoTextos.admin_title);
+		botonCrearUsuario.setText(modelo.MoTextos.btn_manage_users);
+		botonCrearRoles.setText(modelo.MoTextos.btn_manage_roles);
+		botonAsignarRoles.setText(modelo.MoTextos.roles_title_assign);
+		botonWhitelist.setText(modelo.MoTextos.whitelist_title);
+		botonVolver.setText(modelo.MoTextos.btn_main_menu);
+		repaint();
+	}
 }
