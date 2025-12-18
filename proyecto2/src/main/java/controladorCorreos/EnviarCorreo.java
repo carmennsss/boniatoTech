@@ -32,7 +32,7 @@ public class EnviarCorreo {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(
                         miCorreo,
-                        passwordAplicacion // Contrase�a de aplicaci�n correcta
+                        passwordAplicacion  // Contrasenna de aplicacion correcta
                 );
             }
         });
@@ -43,7 +43,7 @@ public class EnviarCorreo {
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receptor));
         msg.setSubject(asunto);
 
-        // --- LÓGICA PARA ADJUNTOS ---
+        // --- LOGICA PARA ADJUNTOS ---
         Multipart multipart = new MimeMultipart();
 
         // 1. Parte del texto
