@@ -211,4 +211,14 @@ public class ControladorCorreos {
 		}
 	}
 
+	public String getCORREO() {
+		return CORREO;
+	}
+
+	public void setCORREO(String cORREO) {
+		CORREO = cORREO;
+	}
+	
+	
+
 }

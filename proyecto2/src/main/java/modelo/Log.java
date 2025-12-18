@@ -4,30 +4,22 @@ public class Log {
 
 	private int id;
 	private String action;
-	private User user;
 	private String date;
+	private String correo;
 	private String result;
 
-	public Log(int id, String action, User user, String date, String result) {
-		this.id = id;
-		this.action = action;
-		this.user = user;
-		this.date = date;
-		this.result = result;
-	}
 
-	public Log(String action, User user, boolean exito) {
+	public Log(String action, String correo, boolean exito) {
 		String resultado = exito ? "success" : "error";
-
 		this.action = action;
-		this.user = user;
+		this.correo = correo;
 		this.setResult(resultado);
 	}
 
 	public Log(int id, String action, String correo, String date, String result) {
 		this.id = id;
 		this.action = action;
-		this.user.setCorreo(correo);
+		this.correo = correo;
 		this.date = date;
 		this.result = result;
 	}
@@ -48,14 +40,6 @@ public class Log {
 		this.action = action;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public String getDate() {
 		return date;
 	}
@@ -72,9 +56,13 @@ public class Log {
 		this.result = result;
 	}
 
-	@Override
-	public String toString() {
-		return this.date + "," + this.getUser().getCorreo() + "," + this.getAction() + "," + this.getResult() + "\n";
+	public String getCorreo() {
+		return correo;
 	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+	
 
 }
