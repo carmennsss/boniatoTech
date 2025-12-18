@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -179,16 +180,29 @@ public class ControladorCorreos {
 		return PASSWORD_APLICACION;
 	}
 
-	public void comprobarReceptorWhiteList(String receptor) {
+	public boolean comprobarReceptorWhiteList(String receptor) {
+		ArrayList<String> whitelist = new ArrayList<>();
 		try {
 			Connection conexion = db.getConexion();
+			
+			Statement sentencia = conexion.createStatement();
 
-			String sql = "SELECT ";
+			String sql = "SELECT email AS correo FROM usuarios UNION SELECT correo FROM whitelist";
 
-			PreparedStatement ps = conexion.prepareStatement(sql);
+			ResultSet rs = sentencia.executeQuery(sql);
+			
+			while (rs.next()) {
+				whitelist.add(rs.getString(1));
+			}
+			
+			if (whitelist.contains(receptor)) {
+				return true;
+			} else {
+				return false;
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 	}
 
