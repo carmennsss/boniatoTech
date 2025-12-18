@@ -36,24 +36,23 @@ public class ControladorCorreos {
 		gestion = new GestionCorreos();
 		configurarVistaGeneral();
 
-
 	}
 
 	private String obtenerClaveCorreoPorUsuario(String correo) {
 		String contrasenaAplicacion = null;
 		try {
-		String sql = "SELECT clave_correo FROM usuarios WHERE email = ?";
-		Connection conexion = db.getConexion();
-		
-		PreparedStatement ps = conexion.prepareStatement(sql);
-		
-		ps.setString(1, correo);
-		
-		ResultSet rs = ps.executeQuery();
-		
-		while (rs.next()) {
-			contrasenaAplicacion = rs.getString(1);
-		}
+			String sql = "SELECT clave_correo FROM usuarios WHERE email = ?";
+			Connection conexion = db.getConexion();
+
+			PreparedStatement ps = conexion.prepareStatement(sql);
+
+			ps.setString(1, correo);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				contrasenaAplicacion = rs.getString(1);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -62,7 +61,7 @@ public class ControladorCorreos {
 
 	public void cargarCorreos() {
 		vistaGeneral.getBtnRefrescar().setEnabled(false);
-		
+
 		new Thread(() -> {
 			try {
 				System.out.println("Conectando con Gmail...");
@@ -73,9 +72,8 @@ public class ControladorCorreos {
 					this.correos.clear();
 					this.correos.addAll(listaDescargada); // Actualizamos la lista local
 					vistaGeneral.cargarCorreos(this.correos);
-					
-					vistaGeneral.getBtnRefrescar().setEnabled(true);
 
+					vistaGeneral.getBtnRefrescar().setEnabled(true);
 
 					if (hiloRecepcion == null || !hiloRecepcion.isAlive()) {
 						HiloRecepcionCorreos hilo = new HiloRecepcionCorreos(gestion, HOST, "recent:" + CORREO,
@@ -85,14 +83,12 @@ public class ControladorCorreos {
 					}
 
 				});
-			
+
 			} catch (Exception e) {
 				SwingUtilities.invokeLater(() -> vistaGeneral.getBtnRefrescar().setEnabled(true));
 			}
 		}).start();
-			
 
-			
 	}
 
 	// Metodo para detener el hilo cuando se cierre la ventana
@@ -123,8 +119,8 @@ public class ControladorCorreos {
 
 			gestion.eliminarCorreoPOP3(HOST, "recent:" + CORREO, PASSWORD_APLICACION, correo);
 
-	        correos.remove(correo);
-	        vistaGeneral.cargarCorreos(correos);
+			correos.remove(correo);
+			vistaGeneral.cargarCorreos(correos);
 
 		} catch (Exception e) {
 			e.printStackTrace();
