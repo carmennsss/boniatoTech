@@ -42,6 +42,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	JLabel confContrasena;
 	JPasswordField textConfContrasena;
 	JButton aniadir;
+	JButton eliminar;
 	JButton volver;
 
 	private Image imagenFondo;
@@ -151,6 +152,7 @@ public class VistaRegistroUsuarios extends JFrame {
 		volver = new JButton(modelo.MoTextos.btn_back);
 
 		estilarBoton(aniadir, new Color(110, 137, 115));
+		estilarBoton(eliminar, new Color(110, 137, 115));
 		estilarBoton(volver, new Color(200, 100, 100));
 
 		gbc.gridx = 0;
@@ -162,11 +164,20 @@ public class VistaRegistroUsuarios extends JFrame {
 		JPanel panelBotones = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 0));
 		panelBotones.setOpaque(false);
 		panelBotones.add(aniadir);
+		panelBotones.add(eliminar);
 		panelBotones.add(volver);
 
 		panelCentral.add(panelBotones, gbc);
 
 		panelFondo.add(panelCentral);
+	}
+
+	public JButton getEliminar() {
+		return eliminar;
+	}
+
+	public void setEliminar(JButton eliminar) {
+		this.eliminar = eliminar;
 	}
 
 	public JButton getAniadir() {

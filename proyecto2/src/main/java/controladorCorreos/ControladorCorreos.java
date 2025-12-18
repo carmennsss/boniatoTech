@@ -1,5 +1,10 @@
 package controladorCorreos;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,6 +14,7 @@ import javax.mail.Flags;
 import javax.swing.SwingUtilities;
 
 import modelo.Correo;
+import modelo.ModeloBaseDatos;
 import vista.VistaGeneralCorreo;
 
 public class ControladorCorreos {
@@ -21,20 +27,42 @@ public class ControladorCorreos {
 	private VistaGeneralCorreo vistaGeneral;
 	private static GestionCorreos gestion;
 	private Thread hiloRecepcion;
+	private ModeloBaseDatos db;
 
-	public ControladorCorreos(String CORREO, String PASSWORD_APLICACION, VistaGeneralCorreo vistaGeneral) {
+	public ControladorCorreos(String CORREO, VistaGeneralCorreo vistaGeneral, ModeloBaseDatos bd) {
 		this.vistaGeneral = vistaGeneral;
+		this.db = bd;
 		this.CORREO = CORREO;
-		this.PASSWORD_APLICACION = PASSWORD_APLICACION;
+		this.PASSWORD_APLICACION = obtenerClaveCorreoPorUsuario(CORREO);
 		gestion = new GestionCorreos();
 		configurarVistaGeneral();
 
+	}
 
+	private String obtenerClaveCorreoPorUsuario(String correo) {
+		String contrasenaAplicacion = null;
+		try {
+			String sql = "SELECT clave_correo FROM usuarios WHERE email = ?";
+			Connection conexion = db.getConexion();
+
+			PreparedStatement ps = conexion.prepareStatement(sql);
+
+			ps.setString(1, correo);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				contrasenaAplicacion = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return contrasenaAplicacion;
 	}
 
 	public void cargarCorreos() {
 		vistaGeneral.getBtnRefrescar().setEnabled(false);
-		
+
 		new Thread(() -> {
 			try {
 				System.out.println("Conectando con Gmail...");
@@ -45,9 +73,8 @@ public class ControladorCorreos {
 					this.correos.clear();
 					this.correos.addAll(listaDescargada); // Actualizamos la lista local
 					vistaGeneral.cargarCorreos(this.correos);
-					
-					vistaGeneral.getBtnRefrescar().setEnabled(true);
 
+					vistaGeneral.getBtnRefrescar().setEnabled(true);
 
 					if (hiloRecepcion == null || !hiloRecepcion.isAlive()) {
 						HiloRecepcionCorreos hilo = new HiloRecepcionCorreos(gestion, HOST, "recent:" + CORREO,
@@ -57,14 +84,12 @@ public class ControladorCorreos {
 					}
 
 				});
-			
+
 			} catch (Exception e) {
 				SwingUtilities.invokeLater(() -> vistaGeneral.getBtnRefrescar().setEnabled(true));
 			}
 		}).start();
-			
 
-			
 	}
 
 	// Metodo para detener el hilo cuando se cierre la ventana
@@ -83,11 +108,10 @@ public class ControladorCorreos {
 
 	private void configurarVistaGeneral() {
 		vistaGeneral.getBotonEnviarCorreo()
-				.addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo(), PASSWORD_APLICACION));
+				.addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo(), PASSWORD_APLICACION, this));
 		vistaGeneral.getEmailTabla()
 				.addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this, CORREO));
 		vistaGeneral.getBtnRefrescar().addActionListener(new OyenteRefrescarCorreo(this));
-		// vistaGeneral.getBtnVolver().addActionListener(new OyenteBtnVolver());
 	}
 
 	// ELIMINAR
@@ -96,8 +120,8 @@ public class ControladorCorreos {
 
 			gestion.eliminarCorreoPOP3(HOST, "recent:" + CORREO, PASSWORD_APLICACION, correo);
 
-	        correos.remove(correo);
-	        vistaGeneral.cargarCorreos(correos);
+			correos.remove(correo);
+			vistaGeneral.cargarCorreos(correos);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -154,6 +178,32 @@ public class ControladorCorreos {
 
 	public String getPasswordAplicacion() {
 		return PASSWORD_APLICACION;
+	}
+
+	public boolean comprobarReceptorWhiteList(String receptor) {
+		ArrayList<String> whitelist = new ArrayList<>();
+		try {
+			Connection conexion = db.getConexion();
+			
+			Statement sentencia = conexion.createStatement();
+
+			String sql = "SELECT email AS correo FROM usuarios UNION SELECT correo FROM whitelist";
+
+			ResultSet rs = sentencia.executeQuery(sql);
+			
+			while (rs.next()) {
+				whitelist.add(rs.getString(1));
+			}
+			
+			if (whitelist.contains(receptor)) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }

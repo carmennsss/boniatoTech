@@ -13,10 +13,12 @@ public class OyenteEnviarCorreo implements ActionListener {
 
 	private String passwordAplicacion;
 	private VistaCorreoBase v;
+	private ControladorCorreos controlador;
 
-	public OyenteEnviarCorreo(VistaCorreoBase v, String passwordAplicacion) {
+	public OyenteEnviarCorreo(VistaCorreoBase v, String passwordAplicacion, ControladorCorreos controlador) {
 		this.v = v;
 		this.passwordAplicacion = passwordAplicacion;
+		this.controlador = controlador;
 	}
 
 	@Override
@@ -32,6 +34,9 @@ public class OyenteEnviarCorreo implements ActionListener {
 		}
 
 		try {
+			if (!comprobarReceptorWhiteList(receptor)) {
+				return;
+			}
 			EnviarCorreo.enviarCorreo(remitente, asunto, cuerpoMensaje, receptor, passwordAplicacion, v.getAdjuntos());
 			JOptionPane.showMessageDialog(v, MoTextos.mail_msg_sent_prefix + receptor);
 		} catch (Exception e1) {
@@ -41,6 +46,17 @@ public class OyenteEnviarCorreo implements ActionListener {
 		}
 
 		v.dispose();
+	}
+
+	private boolean comprobarReceptorWhiteList(String receptor) {	
+		boolean estaEnWhiteList;
+		estaEnWhiteList = controlador.comprobarReceptorWhiteList(receptor);
+		
+		if (!estaEnWhiteList) {
+			v.mostrarMensaje("The address is not in the whitelist", true);
+			return false;
+		}
+		return true;
 	}
 
 }
