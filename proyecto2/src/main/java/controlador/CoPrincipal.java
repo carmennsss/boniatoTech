@@ -60,10 +60,12 @@ public class CoPrincipal {
 
         this.oyenteWhitelist = new OyenteWhitelist(controladorWhitelist, vista.getViWhitelist());
 
-        OyenteUsuario oyU = new OyenteUsuario(vistaUsuarios);
+        OyenteUsuario oyU = new OyenteUsuario(vistaUsuarios, vistaEliminarUsuarios, bd, modeloFTP);
         vistaUsuarios.getAniadir().addActionListener(oyU);
         vistaUsuarios.getEliminar().addActionListener(oyU);
         vistaUsuarios.getVolver().addActionListener(oyU);
+        vistaEliminarUsuarios.getBtnEliminar().addActionListener(oyU);
+        vistaEliminarUsuarios.getBtnVolver().addActionListener(oyU);
         JButton[] botonesLogin = {
                 vista.getPanelLogin().getBotones().get(0),
                 vistaMenuPrincipal.getBotonCRUD(),

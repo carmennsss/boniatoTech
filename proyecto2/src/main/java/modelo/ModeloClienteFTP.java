@@ -284,6 +284,52 @@ public class ModeloClienteFTP {
         }
     }
 
+    public void eliminarUsuario(String nombre) {
+
+        // 1. Autenticarse en la carpeta compartida
+        conectarCarpetaCompartida();
+
+        try {
+            File xmlFile = new File(RUTA_XML);
+
+            if (!xmlFile.exists()) {
+                System.err.println("ERROR: No encuentro el archivo en: " + RUTA_XML);
+                return;
+            }
+
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(xmlFile);
+            doc.getDocumentElement().normalize();
+
+            NodeList usersList = doc.getElementsByTagName("Users");
+            Node usersNode = usersList.item(0);
+
+            NodeList userNodes = doc.getElementsByTagName("User");
+
+            boolean encontrado = false;
+
+            for (int i = 0; i < userNodes.getLength(); i++) {
+                Element user = (Element) userNodes.item(i);
+
+                if (user.getAttribute("Name").equals(nombre)) {
+                    usersNode.removeChild(user);
+                    encontrado = true;
+                    break;
+                }
+            }
+
+            if (encontrado) {
+                guardarXML(doc, xmlFile);
+                System.out.println("Usuario eliminado: " + nombre);
+            } else {
+                System.err.println("Usuario no encontrado: " + nombre);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     private void guardarXML(Document doc, File xmlFile) throws Exception {
         // 1. Limpieza de nodos vacíos (espacios en blanco antiguos) para que no se
         // dupliquen

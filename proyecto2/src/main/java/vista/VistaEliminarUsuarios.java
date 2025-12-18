@@ -30,6 +30,8 @@ public class VistaEliminarUsuarios extends JFrame{
 	ModeloBaseDatos bd;
 	private ArrayList<JLabel> textos;
     private ArrayList<JButton> botones;
+    JButton btnEliminar;
+    JButton btnVolver;
     private ViTabla tabla;
     private Image imagenFondo;
 
@@ -116,8 +118,8 @@ public class VistaEliminarUsuarios extends JFrame{
         panelSur.setOpaque(false);
 
 
-        JButton btnEliminar = new JButton("Delete");
-        JButton btnVolver = new JButton("Back");
+        btnEliminar = new JButton("Delete");
+        btnVolver = new JButton("Back to Register User");
 
         estilarBoton(btnEliminar, Estilos.COLOR_BOTON_MENU);
         estilarBoton(btnVolver, new Color(200, 100, 100));
@@ -131,7 +133,23 @@ public class VistaEliminarUsuarios extends JFrame{
         panelFondo.add(panelSur, BorderLayout.SOUTH);
     }
 
-    private void estilarBoton(JButton btn, Color bgColor) {
+    public JButton getBtnEliminar() {
+		return btnEliminar;
+	}
+
+	public void setBtnEliminar(JButton btnEliminar) {
+		this.btnEliminar = btnEliminar;
+	}
+
+	public JButton getBtnVolver() {
+		return btnVolver;
+	}
+
+	public void setBtnVolver(JButton btnVolver) {
+		this.btnVolver = btnVolver;
+	}
+
+	private void estilarBoton(JButton btn, Color bgColor) {
         btn.setFont(Estilos.FONT_BOTON);
         btn.setBackground(bgColor);
         btn.setForeground(Color.WHITE);
