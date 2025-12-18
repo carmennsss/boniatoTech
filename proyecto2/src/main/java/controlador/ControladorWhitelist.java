@@ -40,7 +40,7 @@ public class ControladorWhitelist {
         String nombre = vista.getTxtNombre().getText().trim();
 
         if (email.isEmpty() || nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(vista, modelo.MoTextos.msg_fill_email_name, modelo.MoTextos.msg_error_title, // Warning/Error
+            JOptionPane.showMessageDialog(vista, modelo.MoTextos.msg_fill_email_name, modelo.MoTextos.msg_error_title,
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -78,24 +78,13 @@ public class ControladorWhitelist {
     public void desasignarUsuarios() {
         ArrayList<String> seleccionados = moView.getCorreosWhitelist();
         if (seleccionados.isEmpty()) {
-            JOptionPane.showMessageDialog(viMain.getViWhitelist(), "No users selected to remove.", "Warning", // Add to
-                                                                                                              // MoTextos
-                                                                                                              // logic
-                                                                                                              // later
-                                                                                                              // if
-                                                                                                              // needed
-                                                                                                              // or
-                                                                                                              // reuse
-                                                                                                              // existing
+            JOptionPane.showMessageDialog(viMain.getViWhitelist(), "No users selected to remove.", "Warning",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         int confirm = JOptionPane.showConfirmDialog(viMain.getViWhitelist(),
-                "Are you sure you want to remove " + seleccionados.size() + " user(s) from Whitelist?", // Dynamic
-                                                                                                        // string, might
-                                                                                                        // need special
-                                                                                                        // handling
+                "Are you sure you want to remove " + seleccionados.size() + " user(s) from Whitelist?",
                 "Confirm Removal", JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
@@ -106,8 +95,7 @@ public class ControladorWhitelist {
                     eliminados++;
                 }
             }
-            JOptionPane.showMessageDialog(viMain.getViWhitelist(), "Removed " + eliminados + " users."); // Dynamic
-                                                                                                         // string
+            JOptionPane.showMessageDialog(viMain.getViWhitelist(), "Removed " + eliminados + " users.");
             seleccionados.clear();
             rellenarTablaWhitelist();
         }

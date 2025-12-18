@@ -26,7 +26,6 @@ public class EnviarCorreo {
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
 
-        // Autenticaci�n CORRECTA
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -43,15 +42,12 @@ public class EnviarCorreo {
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receptor));
         msg.setSubject(asunto);
 
-        // --- LOGICA PARA ADJUNTOS ---
         Multipart multipart = new MimeMultipart();
 
-        // 1. Parte del texto
         MimeBodyPart textoParte = new MimeBodyPart();
         textoParte.setText(mensaje);
         multipart.addBodyPart(textoParte);
 
-        // 2. Partes de archivos
         if (archivos != null) {
             for (File archivo : archivos) {
                 MimeBodyPart adjuntoParte = new MimeBodyPart();
@@ -62,6 +58,6 @@ public class EnviarCorreo {
 
         msg.setContent(multipart);
         Transport.send(msg);
-        
+
     }
 }

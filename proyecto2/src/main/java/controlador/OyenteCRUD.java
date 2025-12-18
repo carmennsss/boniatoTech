@@ -27,7 +27,6 @@ public class OyenteCRUD implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-        // Table Buttons
         for (JButton btn : vista.getPanelMenu().getBotones()) {
             if (source == btn) {
                 String tabla = btn.getText().toLowerCase();
@@ -40,9 +39,9 @@ public class OyenteCRUD implements ActionListener {
         }
 
         ArrayList<JButton> actionButtons = vista.getPanelAcciones().getBotones();
-        if (actionButtons.size() > 0 && source == actionButtons.get(0)) { // NEW
+        if (actionButtons.size() > 0 && source == actionButtons.get(0)) {
             controlador.getControladorCRUD().mostrarFormularioNuevo();
-        } else if (actionButtons.size() > 1 && source == actionButtons.get(1)) { // MAIN MENU
+        } else if (actionButtons.size() > 1 && source == actionButtons.get(1)) {
             menuPrincipal.hacerVisible();
             vista.setVisible(false);
             controlador.getControladorCRUD().rellenarTabla("");

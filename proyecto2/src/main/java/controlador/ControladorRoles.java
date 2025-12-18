@@ -24,14 +24,12 @@ public class ControladorRoles {
         this.modeloVista = modeloVista;
     }
 
-    // --- MÉTODOS DE VISTA ---
-
     public void rellenarVentanaCrearRol() {
         DefaultTableModel modeloTabla = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
                 try {
-                    // Obtener el ID del rol (columna 0)
+
                     Object idObj = getValueAt(row, 0);
                     int idRol = -1;
                     if (idObj instanceof Integer) {
@@ -62,7 +60,7 @@ public class ControladorRoles {
         String sqlPermisos = "SELECT * FROM permisos ORDER BY nombre_permisos;";
         ResultSet rsPermisos = bd.getConsulta(sqlPermisos);
 
-        modeloTabla.addColumn("ID"); // Nueva columna ID
+        modeloTabla.addColumn("ID");
         modeloTabla.addColumn("Rol");
         modeloTabla.addColumn("Descripción");
 
@@ -76,7 +74,6 @@ public class ControladorRoles {
             e.printStackTrace();
         }
 
-        // Modificamos la query para obtener tambien el id_roles
         String sqlDatos = "SELECT r.id_roles, r.nombre_roles, r.descripcion_roles, p.nombre_permisos, " +
                 "(SELECT COUNT(*) FROM roles_permisos rp WHERE rp.roles_id = r.id_roles AND rp.permisos_id = p.id_permisos) AS activo "
                 +
@@ -101,7 +98,6 @@ public class ControladorRoles {
                         modeloTabla.addRow(filaActual);
                     }
 
-                    // Tamaño: ID + Rol + Desc + listaPermisos
                     filaActual = new Object[3 + listaNombresPermisos.size()];
                     filaActual[0] = idRol;
                     filaActual[1] = rolLeido;
@@ -134,15 +130,6 @@ public class ControladorRoles {
 
         vista.getViCrearRol().getPanelTabla().getTabla().setModel(modeloTabla);
 
-        // Ocultar la columna ID (Opcional, pero recomendado para UI limpia)
-        // vista.getViCrearRol().getPanelTabla().getTabla().getColumnModel().getColumn(0).setMinWidth(0);
-        // vista.getViCrearRol().getPanelTabla().getTabla().getColumnModel().getColumn(0).setMaxWidth(0);
-        // vista.getViCrearRol().getPanelTabla().getTabla().getColumnModel().getColumn(0).setWidth(0);
-        // De momento la dejo visible para debug si el usuario quiere, o la oculto?
-        // El usuario dijo "NO LO PUEDES MIRAR POR EL ID", no dijo que lo mostrara.
-        // Pero no tengo acceso directo a la tabla aquí facil sin getters largos, y
-        // arriba ya hago getTabla().
-        // Voy a ocultarla para que se vea igual que antes.
         vista.getViCrearRol().getPanelTabla().getTabla().getColumnModel().getColumn(0).setMinWidth(0);
         vista.getViCrearRol().getPanelTabla().getTabla().getColumnModel().getColumn(0).setMaxWidth(0);
         vista.getViCrearRol().getPanelTabla().getTabla().getColumnModel().getColumn(0).setWidth(0);
@@ -195,8 +182,6 @@ public class ControladorRoles {
         }
     }
 
-    // --- MÉTODOS DE ACCIÓN ---
-
     public void agregarRol() {
         String nombre = vista.getViCrearRol().getTextFieldNombre().getText();
         if (nombre.isEmpty()) {
@@ -214,7 +199,7 @@ public class ControladorRoles {
         valores.add(nombre);
         valores.add(descripcion);
         bd.ejecutarActualizacion(sql, valores);
-        // modeloFTP.crearRol(nombre);
+
         rellenarVentanaCrearRol();
     }
 
@@ -234,19 +219,6 @@ public class ControladorRoles {
         }
         bd.ejecutarActualizacion(sql, params);
 
-        // String permisoFTP = "";
-        // if (permisoNombre.contains("BORRADO")) {
-        // permisoFTP = "FileDelete";
-        // } else if (permisoNombre.contains("ESCRI")) {
-        // permisoFTP = "FileWrite";
-        // } else if (permisoNombre.contains("LEE")) {
-        // permisoFTP = "FileRead";
-        // }
-
-        // if (!permisoFTP.isEmpty()) {
-        // modeloFTP.asignarPermiso(rolNombre, "C:\\xampp\\htdocs", permisoFTP,
-        // isChecked);
-        // }
     }
 
     public void asignarRol(boolean asignar, ArrayList<String> correoSeleccionados, Rol rol) {

@@ -185,7 +185,6 @@ public class GestionCorreos {
 			System.out.println("[POP3] No se encontró el mensaje en el servidor para borrar.");
 		}
 
-		// Al cerrar con 'true', se ejecuta el EXPUNGE (borrado físico)
 		inbox.close(true);
 		store.close();
 

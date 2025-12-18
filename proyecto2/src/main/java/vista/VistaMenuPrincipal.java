@@ -44,22 +44,48 @@ public class VistaMenuPrincipal extends JFrame {
 	public VistaMenuPrincipal(ModeloClienteFTP client, ViMain vista) {
 		this.client = client;
 		this.vista = vista;
+		propiedades();
+	}
+
+	private void propiedades() {
+		configurarVentana();
+		configurarBotones();
+		configurarPaneles();
+		configurarIdioma();
+	}
+
+	private void configurarVentana() {
 		this.setTitle(MoTextos.menu_title);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1000, 600);
 		this.setLocationRelativeTo(null);
+	}
 
-		Color colorFondo = new Color(248, 245, 242);
-		Color colorTexto = new Color(74, 88, 89);
+	private void configurarBotones() {
 		Color colorBoton = new Color(196, 164, 132);
 
-		// Main Container (LayeredPane for absolute positioning of Combo)
+		botonCRUD = new JButton(MoTextos.btn_manage_data);
+		botonFileManager = new JButton(MoTextos.btn_file_manager);
+		botonCerrarSesion = new JButton(MoTextos.btn_logout);
+		botonAdmin = new JButton(MoTextos.btn_administrate);
+		botonCorreo = new JButton(MoTextos.btn_mail_controller);
+
+		aniadirEstiloBoton(botonCRUD, colorBoton, Color.WHITE);
+		aniadirEstiloBoton(botonFileManager, colorBoton, Color.WHITE);
+		aniadirEstiloBoton(botonAdmin, colorBoton, Color.WHITE);
+		aniadirEstiloBoton(botonCorreo, colorBoton, Color.WHITE);
+		aniadirEstiloBoton(botonCerrarSesion, new Color(200, 100, 100), Color.WHITE);
+	}
+
+	private void configurarPaneles() {
+		Color colorFondo = new Color(248, 245, 242);
+		Color colorTexto = new Color(74, 88, 89);
+
 		JLayeredPane layeredPane = new JLayeredPane();
 		setContentPane(layeredPane);
 
 		JPanel mainPanel = new JPanel(new GridBagLayout());
 		mainPanel.setBackground(colorFondo);
-		// mainPanel will be added to layeredPane in componentResized or setBounds
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
@@ -113,18 +139,6 @@ public class VistaMenuPrincipal extends JFrame {
 		subtext.setForeground(colorTexto);
 		subtext.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		botonCRUD = new JButton(MoTextos.btn_manage_data);
-		botonFileManager = new JButton(MoTextos.btn_file_manager);
-		botonCerrarSesion = new JButton(MoTextos.btn_logout);
-		botonAdmin = new JButton(MoTextos.btn_administrate);
-		botonCorreo = new JButton(MoTextos.btn_mail_controller);
-
-		estilarBoton(botonCRUD, colorBoton, Color.WHITE);
-		estilarBoton(botonFileManager, colorBoton, Color.WHITE);
-		estilarBoton(botonAdmin, colorBoton, Color.WHITE);
-		estilarBoton(botonCorreo, colorBoton, Color.WHITE);
-		estilarBoton(botonCerrarSesion, new Color(200, 100, 100), Color.WHITE);
-
 		contentPanel.add(Box.createVerticalGlue());
 		contentPanel.add(text);
 		contentPanel.add(Box.createVerticalStrut(10));
@@ -141,7 +155,27 @@ public class VistaMenuPrincipal extends JFrame {
 		contentPanel.add(botonCerrarSesion);
 		contentPanel.add(Box.createVerticalStrut(20));
 
-		// Language Combo
+		layeredPane.add(mainPanel, JLayeredPane.DEFAULT_LAYER);
+
+		layeredPane.addComponentListener(new java.awt.event.ComponentAdapter() {
+			@Override
+			public void componentResized(java.awt.event.ComponentEvent e) {
+				int width = layeredPane.getWidth();
+				int height = layeredPane.getHeight();
+
+				mainPanel.setBounds(0, 0, width, height);
+
+				if (comboIdiomas != null) {
+					int comboW = 80;
+					int comboH = 40;
+					comboIdiomas.setBounds(width - comboW - 20, 20, comboW, comboH);
+				}
+			}
+		});
+	}
+
+	private void configurarIdioma() {
+
 		ImageIcon iconEng = null;
 		ImageIcon iconEsp = null;
 		try {
@@ -165,37 +199,21 @@ public class VistaMenuPrincipal extends JFrame {
 		if (iconEsp != null)
 			comboIdiomas.addItem(iconEsp);
 
-		// Set initial selection based on current language
 		if (MoTextos.getIdioma() == 0 && iconEng != null) {
 			comboIdiomas.setSelectedItem(iconEng);
 		} else if (MoTextos.getIdioma() == 1 && iconEsp != null) {
 			comboIdiomas.setSelectedItem(iconEsp);
 		}
 
-		// Local listener removed - now handled by OyenteIdioma
+		if (getContentPane() instanceof JLayeredPane) {
+			JLayeredPane layeredPane = (JLayeredPane) getContentPane();
+			layeredPane.add(comboIdiomas, JLayeredPane.PALETTE_LAYER);
 
-		// Local listener removed - now handled by OyenteIdioma
-
-		// Add components to layered pane
-		layeredPane.add(mainPanel, JLayeredPane.DEFAULT_LAYER);
-		layeredPane.add(comboIdiomas, JLayeredPane.PALETTE_LAYER);
-
-		layeredPane.addComponentListener(new java.awt.event.ComponentAdapter() {
-			@Override
-			public void componentResized(java.awt.event.ComponentEvent e) {
-				int width = layeredPane.getWidth();
-				int height = layeredPane.getHeight();
-
-				// Main Panel covers everything
-				mainPanel.setBounds(0, 0, width, height);
-
-				// Position Combo at Top Right
-				int comboW = 80;
-				int comboH = 40;
-				comboIdiomas.setBounds(width - comboW - 20, 20, comboW, comboH);
-			}
-		});
-
+			int width = getWidth();
+			int comboW = 80;
+			int comboH = 40;
+			comboIdiomas.setBounds(width - comboW - 20, 20, comboW, comboH);
+		}
 	}
 
 	public JButton getBotonCorreo() {
@@ -214,14 +232,14 @@ public class VistaMenuPrincipal extends JFrame {
 		this.botonCerrarSesion = botonCerrarSesion;
 	}
 
-	private void estilarBoton(JButton btn, Color bgColor, Color fgColor) {
+	private void aniadirEstiloBoton(JButton btn, Color bgColor, Color fgColor) {
 		btn.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		btn.setBackground(bgColor);
 		btn.setForeground(fgColor);
 		btn.setFocusPainted(false);
 		btn.setBorderPainted(false);
 		btn.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btn.setMaximumSize(new Dimension(300, 50)); // Ancho fijo, altura fija
+		btn.setMaximumSize(new Dimension(300, 50));
 		btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 

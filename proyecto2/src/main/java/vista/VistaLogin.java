@@ -24,15 +24,29 @@ public class VistaLogin extends JFrame {
 
 	public VistaLogin() {
 		super(MoTextos.login_title);
-		setSize(900, 600);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
+		propiedades();
+	}
 
+	private void propiedades() {
+		inicializarListas();
+		configurarVentana();
+		configurarPaneles();
+	}
+
+	private void inicializarListas() {
 		textos = new ArrayList<>();
 		cajas = new ArrayList<>();
 		botones = new ArrayList<>();
+	}
 
-		// URL url = getClass().getResource("/fondo_login.jpg");
+	private void configurarVentana() {
+		setSize(900, 600);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+	}
+
+	private void configurarPaneles() {
+
 		URL url = getClass().getResource("/panditas.png");
 		if (url != null) {
 			imagenFondo = new ImageIcon(url).getImage();
@@ -76,12 +90,54 @@ public class VistaLogin extends JFrame {
 			lblLogo.setSize(logoW, logoH);
 		}
 
+		configurarPanelCentral(layeredPane);
+		configurarIdioma(layeredPane);
+
+		layeredPane.add(lblLogo, JLayeredPane.PALETTE_LAYER);
+
+		layeredPane.addComponentListener(new java.awt.event.ComponentAdapter() {
+			@Override
+			public void componentResized(java.awt.event.ComponentEvent e) {
+				int width = layeredPane.getWidth();
+				int height = layeredPane.getHeight();
+
+				if (panelCentral != null) {
+					Dimension sizePanel = panelCentral.getPreferredSize();
+					int xPanel = (width - sizePanel.width) / 2;
+					int yPanel = (height - sizePanel.height) / 2;
+					panelCentral.setBounds(xPanel, yPanel, sizePanel.width, sizePanel.height);
+				}
+
+				Dimension sizeLogo = lblLogo.getSize();
+				if (panelCentral != null) {
+					Dimension sizePanel = panelCentral.getPreferredSize();
+					int xPanel = (width - sizePanel.width) / 2;
+					int yPanel = (height - sizePanel.height) / 2;
+
+					int xLogo = xPanel + sizePanel.width - sizeLogo.width + 40;
+					int overlap = 160;
+					int yLogo = yPanel - sizeLogo.height + overlap;
+					lblLogo.setBounds(xLogo, yLogo, sizeLogo.width, sizeLogo.height);
+				}
+
+				if (comboIdiomas != null) {
+					int comboW = 80;
+					int comboH = 40;
+					comboIdiomas.setBounds(width - comboW - 20, 20, comboW, comboH);
+				}
+			}
+		});
+	}
+
+	private JPanel panelCentral;
+
+	private void configurarPanelCentral(JLayeredPane layeredPane) {
 		Color colorFondoPanel = new Color(255, 255, 255, 245);
 		Color colorBoton = new Color(74, 88, 89);
 		Font fontTitulo = new Font("Segoe UI", Font.BOLD, 28);
 		Font fontLabel = new Font("Segoe UI", Font.PLAIN, 14);
 
-		JPanel panelCentral = new JPanel(new GridBagLayout()) {
+		panelCentral = new JPanel(new GridBagLayout()) {
 			@Override
 			protected void paintComponent(Graphics g) {
 				Graphics2D g2 = (Graphics2D) g.create();
@@ -158,7 +214,11 @@ public class VistaLogin extends JFrame {
 		gbc.anchor = GridBagConstraints.CENTER;
 		panelCentral.add(btnLogin, gbc);
 
-		// Language Combo
+		layeredPane.add(panelCentral, JLayeredPane.DEFAULT_LAYER);
+	}
+
+	private void configurarIdioma(JLayeredPane layeredPane) {
+
 		ImageIcon iconEng = null;
 		ImageIcon iconEsp = null;
 		try {
@@ -176,57 +236,19 @@ public class VistaLogin extends JFrame {
 		comboIdiomas.setRenderer(new RenderComboIdioma());
 		comboIdiomas.setBackground(Color.WHITE);
 		comboIdiomas.setFocusable(false);
-		// Remove border if possible, or make it subtle
-		// ((JComponent)
-		// comboIdiomas.getEditor().getEditorComponent()).setBorder(BorderFactory.createEmptyBorder());
 
 		if (iconEng != null)
 			comboIdiomas.addItem(iconEng);
 		if (iconEsp != null)
 			comboIdiomas.addItem(iconEsp);
 
-		// Set initial selection based on current language
 		if (MoTextos.getIdioma() == 0 && iconEng != null) {
 			comboIdiomas.setSelectedItem(iconEng);
 		} else if (MoTextos.getIdioma() == 1 && iconEsp != null) {
 			comboIdiomas.setSelectedItem(iconEsp);
 		}
 
-		// Local listener removed - now handled by OyenteIdioma
-
-		// Local listener removed - now handled by OyenteIdioma
-
-		// Add to LayeredPane (PALETTE_LAYER to be on top)
 		layeredPane.add(comboIdiomas, JLayeredPane.PALETTE_LAYER);
-
-		layeredPane.add(panelCentral, JLayeredPane.DEFAULT_LAYER);
-		layeredPane.add(lblLogo, JLayeredPane.PALETTE_LAYER);
-
-		layeredPane.addComponentListener(new java.awt.event.ComponentAdapter() {
-			@Override
-			public void componentResized(java.awt.event.ComponentEvent e) {
-				int width = layeredPane.getWidth();
-				int height = layeredPane.getHeight();
-
-				Dimension sizePanel = panelCentral.getPreferredSize();
-				int xPanel = (width - sizePanel.width) / 2;
-				int yPanel = (height - sizePanel.height) / 2;
-				panelCentral.setBounds(xPanel, yPanel, sizePanel.width, sizePanel.height);
-
-				Dimension sizeLogo = lblLogo.getSize();
-				int xLogo = xPanel + sizePanel.width - sizeLogo.width + 40;
-
-				int overlap = 160;
-				int yLogo = yPanel - sizeLogo.height + overlap;
-
-				lblLogo.setBounds(xLogo, yLogo, sizeLogo.width, sizeLogo.height);
-
-				// Position Combo at Top Right
-				int comboW = 80;
-				int comboH = 40;
-				comboIdiomas.setBounds(width - comboW - 20, 20, comboW, comboH);
-			}
-		});
 	}
 
 	private JComboBox<ImageIcon> comboIdiomas;

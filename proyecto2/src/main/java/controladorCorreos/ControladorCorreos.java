@@ -6,11 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 
-import javax.mail.Flags;
 import javax.swing.SwingUtilities;
 
 import controladorLogs.GestionLogs;
@@ -76,11 +72,10 @@ public class ControladorCorreos {
 				System.out.println("Conectando con Gmail...");
 				listaDescargada = obtenerCorreos();
 
-				// Una vez descargados, actualizamos la tabla en el hilo de Swing
 				SwingUtilities.invokeLater(() -> {
 					listaDescargadaAnterior = this.correos;
 					this.correos.clear();
-					this.correos.addAll(listaDescargada); // Actualizamos la lista local
+					this.correos.addAll(listaDescargada);
 					vistaGeneral.cargarCorreos(this.correos);
 
 					vistaGeneral.getBtnRefrescar().setEnabled(true);
@@ -109,7 +104,6 @@ public class ControladorCorreos {
 
 	}
 
-	// Metodo para detener el hilo cuando se cierre la ventana
 	public void detenerHiloRecepcion() {
 		if (hiloRecepcion != null && hiloRecepcion.isAlive()) {
 			hiloRecepcion.interrupt();
@@ -132,7 +126,6 @@ public class ControladorCorreos {
 		vistaGeneral.getBtnVolver().addActionListener(new OyenteBotonVolver(vistaGeneral, vistaMenuPrincipal, this));
 	}
 
-	// ELIMINAR
 	public void eliminarCorreoSeleccionado(Correo correo) {
 		try {
 
@@ -146,7 +139,6 @@ public class ControladorCorreos {
 		}
 	}
 
-	// LEIDO
 	public synchronized void marcarCorreoLeido(Correo correo) {
 		try {
 			String idParaMarcar = correo.getMessageId();
@@ -163,7 +155,6 @@ public class ControladorCorreos {
 		}
 	}
 
-	// NO LEIDO
 	public synchronized void marcarCorreoNoLeido(Correo correo) {
 		try {
 			String idParaMarcar = correo.getMessageId();
@@ -180,7 +171,6 @@ public class ControladorCorreos {
 		}
 	}
 
-	// ACTUALIZAR
 	public synchronized void actualizarListaDesdeHilo(ArrayList<Correo> nuevosCorreos) {
 		this.correos.clear();
 		this.correos.addAll(nuevosCorreos);
