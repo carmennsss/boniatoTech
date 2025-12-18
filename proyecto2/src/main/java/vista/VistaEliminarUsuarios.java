@@ -38,9 +38,20 @@ public class VistaEliminarUsuarios extends JFrame {
         this.vistaUsuarios = vistaUsuarios;
         this.modeloFTP = modeloFTP;
         this.bd = bd;
+        propiedades();
+    }
+
+    private void propiedades() {
+        configurarVentana();
+        configurarFondo();
+        configurarTitulo();
+        configurarTabla();
+        configurarBotones();
+    }
+
+    private void configurarVentana() {
         this.textos = new ArrayList<>();
         this.botones = new ArrayList<>();
-        this.tabla = new ViTabla();
 
         this.setTitle(modelo.MoTextos.del_user_title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,7 +59,9 @@ public class VistaEliminarUsuarios extends JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setLayout(new BorderLayout());
+    }
 
+    private void configurarFondo() {
         URL url = getClass().getResource("/fondo_abstracto_2.png");
         if (url != null) {
             imagenFondo = new ImageIcon(url).getImage();
@@ -71,7 +84,9 @@ public class VistaEliminarUsuarios extends JFrame {
         panelFondo.setLayout(new BorderLayout(20, 20));
         panelFondo.setBorder(new EmptyBorder(20, 20, 20, 20));
         this.setContentPane(panelFondo);
+    }
 
+    private void configurarTitulo() {
         JLabel titulo = new JLabel(modelo.MoTextos.del_user_title);
         titulo.setFont(Estilos.FONT_TITULO);
         titulo.setForeground(Estilos.DARK_SPRUCE);
@@ -92,9 +107,12 @@ public class VistaEliminarUsuarios extends JFrame {
         panelTitulo.setOpaque(false);
         panelTitulo.setBorder(new EmptyBorder(10, 20, 10, 20));
         panelTitulo.add(titulo);
-        panelFondo.add(panelTitulo, BorderLayout.NORTH);
+        getContentPane().add(panelTitulo, BorderLayout.NORTH);
+    }
 
-        // Container for table with semi-transparent background
+    private void configurarTabla() {
+        this.tabla = new ViTabla();
+
         JPanel panelTablaContenedor = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -110,9 +128,11 @@ public class VistaEliminarUsuarios extends JFrame {
 
         this.tabla.setOpaque(false);
         panelTablaContenedor.add(this.tabla, BorderLayout.CENTER);
-        panelFondo.add(panelTablaContenedor, BorderLayout.CENTER);
+        getContentPane().add(panelTablaContenedor, BorderLayout.CENTER);
+    }
 
-        // Bottom panel for controls
+    private void configurarBotones() {
+
         JPanel panelSur = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         panelSur.setOpaque(false);
 
@@ -128,7 +148,7 @@ public class VistaEliminarUsuarios extends JFrame {
         panelSur.add(btnEliminar);
         panelSur.add(btnVolver);
 
-        panelFondo.add(panelSur, BorderLayout.SOUTH);
+        getContentPane().add(panelSur, BorderLayout.SOUTH);
     }
 
     public JButton getBtnEliminar() {
@@ -176,7 +196,6 @@ public class VistaEliminarUsuarios extends JFrame {
 
     public void actualizarTextos() {
         this.setTitle(modelo.MoTextos.del_user_title);
-        // Update JLabel if possible, but we need to keep a reference to it
         if (textos.size() > 0 && textos.get(0) instanceof JLabel) {
             ((JLabel) textos.get(0)).setText(modelo.MoTextos.del_user_title);
         }

@@ -3,7 +3,7 @@ package modelo;
 public class Animal {
     private int animal_id;
     private String nombre_animales;
-    private String tipo; // "male", "female"
+    private String tipo;
     private int especie_id;
     private int cuidador_id;
 

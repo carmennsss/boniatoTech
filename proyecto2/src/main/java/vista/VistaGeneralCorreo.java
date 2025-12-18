@@ -37,16 +37,19 @@ public class VistaGeneralCorreo extends JFrame {
 
 	public VistaGeneralCorreo(String correo) {
 		this.correo = correo;
+		propiedades();
+	}
+
+	private void propiedades() {
 		inicializarPanel();
 		propiedadesVentana();
 		inicializarVista();
 		inicializarTabla();
-
 	}
 
 	private void inicializarTabla() {
 		JPanel panelTabla = new JPanel(new BorderLayout());
-		panelTabla.setOpaque(false); // Transparent to show background
+		panelTabla.setOpaque(false);
 
 		String[] nombresColumnas = { "Subject", "From", "Date" };
 
@@ -63,17 +66,12 @@ public class VistaGeneralCorreo extends JFrame {
 		emailTabla.setShowGrid(false);
 		emailTabla.setIntercellSpacing(new Dimension(0, 0));
 
-		// Semi-transparent selection
-		emailTabla.setSelectionBackground(new Color(170, 98, 147, 100)); // Fuchsia with alpha
+		emailTabla.setSelectionBackground(new Color(170, 98, 147, 100));
 		emailTabla.setSelectionForeground(Color.WHITE);
 
-		// Make table body transparent if desired, or keep white?
-		// User said "background with low opacity", so seeing it through the table would
-		// be cool.
 		emailTabla.setOpaque(false);
 		((DefaultTableCellRenderer) emailTabla.getDefaultRenderer(Object.class)).setOpaque(false);
 
-		// Header Styling
 		emailTabla.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
 		emailTabla.getTableHeader().setBackground(Estilos.SAGE_GREEN);
 		emailTabla.getTableHeader().setForeground(Color.WHITE);
@@ -88,7 +86,6 @@ public class VistaGeneralCorreo extends JFrame {
 
 		panel.add(panelTabla, BorderLayout.CENTER);
 
-		// _________
 		emailTabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
 
 			@Override
@@ -103,24 +100,16 @@ public class VistaGeneralCorreo extends JFrame {
 				Component comp = super.getTableCellRendererComponent(
 						table, value, isSelected, hasFocus, row, column);
 
-				// Make cells semi-transparent or alternate
 				if (!isSelected) {
-					// Use a very light semi-transparent white for readability
 					comp.setBackground(row % 2 == 0 ? new Color(255, 255, 255, 150) : new Color(245, 245, 245, 150));
 					comp.setForeground(Estilos.TEXTO_PRINCIPAL);
 				} else {
-					// Keep selection opaque or semi
 					comp.setBackground(Estilos.COLOR_TABLA_SELECCION);
 					comp.setForeground(Color.WHITE);
 				}
 
-				// Ensure opacity is true for the component so background color shows
-				// But since we want to see the underlying panel image, we might need a trick.
-				// Actually, JTable painting is tricky with transparency.
-				// Laying a "semi transparent white" on top of the image is safer.
 				((javax.swing.JComponent) comp).setOpaque(true);
 
-				// Obtenemos el correo correspondiente a esa fila
 				Correo correoFila = ((VistaGeneralCorreo) SwingUtilities
 						.getWindowAncestor(table))
 						.getCorreoPorFila(row);
@@ -131,7 +120,7 @@ public class VistaGeneralCorreo extends JFrame {
 					comp.setFont(Estilos.FONT_TEXTO.deriveFont(Font.PLAIN));
 				}
 
-				setBorder(noFocusBorder); // Remove focus border
+				setBorder(noFocusBorder);
 
 				return comp;
 			}
@@ -163,36 +152,33 @@ public class VistaGeneralCorreo extends JFrame {
 					java.awt.Graphics2D g2d = (java.awt.Graphics2D) g.create();
 					java.awt.Image bgImage = javax.imageio.ImageIO.read(getClass().getResource("/olas_verdes.png"));
 
-					// Set opacity (0.15f is subtle)
 					g2d.setComposite(java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.SRC_OVER, 0.15f));
 					g2d.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
 					g2d.dispose();
 				} catch (Exception e) {
-					// Ignore
+
 				}
 			}
 		};
-		panel.setBackground(Estilos.FONDO_PRINCIPAL); // Base color
+		panel.setBackground(Estilos.FONDO_PRINCIPAL);
 		this.add(panel, BorderLayout.CENTER);
 	}
 
 	private void inicializarVista() {
-		// HEADER (Solid Color)
 		JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 20));
 		panelSuperior.setBackground(Estilos.DARK_SPRUCE);
 
 		etiquetaCorreo = new JLabel(correo + " " + MoTextos.mail_title_inbox);
 		etiquetaCorreo.setFont(Estilos.FONT_TITULO);
-		etiquetaCorreo.setForeground(Estilos.BEIGE_CANVAS); // Light text on Dark background
+		etiquetaCorreo.setForeground(Estilos.BEIGE_CANVAS);
 		etiquetaCorreo.setAlignmentX(SwingConstants.CENTER);
 
 		panelSuperior.add(etiquetaCorreo);
 
 		panel.add(panelSuperior, BorderLayout.NORTH);
 
-		// FOOTER (Actions)
 		JPanel panelMedio = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
-		panelMedio.setOpaque(false); // Make transparent to see background
+		panelMedio.setOpaque(false);
 
 		botonEnviarCorreo = crearBotonEstilizado("Compose");
 		btnVolver = crearBotonEstilizado("Back");
@@ -251,7 +237,6 @@ public class VistaGeneralCorreo extends JFrame {
 		if (btnVolver != null)
 			btnVolver.setText(MoTextos.btn_back);
 
-		// Update table headers
 		if (emailTabla != null) {
 			emailTabla.getColumnModel().getColumn(0).setHeaderValue(MoTextos.mail_col_subject);
 			emailTabla.getColumnModel().getColumn(1).setHeaderValue(MoTextos.mail_col_from);

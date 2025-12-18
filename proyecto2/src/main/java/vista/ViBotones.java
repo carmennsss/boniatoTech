@@ -13,11 +13,19 @@ public class ViBotones extends JPanel {
     private ArrayList<JButton> botones;
 
     public ViBotones(ArrayList<String> textos) {
+        propiedades(textos);
+    }
+
+    private void propiedades(ArrayList<String> textos) {
         this.botones = new ArrayList<>();
+        configurarPanel();
+        crearBotones(textos);
+    }
+
+    private void configurarPanel() {
         setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         setBackground(Estilos.COLOR_MENU_FONDO);
         setBorder(new EmptyBorder(5, 5, 5, 5));
-        crearBotones(textos);
     }
 
     private void crearBotones(ArrayList<String> textos) {
@@ -30,7 +38,7 @@ public class ViBotones extends JPanel {
     }
 
     private void estilarBoton(JButton btn) {
-        btn.setFont(new Font("SansSerif", Font.BOLD, 11)); // Smaller font to fit
+        btn.setFont(new Font("SansSerif", Font.BOLD, 11));
         btn.setBackground(Estilos.DARK_SPRUCE);
         btn.setForeground(Color.WHITE);
         btn.setFocusPainted(false);
