@@ -13,6 +13,8 @@ import javax.swing.JOptionPane;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 
+import modelo.MoTextos;
+
 public class FileManager {
 
 	private FTPClient ftpClient;
@@ -112,11 +114,11 @@ public class FileManager {
 			rutaCompleta += "/";
 		}
 		rutaCompleta += select.getName();
-		int confirmacion = JOptionPane.showConfirmDialog(null, "Do you want to delete the selected file?");
+		int confirmacion = JOptionPane.showConfirmDialog(null, MoTextos.msg_confirm_delete_file);
 		if (confirmacion == JOptionPane.OK_OPTION) {
 			try {
 				if (!ftpClient.deleteFile(rutaCompleta)) {
-					JOptionPane.showMessageDialog(null, select.getName() + " => Could not be deleted...");
+					JOptionPane.showMessageDialog(null, select.getName() + " => " + MoTextos.msg_could_not_delete);
 				}
 			} catch (IOException el) {
 				el.printStackTrace();
@@ -142,7 +144,7 @@ public class FileManager {
 				JOptionPane.showMessageDialog(null, "Folder created successfully.", "",
 						JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				JOptionPane.showMessageDialog(null, nombreCarpeta + " => Could not be created...", "Error",
+				JOptionPane.showMessageDialog(null, nombreCarpeta + " => " + MoTextos.msg_could_not_create, "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (IOException el) {
@@ -167,7 +169,7 @@ public class FileManager {
 		}
 		rutaCompleta += nombreCarpeta;
 
-		int confirmacion = JOptionPane.showConfirmDialog(null, "Do you want to delete the selected folder?",
+		int confirmacion = JOptionPane.showConfirmDialog(null, MoTextos.msg_confirm_delete_folder,
 				"Confirm deletion", JOptionPane.OK_CANCEL_OPTION);
 
 		if (confirmacion == JOptionPane.OK_OPTION) {
@@ -176,7 +178,8 @@ public class FileManager {
 
 				if (!borrada) {
 					JOptionPane.showMessageDialog(null,
-							nombreCarpeta + " => Could not be deleted.\n" + "The folder may not be empty.",
+							nombreCarpeta + " => " + MoTextos.msg_could_not_delete + "\n"
+									+ MoTextos.msg_folder_not_empty,
 							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 

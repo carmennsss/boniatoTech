@@ -172,6 +172,8 @@ public class CoPrincipal {
                 vista.getViAsignarRol().actualizarTextos();
             if (vista.getViFormulario() != null)
                 vista.getViFormulario().actualizarTextos();
+            if (vista.getVistaCRUD() != null)
+                vista.getVistaCRUD().actualizarTextos();
         }
 
         if (vistaMenuPrincipal != null)

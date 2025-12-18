@@ -44,6 +44,10 @@ public class ViMain {
 		ventanaFormulario = new ViFormulario();
 	}
 
+	public VistaCRUD getVistaCRUD() {
+		return vistaCRUD;
+	}
+
 	public VistaAsignarRol getViAsignarRol() {
 		return viAsignarRol;
 	}

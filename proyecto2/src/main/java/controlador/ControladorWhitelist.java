@@ -8,6 +8,7 @@ import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+import modelo.MoTextos;
 import modelo.MoView;
 import modelo.ModeloBaseDatos;
 import vista.ViMain;
@@ -95,7 +96,8 @@ public class ControladorWhitelist {
                     eliminados++;
                 }
             }
-            JOptionPane.showMessageDialog(viMain.getViWhitelist(), "Removed " + eliminados + " users.");
+            JOptionPane.showMessageDialog(viMain.getViWhitelist(),
+                    MoTextos.msg_removed_prefix + eliminados + MoTextos.msg_removed_suffix);
             seleccionados.clear();
             rellenarTablaWhitelist();
         }
@@ -110,9 +112,9 @@ public class ControladorWhitelist {
         DefaultTableModel modelo = (DefaultTableModel) viMain.getViWhitelist().getTabla().getTabla().getModel();
         modelo.setRowCount(0);
         modelo.setColumnCount(0);
-        modelo.addColumn("Email");
-        modelo.addColumn("Name");
-        modelo.addColumn("Registration Date");
+        modelo.addColumn(MoTextos.whitelist_col_email);
+        modelo.addColumn(MoTextos.whitelist_col_name);
+        modelo.addColumn(MoTextos.whitelist_col_date);
 
         String sql = "SELECT * FROM whitelist";
         ResultSet rs = modeloBaseDatos.getConsulta(sql);

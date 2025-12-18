@@ -244,7 +244,7 @@ public class VistaLogs extends JFrame {
     }
 
     public void mostrarError(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, mensaje, MoTextos.msg_error_title, JOptionPane.ERROR_MESSAGE);
     }
 
     public void mostrarMensaje(String mensaje) {

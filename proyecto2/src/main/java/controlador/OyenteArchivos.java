@@ -111,7 +111,7 @@ public class OyenteArchivos implements ActionListener {
         String tipo;
         String emailUsuario;
 
-        fc.setDialogTitle("Select the file to upload");
+        fc.setDialogTitle(MoTextos.title_select_upload);
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int respuesta = fc.showDialog(fc, "OK");
         if (respuesta == JFileChooser.APPROVE_OPTION) {
@@ -152,7 +152,7 @@ public class OyenteArchivos implements ActionListener {
             return;
         }
 
-        fc.setDialogTitle("Select where to download the file");
+        fc.setDialogTitle(MoTextos.title_select_download);
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int respuesta = fc.showDialog(fc, "OK");
         if (respuesta == JFileChooser.APPROVE_OPTION) {

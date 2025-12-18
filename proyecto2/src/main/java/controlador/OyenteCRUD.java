@@ -29,7 +29,7 @@ public class OyenteCRUD implements ActionListener {
 
         for (JButton btn : vista.getPanelMenu().getBotones()) {
             if (source == btn) {
-                String tabla = btn.getText().toLowerCase();
+                String tabla = btn.getName(); // Use internal name for logic
                 modeloVista.setTablaActual(tabla);
                 controlador.getControladorCRUD().rellenarTabla(tabla);
                 resetearEstiloBotones();

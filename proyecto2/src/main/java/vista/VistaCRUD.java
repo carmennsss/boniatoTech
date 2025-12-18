@@ -28,7 +28,7 @@ public class VistaCRUD extends JFrame {
     }
 
     private void configurarVentana() {
-        this.setTitle("Gestión Serwo - Animales");
+        this.setTitle(MoTextos.title_crud_animals);
         setSize(900, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -74,8 +74,17 @@ public class VistaCRUD extends JFrame {
 
     private void configurarComponentes() {
         ArrayList<String> textosMenu = new ArrayList<>(Arrays.asList(
-                "ESPECIES", "RECINTOS", "CUIDADORES", "ANIMALES", "TRASLADOS", "ESPECIES_RECINTOS", "ELEMENTOS"));
+                MoTextos.menu_species, MoTextos.menu_enclosures, MoTextos.menu_caretakers,
+                MoTextos.menu_animals, MoTextos.menu_transfers, MoTextos.menu_species_enclosures,
+                MoTextos.menu_elements));
         panelMenu = new ViBotones(textosMenu);
+
+        // Assign logic names to buttons
+        ArrayList<String> logicNames = new ArrayList<>(Arrays.asList(
+                "especies", "recintos", "cuidadores", "animales", "traslados", "especies_recintos", "elementos"));
+        for (int i = 0; i < panelMenu.getBotones().size(); i++) {
+            panelMenu.getBotones().get(i).setName(logicNames.get(i));
+        }
 
         panelTabla = new ViTabla();
 
@@ -124,6 +133,19 @@ public class VistaCRUD extends JFrame {
             panelAcciones.getBotones().get(0).setText(MoTextos.btn_new);
         if (panelAcciones.getBotones().size() > 1)
             panelAcciones.getBotones().get(1).setText(MoTextos.btn_main_menu);
+
+        // Update menu buttons
+        ArrayList<String> nuevosTextosMenu = new ArrayList<>(Arrays.asList(
+                MoTextos.menu_species, MoTextos.menu_enclosures, MoTextos.menu_caretakers,
+                MoTextos.menu_animals, MoTextos.menu_transfers, MoTextos.menu_species_enclosures,
+                MoTextos.menu_elements));
+
+        for (int i = 0; i < panelMenu.getBotones().size(); i++) {
+            if (i < nuevosTextosMenu.size()) {
+                panelMenu.getBotones().get(i).setText(nuevosTextosMenu.get(i));
+            }
+        }
+
         repaint();
     }
 }

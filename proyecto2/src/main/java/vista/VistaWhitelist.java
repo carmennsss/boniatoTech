@@ -44,6 +44,13 @@ public class VistaWhitelist extends JFrame {
         btnAnadir.setText(MoTextos.btn_add);
         btnDesasignar.setText(MoTextos.btn_unassign);
         btnVolver.setText(MoTextos.btn_back_whitelist);
+        btnVolver.setText(MoTextos.btn_back_whitelist);
+
+        // Update table headers
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tabla.getTabla().getModel();
+        String[] header = { MoTextos.whitelist_col_email, MoTextos.whitelist_col_name, MoTextos.whitelist_col_date };
+        model.setColumnIdentifiers(header);
+
         repaint();
     }
 
