@@ -19,27 +19,20 @@ public class VistaGestorArchivos extends JFrame {
 	private JButton botonEliminar;
 	private JButton botonCrearCarpeta;
 	private JButton botonBorrarCarpeta;
-	private JButton botonRenombrar;
 	private JButton botonVolver;
 	private JButton botonVolverMenuPrincipal;
 
-	private JPanel contentPanel;
-	private Color colorFondo = new Color(248, 245, 242);
-	private Color colorTexto = new Color(74, 88, 89);
-
 	public VistaGestorArchivos() {
-		propiedades();
-	}
+		this.setTitle(MoTextos.file_manager_title);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(1000, 650);
+		this.setLocationRelativeTo(null);
 
-	private void propiedades() {
-		configurarVentana();
-		configurarPanelesPrincipales();
-		configurarHeader();
-		configurarCentro();
-		configurarFooter();
-	}
+		Color colorFondo = new Color(248, 245, 242);
+		Color colorTexto = new Color(74, 88, 89);
+		Color colorBotonAccion = new Color(110, 137, 115);
+		Color colorBotonNav = new Color(200, 190, 170);
 
-	private void configurarPanelesPrincipales() {
 		JPanel mainPanel = new JPanel(new GridBagLayout());
 		mainPanel.setBackground(colorFondo);
 		setContentPane(mainPanel);
@@ -75,7 +68,7 @@ public class VistaGestorArchivos extends JFrame {
 		gbc.weighty = 1.0;
 		mainPanel.add(sidePanel, gbc);
 
-		contentPanel = new JPanel(new BorderLayout());
+		JPanel contentPanel = new JPanel(new BorderLayout());
 		contentPanel.setBackground(colorFondo);
 		contentPanel.setBorder(new EmptyBorder(30, 30, 30, 30));
 
@@ -84,9 +77,7 @@ public class VistaGestorArchivos extends JFrame {
 		gbc.weightx = 0.7;
 		gbc.weighty = 1.0;
 		mainPanel.add(contentPanel, gbc);
-	}
 
-	private void configurarHeader() {
 		JPanel header = new JPanel();
 		header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
 		header.setBackground(colorFondo);
@@ -106,9 +97,7 @@ public class VistaGestorArchivos extends JFrame {
 		header.add(Box.createVerticalStrut(20));
 
 		contentPanel.add(header, BorderLayout.NORTH);
-	}
 
-	private void configurarCentro() {
 		listaModel = new DefaultListModel<>();
 		listaArchivos = new JList<>(listaModel);
 		listaArchivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -119,6 +108,7 @@ public class VistaGestorArchivos extends JFrame {
 
 		JScrollPane scrollPane = new JScrollPane(listaArchivos);
 		scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220)));
+		contentPanel.add(scrollPane, BorderLayout.CENTER);
 
 		JPanel centerContainer = new JPanel(new BorderLayout(20, 0));
 		centerContainer.setBackground(colorFondo);
@@ -133,13 +123,12 @@ public class VistaGestorArchivos extends JFrame {
 		botonEliminar = new JButton(MoTextos.btn_delete);
 		botonCrearCarpeta = new JButton(MoTextos.btn_new_folder);
 		botonBorrarCarpeta = new JButton(MoTextos.btn_delete_folder);
-		botonRenombrar = new JButton(MoTextos.btn_rename);
-		Color colorBotonAccion = new Color(110, 137, 115);
-		aniadirEstiloBoton(botonSubida, colorBotonAccion, Color.WHITE);
-		aniadirEstiloBoton(botonDescarga, colorBotonAccion, Color.WHITE);
-		aniadirEstiloBoton(botonEliminar, new Color(200, 100, 100), Color.WHITE);
-		aniadirEstiloBoton(botonCrearCarpeta, colorBotonAccion, Color.WHITE);
-		aniadirEstiloBoton(botonBorrarCarpeta, new Color(200, 100, 100), Color.WHITE);
+
+		estilarBoton(botonSubida, colorBotonAccion, Color.WHITE);
+		estilarBoton(botonDescarga, colorBotonAccion, Color.WHITE);
+		estilarBoton(botonEliminar, new Color(200, 100, 100), Color.WHITE);
+		estilarBoton(botonCrearCarpeta, colorBotonAccion, Color.WHITE);
+		estilarBoton(botonBorrarCarpeta, new Color(200, 100, 100), Color.WHITE);
 
 		lblActions = new JLabel(MoTextos.lbl_actions);
 		botonesPanel.add(lblActions);
@@ -153,24 +142,19 @@ public class VistaGestorArchivos extends JFrame {
 		botonesPanel.add(botonCrearCarpeta);
 		botonesPanel.add(Box.createVerticalStrut(10));
 		botonesPanel.add(botonBorrarCarpeta);
-		botonesPanel.add(Box.createVerticalStrut(10));
-		botonesPanel.add(botonRenombrar);
 		botonesPanel.add(Box.createVerticalGlue());
 
 		centerContainer.add(botonesPanel, BorderLayout.EAST);
 		contentPanel.add(centerContainer, BorderLayout.CENTER);
-	}
 
-	private void configurarFooter() {
 		JPanel footer = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		footer.setBackground(colorFondo);
 
 		botonVolver = new JButton(MoTextos.btn_back);
 		botonVolverMenuPrincipal = new JButton(MoTextos.btn_main_menu);
 
-		Color colorBotonNav = new Color(200, 190, 170);
-		aniadirEstiloBoton(botonVolver, colorBotonNav, Color.BLACK);
-		aniadirEstiloBoton(botonVolverMenuPrincipal, colorBotonNav, Color.BLACK);
+		estilarBoton(botonVolver, colorBotonNav, Color.BLACK);
+		estilarBoton(botonVolverMenuPrincipal, colorBotonNav, Color.BLACK);
 
 		footer.add(botonVolverMenuPrincipal);
 		footer.add(botonVolver);
@@ -178,27 +162,12 @@ public class VistaGestorArchivos extends JFrame {
 		contentPanel.add(footer, BorderLayout.SOUTH);
 	}
 
-	private void configurarVentana() {
-		this.setTitle(MoTextos.file_manager_title);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(1000, 650);
-		this.setLocationRelativeTo(null);
-	}
-
-	public JButton getBotonRenombrar() {
-		return botonRenombrar;
-	}
-
-	public void setBotonRenombrar(JButton botonRenombrar) {
-		this.botonRenombrar = botonRenombrar;
-	}
-
 	// UI Components for text update
 	private JLabel title;
 	private JLabel subtitle;
 	private JLabel lblActions;
 
-	private void aniadirEstiloBoton(JButton btn, Color bg, Color fg) {
+	private void estilarBoton(JButton btn, Color bg, Color fg) {
 		btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		btn.setBackground(bg);
 		btn.setForeground(fg);
@@ -218,7 +187,6 @@ public class VistaGestorArchivos extends JFrame {
 		botonEliminar.addActionListener(c);
 		botonCrearCarpeta.addActionListener(c);
 		botonBorrarCarpeta.addActionListener(c);
-		botonRenombrar.addActionListener(c);
 		botonVolver.addActionListener(c);
 		botonVolverMenuPrincipal.addActionListener(c);
 	}

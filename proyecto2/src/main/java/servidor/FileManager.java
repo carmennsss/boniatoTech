@@ -47,7 +47,8 @@ public class FileManager {
 			rutaCompleta += nombreArchivo;
 
 			if (this.ftpClient.storeFile(rutaCompleta, in)) {
-				JOptionPane.showMessageDialog(null, "File uploaded successfully.", "", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "File uploaded successfully.", "",
+						JOptionPane.INFORMATION_MESSAGE);
 			} else {
 				JOptionPane.showMessageDialog(null, "Error uploading the file.", "Error", JOptionPane.ERROR_MESSAGE);
 			}
@@ -85,7 +86,8 @@ public class FileManager {
 				JOptionPane.showMessageDialog(null, "File downloaded successfully.", "",
 						JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				JOptionPane.showMessageDialog(null, "Error downloading the file.", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Error downloading the file.", "Error",
+						JOptionPane.ERROR_MESSAGE);
 				archivoLocal.delete();
 			}
 		} catch (FileNotFoundException e) {
@@ -101,7 +103,8 @@ public class FileManager {
 	public void borrarArchivo(FTPFile select, String rutaActual) {
 		String rutaCompleta;
 		if (!this.conectar()) {
-			JOptionPane.showMessageDialog(null, "Could not connect to the server", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Could not connect to the server", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		rutaCompleta = rutaActual;
@@ -153,7 +156,8 @@ public class FileManager {
 		String rutaCompleta;
 
 		if (!this.conectar()) {
-			JOptionPane.showMessageDialog(null, "Could not connect to the server", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Could not connect to the server", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
@@ -172,8 +176,8 @@ public class FileManager {
 
 				if (!borrada) {
 					JOptionPane.showMessageDialog(null,
-							nombreCarpeta + " => Could not be deleted.\n" + "The folder may not be empty.", "Error",
-							JOptionPane.ERROR_MESSAGE);
+							nombreCarpeta + " => Could not be deleted.\n" + "The folder may not be empty.",
+							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 
 			} catch (IOException e) {
@@ -195,60 +199,12 @@ public class FileManager {
 		}
 	}
 
-	public void renombrar(FTPFile archivoSeleccionado, String nuevoNombre, String rutaActual) {
-		if (!this.conectar()) {
-			JOptionPane.showMessageDialog(null, "Could not connect to the server", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-
-		String rutaVieja = rutaActual;
-		if (!rutaVieja.endsWith("/")) {
-			rutaVieja += "/";
-		}
-		rutaVieja += archivoSeleccionado.getName();
-
-		String rutaNueva = rutaActual;
-		if (!rutaNueva.endsWith("/")) {
-			rutaNueva += "/";
-		}
-		rutaNueva += nuevoNombre;
-
-		int confirmacion = JOptionPane.showConfirmDialog(null,
-				"Do you want to rename the file '" + archivoSeleccionado.getName() + "' to '" + nuevoNombre + "'?",
-				"Confirm Rename", JOptionPane.OK_CANCEL_OPTION);
-
-		if (confirmacion == JOptionPane.OK_OPTION) {
-			try {
-				boolean exito = ftpClient.rename(rutaVieja, rutaNueva);
-				if (exito) {
-					JOptionPane.showMessageDialog(null, "File renamed successfully.", "",
-							JOptionPane.INFORMATION_MESSAGE);
-				} else {
-					JOptionPane.showMessageDialog(null, "Could not rename the file.", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error renaming the file: " + e.getMessage(), "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
-
-		this.desconectar();
-	}
-
 	public boolean conectar() {
 		try {
 			this.ftpClient.connect(this.servidor, this.puerto);
-			boolean success = this.ftpClient.login(this.usuario, this.contrasena);
-			if (success) {
-				this.ftpClient.enterLocalPassiveMode();
-				this.ftpClient.setFileType(org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE);
-			}
-			return success;
+			return this.ftpClient.login(this.usuario, this.contrasena);
 		} catch (IOException e) {
-			System.out.println("Could not connect to the server: " + e.getMessage());
-			e.printStackTrace();
+			System.out.println("Could not connect to the server");
 			return false;
 		}
 	}
