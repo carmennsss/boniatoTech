@@ -17,6 +17,7 @@ import vista.ViMain;
 import vista.VistaAdmin;
 import vista.VistaGeneralCorreo;
 import vista.VistaGestorArchivos;
+import vista.VistaLogs;
 import vista.VistaMenuPrincipal;
 import vista.VistaRegistroUsuarios;
 
@@ -30,12 +31,12 @@ public class OyenteFTP implements ActionListener {
 	private VistaAdmin vistaAdmin;
 	private VistaRegistroUsuarios vistaUsuarios;
 	private VistaGeneralCorreo vistaGeneralCorreo;
+	private VistaLogs vistaLogs;
 	private ModeloBaseDatos modeloBaseDatos;
 
 	public OyenteFTP(MoView modeloVista, ViMain viMain, ModeloClienteFTP modelo, CoPrincipal ctrl,
-			VistaGestorArchivos vistaArchivo,
-			VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin, VistaRegistroUsuarios vistaUsuarios,
-			ModeloBaseDatos modeloBaseDatos) {
+			VistaGestorArchivos vistaArchivo, VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin,
+			VistaRegistroUsuarios vistaUsuarios, VistaLogs vistaLogs, ModeloBaseDatos modeloBaseDatos) {
 		this.viMain = viMain;
 		this.modelo = modelo;
 		this.controladorPrincipal = ctrl;
@@ -44,6 +45,7 @@ public class OyenteFTP implements ActionListener {
 		this.vistaMenuPrincipal = vistaMenuPrincipal;
 		this.vistaAdmin = vistaAdmin;
 		this.vistaUsuarios = vistaUsuarios;
+		this.vistaLogs = vistaLogs;
 		this.modeloBaseDatos = modeloBaseDatos;
 	}
 
@@ -77,6 +79,8 @@ public class OyenteFTP implements ActionListener {
 		} else if (source == viMain.getViCrearRol().getBotones().get(1)
 				|| source == viMain.getViAsignarRol().getBotones().get(2)) {
 			manejarVolver();
+		} else if (source == vistaAdmin.getBotonLogs()) {
+			abrirLogs();
 		} else if (source == vistaAdmin.getBotonWhitelist()) {
 			abrirWhitelist();
 		} else if (source == vistaMenuPrincipal.getBotonCerrarSesion()) {
@@ -84,6 +88,13 @@ public class OyenteFTP implements ActionListener {
 		} else if (source == vistaMenuPrincipal.getBotonCorreo()) {
 			abrirCorreo();
 		}
+	}
+
+	private void abrirLogs() {
+
+		vistaAdmin.setVisible(false);
+		vistaLogs.hacerVisible();
+
 	}
 
 	private void abrirCorreo() {
@@ -119,7 +130,7 @@ public class OyenteFTP implements ActionListener {
 		vistaUsuarios.setVisible(false);
 		vistaAdmin.hacerVisible();
 	}
-	
+
 	private void volverMenuDesdeCorreos() {
 		controladorPrincipal.getVistaGeneralCorreo().setVisible(false);
 		vistaMenuPrincipal.hacerVisible();

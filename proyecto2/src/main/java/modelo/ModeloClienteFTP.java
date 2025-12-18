@@ -286,16 +286,10 @@ public class ModeloClienteFTP {
 
     public void eliminarUsuario(String nombre) {
 
-        // 1. Autenticarse en la carpeta compartida
         conectarCarpetaCompartida();
 
         try {
             File xmlFile = new File(RUTA_XML);
-
-            if (!xmlFile.exists()) {
-                System.err.println("ERROR: No encuentro el archivo en: " + RUTA_XML);
-                return;
-            }
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -321,10 +315,7 @@ public class ModeloClienteFTP {
 
             if (encontrado) {
                 guardarXML(doc, xmlFile);
-                System.out.println("Usuario eliminado: " + nombre);
-            } else {
-                System.err.println("Usuario no encontrado: " + nombre);
-            }
+            } 
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -367,7 +358,7 @@ public class ModeloClienteFTP {
                     child.setNodeValue(trimmedNodeVal);
                 }
             } else if (nodeType == Node.COMMENT_NODE) {
-                // Opcional: Si quieres mantener comentarios, no hagas nada
+            	
             }
         }
     }
