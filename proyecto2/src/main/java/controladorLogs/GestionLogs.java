@@ -11,25 +11,33 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import modelo.Log;
+import modelo.ModeloBaseDatos;
 import modelo.User;
 import vista.VistaLogs;
 
 public class GestionLogs {
+	private static Connection conexion;
 
-	private static Connection conn;
-
-	public GestionLogs(Connection conn) {
-		this.conn = conn;
+	public GestionLogs() {
+		this.conexion = ModeloBaseDatos.getConexion();
 	}
 
 	public static void writeLog(Log log) {
+		if (conexion == null) {
+			conexion = ModeloBaseDatos.getConexion();
+		}
 
 		String sql = "INSERT INTO logs (accion, fecha, resultado, email_usuario) VALUES (?,CURRENT_TIMESTAMP,?,?)";
 
-		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+		try (PreparedStatement ps = conexion.prepareStatement(sql)) {
 			ps.setString(1, log.getAction());
 			ps.setString(2, log.getResult());
-			ps.setString(3, log.getCorreo());
+
+			if (log.getCorreo() == null || log.getCorreo().isEmpty()) {
+				ps.setNull(3, java.sql.Types.VARCHAR);
+			} else {
+				ps.setString(3, log.getCorreo());
+			}
 			ps.executeUpdate();
 
 			System.out.println("Log registrado correctamente.");
@@ -42,6 +50,10 @@ public class GestionLogs {
 	}
 
 	public static ArrayList<Log> consultLogs(String consulta) {
+		if (conexion == null) {
+			conexion = ModeloBaseDatos.getConexion();
+			return null;
+		}
 		ArrayList<Log> logs = new ArrayList<>();
 
 		String sql = "SELECT id_logs, accion, fecha, resultado, email_usuario FROM logs";
@@ -56,7 +68,7 @@ public class GestionLogs {
 		}
 
 		try (
-				PreparedStatement ps = conn.prepareStatement(sql);
+				PreparedStatement ps = conexion.prepareStatement(sql);
 				ResultSet rs = ps.executeQuery();) {
 			while (rs.next()) {
 				int id = rs.getInt("id_logs");
@@ -76,6 +88,10 @@ public class GestionLogs {
 	}
 
 	public boolean exportLogs(File file) {
+		if (conexion == null) {
+			conexion = ModeloBaseDatos.getConexion();
+			return false;
+		}
 		ArrayList<Log> logs = consultLogs("all");
 
 		try (FileWriter fw = new FileWriter(file)) {

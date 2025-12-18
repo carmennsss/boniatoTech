@@ -129,7 +129,7 @@ public class VistaLogs extends JFrame {
 
     private void configurarBotones() {
 
-        JPanel panelBotonesConsultas = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel panelBotonesConsultas = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panelBotonesConsultas.setOpaque(false);
         botonesConsultas.add(new JButton(MoTextos.logs_col_action));
         botonesConsultas.add(new JButton(MoTextos.logs_col_user));
@@ -154,6 +154,10 @@ public class VistaLogs extends JFrame {
         panelBotones.add(btnVolver);
         panelBotones.add(btnExport);
         getContentPane().add(panelBotones, BorderLayout.SOUTH);
+    }
+
+    public void setTituloTexto(String t) {
+        titulo.setText(t);
     }
 
     private void inicializarModeloTabla() {
@@ -229,6 +233,10 @@ public class VistaLogs extends JFrame {
 
     public JButton getBtnVolver() {
         return btnVolver;
+    }
+
+    public VistaAdmin getVistaAdmin() {
+        return vistaAdmin;
     }
 
     public void hacerVisible() {
