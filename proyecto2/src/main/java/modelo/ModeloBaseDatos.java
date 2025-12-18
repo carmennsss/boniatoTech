@@ -106,6 +106,22 @@ public class ModeloBaseDatos {
         return lista;
     }
 
+    public ArrayList<Animal> getAnimales() {
+        ArrayList<Animal> lista = new ArrayList<>();
+        try {
+            ResultSet rs = getConsulta("SELECT * FROM animales");
+            if (rs != null) {
+                while (rs.next()) {
+                    lista.add(new Animal(rs.getInt("animal_id"), rs.getString("nombre_animales"),
+                            rs.getString("tipo"), rs.getInt("especie_id"), rs.getInt("cuidador_id")));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
     public ArrayList<String> getNombresColumnas(String tabla) {
         ArrayList<String> columnas = new ArrayList<>();
         try {
@@ -146,7 +162,23 @@ public class ModeloBaseDatos {
         return valido;
     }
 
-    public boolean registrarUsuario(String correo,String nombre , String password, String claveCorreo) {
+    public boolean existeRegistro(String sql, ArrayList<String> parametros) {
+        try {
+            PreparedStatement pstmt = getConexion().prepareStatement(sql);
+            for (int i = 0; i < parametros.size(); i++) {
+                pstmt.setString(i + 1, parametros.get(i));
+            }
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean registrarUsuario(String correo, String nombre, String password, String claveCorreo) {
         String sql = "INSERT INTO usuarios (email, nombre_usuario, contrasena, clave_correo) VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement pstmt = getConexion().prepareStatement(sql);

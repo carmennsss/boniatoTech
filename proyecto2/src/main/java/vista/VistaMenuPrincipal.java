@@ -2,6 +2,7 @@ package vista;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -134,7 +135,7 @@ public class VistaMenuPrincipal extends JFrame {
 		btn.setBorderPainted(false);
 		btn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btn.setMaximumSize(new Dimension(300, 50)); // Ancho fijo, altura fija
-		btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+		btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
 	public void accionBotonCerrarSesion(JButton boton) {
@@ -153,6 +154,7 @@ public class VistaMenuPrincipal extends JFrame {
 	public JButton getBotonFileManager() {
 		return botonFileManager;
 	}
+
 	public JButton getBotonAdmin() {
 		return botonAdmin;
 	}

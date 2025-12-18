@@ -24,7 +24,8 @@ public class VistaLogin extends JFrame {
 		cajas = new ArrayList<>();
 		botones = new ArrayList<>();
 
-		URL url = getClass().getResource("/fondo_login.jpg");
+		// URL url = getClass().getResource("/fondo_login.jpg");
+		URL url = getClass().getResource("/panditas.png");
 		if (url != null) {
 			imagenFondo = new ImageIcon(url).getImage();
 		}
