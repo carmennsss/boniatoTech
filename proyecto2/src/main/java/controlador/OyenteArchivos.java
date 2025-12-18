@@ -228,9 +228,9 @@ public class OyenteArchivos implements ActionListener {
 			idPadre = db.obtenerIdPadre(rutaActual);
 			emailUsuario = db.obtenerEmailPorUsuario(client.getUser());
 			if (rutaActual.equals("/")) {
-				directorioServidor = "/" + nombreCarpeta;
+				directorioServidor = rutaActual;
 			} else {
-				directorioServidor = rutaActual + "/" + nombreCarpeta;
+				directorioServidor = rutaActual + "/";
 			}
 			db.insertarArchivo(nombreCarpeta, directorioServidor, "", "Folder", idPadre, emailUsuario);
 			ftp.crearCarpeta(nombreCarpeta, rutaActual);
@@ -264,7 +264,7 @@ public class OyenteArchivos implements ActionListener {
 					JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
-		db.eliminarArchivo(select.getName(), rutaCarpeta);
+		db.eliminarArchivo(select.getName(), rutaActual);
 		ftp.borrarCarpeta(select.getName(), rutaActual);
 
 		actualizarListaFTP();
