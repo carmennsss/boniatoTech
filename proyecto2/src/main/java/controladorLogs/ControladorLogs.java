@@ -33,6 +33,8 @@ public class ControladorLogs {
 	}
 
 	private void asignarOyenteBtnExport() {
-		vistaLogs.getBtnExport().addActionListener(new OyenteBtnExport(gestionLogs, vistaLogs));
+	    vistaLogs.getBtnExport().addActionListener(new OyenteBtnExport(gestionLogs, vistaLogs));
+	    // Añade esto:
+	    vistaLogs.getBtnVolver().addActionListener(new OyenteBotonVolverLogs());
 	}
 }

@@ -6,6 +6,7 @@ import vista.*;
 import javax.swing.*;
 
 import controladorCorreos.ControladorCorreos;
+import controladorLogs.ControladorLogs;
 
 public class CoPrincipal {
     private ModeloBaseDatos bd;
@@ -25,6 +26,7 @@ public class CoPrincipal {
     private ControladorRoles controladorRoles;
     private ControladorWhitelist controladorWhitelist;
     private ControladorCorreos controladorCorreos;
+    private ControladorLogs controladorLogs;
 
     public CoPrincipal() {
         this.bd = new ModeloBaseDatos();
