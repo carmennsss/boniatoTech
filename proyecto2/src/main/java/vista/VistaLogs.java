@@ -1,107 +1,170 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
-import modelo.MoTextos;
-
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
 import modelo.Log;
+import modelo.MoTextos;
 
 public class VistaLogs extends JFrame {
 
-    private JPanel panelPrincipal;
-    private JTable tabla;
-    private DefaultTableModel tablaModelo;
+    private ViTabla tabla;
     private JButton btnExport;
     private JButton btnVolver;
+    private Image imagenFondo;
+    private JLabel titulo;
+    private VistaAdmin vistaAdmin;
 
-    public VistaLogs() {
-        propiedadesVentana();
-        inicializarComponentes();
-    }
+    public VistaLogs(VistaAdmin vistaAdmin) {
+        this.vistaAdmin = vistaAdmin; // Store reference if needed for back logic internally or just consistency
 
-    private void propiedadesVentana() {
-        this.setTitle("System Logs");
+        this.setTitle(MoTextos.logs_title);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setSize(700, 500);
+        this.setSize(900, 600);
         this.setLocationRelativeTo(null);
-        this.setMinimumSize(new Dimension(630, 400));
-    }
 
-    private void inicializarComponentes() {
-        panelPrincipal = new JPanel(new BorderLayout());
-        
-        String[] nombresColumnas = { "Action", "User", "Date", "Result" };
-        tablaModelo = new DefaultTableModel(nombresColumnas, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; 
-            }
-        };
-
-        tabla = new JTable(tablaModelo);
-        tabla.setRowHeight(30);
-        tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
-
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < tabla.getColumnCount(); i++) {
-            tabla.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        URL url = getClass().getResource("/fondo_abstracto_1.png");
+        if (url != null) {
+            imagenFondo = new ImageIcon(url).getImage();
         }
 
-        JScrollPane scrollPane = new JScrollPane(tabla);
-        panelPrincipal.add(scrollPane, BorderLayout.CENTER);
+        JPanel panelFondo = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (imagenFondo != null) {
+                    g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
+                } else {
+                    g.setColor(Estilos.FONDO_PRINCIPAL);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                }
+            }
+        };
+        panelFondo.setLayout(new BorderLayout(20, 20));
+        panelFondo.setBorder(new EmptyBorder(20, 20, 20, 20));
+        setContentPane(panelFondo);
 
+        // Header
+        titulo = new JLabel(MoTextos.logs_title);
+        titulo.setFont(Estilos.FONT_TITULO);
+        titulo.setForeground(Estilos.DARK_SPRUCE);
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JPanel panelTitulo = new JPanel(new FlowLayout(FlowLayout.CENTER)) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(new Color(255, 255, 255, 200));
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+                g2.dispose();
+                super.paintComponent(g);
+            }
+        };
+        panelTitulo.setOpaque(false);
+        panelTitulo.setBorder(new EmptyBorder(10, 20, 10, 20));
+        panelTitulo.add(titulo);
+        panelFondo.add(panelTitulo, BorderLayout.NORTH);
+
+        // Table
+        tabla = new ViTabla();
+
+        // Container for table
+        JPanel panelTablaContenedor = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(new Color(255, 255, 255, 180));
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+                g2.dispose();
+            }
+        };
+        panelTablaContenedor.setOpaque(false);
+        panelTablaContenedor.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panelTablaContenedor.add(tabla, BorderLayout.CENTER);
+
+        panelFondo.add(panelTablaContenedor, BorderLayout.CENTER);
+
+        // Buttons
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        btnVolver = new JButton("Back");
-        btnExport = new JButton("Export CSV");
-        
-        btnVolver.setPreferredSize(new Dimension(100, 30));
-        btnExport.setPreferredSize(new Dimension(120, 30));
+        panelBotones.setOpaque(false);
+
+        btnVolver = new JButton(MoTextos.del_btn_back);
+        btnExport = new JButton(MoTextos.logs_btn_export);
+
+        estilarBoton(btnVolver, new Color(200, 100, 100));
+        estilarBoton(btnExport, Estilos.COLOR_BOTON_MENU);
 
         panelBotones.add(btnVolver);
         panelBotones.add(btnExport);
+        panelFondo.add(panelBotones, BorderLayout.SOUTH);
 
-        // Añadimos el panel de botones a la parte inferior (SOUTH)
-        panelPrincipal.add(panelBotones, BorderLayout.SOUTH);
+        inicializarModeloTabla();
+    }
 
-        this.add(panelPrincipal);
+    private void inicializarModeloTabla() {
+        String[] nombresColumnas = { MoTextos.logs_col_action, MoTextos.logs_col_user, MoTextos.logs_col_date,
+                MoTextos.logs_col_result };
+        DefaultTableModel tablaModelo = new DefaultTableModel(nombresColumnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tabla.setModelo(tablaModelo);
+    }
+
+    private void estilarBoton(JButton btn, Color bgColor) {
+        btn.setFont(Estilos.FONT_BOTON);
+        btn.setBackground(bgColor);
+        btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btn.setPreferredSize(new Dimension(140, 40));
     }
 
     public void cargarLogs(ArrayList<Log> logs) {
-        tablaModelo.setRowCount(0);
+        DefaultTableModel model = (DefaultTableModel) tabla.getTabla().getModel();
+        model.setRowCount(0);
         for (Log log : logs) {
             Object[] fila = new Object[4];
             fila[0] = log.getAction();
-            fila[1] = log.getCorreo();
+            fila[1] = log.getCorreo(); // Or user name if available
             fila[2] = log.getDate();
             fila[3] = log.getResult();
-            tablaModelo.addRow(fila);
+            model.addRow(fila);
         }
     }
 
     public File seleccionarArchivoGuardar() {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Save logs");
+        fileChooser.setDialogTitle(MoTextos.logs_dialog_save_title);
         fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
-        
+
         int userSelection = fileChooser.showSaveDialog(this);
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File fileToSave = fileChooser.getSelectedFile();
@@ -113,15 +176,36 @@ public class VistaLogs extends JFrame {
         return null;
     }
 
-    // Getters para el controlador
-    public JButton getBtnExport() { return btnExport; }
-    public JButton getBtnVolver() { return btnVolver; }
+    public void actualizarTextos() {
+        this.setTitle(MoTextos.logs_title);
+        titulo.setText(MoTextos.logs_title);
+        btnVolver.setText(MoTextos.del_btn_back);
+        btnExport.setText(MoTextos.logs_btn_export);
 
-    public void mostrarMensaje(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje);
+        // Update table header
+        DefaultTableModel model = (DefaultTableModel) tabla.getTabla().getModel();
+        String[] header = { MoTextos.logs_col_action, MoTextos.logs_col_user, MoTextos.logs_col_date,
+                MoTextos.logs_col_result };
+        model.setColumnIdentifiers(header);
+    }
+
+    public JButton getBtnExport() {
+        return btnExport;
+    }
+
+    public JButton getBtnVolver() {
+        return btnVolver;
+    }
+
+    public void hacerVisible() {
+        setVisible(true);
     }
 
     public void mostrarError(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje);
     }
 }

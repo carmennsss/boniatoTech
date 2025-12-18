@@ -55,7 +55,7 @@ public class CoPrincipal {
     private void asignarEventos() {
         OyenteFTP oyFTP = new OyenteFTP(modeloVista, vista, modeloFTP, this, vistaArchivo, vistaMenuPrincipal,
                 vistaAdmin,
-                vistaUsuarios, vistaLogs,bd);
+                vistaUsuarios, vistaLogs, bd);
         OyenteTablaRoles oyTablaRoles = new OyenteTablaRoles(this, vista, modeloVista);
         OyenteCRUD oyCRUD = new OyenteCRUD(this, vista, modeloVista, vistaMenuPrincipal);
         controladorCRUD.setOyente(oyCRUD);
@@ -188,6 +188,8 @@ public class CoPrincipal {
             vistaEliminarUsuarios.actualizarTextos();
         if (vistaGeneralCorreo != null)
             vistaGeneralCorreo.actualizarTextos();
+        if (vistaLogs != null)
+            vistaLogs.actualizarTextos();
 
         // Update any other active views or popups if accessible
     }
