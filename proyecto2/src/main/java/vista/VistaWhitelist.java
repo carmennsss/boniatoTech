@@ -22,6 +22,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import modelo.MoTextos;
+
 public class VistaWhitelist extends JFrame {
     private ArrayList<JButton> botones;
     private ViTabla tabla;
@@ -31,12 +33,22 @@ public class VistaWhitelist extends JFrame {
     private JButton btnAnadir; // Exposed for Controller/Main
     private JButton btnDesasignar;
     private JButton btnVolver;
+    private JLabel titulo;
+
+    public void actualizarTextos() {
+        this.setTitle(MoTextos.whitelist_title);
+        titulo.setText(MoTextos.whitelist_title);
+        btnAnadir.setText(MoTextos.btn_add);
+        btnDesasignar.setText(MoTextos.btn_unassign);
+        btnVolver.setText(MoTextos.btn_back_whitelist);
+        repaint();
+    }
 
     public VistaWhitelist() {
         this.botones = new ArrayList<>();
         this.tabla = new ViTabla();
 
-        this.setTitle("Gestión de Whitelist");
+        this.setTitle(MoTextos.whitelist_title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1000, 650);
         this.setLocationRelativeTo(null);
@@ -66,7 +78,7 @@ public class VistaWhitelist extends JFrame {
         panelFondo.setBorder(new EmptyBorder(20, 20, 20, 20));
         this.setContentPane(panelFondo);
 
-        JLabel titulo = new JLabel("Gestión de Whitelist");
+        titulo = new JLabel(MoTextos.whitelist_title);
         titulo.setFont(Estilos.FONT_TITULO);
         titulo.setForeground(Estilos.DARK_SPRUCE);
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -114,9 +126,10 @@ public class VistaWhitelist extends JFrame {
         // txtEmail & txtNombre will be initialized in mostrarAgregarUsuario
 
         // Buttons
-        btnAnadir = new JButton("Añadir");
-        btnDesasignar = new JButton("Desasignar");
-        btnVolver = new JButton("Volver");
+        // Buttons
+        btnAnadir = new JButton(MoTextos.btn_add);
+        btnDesasignar = new JButton(MoTextos.btn_unassign);
+        btnVolver = new JButton(MoTextos.btn_back_whitelist);
 
         estilarBoton(btnAnadir, Estilos.COLOR_BOTON_MENU);
         estilarBoton(btnDesasignar, Estilos.BLUE_SLATE);
@@ -168,7 +181,7 @@ public class VistaWhitelist extends JFrame {
     public int mostrarAgregarUsuario() {
         final javax.swing.JDialog dialog = new javax.swing.JDialog(
                 this,
-                "Agregar Usuario",
+                MoTextos.whitelist_dialog_title,
                 true);
 
         dialog.setUndecorated(true);
@@ -180,14 +193,14 @@ public class VistaWhitelist extends JFrame {
         panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.Y_AXIS));
         panel.setBorder(new javax.swing.border.EmptyBorder(20, 20, 20, 20));
 
-        javax.swing.JLabel lblTitulo = new javax.swing.JLabel("Agregar a Whitelist");
+        javax.swing.JLabel lblTitulo = new javax.swing.JLabel(MoTextos.whitelist_lbl_title);
         lblTitulo.setFont(Estilos.FONT_TITULO);
         lblTitulo.setForeground(Estilos.COLOR_TITULO_APP);
         lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(lblTitulo);
         panel.add(javax.swing.Box.createVerticalStrut(20));
 
-        JLabel lblEmail = new JLabel("Email:");
+        JLabel lblEmail = new JLabel(MoTextos.whitelist_lbl_email);
         lblEmail.setFont(Estilos.FONT_BOTON);
         lblEmail.setForeground(Estilos.COLOR_LABEL);
 
@@ -198,7 +211,7 @@ public class VistaWhitelist extends JFrame {
         panel.add(txtEmail);
         panel.add(javax.swing.Box.createVerticalStrut(20));
 
-        JLabel lblNombre = new JLabel("Nombre:");
+        JLabel lblNombre = new JLabel(MoTextos.whitelist_lbl_name);
         lblNombre.setFont(Estilos.FONT_BOTON);
         lblNombre.setForeground(Estilos.COLOR_LABEL);
 
@@ -211,8 +224,8 @@ public class VistaWhitelist extends JFrame {
 
         final int[] result = { -1 };
 
-        JButton btnNew = crearBotonDialogo("Agregar", Estilos.COLOR_BOTON_MENU);
-        JButton btnCancel = crearBotonDialogo("Cancelar", new java.awt.Color(200, 100, 100));
+        JButton btnNew = crearBotonDialogo(MoTextos.btn_dialog_add, Estilos.COLOR_BOTON_MENU);
+        JButton btnCancel = crearBotonDialogo(MoTextos.btn_dialog_cancel, new java.awt.Color(200, 100, 100));
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);

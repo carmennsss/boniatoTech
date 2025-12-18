@@ -16,6 +16,7 @@ import org.apache.commons.net.ftp.FTPFile;
 
 import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
+import modelo.MoTextos;
 import servidor.FileManager;
 import vista.VistaGestorArchivos;
 import vista.VistaMenuPrincipal;
@@ -93,7 +94,8 @@ public class OyenteArchivos implements ActionListener {
 
     public void accionBotonSubida() {
         if (!verificarPermiso(rutaActual, "Subir archivos")) {
-            JOptionPane.showMessageDialog(null, "You do not have permission to upload files.", "Permission denied",
+            JOptionPane.showMessageDialog(null, MoTextos.msg_permission_denied_upload,
+                    MoTextos.msg_permission_denied_title,
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -107,7 +109,7 @@ public class OyenteArchivos implements ActionListener {
         String tipo;
         String emailUsuario;
 
-        fc.setDialogTitle("Select the file to upload");
+        fc.setDialogTitle("Select the file to upload"); // Could allow this to remain or externalize later if critical
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int respuesta = fc.showDialog(fc, "OK");
         if (respuesta == JFileChooser.APPROVE_OPTION) {
@@ -133,15 +135,15 @@ public class OyenteArchivos implements ActionListener {
         FTPFile select = vista.getListaArchivos().getSelectedValue();
 
         if (select == null) {
-            JOptionPane.showMessageDialog(null, "Please select a file", "Error",
+            JOptionPane.showMessageDialog(null, MoTextos.msg_select_file, MoTextos.msg_error_title,
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
         String rutaArchivo = rutaActual.equals("/") ? "/" + select.getName() : rutaActual + "/" + select.getName();
         if (!verificarPermiso(rutaArchivo, "Descargar archivos")) {
-            JOptionPane.showMessageDialog(null, "You do not have permission to download this file.",
-                    "Permission denied",
+            JOptionPane.showMessageDialog(null, MoTextos.msg_permission_denied_download,
+                    MoTextos.msg_permission_denied_title,
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -160,8 +162,8 @@ public class OyenteArchivos implements ActionListener {
         if (select != null) {
             String rutaArchivo = rutaActual.equals("/") ? "/" + select.getName() : rutaActual + "/" + select.getName();
             if (!verificarPermiso(rutaArchivo, "Borrar archivos")) {
-                JOptionPane.showMessageDialog(null, "You do not have permission to delete this file.",
-                        "Permission denied",
+                JOptionPane.showMessageDialog(null, MoTextos.msg_permission_denied_delete,
+                        MoTextos.msg_permission_denied_title,
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -170,14 +172,15 @@ public class OyenteArchivos implements ActionListener {
             db.eliminarArchivo(select.getName(), rutaActual);
             actualizarListaFTP();
         } else {
-            JOptionPane.showMessageDialog(null, "Please select a file", "Error",
+            JOptionPane.showMessageDialog(null, MoTextos.msg_select_file, MoTextos.msg_error_title,
                     JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
     public void accionBotonCrearCarpeta() {
         if (!verificarPermiso(rutaActual, "Crear carpeta")) {
-            JOptionPane.showMessageDialog(null, "You do not have permission to create folders.", "Permission denied",
+            JOptionPane.showMessageDialog(null, MoTextos.msg_permission_denied_create_folder,
+                    MoTextos.msg_permission_denied_title,
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -186,7 +189,7 @@ public class OyenteArchivos implements ActionListener {
         Integer idPadre;
         String emailUsuario;
         String directorioServidor;
-        nombreCarpeta = JOptionPane.showInputDialog(null, "Enter the directory name", "");
+        nombreCarpeta = JOptionPane.showInputDialog(null, MoTextos.msg_enter_folder_name, "");
         if (nombreCarpeta != null) {
             idPadre = db.obtenerIdPadre(rutaActual);
             emailUsuario = db.obtenerEmailPorUsuario(client.getUser());
@@ -199,7 +202,7 @@ public class OyenteArchivos implements ActionListener {
             ftp.crearCarpeta(nombreCarpeta, rutaActual);
             actualizarListaFTP();
         } else {
-            JOptionPane.showMessageDialog(null, "Please enter a name for the folder", "Error",
+            JOptionPane.showMessageDialog(null, MoTextos.msg_enter_folder_name, MoTextos.msg_error_title,
                     JOptionPane.INFORMATION_MESSAGE);
         }
     }
@@ -209,7 +212,7 @@ public class OyenteArchivos implements ActionListener {
         String rutaCarpeta;
 
         if (select == null) {
-            JOptionPane.showMessageDialog(null, "Please select a folder.", "Error",
+            JOptionPane.showMessageDialog(null, MoTextos.msg_select_folder, MoTextos.msg_error_title,
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
@@ -217,14 +220,15 @@ public class OyenteArchivos implements ActionListener {
         rutaCarpeta = rutaActual.equals("/") ? "/" + select.getName() : rutaActual + "/" + select.getName();
 
         if (!verificarPermiso(rutaCarpeta, "Borrar carpeta")) {
-            JOptionPane.showMessageDialog(null, "You do not have permission to delete this folder.",
-                    "Permission denied",
+            JOptionPane.showMessageDialog(null, MoTextos.msg_permission_denied_delete_folder,
+                    MoTextos.msg_permission_denied_title,
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         if (!select.isDirectory()) {
-            JOptionPane.showMessageDialog(null, "You must select a folder, not a file.", "Error",
+            JOptionPane.showMessageDialog(null, MoTextos.msg_select_folder_not_file,
+                    MoTextos.msg_error_title,
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }

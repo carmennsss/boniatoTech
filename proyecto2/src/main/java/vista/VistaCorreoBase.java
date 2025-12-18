@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.*;
 
 import modelo.Correo;
+import modelo.MoTextos;
 
 public class VistaCorreoBase extends JFrame {
 
@@ -27,9 +28,12 @@ public class VistaCorreoBase extends JFrame {
     private JButton botonAdjuntar;
     private String remitente;
     private List<File> adjuntos = new ArrayList<>();
+    private JLabel lblPara;
+    private JLabel lblAsunto;
+    private JLabel lblMessage;
 
     public VistaCorreoBase(String remitente) {
-        this.setTitle("Compose new Mail");
+        this.setTitle(MoTextos.mail_title_compose);
         this.remitente = remitente;
 
         inicializarComponentes();
@@ -42,7 +46,7 @@ public class VistaCorreoBase extends JFrame {
 
     // CONSTRUCTOR CONSULTAR
     public VistaCorreoBase(Correo correo) {
-        this.setTitle("Check Mail");
+        this.setTitle(MoTextos.mail_title_check);
 
         inicializarComponentes();
         propiedadesGenerales();
@@ -66,11 +70,15 @@ public class VistaCorreoBase extends JFrame {
         textoCuerpo = new JTextArea(15, 50);
         textoCuerpo.setLineWrap(true);
         textoCuerpo.setWrapStyleWord(true);
-        botonEnviar = new JButton("Send");
-        botonEliminar = new JButton("Delete");
-        botonNoLeido = new JButton("Mark unread");
-        botonExportar = new JButton("Export");
-        botonAdjuntar = new JButton("Attach");
+        botonEnviar = new JButton(MoTextos.btn_send);
+        botonEliminar = new JButton(MoTextos.btn_delete);
+        botonNoLeido = new JButton(MoTextos.btn_mark_unread);
+        botonExportar = new JButton(MoTextos.btn_export);
+        botonAdjuntar = new JButton(MoTextos.btn_attach);
+
+        lblPara = new JLabel();
+        lblAsunto = new JLabel(MoTextos.mail_lbl_subject);
+        lblMessage = new JLabel(MoTextos.mail_lbl_message);
     }
 
     private void ensamblarVista(boolean esEnvio) {
@@ -138,11 +146,13 @@ public class VistaCorreoBase extends JFrame {
         panelDatosSuperiores.setBackground(Estilos.FONDO_PRINCIPAL);
 
         if (esEnvio) {
-            panelDatosSuperiores.add(crearCampoLabel("For:", textoPara));
+            lblPara.setText(MoTextos.mail_lbl_for);
+            panelDatosSuperiores.add(crearCampoLabel(lblPara, textoPara));
         } else {
-            panelDatosSuperiores.add(crearCampoLabel("From:", textoPara));
+            lblPara.setText(MoTextos.mail_lbl_from);
+            panelDatosSuperiores.add(crearCampoLabel(lblPara, textoPara));
         }
-        panelDatosSuperiores.add(crearCampoLabel("Subject:", textoAsunto));
+        panelDatosSuperiores.add(crearCampoLabel(lblAsunto, textoAsunto));
 
         contentPanel.add(panelDatosSuperiores, BorderLayout.NORTH);
 
@@ -150,7 +160,6 @@ public class VistaCorreoBase extends JFrame {
         JPanel panelCuerpo = new JPanel(new BorderLayout(5, 5));
         panelCuerpo.setBackground(Estilos.FONDO_PRINCIPAL);
 
-        JLabel lblMessage = new JLabel("Message:");
         lblMessage.setFont(Estilos.FONT_TEXTO.deriveFont(Font.BOLD));
         lblMessage.setForeground(Estilos.TEXTO_PRINCIPAL);
         panelCuerpo.add(lblMessage, BorderLayout.NORTH);
@@ -185,11 +194,11 @@ public class VistaCorreoBase extends JFrame {
         this.add(panelPrincipal);
     }
 
-    private JPanel crearCampoLabel(String labelText, JComponent field) {
+    private JPanel crearCampoLabel(JLabel lbl, JComponent field) {
         JPanel p = new JPanel(new BorderLayout(5, 5));
         p.setBackground(Estilos.FONDO_PRINCIPAL);
 
-        JLabel lbl = new JLabel(labelText);
+        // JLabel lbl = new JLabel(labelText); // Removed local creation
         lbl.setFont(Estilos.FONT_TEXTO.deriveFont(Font.BOLD));
         lbl.setForeground(Estilos.TEXTO_PRINCIPAL);
         lbl.setPreferredSize(new Dimension(80, 25));
@@ -249,7 +258,7 @@ public class VistaCorreoBase extends JFrame {
 
     public void mostrarMensaje(String mensaje, boolean esError) {
         JOptionPane.showMessageDialog(this, mensaje,
-                esError ? "Error" : "success",
+                esError ? MoTextos.msg_error_title : MoTextos.msg_success_title,
                 esError ? JOptionPane.ERROR_MESSAGE : JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -327,4 +336,25 @@ public class VistaCorreoBase extends JFrame {
         this.botonAdjuntar = botonAdjuntar;
     }
 
+    public void actualizarTextos() {
+        if (getTitle().equals(MoTextos.mail_title_compose) || getTitle().equals("Compose new Mail")
+                || getTitle().equals("Redactar Nuevo Correo")) {
+            this.setTitle(MoTextos.mail_title_compose);
+            lblPara.setText(MoTextos.mail_lbl_for);
+        } else {
+            this.setTitle(MoTextos.mail_title_check);
+            lblPara.setText(MoTextos.mail_lbl_from);
+        }
+
+        lblAsunto.setText(MoTextos.mail_lbl_subject);
+        lblMessage.setText(MoTextos.mail_lbl_message);
+
+        botonEnviar.setText(MoTextos.btn_send);
+        botonEliminar.setText(MoTextos.btn_delete);
+        botonNoLeido.setText(MoTextos.btn_mark_unread);
+        botonExportar.setText(MoTextos.btn_export);
+        botonAdjuntar.setText(MoTextos.btn_attach);
+
+        repaint();
+    }
 }

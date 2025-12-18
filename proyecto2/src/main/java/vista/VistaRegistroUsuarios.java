@@ -11,16 +11,12 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URL;
-import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -29,7 +25,6 @@ import javax.swing.border.EmptyBorder;
 
 import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
-import modelo.User;
 
 public class VistaRegistroUsuarios extends JFrame {
 
@@ -48,8 +43,9 @@ public class VistaRegistroUsuarios extends JFrame {
 	JPasswordField textConfContrasena;
 	JButton aniadir;
 	JButton volver;
-	
+
 	private Image imagenFondo;
+	private JLabel titulo;
 
 	public VistaRegistroUsuarios(VistaAdmin vistaAdmin, ModeloClienteFTP client, ModeloBaseDatos db) {
 		this.vistaAdmin = vistaAdmin;
@@ -100,7 +96,7 @@ public class VistaRegistroUsuarios extends JFrame {
 		gbc.insets = new Insets(10, 10, 10, 10);
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		JLabel titulo = new JLabel("Register User", SwingConstants.CENTER);
+		titulo = new JLabel(modelo.MoTextos.reg_title_main, SwingConstants.CENTER);
 		titulo.setFont(new Font("Segoe UI", Font.BOLD, 24));
 		titulo.setForeground(new Color(74, 88, 89));
 
@@ -115,31 +111,31 @@ public class VistaRegistroUsuarios extends JFrame {
 		Font fontText = new Font("Segoe UI", Font.PLAIN, 14);
 		Color colorLabel = new Color(74, 88, 89);
 
-		nombre = new JLabel("Name: ");
+		nombre = new JLabel(modelo.MoTextos.reg_lbl_name);
 		nombre.setFont(fontLabel);
 		nombre.setForeground(colorLabel);
 		textNombre = new JTextField(20);
 		textNombre.setFont(fontText);
 
-		correo = new JLabel("Email Address: ");
+		correo = new JLabel(modelo.MoTextos.reg_lbl_email);
 		correo.setFont(fontLabel);
 		correo.setForeground(colorLabel);
 		textCorreo = new JTextField(20);
 		textCorreo.setFont(fontText);
 
-		claveCorreo = new JLabel("Address Key: ");
+		claveCorreo = new JLabel(modelo.MoTextos.reg_lbl_key);
 		claveCorreo.setFont(fontLabel);
 		claveCorreo.setForeground(colorLabel);
 		textClaveCorreo = new JTextField(20);
 		textClaveCorreo.setFont(fontText);
 
-		contrasena = new JLabel("Password: ");
+		contrasena = new JLabel(modelo.MoTextos.reg_lbl_pass);
 		contrasena.setFont(fontLabel);
 		contrasena.setForeground(colorLabel);
 		textContrasena = new JPasswordField(20);
 		textContrasena.setFont(fontText);
 
-		confContrasena = new JLabel("Confirm Password: ");
+		confContrasena = new JLabel(modelo.MoTextos.reg_lbl_conf_pass);
 		confContrasena.setFont(fontLabel);
 		confContrasena.setForeground(colorLabel);
 		textConfContrasena = new JPasswordField(20);
@@ -151,12 +147,11 @@ public class VistaRegistroUsuarios extends JFrame {
 		agregarCampo(panelCentral, gbc, 4, contrasena, textContrasena);
 		agregarCampo(panelCentral, gbc, 5, confContrasena, textConfContrasena);
 
-		aniadir = new JButton("Register");
-		volver = new JButton("Back");
+		aniadir = new JButton(modelo.MoTextos.reg_btn_register);
+		volver = new JButton(modelo.MoTextos.btn_back);
 
 		estilarBoton(aniadir, new Color(110, 137, 115));
 		estilarBoton(volver, new Color(200, 100, 100));
-
 
 		gbc.gridx = 0;
 		gbc.gridy = 6;
@@ -328,7 +323,16 @@ public class VistaRegistroUsuarios extends JFrame {
 		this.setVisible(true);
 	}
 
-	
-
+	public void actualizarTextos() {
+		this.setTitle(modelo.MoTextos.reg_title_window);
+		titulo.setText(modelo.MoTextos.reg_title_main);
+		nombre.setText(modelo.MoTextos.reg_lbl_name);
+		correo.setText(modelo.MoTextos.reg_lbl_email);
+		claveCorreo.setText(modelo.MoTextos.reg_lbl_key);
+		contrasena.setText(modelo.MoTextos.reg_lbl_pass);
+		confContrasena.setText(modelo.MoTextos.reg_lbl_conf_pass);
+		aniadir.setText(modelo.MoTextos.reg_btn_register);
+		volver.setText(modelo.MoTextos.btn_back);
+	}
 
 }
