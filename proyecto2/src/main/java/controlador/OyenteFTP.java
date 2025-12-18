@@ -9,6 +9,7 @@ import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+import controladorCorreos.ControladorCorreos;
 import modelo.MoView;
 import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
@@ -34,7 +35,7 @@ public class OyenteFTP implements ActionListener {
 
 	public OyenteFTP(MoView modeloVista, ViMain viMain, ModeloClienteFTP modelo, CoPrincipal ctrl,
 			VistaGestorArchivos vistaArchivo,
-			VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin, VistaRegistroUsuarios vistaUsuarios,VistaGeneralCorreo vistaGeneralCorreo,
+			VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin, VistaRegistroUsuarios vistaUsuarios,
 			ModeloBaseDatos modeloBaseDatos) {
 		this.viMain = viMain;
 		this.modelo = modelo;
@@ -44,7 +45,6 @@ public class OyenteFTP implements ActionListener {
 		this.vistaMenuPrincipal = vistaMenuPrincipal;
 		this.vistaAdmin = vistaAdmin;
 		this.vistaUsuarios = vistaUsuarios;
-		this.vistaGeneralCorreo=vistaGeneralCorreo;
 		this.modeloBaseDatos = modeloBaseDatos;
 	}
 
@@ -56,6 +56,7 @@ public class OyenteFTP implements ActionListener {
 		switch (command.toLowerCase()) {
 			case "log in":
 				login();
+				controladorPrincipal.instanciarCorreos();
 				break;
 			case "file manager":
 				abrirFileManager();
@@ -106,8 +107,15 @@ public class OyenteFTP implements ActionListener {
 	
 	private void abrirCorreo() {
 
-		vistaMenuPrincipal.setVisible(false);
-		vistaGeneralCorreo.hacerVisible();
+		VistaGeneralCorreo vistaCorr = controladorPrincipal.getVistaGeneralCorreo();
+
+	    if (vistaCorr != null) {
+	        vistaMenuPrincipal.setVisible(false);
+	        vistaCorr.hacerVisible();
+	        controladorPrincipal.getControladorCorreos().cargarCorreos();
+	    } else {
+	        JOptionPane.showMessageDialog(null, "Error: La vista de correos no se ha inicializado correctamente.");
+	    }
 		
 	}
 
