@@ -11,10 +11,12 @@ public class OyenteEnviarCorreo implements ActionListener {
 
 	private String passwordAplicacion;
 	private VistaCorreoBase v;
+	private ControladorCorreos controlador;
 
-	public OyenteEnviarCorreo(VistaCorreoBase v, String passwordAplicacion) {
+	public OyenteEnviarCorreo(VistaCorreoBase v, String passwordAplicacion, ControladorCorreos controlador) {
 		this.v = v;
 		this.passwordAplicacion = passwordAplicacion;
+		this.controlador = controlador;
 	}
 
 	@Override
@@ -30,6 +32,7 @@ public class OyenteEnviarCorreo implements ActionListener {
 		}
 
 		try {
+			//comprobarReceptorWhiteList(receptor);
 			EnviarCorreo.enviarCorreo(remitente, asunto, cuerpoMensaje, receptor, passwordAplicacion, v.getAdjuntos());
 			JOptionPane.showMessageDialog(v, "Email successfully sent to" + receptor);
 		} catch (Exception e1) {
@@ -39,6 +42,10 @@ public class OyenteEnviarCorreo implements ActionListener {
 		}
 
 		v.dispose();
+	}
+
+	private void comprobarReceptorWhiteList(String receptor) {	
+		controlador.comprobarReceptorWhiteList(receptor);
 	}
 
 }
