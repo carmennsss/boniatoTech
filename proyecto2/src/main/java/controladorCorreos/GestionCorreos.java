@@ -87,7 +87,6 @@ public class GestionCorreos {
 
 		} catch (Exception e) {
 			System.err.println("[ERROR POP3]");
-			e.printStackTrace();
 		}
 
 		return listaCorreos;

@@ -68,7 +68,7 @@ public class VistaCorreoBase extends JFrame {
         textoCuerpo.setWrapStyleWord(true);
         botonEnviar = new JButton("Send");
         botonEliminar = new JButton("Delete");
-        botonNoLeido = new JButton("Mark as unread");
+        botonNoLeido = new JButton("Mark unread");
         botonExportar = new JButton("Export");
         botonAdjuntar = new JButton("Attach");
     }
@@ -183,14 +183,18 @@ public class VistaCorreoBase extends JFrame {
         btn.setForeground(Color.WHITE);
         btn.setFocusPainted(false);
         btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn.setPreferredSize(new Dimension(140, 35));
+        if (btn.equals(botonNoLeido)) {
+        	btn.setPreferredSize(new Dimension(130, 35));
+        } else {
+            btn.setPreferredSize(new Dimension(100, 35));
+        }
     }
 
     public void propiedadesGenerales() {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setSize(700, 500);
+        this.setSize(700, 400);
         this.setLocationRelativeTo(null);
-        this.setMinimumSize(new Dimension(700, 500));
+        this.setMinimumSize(new Dimension(700, 400));
     }
 
     public File exportarCorreo(String nombreSugerido) {

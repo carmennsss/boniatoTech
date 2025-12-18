@@ -5,6 +5,8 @@ import vista.*;
 
 import javax.swing.*;
 
+import controladorCorreos.ControladorCorreos;
+
 public class CoPrincipal {
     private ModeloBaseDatos bd;
     private MoView modeloVista;
@@ -19,6 +21,7 @@ public class CoPrincipal {
 
     private ControladorCRUD controladorCRUD;
     private ControladorRoles controladorRoles;
+    private ControladorCorreos controladorCorreos;
 
     public CoPrincipal() {
         this.bd = new ModeloBaseDatos();
@@ -35,7 +38,7 @@ public class CoPrincipal {
         vistaArchivo.setControlador(oyenteArchivos);
         this.vistaAdmin = new VistaAdmin(vistaMenuPrincipal);
         this.vistaUsuarios = new VistaRegistroUsuarios(vistaAdmin, modeloFTP, bd);
-        this.vistaGeneralCorreo = new VistaGeneralCorreo("hola");
+        
         vista.hacerVisible();
         asignarEventos();
 
@@ -44,7 +47,7 @@ public class CoPrincipal {
     private void asignarEventos() {
         OyenteFTP oyFTP = new OyenteFTP(modeloVista, vista, modeloFTP, this, vistaArchivo, vistaMenuPrincipal,
                 vistaAdmin,
-                vistaUsuarios,vistaGeneralCorreo, bd);
+                vistaUsuarios, bd);
         OyenteTablaRoles oyTablaRoles = new OyenteTablaRoles(this, vista, modeloVista);
         OyenteCRUD oyCRUD = new OyenteCRUD(this, vista, modeloVista, vistaMenuPrincipal);
         controladorCRUD.setOyente(oyCRUD);
@@ -88,6 +91,11 @@ public class CoPrincipal {
 
         vista.getPanelTabla().getTabla().addMouseListener(oyT);
     }
+    
+    public void instanciarCorreos() {
+    	this.vistaGeneralCorreo = new VistaGeneralCorreo(bd.obtenerEmailPorUsuario(modeloFTP.getUser()));
+        this.controladorCorreos = new ControladorCorreos(bd.obtenerEmailPorUsuario(modeloFTP.getUser()), modeloFTP.getPass(), vistaGeneralCorreo);
+    }
 
     public void setEditando(boolean editando) {
         this.editando = editando;
@@ -104,4 +112,18 @@ public class CoPrincipal {
     public ControladorRoles getControladorRoles() {
         return controladorRoles;
     }
+
+	public ControladorCorreos getControladorCorreos() {
+		return controladorCorreos;
+	}
+
+	public void setControladorCorreos(ControladorCorreos controladorCorreos) {
+		this.controladorCorreos = controladorCorreos;
+	}
+	
+	public VistaGeneralCorreo getVistaGeneralCorreo() {
+	    return this.vistaGeneralCorreo;
+	}
+    
+    
 }
