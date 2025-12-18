@@ -240,9 +240,15 @@ public class FileManager {
 	public boolean conectar() {
 		try {
 			this.ftpClient.connect(this.servidor, this.puerto);
-			return this.ftpClient.login(this.usuario, this.contrasena);
+			boolean success = this.ftpClient.login(this.usuario, this.contrasena);
+			if (success) {
+				this.ftpClient.enterLocalPassiveMode();
+				this.ftpClient.setFileType(org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE);
+			}
+			return success;
 		} catch (IOException e) {
-			System.out.println("Could not connect to the server");
+			System.out.println("Could not connect to the server: " + e.getMessage());
+			e.printStackTrace();
 			return false;
 		}
 	}
