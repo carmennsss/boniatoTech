@@ -15,6 +15,8 @@ import java.util.Properties;
 
 public class GestionCorreos {
 
+	
+	
 	private Map<String, Boolean> estadosLocales = new HashMap<>();
 
 	public ArrayList<Correo> recibirCorreosPOP3(String pop3Host, String imapHost, String user, String password) {

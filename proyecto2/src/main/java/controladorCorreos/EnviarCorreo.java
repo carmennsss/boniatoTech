@@ -36,7 +36,7 @@ public class EnviarCorreo {
                 );
             }
         });
-
+        
         // Crear mensaje
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress(miCorreo));

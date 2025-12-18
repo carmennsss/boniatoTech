@@ -14,8 +14,9 @@ public class MainCorreos {
 	public static void main(String[] args) {
 		VistaGeneralCorreo vista = new VistaGeneralCorreo(CORREO);
 		vista.setVisible(true);
-		new ControladorCorreos(CORREO, PASSWORD_APLICACION, vista);
+	//	new ControladorCorreos(CORREO, PASSWORD_APLICACION, vista);
 
 	}
 
+	
 }
