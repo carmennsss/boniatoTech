@@ -1,5 +1,11 @@
 package modelo;
 
+/**
+ * Clase que almacena todas las cadenas de texto utilizadas en la aplicación.
+ * Permite la internacionalización (i18n) cambiando los valores de las variables
+ * estáticas
+ * según el idioma seleccionado.
+ */
 public class MoTextos {
 
     public static String app_title = "Serwo Manager";
@@ -192,6 +198,12 @@ public class MoTextos {
 
     // VistaAdmin Strings (if any missing)
 
+    /**
+     * Establece el idioma actual de la aplicación y actualiza todas las cadenas de
+     * texto.
+     *
+     * @param idioma Código del idioma (e.g., 0 para inglés, 1 para español).
+     */
     public static void setIdioma(int idioma) {
         idiomaActual = idioma;
         if (idioma == 1) {

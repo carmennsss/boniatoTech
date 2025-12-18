@@ -15,6 +15,11 @@ import org.apache.commons.net.ftp.FTPFile;
 
 import modelo.MoTextos;
 
+/**
+ * Gestor de archivos que utiliza FTP para realizar operaciones de
+ * transferencia.
+ * Encapsula la librería FTPClient de Apache Commons Net.
+ */
 public class FileManager {
 
 	private FTPClient ftpClient;
@@ -31,6 +36,13 @@ public class FileManager {
 		this.contrasena = contrasena;
 	}
 
+	/**
+	 * Sube un archivo local al servidor FTP.
+	 *
+	 * @param archivo       Ruta absoluta del archivo local.
+	 * @param nombreArchivo Nombre del archivo.
+	 * @param rutaActual    Directorio destino en el servidor FTP.
+	 */
 	public void subirArchivo(String archivo, String nombreArchivo, String rutaActual) {
 		BufferedInputStream in;
 		String rutaCompleta;
@@ -64,6 +76,13 @@ public class FileManager {
 		this.desconectar();
 	}
 
+	/**
+	 * Descarga un archivo del servidor FTP al sistema local.
+	 *
+	 * @param select     Archivo FTP seleccionado para descarga.
+	 * @param rutaLocal  Ruta del directorio local destino.
+	 * @param rutaActual Ruta del directorio actual en el FTP.
+	 */
 	public void descargarArchivo(FTPFile select, String rutaLocal, String rutaActual) {
 		BufferedOutputStream out;
 		File archivoLocal;
@@ -102,6 +121,12 @@ public class FileManager {
 		this.desconectar();
 	}
 
+	/**
+	 * Borra un archivo del servidor FTP.
+	 *
+	 * @param select     Archivo FTP a borrar.
+	 * @param rutaActual Directorio donde se encuentra el archivo.
+	 */
 	public void borrarArchivo(FTPFile select, String rutaActual) {
 		String rutaCompleta;
 		if (!this.conectar()) {
@@ -128,6 +153,12 @@ public class FileManager {
 		this.desconectar();
 	}
 
+	/**
+	 * Crea un nuevo directorio en el servidor FTP.
+	 *
+	 * @param nombreCarpeta Nombre de la nueva carpeta.
+	 * @param rutaActual    Ruta donde se creará la carpeta.
+	 */
 	public void crearCarpeta(String nombreCarpeta, String rutaActual) {
 		String rutaCompleta;
 		try {
@@ -153,6 +184,12 @@ public class FileManager {
 		this.desconectar();
 	}
 
+	/**
+	 * Elimina una carpeta del servidor FTP.
+	 *
+	 * @param nombreCarpeta Nombre de la carpeta a borrar.
+	 * @param rutaActual    Ruta donde se encuentra la carpeta.
+	 */
 	public void borrarCarpeta(String nombreCarpeta, String rutaActual) {
 
 		String rutaCompleta;
@@ -193,6 +230,12 @@ public class FileManager {
 		this.desconectar();
 	}
 
+	/**
+	 * Lista los archivos y carpetas en un directorio del servidor FTP.
+	 *
+	 * @param ruta Ruta del directorio a listar.
+	 * @return Array de objetos FTPFile con la información de los archivos.
+	 */
 	public FTPFile[] listarArchivos(String ruta) {
 		try {
 			return this.ftpClient.listFiles(ruta);
@@ -202,6 +245,11 @@ public class FileManager {
 		}
 	}
 
+	/**
+	 * Establece la conexión y realiza el login con el servidor FTP.
+	 *
+	 * @return true si la conexión y login fueron exitosos, false en caso contrario.
+	 */
 	public boolean conectar() {
 		try {
 			this.ftpClient.connect(this.servidor, this.puerto);
@@ -212,6 +260,9 @@ public class FileManager {
 		}
 	}
 
+	/**
+	 * Cierra la sesión y desconecta del servidor FTP.
+	 */
 	public void desconectar() {
 		try {
 			if (this.ftpClient.isConnected()) {
@@ -223,6 +274,11 @@ public class FileManager {
 		}
 	}
 
+	/**
+	 * Obtiene el nombre de usuario configurado para la conexión FTP.
+	 *
+	 * @return El nombre de usuario.
+	 */
 	public String getUserName() {
 		return usuario;
 	}

@@ -10,6 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+/**
+ * Oyente que maneja los eventos de la vista CRUD (botones de menú de tablas y
+ * botones de acción nuevo/actualizar).
+ */
 public class OyenteCRUD implements ActionListener {
     private CoPrincipal controlador;
     private ViMain vista;
@@ -23,6 +27,13 @@ public class OyenteCRUD implements ActionListener {
         this.menuPrincipal = menuPrincipal;
     }
 
+    /**
+     * Maneja las acciones de los botones.
+     * Cambia la tabla activa según el botón del menú presionado o abre formularios
+     * de edición.
+     *
+     * @param e El evento de acción.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();

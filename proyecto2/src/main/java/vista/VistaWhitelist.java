@@ -27,6 +27,10 @@ import javax.swing.border.EmptyBorder;
 
 import modelo.MoTextos;
 
+/**
+ * Vista para la gestión de la Whitelist de correos permitidos.
+ * Permite añadir nuevos correos de confianza o eliminar existentes.
+ */
 public class VistaWhitelist extends JFrame {
     private ArrayList<JButton> botones;
     private ViTabla tabla;
@@ -38,6 +42,9 @@ public class VistaWhitelist extends JFrame {
     private JButton btnVolver;
     private JLabel titulo;
 
+    /**
+     * Actualiza los textos de la interfaz según el idioma seleccionado.
+     */
     public void actualizarTextos() {
         this.setTitle(MoTextos.whitelist_title);
         titulo.setText(MoTextos.whitelist_title);
@@ -202,6 +209,11 @@ public class VistaWhitelist extends JFrame {
         return btn;
     }
 
+    /**
+     * Muestra un diálogo modal para añadir un nuevo usuario a la whitelist.
+     *
+     * @return 0 si se confirma la adición, 1 si se cancela.
+     */
     public int mostrarAgregarUsuario() {
         final JDialog dialog = new JDialog(
                 this,

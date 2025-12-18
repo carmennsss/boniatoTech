@@ -8,6 +8,10 @@ import java.awt.*;
 
 import java.util.ArrayList;
 
+/**
+ * Componente reutilizable que encapsula una JTable con estilos personalizados.
+ * Permite manejar selecciones múltiples y coloreado de filas.
+ */
 public class ViTabla extends JPanel {
     private JTable tabla;
     private JScrollPane scrollPane;
@@ -70,14 +74,35 @@ public class ViTabla extends JPanel {
         });
     }
 
+    /**
+     * Establece el modelo de datos de la tabla.
+     * 
+     * @param modelo DefaultTableModel con los datos a mostrar.
+     */
     public void setModelo(DefaultTableModel modelo) {
         tabla.setModel(modelo);
     }
 
+    /**
+     * Obtiene la instancia del JTable interno.
+     * 
+     * @return El JTable.
+     */
     public JTable getTabla() {
         return tabla;
     }
 
+    /**
+     * Cambia el color de fondo de una fila específica para indicar selección o
+     * deselección visual.
+     *
+     * @param fila         Índice de la fila.
+     * @param seleccionado true para marcar como seleccionada (quita el color),
+     *                     false para marcar como no seleccionada (añade color).
+     *                     (Nota: La lógica parece invertida en el nombre del
+     *                     parámetro vs implementación, se mantiene comportamiento
+     *                     original).
+     */
     public void cambiarColorFila(int fila, boolean seleccionado) {
         if (!seleccionado) {
             if (!filasSeleccionadas.contains(fila)) {
@@ -89,6 +114,9 @@ public class ViTabla extends JPanel {
         tabla.repaint();
     }
 
+    /**
+     * Deselecciona todas las filas de la tabla.
+     */
     public void deseleccionarFilas() {
         filasSeleccionadas.clear();
         tabla.repaint();

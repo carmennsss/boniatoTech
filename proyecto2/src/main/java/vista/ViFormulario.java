@@ -12,6 +12,10 @@ import modelo.Recinto;
 import modelo.Animal;
 import modelo.MoTextos;
 
+/**
+ * Ventana de formulario dinámica utilizada para crear o editar entidades.
+ * Genera campos de texto o comboboxes según la configuración proporcionada.
+ */
 public class ViFormulario extends JFrame {
     private ArrayList<JLabel> etiquetas;
     private ArrayList<JComponent> campos;
@@ -39,6 +43,12 @@ public class ViFormulario extends JFrame {
         setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 
+    /**
+     * Construye y muestra los campos del formulario basándose en una lista de
+     * nombres de etiquetas.
+     *
+     * @param nombresCampos Lista de nombres para las etiquetas de los campos.
+     */
     public void crearFormulario(ArrayList<String> nombresCampos) {
         getContentPane().removeAll();
         etiquetas.clear();
@@ -132,6 +142,12 @@ public class ViFormulario extends JFrame {
         btn.setPreferredSize(new Dimension(120, 35));
     }
 
+    /**
+     * Reemplaza un campo de texto por un JComboBox de recintos.
+     *
+     * @param nombre    Nombre del campo a reemplazar.
+     * @param elementos Lista de recintos para el combo.
+     */
     public void agregarComboRecintos(String nombre, ArrayList<Recinto> elementos) {
         int indice = -1;
         for (int i = 0; i < etiquetas.size(); i++) {
@@ -162,6 +178,12 @@ public class ViFormulario extends JFrame {
         }
     }
 
+    /**
+     * Reemplaza un campo de texto por un JComboBox de especies.
+     *
+     * @param nombre    Nombre del campo a reemplazar.
+     * @param elementos Lista de especies para el combo.
+     */
     public void agregarComboEspecies(String nombre, ArrayList<Especie> elementos) {
         int indice = -1;
         for (int i = 0; i < etiquetas.size(); i++) {
@@ -192,6 +214,12 @@ public class ViFormulario extends JFrame {
         }
     }
 
+    /**
+     * Reemplaza un campo de texto por un JComboBox de cuidadores.
+     *
+     * @param nombre    Nombre del campo a reemplazar.
+     * @param elementos Lista de cuidadores para el combo.
+     */
     public void agregarComboCuidadores(String nombre, ArrayList<Cuidador> elementos) {
         int indice = -1;
         for (int i = 0; i < etiquetas.size(); i++) {
@@ -222,6 +250,12 @@ public class ViFormulario extends JFrame {
         }
     }
 
+    /**
+     * Reemplaza un campo de texto por un JComboBox de tipos (strings).
+     *
+     * @param nombre    Nombre del campo a reemplazar.
+     * @param elementos Lista de strings para el combo.
+     */
     public void agregarComboTipos(String nombre, java.util.List<String> elementos) {
         int indice = -1;
         for (int i = 0; i < etiquetas.size(); i++) {
@@ -252,6 +286,13 @@ public class ViFormulario extends JFrame {
         }
     }
 
+    /**
+     * Rellena los campos del formulario con valores existentes (para edición).
+     * Maneja tanto JTextFields como JComboBoxes, seleccionando el item correcto por
+     * ID.
+     *
+     * @param valores Array de strings con los valores a pre-cargar.
+     */
     public void rellenarDatos(String[] valores) {
         for (int i = 0; i < valores.length && i < campos.size(); i++) {
             JComponent campo = campos.get(i);
@@ -288,6 +329,12 @@ public class ViFormulario extends JFrame {
         }
     }
 
+    /**
+     * Obtiene los valores introducidos por el usuario en todos los campos.
+     * Para JComboBox, obtiene el ID de la entidad seleccionada.
+     *
+     * @return Array de strings con los valores de los campos.
+     */
     public String[] obtenerValores() {
         String[] valores = new String[campos.size()];
         for (int i = 0; i < campos.size(); i++) {
@@ -314,18 +361,37 @@ public class ViFormulario extends JFrame {
         return valores;
     }
 
+    /**
+     * Hace visible el formulario.
+     */
     public void hacerVisible() {
         setVisible(true);
     }
 
+    /**
+     * Obtiene la lista de botones del formulario.
+     * 
+     * @return Lista de botones.
+     */
     public ArrayList<JButton> getBotones() {
         return botones;
     }
 
+    /**
+     * Obtiene la lista de campos del formulario.
+     * 
+     * @return Lista de componentes (campos).
+     */
     public ArrayList<JComponent> getCampos() {
         return campos;
     }
 
+    /**
+     * Reemplaza un campo de texto por un JComboBox de animales.
+     *
+     * @param nombre    Nombre del campo a reemplazar.
+     * @param elementos Lista de animales para el combo.
+     */
     public void agregarComboAnimales(String nombre, ArrayList<Animal> elementos) {
         int indice = -1;
         for (int i = 0; i < etiquetas.size(); i++) {
@@ -356,18 +422,31 @@ public class ViFormulario extends JFrame {
         }
     }
 
+    /**
+     * Obtiene el botón de guardar.
+     * 
+     * @return Botón de guardar o null si no existe.
+     */
     public JButton getBtnGuardar() {
         if (botones.size() > 0)
             return botones.get(0);
         return null;
     }
 
+    /**
+     * Obtiene el botón de cancelar.
+     * 
+     * @return Botón de cancelar o null si no existe.
+     */
     public JButton getBtnCancelar() {
         if (botones.size() > 1)
             return botones.get(1);
         return null;
     }
 
+    /**
+     * Actualiza los textos del formulario según el idioma seleccionado.
+     */
     public void actualizarTextos() {
         this.setTitle(MoTextos.form_title);
         if (botones.size() > 0)

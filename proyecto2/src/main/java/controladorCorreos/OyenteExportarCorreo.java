@@ -8,18 +8,35 @@ import java.io.PrintWriter;
 import modelo.Correo;
 import vista.VistaCorreoBase;
 
+/**
+ * Oyente del botón "Exportar" en la vista de lectura de correos.
+ * Exporta el correo seleccionado a formato .eml.
+ */
 public class OyenteExportarCorreo implements ActionListener {
 
 	private Correo correo;
 	private VistaCorreoBase vista;
 	private String correoUsuario;
 
+	/**
+	 * Constructor del oyente.
+	 *
+	 * @param correo        Correo a exportar.
+	 * @param vistaLectura  Vista de lectura del correo.
+	 * @param correoUsuario Dirección de correo del usuario.
+	 */
 	public OyenteExportarCorreo(Correo correo, VistaCorreoBase vistaLectura, String correoUsuario) {
 		this.correo = correo;
 		this.vista = vistaLectura;
 		this.correoUsuario = correoUsuario;
 	}
 
+	/**
+	 * Exporta el correo seleccionado a un archivo .eml en la ubicación elegida por
+	 * el usuario.
+	 *
+	 * @param e Evento de acción.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String nombreSugerido = correo.getAsunto().replaceAll("[^a-zA-Z0-9]", "_");

@@ -9,6 +9,10 @@ import controladorLogs.GestionLogs;
 import modelo.Correo;
 import vista.VistaGeneralCorreo;
 
+/**
+ * Hilo de ejecución en segundo plano para la recepción automática de correos.
+ * Comprueba periódicamente si hay nuevos correos y actualiza la vista.
+ */
 public class HiloRecepcionCorreos implements Runnable {
 
 	private GestionCorreos gestionPop3;
@@ -18,6 +22,16 @@ public class HiloRecepcionCorreos implements Runnable {
 	private ControladorCorreos controlador;
 	private GestionLogs logCorreo;
 
+	/**
+	 * Constructor del hilo de recepción de correos.
+	 *
+	 * @param gestionPop3         Gestor de correos POP3.
+	 * @param host                Host del servidor de correo.
+	 * @param correo              Dirección de correo del usuario.
+	 * @param PASSWORD_APLICACION Contraseña de aplicación.
+	 * @param vistaGeneral        Vista general de correos.
+	 * @param controlador         Controlador de correos.
+	 */
 	public HiloRecepcionCorreos(GestionCorreos gestionPop3, String host, String correo, String PASSWORD_APLICACION,
 			VistaGeneralCorreo vistaGeneral, ControladorCorreos controlador) {
 		this.gestionPop3 = gestionPop3;
@@ -28,6 +42,11 @@ public class HiloRecepcionCorreos implements Runnable {
 		this.controlador = controlador;
 	}
 
+	/**
+	 * Ejecuta el bucle de recepción de correos en segundo plano.
+	 * Comprueba nuevos correos cada 25 segundos y actualiza la vista si hay
+	 * cambios.
+	 */
 	@Override
 	public void run() {
 		try {

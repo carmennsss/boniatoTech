@@ -15,6 +15,10 @@ import modelo.ModeloBaseDatos;
 import modelo.User;
 import vista.VistaLogs;
 
+/**
+ * Clase para realizar operaciones de base de datos relacionadas con los Logs.
+ * Permite registrar acciones, consultar logs con filtros y exportar a CSV.
+ */
 public class GestionLogs {
 	private static Connection conexion;
 
@@ -22,6 +26,11 @@ public class GestionLogs {
 		this.conexion = ModeloBaseDatos.getConexion();
 	}
 
+	/**
+	 * Registra un nuevo log en la base de datos.
+	 *
+	 * @param log Objeto Log con la información de la acción, usuario y resultado.
+	 */
 	public static void writeLog(Log log) {
 		if (conexion == null) {
 			conexion = ModeloBaseDatos.getConexion();
@@ -49,6 +58,13 @@ public class GestionLogs {
 
 	}
 
+	/**
+	 * Consulta los logs de la base de datos aplicando un criterio de ordenación.
+	 *
+	 * @param consulta Criterio de ordenación ("actions", "users", "dates",
+	 *                 "results").
+	 * @return Lista de logs recuperados.
+	 */
 	public static ArrayList<Log> consultLogs(String consulta) {
 		if (conexion == null) {
 			conexion = ModeloBaseDatos.getConexion();
@@ -87,34 +103,40 @@ public class GestionLogs {
 		return logs;
 	}
 
+	/**
+	 * Exporta todos los logs a un archivo CSV.
+	 *
+	 * @param file El archivo destino.
+	 * @return true si la exportación fue exitosa, false en caso contrario.
+	 */
 	public boolean exportLogs(File file) {
-	    if (conexion == null) {
-	        conexion = ModeloBaseDatos.getConexion();
-	        return false;
-	    }
+		if (conexion == null) {
+			conexion = ModeloBaseDatos.getConexion();
+			return false;
+		}
 
-	    ArrayList<Log> logs = consultLogs("all");
+		ArrayList<Log> logs = consultLogs("all");
 
-	    try (FileWriter fw = new FileWriter(file)) {
+		try (FileWriter fw = new FileWriter(file)) {
 
-	        if (logs.isEmpty()) {
-	            fw.write("There aren't logs registered in the database.\n");
-	            return true;
-	        }
+			if (logs.isEmpty()) {
+				fw.write("There aren't logs registered in the database.\n");
+				return true;
+			}
 
-	        // Cabecera CSV
-	        fw.write("Date,User,Action,Result\n");
+			// Cabecera CSV
+			fw.write("Date,User,Action,Result\n");
 
-	        for (Log log : logs) {
-	            fw.write(log.toString());
-	            fw.write("\n");
-	        }
+			for (Log log : logs) {
+				fw.write(log.toString());
+				fw.write("\n");
+			}
 
-	        return true;
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        return false;
-	    }
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public void mostrarLogs() {

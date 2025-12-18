@@ -10,6 +10,12 @@ import java.io.File;
 import java.io.IOException;
 import java.security.MessageDigest;
 
+/**
+ * Cliente FTP encargado de la gestión de archivos y usuarios en el servidor FTP
+ * FileZilla.
+ * Realiza operaciones de conexión, creación de roles, asignación de permisos y
+ * gestión de usuarios mediante manipulación del archivo de configuración XML.
+ */
 public class ModeloClienteFTP {
     private FTPClient cliente;
     private String servidor = "13.62.51.110";
@@ -17,6 +23,11 @@ public class ModeloClienteFTP {
     private String user = "";
     private String pass = "";
 
+    /**
+     * Obtiene el nombre de usuario de la conexión FTP.
+     *
+     * @return El nombre de usuario.
+     */
     public String getUser() {
         return user;
     }
@@ -35,14 +46,28 @@ public class ModeloClienteFTP {
         return pass;
     }
 
+    /**
+     * Establece la contraseña de la conexión FTP.
+     *
+     * @param pass La nueva contraseña.
+     */
     public void setPass(String pass) {
         this.pass = pass;
     }
 
+    /**
+     * Constructor que inicializa el cliente FTP.
+     */
     public ModeloClienteFTP() {
         cliente = new FTPClient();
     }
 
+    /**
+     * Establece la conexión con el servidor FTP.
+     * Si no está conectado, entra en modo pasivo y conecta.
+     *
+     * @throws IOException Si ocurre un error de conexión.
+     */
     public void establecerConexion() throws IOException {
         if (!cliente.isConnected()) {
             cliente.enterLocalPassiveMode();
@@ -50,6 +75,10 @@ public class ModeloClienteFTP {
         }
     }
 
+    /**
+     * Cierra la sesión y desconecta del servidor FTP.
+     * Captura cualquier excepción silenciosamente.
+     */
     public void desconectar() {
         try {
             if (cliente.isConnected()) {
@@ -60,6 +89,13 @@ public class ModeloClienteFTP {
         }
     }
 
+    /**
+     * Crea un nuevo rol (grupo) en el servidor FTP editando el archivo de
+     * configuración XML.
+     * Configura opciones por defecto para el grupo.
+     *
+     * @param nombreRol El nombre del nuevo rol.
+     */
     public void crearRol(String nombreRol) {
         conectarCarpetaCompartida();
         try {
@@ -114,6 +150,14 @@ public class ModeloClienteFTP {
         }
     }
 
+    /**
+     * Asigna permisos a un rol sobre una carpeta específica.
+     *
+     * @param nombreRol   El nombre del rol (grupo).
+     * @param carpeta     La ruta de la carpeta.
+     * @param tipoPermiso El tipo de permiso a asignar (e.g., "FileRead").
+     * @param valor       true para habilitar, false para deshabilitar.
+     */
     public void asignarPermiso(String nombreRol, String carpeta, String tipoPermiso, boolean valor) {
         conectarCarpetaCompartida();
         try {
@@ -192,6 +236,13 @@ public class ModeloClienteFTP {
         agregarOpcion(doc, parent, name, value);
     }
 
+    /**
+     * Añade un nuevo usuario al servidor FTP con configuraciones predeterminadas.
+     * Genera un hash MD5 de la contraseña.
+     *
+     * @param nombre   El nombre de usuario.
+     * @param password La contraseña del usuario.
+     */
     public void aniadirUsuario(String nombre, String password) {
 
         conectarCarpetaCompartida();
@@ -273,6 +324,11 @@ public class ModeloClienteFTP {
         }
     }
 
+    /**
+     * Elimina un usuario del servidor FTP.
+     *
+     * @param nombre El nombre del usuario a eliminar.
+     */
     public void eliminarUsuario(String nombre) {
 
         conectarCarpetaCompartida();
@@ -346,6 +402,11 @@ public class ModeloClienteFTP {
         }
     }
 
+    /**
+     * Obtiene el cliente FTP subyacente.
+     *
+     * @return El objeto FTPClient.
+     */
     public FTPClient getCliente() {
         return cliente;
     }

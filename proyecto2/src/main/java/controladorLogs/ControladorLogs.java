@@ -7,9 +7,13 @@ import javax.swing.JButton;
 
 import modelo.Log;
 import modelo.MoTextos;
-import modelo.User;
+
 import vista.VistaLogs;
 
+/**
+ * Controlador de la vista de Logs.
+ * Gestiona la visualización, filtros y exportación de logs del sistema.
+ */
 public class ControladorLogs {
 
 	private Connection conn;
@@ -25,11 +29,21 @@ public class ControladorLogs {
 		asignarOyenteConsultaLogs();
 	}
 
+	/**
+	 * Muestra la ventana de logs y carga todos los registros por defecto.
+	 */
 	public void mostrar() {
 		cargarLogs("all");
 		vistaLogs.hacerVisible();
 	}
 
+	/**
+	 * Carga y filtra los logs en la vista según el tipo de consulta.
+	 * Actualiza el título de la vista según el filtro aplicado.
+	 *
+	 * @param consulta Tipo de filtro ("actions", "users", "dates", "results", o
+	 *                 "all").
+	 */
 	public void cargarLogs(String consulta) {
 		ArrayList<Log> logs = new ArrayList<>();
 
