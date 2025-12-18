@@ -86,7 +86,7 @@ public class GestionCorreos {
 			System.out.println("[POP3] Correos cargados correctamente");
 
 		} catch (Exception e) {
-			System.err.println("[ERROR POP3]");
+			System.err.println("[ERROR POP3]: " + e.getMessage());
 		}
 
 		return listaCorreos;

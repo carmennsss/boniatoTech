@@ -138,6 +138,11 @@ public class OyenteFTP implements ActionListener {
 		vistaUsuarios.setVisible(false);
 		vistaAdmin.hacerVisible();
 	}
+	
+	private void volverMenuDesdeCorreos() {
+		controladorPrincipal.getVistaGeneralCorreo().setVisible(false);
+		vistaMenuPrincipal.hacerVisible();
+	}
 
 	private void volverAdminDesdeRoles() {
 		viMain.getViCrearRol().setVisible(false);

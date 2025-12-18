@@ -87,7 +87,6 @@ public class ControladorCorreos {
 		vistaGeneral.getEmailTabla()
 				.addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this, CORREO));
 		vistaGeneral.getBtnRefrescar().addActionListener(new OyenteRefrescarCorreo(this));
-		// vistaGeneral.getBtnVolver().addActionListener(new OyenteBtnVolver());
 	}
 
 	// ELIMINAR
