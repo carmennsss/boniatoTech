@@ -25,13 +25,14 @@ import modelo.Log;
 
 public class VistaLogs extends JFrame {
 
+	VistaAdmin vistaAdmin;
 	private JPanel panel;
 	private JTable tabla;
 	private DefaultTableModel tablaModelo;
 	private JButton btnExport;
 
-	public VistaLogs() {
-
+	public VistaLogs(VistaAdmin vistaAdmin) {
+		this.vistaAdmin=vistaAdmin;
 		mostrarVentana();
 		propiedadesVentana();
 		mostrarTabla();
@@ -126,6 +127,10 @@ public class VistaLogs extends JFrame {
 
 			tablaModelo.addRow(fila);
 		}
+	}
+	
+	public void hacerVisible() {
+		this.setVisible(true);
 	}
 	
 	public void mostrarMensaje(String mensaje) {
