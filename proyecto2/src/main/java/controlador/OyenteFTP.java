@@ -51,7 +51,7 @@ public class OyenteFTP implements ActionListener {
 		String command = button.getText();
 
 		switch (command.toLowerCase()) {
-			case "enter":
+			case "log in":
 				login();
 				break;
 			case "file manager":
@@ -90,9 +90,22 @@ public class OyenteFTP implements ActionListener {
 			case "volver":
 				volverAdminDesdeRoles();
 				break;
+			case "log out":
+				logOut();
+				break;
 			default:
 				break;
 		}
+	}
+	
+	private void logOut() {
+		modelo.desconectar();
+		vistaMenuPrincipal.setVisible(false);
+		viMain.setVisible(true);
+		viMain.getPanelLogin().getCajas().get(0).setText("");
+		viMain.getPanelLogin().getCajas().get(1).setText("");
+		viMain.mostrarLogin();
+		
 	}
 
 	private void volverMenuPrincipal() {
