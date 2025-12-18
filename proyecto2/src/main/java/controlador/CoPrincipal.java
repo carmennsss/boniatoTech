@@ -46,6 +46,7 @@ public class CoPrincipal {
         this.vistaUsuarios = new VistaRegistroUsuarios(vistaAdmin, modeloFTP, bd);
         this.vistaEliminarUsuarios = new VistaEliminarUsuarios(vistaUsuarios, modeloFTP, bd);
         this.vistaLogs = new VistaLogs(vistaAdmin);
+        this.controladorLogs = new ControladorLogs(modelo.ModeloBaseDatos.getConexion(), vistaLogs);
 
         vista.hacerVisible();
         asignarEventos();
@@ -124,6 +125,7 @@ public class CoPrincipal {
         this.vistaGeneralCorreo = new VistaGeneralCorreo(bd.obtenerEmailPorUsuario(modeloFTP.getUser()));
         this.controladorCorreos = new ControladorCorreos(bd.obtenerEmailPorUsuario(modeloFTP.getUser()),
                 vistaGeneralCorreo, bd, vistaMenuPrincipal);
+        new controladorLogs.GestionLogs();
     }
 
     public void setEditando(boolean editando) {

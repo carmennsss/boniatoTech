@@ -14,8 +14,10 @@ import javax.swing.JList;
 
 import org.apache.commons.net.ftp.FTPFile;
 
+import controladorLogs.GestionLogs;
 import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
+import modelo.Log;
 import modelo.MoTextos;
 import servidor.FileManager;
 import vista.VistaGestorArchivos;
@@ -61,7 +63,7 @@ public class OyenteArchivos implements ActionListener {
             accionBotonCrearCarpeta();
         } else if (source == vista.getBotonBorrarCarpeta()) {
             accionBotonBorrarCarpeta();
-        }else if (source == vista.getBotonRenombrar()) {
+        } else if (source == vista.getBotonRenombrar()) {
             accionBotonRenombrar();
         } else if (source == vista.getBotonVolver()) {
             accionBotonVolver();
@@ -71,14 +73,17 @@ public class OyenteArchivos implements ActionListener {
     }
 
     private void accionBotonRenombrar() {
-    	
-    	FTPFile select = vista.getListaArchivos().getSelectedValue();
+
+        FTPFile select = vista.getListaArchivos().getSelectedValue();
         if (select != null) {
-            String nuevoNombre = JOptionPane.showInputDialog(vista, 
+            String nuevoNombre = JOptionPane.showInputDialog(vista,
                     "Enter new name for the file:", select.getName());
 
             if (db.renombrarArchivoSQL(select.getName(), nuevoNombre, rutaActual)) {
                 ftp.renombrar(select, nuevoNombre.trim(), rutaActual);
+                GestionLogs.writeLog(
+                        new Log("File renamed, " + select.getName(), db.obtenerEmailPorUsuario(client.getUser()),
+                                true));
                 actualizarListaFTP();
             } else {
                 JOptionPane.showMessageDialog(vista, "Renaming canceled or invalid name.", "Info",
@@ -88,10 +93,10 @@ public class OyenteArchivos implements ActionListener {
             JOptionPane.showMessageDialog(null, MoTextos.msg_select_file, MoTextos.msg_error_title,
                     JOptionPane.INFORMATION_MESSAGE);
         }
-    	
-	}
-    
-	public boolean verificarPermiso(String ruta, String accion) {
+
+    }
+
+    public boolean verificarPermiso(String ruta, String accion) {
         String emailUsuario = db.obtenerEmailPorUsuario(client.getUser());
 
         String sqlPropietario = "SELECT * FROM archivos WHERE email_usuario = ? AND directorio = ?";
@@ -148,6 +153,8 @@ public class OyenteArchivos implements ActionListener {
             }
             db.insertarArchivo(nombreArchivo, rutaActual, extension, tipo, idPadre, emailUsuario);
             ftp.subirArchivo(archivo, nombreArchivo, rutaActual);
+            GestionLogs.writeLog(
+                    new Log("File uploaded, " + nombreArchivo, db.obtenerEmailPorUsuario(client.getUser()), true));
             actualizarListaFTP();
         }
     }
@@ -178,6 +185,8 @@ public class OyenteArchivos implements ActionListener {
             carpeta = fc.getSelectedFile();
             ftp.descargarArchivo(select, carpeta.getAbsolutePath(), rutaActual);
         }
+        GestionLogs.writeLog(
+                new Log("File downloaded, " + select.getName(), db.obtenerEmailPorUsuario(client.getUser()), true));
     }
 
     public void accionBotonEliminar() {
@@ -193,6 +202,8 @@ public class OyenteArchivos implements ActionListener {
 
             ftp.borrarArchivo(select, rutaActual);
             db.eliminarArchivo(select.getName(), rutaActual);
+            GestionLogs.writeLog(
+                    new Log("File deleted, " + select.getName(), db.obtenerEmailPorUsuario(client.getUser()), true));
             actualizarListaFTP();
         } else {
             JOptionPane.showMessageDialog(null, MoTextos.msg_select_file, MoTextos.msg_error_title,
@@ -223,6 +234,8 @@ public class OyenteArchivos implements ActionListener {
             }
             db.insertarArchivo(nombreCarpeta, directorioServidor, "", "Folder", idPadre, emailUsuario);
             ftp.crearCarpeta(nombreCarpeta, rutaActual);
+            GestionLogs.writeLog(
+                    new Log("Folder created, " + nombreCarpeta, db.obtenerEmailPorUsuario(client.getUser()), true));
             actualizarListaFTP();
         } else {
             JOptionPane.showMessageDialog(null, MoTextos.msg_enter_folder_name, MoTextos.msg_error_title,
@@ -257,7 +270,8 @@ public class OyenteArchivos implements ActionListener {
         }
         db.eliminarArchivo(select.getName(), rutaCarpeta);
         ftp.borrarCarpeta(select.getName(), rutaActual);
-
+        GestionLogs.writeLog(
+                new Log("Folder deleted, " + select.getName(), db.obtenerEmailPorUsuario(client.getUser()), true));
         actualizarListaFTP();
     }
 
