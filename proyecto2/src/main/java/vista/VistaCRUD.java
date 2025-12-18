@@ -11,6 +11,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import modelo.MoTextos;
 
+/**
+ * Ventana principal de gestión CRUD (Create, Read, Update, Delete).
+ * Provee un menú superior para navegar entre entidades y una tabla central.
+ */
 public class VistaCRUD extends JFrame {
     private ViBotones panelMenu;
     private ViTabla panelTabla;
@@ -111,22 +115,43 @@ public class VistaCRUD extends JFrame {
 
     private javax.swing.JLabel lblInstrucciones;
 
+    /**
+     * Obtiene el panel de botones del menú superior.
+     * 
+     * @return Panel de botones del menú.
+     */
     public ViBotones getPanelMenu() {
         return panelMenu;
     }
 
+    /**
+     * Obtiene el panel que contiene la tabla de datos.
+     * 
+     * @return Panel de la tabla.
+     */
     public ViTabla getPanelTabla() {
         return panelTabla;
     }
 
+    /**
+     * Obtiene el panel de botones de acciones inferiores.
+     * 
+     * @return Panel de acciones.
+     */
     public ViBotones getPanelAcciones() {
         return panelAcciones;
     }
 
+    /**
+     * Hace visible la ventana de gestión CRUD.
+     */
     public void hacerVisible() {
         setVisible(true);
     }
 
+    /**
+     * Actualiza los textos de la interfaz según el idioma seleccionado.
+     */
     public void actualizarTextos() {
         lblInstrucciones.setText(MoTextos.lbl_crud_instructions);
         if (panelAcciones.getBotones().size() > 0)

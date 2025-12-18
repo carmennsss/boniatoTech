@@ -15,8 +15,23 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.Multipart;
 
+/**
+ * Clase utilitaria para el envío de correos electrónicos vía SMTP.
+ * Configurada para usar el servidor SMTP de Gmail.
+ */
 public class EnviarCorreo {
 
+    /**
+     * Envía un correo electrónico con soporte para archivos adjuntos.
+     *
+     * @param miCorreo           Dirección de correo del remitente.
+     * @param asunto             Asunto del correo.
+     * @param mensaje            Cuerpo del mensaje.
+     * @param receptor           Dirección de correo del destinatario.
+     * @param passwordAplicacion Contraseña de aplicación del remitente.
+     * @param archivos           Lista de archivos a adjuntar (puede ser null).
+     * @throws Exception Si ocurre un error durante la autenticación o el envío.
+     */
     public static void enviarCorreo(String miCorreo, String asunto, String mensaje, String receptor,
             String passwordAplicacion, List<File> archivos) throws Exception {
 
@@ -31,11 +46,11 @@ public class EnviarCorreo {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(
                         miCorreo,
-                        passwordAplicacion  // Contrasenna de aplicacion correcta
+                        passwordAplicacion // Contrasenna de aplicacion correcta
                 );
             }
         });
-        
+
         // Crear mensaje
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress(miCorreo));

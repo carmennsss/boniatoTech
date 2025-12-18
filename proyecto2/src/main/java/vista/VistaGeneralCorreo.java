@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,6 +25,11 @@ import javax.swing.table.DefaultTableModel;
 import modelo.Correo;
 import modelo.MoTextos;
 
+/**
+ * Vista principal o "Buzón de Entrada" para la gestión de correos.
+ * Muestra una lista de correos recibidos y permite navegar a la redacción o
+ * lectura.
+ */
 public class VistaGeneralCorreo extends JFrame {
 
 	private JPanel panel;
@@ -137,6 +142,12 @@ public class VistaGeneralCorreo extends JFrame {
 		this.setMinimumSize(new Dimension(600, 400));
 	}
 
+	/**
+	 * Recupera el objeto Correo asociado a una fila específica de la tabla visual.
+	 *
+	 * @param fila Índice de la fila.
+	 * @return El objeto Correo correpondiente o null si el índice es inválido.
+	 */
 	public Correo getCorreoPorFila(int fila) {
 		if (fila >= 0 && fila < correosActuales.size()) {
 			return correosActuales.get(fila);
@@ -206,6 +217,12 @@ public class VistaGeneralCorreo extends JFrame {
 
 	private ArrayList<Correo> correosActuales = new ArrayList<>();
 
+	/**
+	 * Carga y muestra una lista de correos en la tabla.
+	 * Ordena los correos por fecha descendente.
+	 *
+	 * @param correos Lista de objetos Correo a visualizar.
+	 */
 	public void cargarCorreos(ArrayList<Correo> correos) {
 		correosActuales.clear();
 		correosActuales.addAll(correos);
@@ -226,6 +243,9 @@ public class VistaGeneralCorreo extends JFrame {
 		this.setVisible(true);
 	}
 
+	/**
+	 * Actualiza los textos de la interfaz según el idioma seleccionado.
+	 */
 	public void actualizarTextos() {
 		this.setTitle(MoTextos.mail_title_inbox);
 		if (etiquetaCorreo != null) {

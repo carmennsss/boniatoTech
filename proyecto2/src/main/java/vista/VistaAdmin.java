@@ -21,6 +21,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * Vista del panel de administración.
+ * Proporciona acceso a las funciones administrativas como gestión de usuarios,
+ * roles, logs y whitelist.
+ */
 public class VistaAdmin extends JFrame {
 
 	VistaMenuPrincipal menu;
@@ -137,10 +142,20 @@ public class VistaAdmin extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
+	/**
+	 * Obtiene el botón para acceder a la gestión de logs.
+	 * 
+	 * @return Botón de logs.
+	 */
 	public JButton getBotonLogs() {
 		return botonLogs;
 	}
 
+	/**
+	 * Establece el botón para acceder a la gestión de logs.
+	 * 
+	 * @param botonLogs Botón de logs.
+	 */
 	public void setBotonLogs(JButton botonLogs) {
 		this.botonLogs = botonLogs;
 	}
@@ -155,50 +170,106 @@ public class VistaAdmin extends JFrame {
 		btn.setPreferredSize(new Dimension(280, 50));
 	}
 
+	/**
+	 * Obtiene el botón para crear nuevos usuarios.
+	 * 
+	 * @return Botón de crear usuario.
+	 */
 	public JButton getBotonCrearUsuario() {
 		return botonCrearUsuario;
 	}
 
+	/**
+	 * Establece el botón para crear nuevos usuarios.
+	 * 
+	 * @param botonCrearUsuario Botón de crear usuario.
+	 */
 	public void setBotonCrearUsuario(JButton botonCrearUsuario) {
 		this.botonCrearUsuario = botonCrearUsuario;
 	}
 
+	/**
+	 * Obtiene el botón para gestionar roles.
+	 * 
+	 * @return Botón de gestionar roles.
+	 */
 	public JButton getBotonCrearRoles() {
 		return botonCrearRoles;
 	}
 
+	/**
+	 * Establece el botón para gestionar roles.
+	 * 
+	 * @param botonCrearRoles Botón de gestionar roles.
+	 */
 	public void setBotonCrearRoles(JButton botonCrearRoles) {
 		this.botonCrearRoles = botonCrearRoles;
 	}
 
+	/**
+	 * Obtiene el botón para asignar roles a usuarios.
+	 * 
+	 * @return Botón de asignar roles.
+	 */
 	public JButton getBotonAsignarRoles() {
 		return botonAsignarRoles;
 	}
 
+	/**
+	 * Establece el botón para asignar roles a usuarios.
+	 * 
+	 * @param botonAsignarRoles Botón de asignar roles.
+	 */
 	public void setBotonAsignarRoles(JButton botonAsignarRoles) {
 		this.botonAsignarRoles = botonAsignarRoles;
 	}
 
+	/**
+	 * Obtiene el botón para volver al menú principal.
+	 * 
+	 * @return Botón de volver.
+	 */
 	public JButton getBotonVolver() {
 		return botonVolver;
 	}
 
+	/**
+	 * Establece el botón para volver al menú principal.
+	 * 
+	 * @param botonVolver Botón de volver.
+	 */
 	public void setBotonVolver(JButton botonVolver) {
 		this.botonVolver = botonVolver;
 	}
 
+	/**
+	 * Obtiene el botón para acceder a la gestión de whitelist.
+	 * 
+	 * @return Botón de whitelist.
+	 */
 	public JButton getBotonWhitelist() {
 		return botonWhitelist;
 	}
 
+	/**
+	 * Establece el botón para acceder a la gestión de whitelist.
+	 * 
+	 * @param botonWhitelist Botón de whitelist.
+	 */
 	public void setBotonWhitelist(JButton botonWhitelist) {
 		this.botonWhitelist = botonWhitelist;
 	}
 
+	/**
+	 * Hace visible la ventana de administración.
+	 */
 	public void hacerVisible() {
 		this.setVisible(true);
 	}
 
+	/**
+	 * Actualiza los textos de la interfaz según el idioma seleccionado.
+	 */
 	public void actualizarTextos() {
 		this.setTitle(modelo.MoTextos.admin_title);
 		titulo.setText(modelo.MoTextos.admin_title);

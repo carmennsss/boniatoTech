@@ -9,12 +9,19 @@ import java.util.ArrayList;
 
 import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
+/**
+ * Clase encargada de la gestión de la base de datos.
+ * Maneja la conexión, consultas y actualizaciones en la base de datos MySQL.
+ */
 public class ModeloBaseDatos {
     private final static String url = "jdbc:mysql://13.62.51.110:3306/serwo?useSSL=false&serverTimezone=UTC";
     private final static String usuario = "appuser";
     private final static String password = "mariaenmiami";
     public static Connection conexion;
 
+    /**
+     * Cierra la conexión actual con la base de datos si está abierta.
+     */
     public void cerrarConexion() {
         try {
             if (conexion != null && !conexion.isClosed()) {
@@ -25,6 +32,12 @@ public class ModeloBaseDatos {
         }
     }
 
+    /**
+     * Obtiene la instancia única de la conexión a la base de datos (Singleton).
+     * Si no existe o está cerrada, crea una nueva.
+     *
+     * @return Objeto Connection activo.
+     */
     public static Connection getConexion() {
         try {
             if (conexion == null || conexion.isClosed()) {
@@ -36,6 +49,13 @@ public class ModeloBaseDatos {
         return conexion;
     }
 
+    /**
+     * Ejecuta una consulta SQL de selección (SELECT).
+     *
+     * @param consulta La sentencia SQL a ejecutar.
+     * @return ResultSet con los resultados de la consulta, o null si ocurre un
+     *         error.
+     */
     public ResultSet getConsulta(String consulta) {
         try {
             return getConexion().createStatement().executeQuery(consulta);
@@ -45,6 +65,15 @@ public class ModeloBaseDatos {
         }
     }
 
+    /**
+     * Ejecuta una actualización en la base de datos (INSERT, UPDATE, DELETE) con
+     * parámetros preparados.
+     *
+     * @param consulta   La sentencia SQL preparada (con ?).
+     * @param parametros Lista de parámetros (Strings) para sustituir en la
+     *                   consulta.
+     * @return El número de filas afectadas, o -1 si ocurre un error.
+     */
     public int ejecutarActualizacion(String consulta, ArrayList<String> parametros) {
         try {
             PreparedStatement pstmt = getConexion().prepareStatement(consulta);
@@ -58,6 +87,12 @@ public class ModeloBaseDatos {
         }
     }
 
+    /**
+     * Obtiene todos los registros de una tabla específica.
+     *
+     * @param tabla Nombre de la tabla.
+     * @return ResultSet con todos los registros.
+     */
     public ResultSet getTabla(String tabla) {
         return getConsulta("SELECT * FROM " + tabla);
     }

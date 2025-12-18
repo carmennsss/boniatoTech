@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 import modelo.MoTextos;
 
+/**
+ * Oyente para el cambio de idioma a través del ComboBox en la interfaz.
+ */
 public class OyenteIdioma implements ActionListener {
 
     private CoPrincipal coPrincipal;
@@ -13,6 +16,11 @@ public class OyenteIdioma implements ActionListener {
         this.coPrincipal = coPrincipal;
     }
 
+    /**
+     * Detecta la selección de un nuevo idioma y actualiza la configuración global.
+     *
+     * @param e El evento de acción.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         JComboBox<?> combo = (JComboBox<?>) e.getSource();

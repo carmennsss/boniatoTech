@@ -9,6 +9,11 @@ import java.net.URL;
 import controlador.OyenteArchivos;
 import modelo.MoTextos;
 
+/**
+ * Vista para la gestión de archivos mediante FTP.
+ * Muestra el repositorio remoto y permite subir, descargar y eliminar archivos
+ * o carpetas.
+ */
 public class VistaGestorArchivos extends JFrame {
 
 	private DefaultListModel<FTPFile> listaModel;
@@ -191,6 +196,10 @@ public class VistaGestorArchivos extends JFrame {
 		botonVolverMenuPrincipal.addActionListener(c);
 	}
 
+	/**
+	 * Inicializa el gestor de archivos llamando al controlador.
+	 * Carga la lista de archivos inicial.
+	 */
 	public void inicializarFileManager() {
 		if (controlador != null) {
 			controlador.inicializarFileManager();
@@ -237,6 +246,9 @@ public class VistaGestorArchivos extends JFrame {
 		return botonVolverMenuPrincipal;
 	}
 
+	/**
+	 * Actualiza los textos de la interfaz según el idioma seleccionado.
+	 */
 	public void actualizarTextos() {
 		setTitle(MoTextos.file_manager_title);
 		title.setText(MoTextos.file_repo_title);

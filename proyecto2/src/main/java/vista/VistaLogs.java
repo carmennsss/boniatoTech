@@ -28,6 +28,10 @@ import javax.swing.table.DefaultTableModel;
 import modelo.Log;
 import modelo.MoTextos;
 
+/**
+ * Vista para la consulta historica de logs del sistema.
+ * Muestra qué usuarios hicieron qué acciones y cuándo.
+ */
 public class VistaLogs extends JFrame {
 
     private ViTabla tabla;
@@ -182,6 +186,11 @@ public class VistaLogs extends JFrame {
         btn.setPreferredSize(new Dimension(140, 40));
     }
 
+    /**
+     * Carga y muestra una lista de logs en la tabla.
+     *
+     * @param logs Lista de objetos Log a visualizar.
+     */
     public void cargarLogs(ArrayList<Log> logs) {
         DefaultTableModel model = (DefaultTableModel) tabla.getTabla().getModel();
         model.setRowCount(0);
@@ -195,6 +204,12 @@ public class VistaLogs extends JFrame {
         }
     }
 
+    /**
+     * Abre un diálogo para seleccionar dónde guardar el archivo CSV de logs
+     * exportados.
+     *
+     * @return El objeto File donde se guardará el CSV, o null si se cancela.
+     */
     public File seleccionarArchivoGuardar() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle(MoTextos.logs_dialog_save_title);
@@ -211,6 +226,9 @@ public class VistaLogs extends JFrame {
         return null;
     }
 
+    /**
+     * Actualiza los textos de la interfaz según el idioma seleccionado.
+     */
     public void actualizarTextos() {
         this.setTitle(MoTextos.logs_title);
         titulo.setText(MoTextos.logs_title);
@@ -243,10 +261,20 @@ public class VistaLogs extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Muestra un mensaje de error en un diálogo emergente.
+     *
+     * @param mensaje Texto del error.
+     */
     public void mostrarError(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, MoTextos.msg_error_title, JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Muestra un mensaje informativo en un diálogo emergente.
+     *
+     * @param mensaje Texto del mensaje.
+     */
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }

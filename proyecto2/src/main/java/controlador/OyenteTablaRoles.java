@@ -9,17 +9,34 @@ import modelo.MoView;
 import modelo.User;
 import vista.ViMain;
 
+/**
+ * Oyente para manejar la selección múltiple de usuarios en la tabla de
+ * asignación de roles.
+ */
 public class OyenteTablaRoles extends MouseAdapter {
     private CoPrincipal controlador;
     private ViMain vista;
     private MoView modeloVista;
 
+    /**
+     * Constructor del oyente de tabla de roles.
+     *
+     * @param controlador Controlador principal.
+     * @param vista       Vista principal.
+     * @param modeloVista Modelo de vista.
+     */
     public OyenteTablaRoles(CoPrincipal controlador, ViMain vista, MoView modeloVista) {
         this.controlador = controlador;
         this.vista = vista;
         this.modeloVista = modeloVista;
     }
 
+    /**
+     * Maneja el clic en la tabla para seleccionar o deseleccionar un usuario
+     * (fila).
+     *
+     * @param e El evento de ratón.
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 1) {

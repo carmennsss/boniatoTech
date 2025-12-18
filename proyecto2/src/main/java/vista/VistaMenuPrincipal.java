@@ -27,6 +27,11 @@ import modelo.ModeloClienteFTP;
 
 import modelo.MoTextos;
 
+/**
+ * Vista del menú principal de la apicación.
+ * Ofrece acceso rápido a los diferentes módulos del sistema (CRUD, Archivos,
+ * Correo, Admin).
+ */
 public class VistaMenuPrincipal extends JFrame {
 	ModeloClienteFTP client;
 	JButton botonCRUD;
@@ -267,6 +272,9 @@ public class VistaMenuPrincipal extends JFrame {
 		setVisible(true);
 	}
 
+	/**
+	 * Actualiza los textos de la interfaz según el idioma seleccionado.
+	 */
 	public void actualizarTextos() {
 		if (comboIdiomas != null) {
 			comboIdiomas.setSelectedIndex(MoTextos.getIdioma());

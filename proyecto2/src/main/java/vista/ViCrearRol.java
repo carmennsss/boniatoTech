@@ -7,6 +7,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import modelo.MoTextos;
 
+/**
+ * Vista para la creación de nuevos roles en el sistema.
+ * Muestra una tabla con los roles existentes y permtie añadir uno nuevo
+ * mediante un diálogo.
+ */
 public class ViCrearRol extends JFrame {
     private ArrayList<JLabel> textos;
     private JTextField txtNombre;
@@ -134,6 +139,11 @@ public class ViCrearRol extends JFrame {
         btn.setPreferredSize(new Dimension(150, 40));
     }
 
+    /**
+     * Muestra un diálogo modal para ingresar el nombre y descripción del nuevo rol.
+     *
+     * @return 0 si se crea el rol, 1 si se cancela.
+     */
     public int mostrarAgregarRol() {
         final JDialog dialog = new javax.swing.JDialog(
                 this,
@@ -234,34 +244,69 @@ public class ViCrearRol extends JFrame {
         return btn;
     }
 
+    /**
+     * Muestra la ventana.
+     */
     public void mostrar() {
         setVisible(true);
     }
 
+    /**
+     * Hace visible la ventana.
+     */
     public void hacerVisible() {
         setVisible(true);
     }
 
+    /**
+     * Obtiene la lista de botones.
+     * 
+     * @return Lista de botones.
+     */
     public ArrayList<JButton> getBotones() {
         return botones;
     }
 
+    /**
+     * Obtiene el campo de texto del nombre del rol.
+     * 
+     * @return Campo de texto del nombre.
+     */
     public JTextField getTextFieldNombre() {
         return txtNombre;
     }
 
+    /**
+     * Obtiene el campo de texto de la descripción del rol.
+     * 
+     * @return Campo de texto de la descripción.
+     */
     public JTextField getTextFieldDescripcion() {
         return txtDescripcion;
     }
 
+    /**
+     * Obtiene un botón específico por índice.
+     * 
+     * @param i Índice del botón.
+     * @return El botón en la posición indicada.
+     */
     public JButton getBoton(int i) {
         return botones.get(i);
     }
 
+    /**
+     * Obtiene el panel que contiene la tabla de roles.
+     * 
+     * @return Panel de la tabla.
+     */
     public ViTabla getPanelTabla() {
         return panelTabla;
     }
 
+    /**
+     * Actualiza los textos de la interfaz según el idioma seleccionado.
+     */
     public void actualizarTextos() {
         this.setTitle(MoTextos.roles_title_create);
         if (!textos.isEmpty()) {

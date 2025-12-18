@@ -24,6 +24,9 @@ import javax.swing.border.EmptyBorder;
 import modelo.Rol;
 import modelo.MoTextos;
 
+/**
+ * Vista para la asignación y desasignación de roles a los usuarios existentes.
+ */
 public class VistaAsignarRol extends JFrame {
     private ArrayList<JLabel> textos;
     private ArrayList<JButton> botones;
@@ -160,6 +163,9 @@ public class VistaAsignarRol extends JFrame {
         getContentPane().add(panelSur, BorderLayout.SOUTH);
     }
 
+    /**
+     * Actualiza los textos de la interfaz según el idioma seleccionado.
+     */
     public void actualizarTextos() {
         this.setTitle(MoTextos.roles_title_assign);
         titulo.setText(MoTextos.roles_title_assign);
@@ -180,22 +186,45 @@ public class VistaAsignarRol extends JFrame {
         btn.setPreferredSize(new Dimension(150, 40));
     }
 
+    /**
+     * Obtiene el panel que contiene la tabla de usuarios.
+     * 
+     * @return Panel de la tabla.
+     */
     public ViTabla getTabla() {
         return this.tabla;
     }
 
+    /**
+     * Obtiene la lista de botones.
+     * 
+     * @return Lista de botones.
+     */
     public ArrayList<JButton> getBotones() {
         return botones;
     }
 
+    /**
+     * Establece el panel de tabla.
+     * 
+     * @param tabla Nuevo panel de tabla.
+     */
     public void setTabla(ViTabla tabla) {
         this.tabla = tabla;
     }
 
+    /**
+     * Obtiene el combo box de roles.
+     * 
+     * @return Combo box de roles.
+     */
     public JComboBox<Rol> getComboRoles() {
         return this.comboRoles;
     }
 
+    /**
+     * Hace visible la tabla.
+     */
     public void hacerVisible() {
         this.tabla.setVisible(true);
     }

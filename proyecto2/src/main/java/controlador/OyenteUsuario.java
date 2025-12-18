@@ -16,6 +16,10 @@ import modelo.User;
 import vista.VistaEliminarUsuarios;
 import vista.VistaRegistroUsuarios;
 
+/**
+ * Oyente que gestiona los eventos relacionados con el registro y eliminación de
+ * usuarios.
+ */
 public class OyenteUsuario implements ActionListener {
 	private VistaRegistroUsuarios vistaUsuario;
 	private VistaEliminarUsuarios vistaEliminarUsuarios;
@@ -30,6 +34,11 @@ public class OyenteUsuario implements ActionListener {
 		this.client = client;
 	}
 
+	/**
+	 * Maneja los eventos de botón para añadir o eliminar usuarios.
+	 *
+	 * @param e El evento de acción.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton btn = (JButton) e.getSource();
@@ -129,6 +138,11 @@ public class OyenteUsuario implements ActionListener {
 		}
 	}
 
+	/**
+	 * Rellena la tabla de eliminación de usuarios con los datos actuales de la base
+	 * de datos.
+	 * Excluye al usuario actual de la lista.
+	 */
 	public void rellenarTablaUsuarios() {
 		DefaultTableModel modeloTabla = new DefaultTableModel() {
 			@Override
