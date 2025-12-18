@@ -129,7 +129,7 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	private void propiedadesVentana() {
-		this.setTitle("Inbox");
+		this.setTitle(MoTextos.mail_title_inbox);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(800, 600);
 		this.setLocationRelativeTo(null);
