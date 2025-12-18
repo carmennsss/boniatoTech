@@ -232,7 +232,10 @@ public class VistaGeneralCorreo extends JFrame {
 			});
 		}
 	}
-
+	public void hacerVisible() {
+		this.setVisible(true);
+	}
+	
 	public JButton getBotonEnviarCorreo() {
 		return botonEnviarCorreo;
 	}
