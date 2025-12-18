@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
+import modelo.MoTextos;
 import modelo.MoView;
 import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
@@ -16,6 +17,7 @@ import vista.ViMain;
 import vista.VistaAdmin;
 import vista.VistaGeneralCorreo;
 import vista.VistaGestorArchivos;
+import vista.VistaLogs;
 import vista.VistaMenuPrincipal;
 import vista.VistaRegistroUsuarios;
 
@@ -29,12 +31,12 @@ public class OyenteFTP implements ActionListener {
 	private VistaAdmin vistaAdmin;
 	private VistaRegistroUsuarios vistaUsuarios;
 	private VistaGeneralCorreo vistaGeneralCorreo;
+	private VistaLogs vistaLogs;
 	private ModeloBaseDatos modeloBaseDatos;
 
 	public OyenteFTP(MoView modeloVista, ViMain viMain, ModeloClienteFTP modelo, CoPrincipal ctrl,
-			VistaGestorArchivos vistaArchivo,
-			VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin, VistaRegistroUsuarios vistaUsuarios,
-			ModeloBaseDatos modeloBaseDatos) {
+			VistaGestorArchivos vistaArchivo, VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin,
+			VistaRegistroUsuarios vistaUsuarios, VistaLogs vistaLogs, ModeloBaseDatos modeloBaseDatos) {
 		this.viMain = viMain;
 		this.modelo = modelo;
 		this.controladorPrincipal = ctrl;
@@ -43,6 +45,7 @@ public class OyenteFTP implements ActionListener {
 		this.vistaMenuPrincipal = vistaMenuPrincipal;
 		this.vistaAdmin = vistaAdmin;
 		this.vistaUsuarios = vistaUsuarios;
+		this.vistaLogs = vistaLogs;
 		this.modeloBaseDatos = modeloBaseDatos;
 	}
 
@@ -76,6 +79,8 @@ public class OyenteFTP implements ActionListener {
 		} else if (source == viMain.getViCrearRol().getBotones().get(1)
 				|| source == viMain.getViAsignarRol().getBotones().get(2)) {
 			manejarVolver();
+		} else if (source == vistaAdmin.getBotonLogs()) {
+			abrirLogs();
 		} else if (source == vistaAdmin.getBotonWhitelist()) {
 			abrirWhitelist();
 		} else if (source == vistaMenuPrincipal.getBotonCerrarSesion()) {
@@ -83,6 +88,13 @@ public class OyenteFTP implements ActionListener {
 		} else if (source == vistaMenuPrincipal.getBotonCorreo()) {
 			abrirCorreo();
 		}
+	}
+
+	private void abrirLogs() {
+
+		vistaAdmin.setVisible(false);
+		vistaLogs.hacerVisible();
+
 	}
 
 	private void abrirCorreo() {
@@ -94,7 +106,7 @@ public class OyenteFTP implements ActionListener {
 			vistaCorr.hacerVisible();
 			controladorPrincipal.getControladorCorreos().cargarCorreos();
 		} else {
-			JOptionPane.showMessageDialog(null, "Error: La vista de correos no se ha inicializado correctamente.");
+			JOptionPane.showMessageDialog(null, MoTextos.msg_err_mail_init);
 		}
 
 	}
@@ -118,7 +130,7 @@ public class OyenteFTP implements ActionListener {
 		vistaUsuarios.setVisible(false);
 		vistaAdmin.hacerVisible();
 	}
-	
+
 	private void volverMenuDesdeCorreos() {
 		controladorPrincipal.getVistaGeneralCorreo().setVisible(false);
 		vistaMenuPrincipal.hacerVisible();
@@ -151,7 +163,8 @@ public class OyenteFTP implements ActionListener {
 			vistaAdmin.hacerVisible();
 			vistaMenuPrincipal.setVisible(false);
 		} else {
-			JOptionPane.showMessageDialog(viMain.getPanelLogin(), "You are not the administrator", "Error",
+			JOptionPane.showMessageDialog(viMain.getPanelLogin(), MoTextos.msg_not_admin,
+					MoTextos.msg_error_title,
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -219,7 +232,8 @@ public class OyenteFTP implements ActionListener {
 	private void login() {
 		if (viMain.getPanelLogin().getCajas().get(0).getText().trim().isEmpty()
 				|| viMain.getPanelLogin().getCajas().get(1).getText().trim().isEmpty()) {
-			JOptionPane.showMessageDialog(viMain.getPanelLogin(), "Please fill in all fields", "Error",
+			JOptionPane.showMessageDialog(viMain.getPanelLogin(), MoTextos.msg_fill_all_fields,
+					MoTextos.msg_error_title,
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -236,15 +250,17 @@ public class OyenteFTP implements ActionListener {
 				viMain.setVisible(false);
 
 			} else {
-				JOptionPane.showMessageDialog(viMain.getPanelLogin(), "Incorrect credentials", "Error",
+				JOptionPane.showMessageDialog(viMain.getPanelLogin(), MoTextos.msg_incorrect_creds,
+						MoTextos.msg_error_title,
 						JOptionPane.ERROR_MESSAGE);
 				System.out.println(modelo.getCliente().getReplyString());
 			}
 		} catch (org.apache.commons.net.ftp.FTPConnectionClosedException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(viMain.getPanelLogin(),
-					"The connection to the server was closed unexpectedly.\nPlease try again.",
-					"Connection Error",
+					MoTextos.msg_connection_error + "\n" + e.getMessage(), // Using general conn error for now or
+																			// add specific
+					MoTextos.msg_error_title,
 					JOptionPane.ERROR_MESSAGE);
 			try {
 				modelo.desconectar();
@@ -253,12 +269,14 @@ public class OyenteFTP implements ActionListener {
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(viMain.getPanelLogin(), "Connection error: " + ex.getMessage(), "Error",
+			JOptionPane.showMessageDialog(viMain.getPanelLogin(),
+					MoTextos.msg_connection_error + ": " + ex.getMessage(), MoTextos.msg_error_title,
 					JOptionPane.ERROR_MESSAGE);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(viMain.getPanelLogin(), "An unexpected error occurred: " + ex.getMessage(),
-					"Error",
+			JOptionPane.showMessageDialog(viMain.getPanelLogin(),
+					MoTextos.msg_unexpected_error_prefix + ex.getMessage(),
+					MoTextos.msg_error_title,
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}

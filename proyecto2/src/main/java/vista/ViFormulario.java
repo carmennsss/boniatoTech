@@ -10,6 +10,7 @@ import modelo.Especie;
 import modelo.Cuidador;
 import modelo.Recinto;
 import modelo.Animal;
+import modelo.MoTextos;
 
 public class ViFormulario extends JFrame {
     private ArrayList<JLabel> etiquetas;
@@ -19,7 +20,7 @@ public class ViFormulario extends JFrame {
     private Image imagenFondo;
 
     public ViFormulario() {
-        super("Formulario");
+        super(MoTextos.form_title);
         etiquetas = new ArrayList<>();
         campos = new ArrayList<>();
         botones = new ArrayList<>();
@@ -93,10 +94,10 @@ public class ViFormulario extends JFrame {
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         panelBotones.setBackground(Color.WHITE);
 
-        JButton btnGuardar = new JButton("Guardar");
+        JButton btnGuardar = new JButton(MoTextos.btn_save);
         estilarBoton(btnGuardar, Estilos.COLOR_TITULO_APP);
 
-        JButton btnCancelar = new JButton("Cancelar");
+        JButton btnCancelar = new JButton(MoTextos.btn_cancel);
         estilarBoton(btnCancelar, Estilos.BLUE_SLATE);
 
         botones.add(btnGuardar);
@@ -365,5 +366,14 @@ public class ViFormulario extends JFrame {
         if (botones.size() > 1)
             return botones.get(1);
         return null;
+    }
+
+    public void actualizarTextos() {
+        this.setTitle(MoTextos.form_title);
+        if (botones.size() > 0)
+            botones.get(0).setText(MoTextos.btn_save);
+        if (botones.size() > 1)
+            botones.get(1).setText(MoTextos.btn_cancel);
+        repaint();
     }
 }

@@ -23,12 +23,11 @@ import javax.swing.border.EmptyBorder;
 import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
 
-
-public class VistaEliminarUsuarios extends JFrame{
-	VistaRegistroUsuarios vistaUsuarios;
-	ModeloClienteFTP modeloFTP;
-	ModeloBaseDatos bd;
-	private ArrayList<JLabel> textos;
+public class VistaEliminarUsuarios extends JFrame {
+    VistaRegistroUsuarios vistaUsuarios;
+    ModeloClienteFTP modeloFTP;
+    ModeloBaseDatos bd;
+    private ArrayList<JLabel> textos;
     private ArrayList<JButton> botones;
     JButton btnEliminar;
     JButton btnVolver;
@@ -36,14 +35,14 @@ public class VistaEliminarUsuarios extends JFrame{
     private Image imagenFondo;
 
     public VistaEliminarUsuarios(VistaRegistroUsuarios vistaUsuarios, ModeloClienteFTP modeloFTP, ModeloBaseDatos bd) {
-    	this.vistaUsuarios=vistaUsuarios;
-    	this.modeloFTP=modeloFTP;
-    	this.bd=bd;
+        this.vistaUsuarios = vistaUsuarios;
+        this.modeloFTP = modeloFTP;
+        this.bd = bd;
         this.textos = new ArrayList<>();
         this.botones = new ArrayList<>();
         this.tabla = new ViTabla();
 
-        this.setTitle("Delete User");
+        this.setTitle(modelo.MoTextos.del_user_title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1000, 650);
         this.setLocationRelativeTo(null);
@@ -73,7 +72,7 @@ public class VistaEliminarUsuarios extends JFrame{
         panelFondo.setBorder(new EmptyBorder(20, 20, 20, 20));
         this.setContentPane(panelFondo);
 
-        JLabel titulo = new JLabel("Delete Users");
+        JLabel titulo = new JLabel(modelo.MoTextos.del_user_title);
         titulo.setFont(Estilos.FONT_TITULO);
         titulo.setForeground(Estilos.DARK_SPRUCE);
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -117,9 +116,8 @@ public class VistaEliminarUsuarios extends JFrame{
         JPanel panelSur = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         panelSur.setOpaque(false);
 
-
-        btnEliminar = new JButton("Delete");
-        btnVolver = new JButton("Back to Register User");
+        btnEliminar = new JButton(modelo.MoTextos.del_btn_delete);
+        btnVolver = new JButton(modelo.MoTextos.del_btn_back);
 
         estilarBoton(btnEliminar, Estilos.COLOR_BOTON_MENU);
         estilarBoton(btnVolver, new Color(200, 100, 100));
@@ -134,22 +132,22 @@ public class VistaEliminarUsuarios extends JFrame{
     }
 
     public JButton getBtnEliminar() {
-		return btnEliminar;
-	}
+        return btnEliminar;
+    }
 
-	public void setBtnEliminar(JButton btnEliminar) {
-		this.btnEliminar = btnEliminar;
-	}
+    public void setBtnEliminar(JButton btnEliminar) {
+        this.btnEliminar = btnEliminar;
+    }
 
-	public JButton getBtnVolver() {
-		return btnVolver;
-	}
+    public JButton getBtnVolver() {
+        return btnVolver;
+    }
 
-	public void setBtnVolver(JButton btnVolver) {
-		this.btnVolver = btnVolver;
-	}
+    public void setBtnVolver(JButton btnVolver) {
+        this.btnVolver = btnVolver;
+    }
 
-	private void estilarBoton(JButton btn, Color bgColor) {
+    private void estilarBoton(JButton btn, Color bgColor) {
         btn.setFont(Estilos.FONT_BOTON);
         btn.setBackground(bgColor);
         btn.setForeground(Color.WHITE);
@@ -172,7 +170,17 @@ public class VistaEliminarUsuarios extends JFrame{
     }
 
     public void hacerVisible() {
-    	this.setVisible(true);
+        this.setVisible(true);
         this.tabla.setVisible(true);
+    }
+
+    public void actualizarTextos() {
+        this.setTitle(modelo.MoTextos.del_user_title);
+        // Update JLabel if possible, but we need to keep a reference to it
+        if (textos.size() > 0 && textos.get(0) instanceof JLabel) {
+            ((JLabel) textos.get(0)).setText(modelo.MoTextos.del_user_title);
+        }
+        btnEliminar.setText(modelo.MoTextos.del_btn_delete);
+        btnVolver.setText(modelo.MoTextos.del_btn_back);
     }
 }

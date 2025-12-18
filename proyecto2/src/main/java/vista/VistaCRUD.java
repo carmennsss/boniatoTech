@@ -9,6 +9,7 @@ import java.util.Arrays;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import modelo.MoTextos;
 
 public class VistaCRUD extends JFrame {
     private ViBotones panelMenu;
@@ -58,13 +59,13 @@ public class VistaCRUD extends JFrame {
         panelFondo.setLayout(new BorderLayout());
         setContentPane(panelFondo);
 
-        ArrayList<String> textosMenu = new ArrayList<>(Arrays.asList("ESPECIES", "RECINTOS", "CUIDADORES", "ANIMALES",
-                "TRASLADOS", "ESPECIES_RECINTOS", "ELEMENTOS"));
+        ArrayList<String> textosMenu = new ArrayList<>(Arrays.asList(
+                "ESPECIES", "RECINTOS", "CUIDADORES", "ANIMALES", "TRASLADOS", "ESPECIES_RECINTOS", "ELEMENTOS"));
         panelMenu = new ViBotones(textosMenu);
 
         panelTabla = new ViTabla();
 
-        ArrayList<String> textosAcciones = new ArrayList<>(Arrays.asList("New", "Main menu"));
+        ArrayList<String> textosAcciones = new ArrayList<>(Arrays.asList(MoTextos.btn_new, MoTextos.btn_main_menu));
         panelAcciones = new ViBotones(textosAcciones);
 
         panelFondo.add(panelMenu, BorderLayout.NORTH);
@@ -73,7 +74,7 @@ public class VistaCRUD extends JFrame {
         JPanel panelSur = new JPanel(new BorderLayout());
         panelSur.setOpaque(false);
 
-        javax.swing.JLabel lblInstrucciones = new javax.swing.JLabel("Double click on a record to update or delete it.",
+        lblInstrucciones = new javax.swing.JLabel(MoTextos.lbl_crud_instructions,
                 javax.swing.SwingConstants.CENTER);
         lblInstrucciones.setForeground(java.awt.Color.WHITE);
         lblInstrucciones.setFont(Estilos.FONT_BOTON);
@@ -84,6 +85,8 @@ public class VistaCRUD extends JFrame {
 
         panelFondo.add(panelSur, BorderLayout.SOUTH);
     }
+
+    private javax.swing.JLabel lblInstrucciones;
 
     public ViBotones getPanelMenu() {
         return panelMenu;
@@ -99,5 +102,18 @@ public class VistaCRUD extends JFrame {
 
     public void hacerVisible() {
         setVisible(true);
+    }
+
+    public void actualizarTextos() {
+        lblInstrucciones.setText(MoTextos.lbl_crud_instructions);
+        // For ViBotones, we might need to access individual buttons if we want to
+        // update them in-place,
+        // or we rely on the fact their logic is tied to index/text.
+        // Assuming ViBotones exposes buttons:
+        if (panelAcciones.getBotones().size() > 0)
+            panelAcciones.getBotones().get(0).setText(MoTextos.btn_new);
+        if (panelAcciones.getBotones().size() > 1)
+            panelAcciones.getBotones().get(1).setText(MoTextos.btn_main_menu);
+        repaint();
     }
 }

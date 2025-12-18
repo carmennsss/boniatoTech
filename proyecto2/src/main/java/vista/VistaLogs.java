@@ -6,6 +6,11 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+import modelo.MoTextos;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
