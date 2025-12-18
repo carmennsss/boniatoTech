@@ -64,4 +64,20 @@ public class Log {
 		this.correo = correo;
 	}
 
+	@Override
+	public String toString() {
+	    return csv(date) + "," +
+	           csv(correo) + "," +
+	           csv(action) + "," +
+	           csv(result);
+	}
+
+	private String csv(Object value) {
+	    if (value == null) return "";
+	    String text = value.toString().replace("\"", "\"\"");
+	    return "\"" + text + "\"";
+	}
+
+
+
 }

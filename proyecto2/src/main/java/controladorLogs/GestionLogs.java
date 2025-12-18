@@ -88,27 +88,33 @@ public class GestionLogs {
 	}
 
 	public boolean exportLogs(File file) {
-		if (conexion == null) {
-			conexion = ModeloBaseDatos.getConexion();
-			return false;
-		}
-		ArrayList<Log> logs = consultLogs("all");
+	    if (conexion == null) {
+	        conexion = ModeloBaseDatos.getConexion();
+	        return false;
+	    }
 
-		try (FileWriter fw = new FileWriter(file)) {
+	    ArrayList<Log> logs = consultLogs("all");
 
-			if (logs.isEmpty()) {
-				fw.write("There isn´t logs registered in the database.");
-			}
-			fw.write("Date,User,Action,Result\n");
+	    try (FileWriter fw = new FileWriter(file)) {
 
-			for (Log log : logs) {
-				fw.write(log.toString());
-			}
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
+	        if (logs.isEmpty()) {
+	            fw.write("There aren't logs registered in the database.\n");
+	            return true;
+	        }
+
+	        // Cabecera CSV
+	        fw.write("Date,User,Action,Result\n");
+
+	        for (Log log : logs) {
+	            fw.write(log.toString());
+	            fw.write("\n");
+	        }
+
+	        return true;
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
 
 	public void mostrarLogs() {
