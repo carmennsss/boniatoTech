@@ -124,7 +124,14 @@ public class VistaMenuPrincipal extends JFrame {
 		contentPanel.add(botonCerrarSesion);
 		contentPanel.add(Box.createVerticalStrut(20));
 
-		accionBotonCerrarSesion(botonCerrarSesion);
+	}
+
+	public JButton getBotonCerrarSesion() {
+		return botonCerrarSesion;
+	}
+
+	public void setBotonCerrarSesion(JButton botonCerrarSesion) {
+		this.botonCerrarSesion = botonCerrarSesion;
 	}
 
 	private void estilarBoton(JButton btn, Color bgColor, Color fgColor) {
@@ -136,19 +143,6 @@ public class VistaMenuPrincipal extends JFrame {
 		btn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btn.setMaximumSize(new Dimension(300, 50)); // Ancho fijo, altura fija
 		btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-	}
-
-	public void accionBotonCerrarSesion(JButton boton) {
-		boton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				client.desconectar();
-				VistaMenuPrincipal.this.setVisible(false);
-				vista.setVisible(true);
-				vista.getPanelLogin().getCajas().get(0).setText("");
-				vista.getPanelLogin().getCajas().get(1).setText("");
-				vista.mostrarLogin();
-			}
-		});
 	}
 
 	public JButton getBotonFileManager() {
