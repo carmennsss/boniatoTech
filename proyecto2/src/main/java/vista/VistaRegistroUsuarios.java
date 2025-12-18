@@ -3,6 +3,7 @@ package vista;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -47,17 +48,30 @@ public class VistaRegistroUsuarios extends JFrame {
 
 	private Image imagenFondo;
 	private JLabel titulo;
+	private JPanel panelCentral;
 
 	public VistaRegistroUsuarios(VistaAdmin vistaAdmin, ModeloClienteFTP client, ModeloBaseDatos db) {
 		this.vistaAdmin = vistaAdmin;
 		this.client = client;
 		this.db = db;
+		propiedades();
+	}
 
-		this.setTitle("User Register");
+	private void propiedades() {
+		configurarVentana();
+		configurarFondo();
+		configurarFormulario();
+		configurarBotones();
+	}
+
+	private void configurarVentana() {
+		this.setTitle(modelo.MoTextos.reg_title_window);
 		this.setSize(900, 600);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
 
+	private void configurarFondo() {
 		URL url = getClass().getResource("/fondo_abstracto_1.png");
 		if (url != null) {
 			imagenFondo = new ImageIcon(url).getImage();
@@ -79,8 +93,10 @@ public class VistaRegistroUsuarios extends JFrame {
 		};
 		panelFondo.setLayout(new GridBagLayout());
 		setContentPane(panelFondo);
+	}
 
-		JPanel panelCentral = new JPanel(new GridBagLayout()) {
+	private void configurarFormulario() {
+		panelCentral = new JPanel(new GridBagLayout()) {
 			@Override
 			protected void paintComponent(Graphics g) {
 				Graphics2D g2 = (Graphics2D) g.create();
@@ -148,29 +164,35 @@ public class VistaRegistroUsuarios extends JFrame {
 		agregarCampo(panelCentral, gbc, 4, contrasena, textContrasena);
 		agregarCampo(panelCentral, gbc, 5, confContrasena, textConfContrasena);
 
+		getContentPane().add(panelCentral);
+	}
+
+	private void configurarBotones() {
 		aniadir = new JButton(modelo.MoTextos.reg_btn_register);
 		eliminar = new JButton(modelo.MoTextos.btn_sys_delete);
 		volver = new JButton(modelo.MoTextos.btn_back);
 
-		estilarBoton(aniadir, new Color(110, 137, 115));
-		estilarBoton(eliminar, new Color(110, 137, 115));
-		estilarBoton(volver, new Color(200, 100, 100));
+		aniadirEstiloBoton(aniadir, new Color(110, 137, 115));
+		aniadirEstiloBoton(eliminar, new Color(110, 137, 115));
+		aniadirEstiloBoton(volver, new Color(200, 100, 100));
 
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(10, 10, 10, 10);
 		gbc.gridx = 0;
 		gbc.gridy = 6;
 		gbc.gridwidth = 2;
 		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.fill = GridBagConstraints.NONE;
 
-		JPanel panelBotones = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 0));
+		JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
 		panelBotones.setOpaque(false);
 		panelBotones.add(aniadir);
 		panelBotones.add(eliminar);
 		panelBotones.add(volver);
 
-		panelCentral.add(panelBotones, gbc);
-
-		panelFondo.add(panelCentral);
+		if (panelCentral != null) {
+			panelCentral.add(panelBotones, gbc);
+		}
 	}
 
 	public JButton getEliminar() {
@@ -321,7 +343,7 @@ public class VistaRegistroUsuarios extends JFrame {
 		panel.add(campo, gbc);
 	}
 
-	private void estilarBoton(JButton btn, Color bgColor) {
+	private void aniadirEstiloBoton(JButton btn, Color bgColor) {
 		btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		btn.setBackground(bgColor);
 		btn.setForeground(Color.WHITE);

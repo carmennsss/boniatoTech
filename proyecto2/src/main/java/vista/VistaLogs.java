@@ -33,18 +33,34 @@ public class VistaLogs extends JFrame {
     private ViTabla tabla;
     private JButton btnExport;
     private JButton btnVolver;
+    private ArrayList<JButton> botonesConsultas;
     private Image imagenFondo;
     private JLabel titulo;
     private VistaAdmin vistaAdmin;
 
     public VistaLogs(VistaAdmin vistaAdmin) {
-        this.vistaAdmin = vistaAdmin; // Store reference if needed for back logic internally or just consistency
+        this.vistaAdmin = vistaAdmin;
+        this.botonesConsultas = new ArrayList<>();
+        propiedades();
+    }
 
+    private void propiedades() {
+        configurarVentana();
+        configurarFondo();
+        configurarTitulo();
+        configurarTabla();
+        configurarBotones();
+        inicializarModeloTabla();
+    }
+
+    private void configurarVentana() {
         this.setTitle(MoTextos.logs_title);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setSize(900, 600);
         this.setLocationRelativeTo(null);
+    }
 
+    private void configurarFondo() {
         URL url = getClass().getResource("/fondo_abstracto_1.png");
         if (url != null) {
             imagenFondo = new ImageIcon(url).getImage();
@@ -65,8 +81,10 @@ public class VistaLogs extends JFrame {
         panelFondo.setLayout(new BorderLayout(20, 20));
         panelFondo.setBorder(new EmptyBorder(20, 20, 20, 20));
         setContentPane(panelFondo);
+    }
 
-        // Header
+    private void configurarTitulo() {
+
         titulo = new JLabel(MoTextos.logs_title);
         titulo.setFont(Estilos.FONT_TITULO);
         titulo.setForeground(Estilos.DARK_SPRUCE);
@@ -86,12 +104,12 @@ public class VistaLogs extends JFrame {
         panelTitulo.setOpaque(false);
         panelTitulo.setBorder(new EmptyBorder(10, 20, 10, 20));
         panelTitulo.add(titulo);
-        panelFondo.add(panelTitulo, BorderLayout.NORTH);
+        getContentPane().add(panelTitulo, BorderLayout.NORTH);
+    }
 
-        // Table
+    private void configurarTabla() {
         tabla = new ViTabla();
 
-        // Container for table
         JPanel panelTablaContenedor = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -106,23 +124,36 @@ public class VistaLogs extends JFrame {
         panelTablaContenedor.setBorder(new EmptyBorder(20, 20, 20, 20));
         panelTablaContenedor.add(tabla, BorderLayout.CENTER);
 
-        panelFondo.add(panelTablaContenedor, BorderLayout.CENTER);
+        getContentPane().add(panelTablaContenedor, BorderLayout.CENTER);
+    }
 
-        // Buttons
+    private void configurarBotones() {
+
+        JPanel panelBotonesConsultas = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panelBotonesConsultas.setOpaque(false);
+        botonesConsultas.add(new JButton(MoTextos.logs_col_action));
+        botonesConsultas.add(new JButton(MoTextos.logs_col_user));
+        botonesConsultas.add(new JButton(MoTextos.logs_col_date));
+        botonesConsultas.add(new JButton(MoTextos.logs_col_result));
+
+        for (JButton boton : botonesConsultas) {
+            aniadirEstiloBoton(boton, Estilos.COLOR_BOTON_MENU);
+            panelBotonesConsultas.add(boton);
+        }
+        getContentPane().add(panelBotonesConsultas, BorderLayout.NORTH);
+
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panelBotones.setOpaque(false);
 
         btnVolver = new JButton(MoTextos.del_btn_back);
         btnExport = new JButton(MoTextos.logs_btn_export);
 
-        estilarBoton(btnVolver, new Color(200, 100, 100));
-        estilarBoton(btnExport, Estilos.COLOR_BOTON_MENU);
+        aniadirEstiloBoton(btnVolver, new Color(200, 100, 100));
+        aniadirEstiloBoton(btnExport, Estilos.COLOR_BOTON_MENU);
 
         panelBotones.add(btnVolver);
         panelBotones.add(btnExport);
-        panelFondo.add(panelBotones, BorderLayout.SOUTH);
-
-        inicializarModeloTabla();
+        getContentPane().add(panelBotones, BorderLayout.SOUTH);
     }
 
     private void inicializarModeloTabla() {
@@ -137,7 +168,7 @@ public class VistaLogs extends JFrame {
         tabla.setModelo(tablaModelo);
     }
 
-    private void estilarBoton(JButton btn, Color bgColor) {
+    private void aniadirEstiloBoton(JButton btn, Color bgColor) {
         btn.setFont(Estilos.FONT_BOTON);
         btn.setBackground(bgColor);
         btn.setForeground(Color.WHITE);
@@ -153,7 +184,7 @@ public class VistaLogs extends JFrame {
         for (Log log : logs) {
             Object[] fila = new Object[4];
             fila[0] = log.getAction();
-            fila[1] = log.getCorreo(); // Or user name if available
+            fila[1] = log.getCorreo();
             fila[2] = log.getDate();
             fila[3] = log.getResult();
             model.addRow(fila);
@@ -182,7 +213,6 @@ public class VistaLogs extends JFrame {
         btnVolver.setText(MoTextos.del_btn_back);
         btnExport.setText(MoTextos.logs_btn_export);
 
-        // Update table header
         DefaultTableModel model = (DefaultTableModel) tabla.getTabla().getModel();
         String[] header = { MoTextos.logs_col_action, MoTextos.logs_col_user, MoTextos.logs_col_date,
                 MoTextos.logs_col_result };
@@ -191,6 +221,10 @@ public class VistaLogs extends JFrame {
 
     public JButton getBtnExport() {
         return btnExport;
+    }
+
+    public ArrayList<JButton> getBotonesConsultas() {
+        return botonesConsultas;
     }
 
     public JButton getBtnVolver() {

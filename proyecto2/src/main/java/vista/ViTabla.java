@@ -14,11 +14,22 @@ public class ViTabla extends JPanel {
     private ArrayList<Integer> filasSeleccionadas;
 
     public ViTabla() {
+        propiedades();
+    }
+
+    private void propiedades() {
         filasSeleccionadas = new ArrayList<>();
+        configurarPanel();
+        configurarTabla();
+    }
+
+    private void configurarPanel() {
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setOpaque(false);
+    }
 
+    private void configurarTabla() {
         tabla = new JTable();
         estilarTabla();
 

@@ -32,6 +32,10 @@ public class ViMain {
 	private VistaWhitelist viWhitelist;
 
 	public ViMain() {
+		propiedades();
+	}
+
+	private void propiedades() {
 		viCrearRol = new ViCrearRol();
 		vistaLogin = new VistaLogin();
 		viAsignarRol = new VistaAsignarRol();

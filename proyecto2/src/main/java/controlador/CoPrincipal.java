@@ -94,11 +94,10 @@ public class CoPrincipal {
             btn.addActionListener(oyFTP);
         }
 
-        // Register OyenteWhitelist
-        vista.getViWhitelist().getBotones().get(0).addActionListener(oyenteWhitelist); // Add
-        vista.getViWhitelist().getBotones().get(1).addActionListener(oyenteWhitelist); // Remove
-        vista.getViWhitelist().getBotones().get(2).addActionListener(oyenteWhitelist); // Back
-        vista.getViWhitelist().getTabla().getTabla().addMouseListener(oyenteWhitelist); // Table Click
+        vista.getViWhitelist().getBotones().get(0).addActionListener(oyenteWhitelist);
+        vista.getViWhitelist().getBotones().get(1).addActionListener(oyenteWhitelist);
+        vista.getViWhitelist().getBotones().get(2).addActionListener(oyenteWhitelist);
+        vista.getViWhitelist().getTabla().getTabla().addMouseListener(oyenteWhitelist);
 
         vista.getViAsignarRol().getTabla().getTabla().addMouseListener(oyTablaRoles);
 
@@ -116,7 +115,6 @@ public class CoPrincipal {
 
         vista.getPanelTabla().getTabla().addMouseListener(oyT);
 
-        // Language Listener
         OyenteIdioma oyIdioma = new OyenteIdioma(this);
         vista.getPanelLogin().getComboIdiomas().addActionListener(oyIdioma);
         vistaMenuPrincipal.getComboIdiomas().addActionListener(oyIdioma);
@@ -161,9 +159,7 @@ public class CoPrincipal {
     }
 
     public void actualizarIdiomaGlobal() {
-        // Update all views
         if (vista != null) {
-            // vista.actualizarTextos(); // ViMain might need this
             if (vista.getViWhitelist() != null)
                 vista.getViWhitelist().actualizarTextos();
             if (vista.getPanelLogin() != null)
@@ -190,7 +186,5 @@ public class CoPrincipal {
             vistaGeneralCorreo.actualizarTextos();
         if (vistaLogs != null)
             vistaLogs.actualizarTextos();
-
-        // Update any other active views or popups if accessible
     }
 }
