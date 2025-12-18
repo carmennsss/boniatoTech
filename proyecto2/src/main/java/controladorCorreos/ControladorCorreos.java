@@ -107,7 +107,7 @@ public class ControladorCorreos {
 
 	private void configurarVistaGeneral() {
 		vistaGeneral.getBotonEnviarCorreo()
-				.addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo(), PASSWORD_APLICACION));
+				.addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo(), PASSWORD_APLICACION, this));
 		vistaGeneral.getEmailTabla()
 				.addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this, CORREO));
 		vistaGeneral.getBtnRefrescar().addActionListener(new OyenteRefrescarCorreo(this));
@@ -177,6 +177,19 @@ public class ControladorCorreos {
 
 	public String getPasswordAplicacion() {
 		return PASSWORD_APLICACION;
+	}
+
+	public void comprobarReceptorWhiteList(String receptor) {
+		try {
+			Connection conexion = db.getConexion();
+
+			String sql = "SELECT ";
+
+			PreparedStatement ps = conexion.prepareStatement(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

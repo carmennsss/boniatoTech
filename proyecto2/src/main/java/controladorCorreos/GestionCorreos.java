@@ -1,6 +1,7 @@
 package controladorCorreos;
 
 import javax.mail.*;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.search.HeaderTerm;
 
@@ -44,10 +45,22 @@ public class GestionCorreos {
 
 			for (int i = messages.length - 1; i >= 0; i--) {
 				Message message = messages[i];
+				
+				Address[] from = message.getFrom();
+				String remitenteLimpio = "";
 
-				String remitente = message.getFrom()[0].toString();
+				if (from != null && from.length > 0) {
+				    if (from[0] instanceof InternetAddress) {
+				        // extrae solo la dirección (ej: juan@gmail.com)
+				        remitenteLimpio = ((InternetAddress) from[0]).getAddress();
+				    } else {
+				        // fallback por si no es InternetAddress
+				        remitenteLimpio = from[0].toString();
+				    }
+				}
+
 				String emailLimpio = user.replace("recent:", "");
-				if (remitente.toLowerCase().contains(emailLimpio.toLowerCase()))
+				if (remitenteLimpio.toLowerCase().contains(emailLimpio.toLowerCase()))
 					continue;
 				String asunto = message.getSubject();
 				java.util.Date fecha = message.getSentDate();
@@ -58,8 +71,10 @@ public class GestionCorreos {
 				if (headers != null && headers.length > 0 && headers[0] != null) {
 					messageId = headers[0];
 				}
+				
+				
 
-				Correo correo = new Correo(remitente, asunto, fecha, cuerpo, messageId);
+				Correo correo = new Correo(remitenteLimpio, asunto, fecha, cuerpo, messageId);
 
 				Boolean estadoIMAP = estadosIMAP.get(messageId);
 
