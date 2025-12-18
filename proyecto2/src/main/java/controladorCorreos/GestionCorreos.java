@@ -51,8 +51,10 @@ public class GestionCorreos {
 
 				if (from != null && from.length > 0) {
 					if (from[0] instanceof InternetAddress) {
+						// extrae solo la dirección (ej: juan@gmail.com)
 						remitenteLimpio = ((InternetAddress) from[0]).getAddress();
 					} else {
+						// fallback por si no es InternetAddress
 						remitenteLimpio = from[0].toString();
 					}
 				}

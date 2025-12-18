@@ -9,7 +9,9 @@ import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
+import controladorLogs.GestionLogs;
 import modelo.Correo;
+import modelo.Log;
 import modelo.ModeloBaseDatos;
 import vista.VistaGeneralCorreo;
 import vista.VistaMenuPrincipal;
@@ -26,6 +28,8 @@ public class ControladorCorreos {
 	private Thread hiloRecepcion;
 	private ModeloBaseDatos db;
 	private VistaMenuPrincipal vistaMenuPrincipal;
+	private ArrayList<Correo> listaDescargada;
+	private ArrayList<Correo> listaDescargadaAnterior;
 
 	public ControladorCorreos(String CORREO, VistaGeneralCorreo vistaGeneral, ModeloBaseDatos bd,
 			VistaMenuPrincipal vistaMenu) {
@@ -66,14 +70,23 @@ public class ControladorCorreos {
 		new Thread(() -> {
 			try {
 				System.out.println("Conectando con Gmail...");
-				ArrayList<Correo> listaDescargada = obtenerCorreos();
+				listaDescargada = obtenerCorreos();
 
 				SwingUtilities.invokeLater(() -> {
+					listaDescargadaAnterior = this.correos;
 					this.correos.clear();
 					this.correos.addAll(listaDescargada);
 					vistaGeneral.cargarCorreos(this.correos);
 
 					vistaGeneral.getBtnRefrescar().setEnabled(true);
+
+					// Comparo lista anterior con la actual
+					if (listaDescargadaAnterior.size() < listaDescargada.size()
+							&& listaDescargadaAnterior.size() != 0) {
+
+						controladorLogs.GestionLogs.writeLog(new Log("MAIL_RECEIVED", CORREO, true));
+
+					}
 
 					if (hiloRecepcion == null || !hiloRecepcion.isAlive()) {
 						HiloRecepcionCorreos hilo = new HiloRecepcionCorreos(gestion, HOST, "recent:" + CORREO,
