@@ -140,29 +140,29 @@ public class GestionCorreos {
 		return estados;
 	}
 
-	public void eliminarCorreoPOP3(String pop3Host, String user, String password, int indice) throws Exception {
+	public void eliminarCorreoIMAP(String imapHost, String user, String password, String messageId) {
+	    try {
+	    	Properties props = new Properties();
+			props.put("mail.store.protocol", "imaps");
+			props.put("mail.imaps.host", imapHost);
+			props.put("mail.imaps.port", "993");
+			props.put("mail.imaps.ssl.enable", "true");
 
-		System.out.println("[POP3] Eliminando correo indice " + indice);
+			Session session = Session.getInstance(props);
+			Store store = session.getStore("imaps");
+			store.connect(imapHost, user, password);
+			
+			Folder inbox = store.getFolder("INBOX");
+	        inbox.open(Folder.READ_WRITE);
 
-		Properties props = new Properties();
-		props.put("mail.pop3.host", pop3Host);
-		props.put("mail.pop3.port", "995");
-		props.put("mail.pop3.ssl.enable", "true");
-
-		Session session = Session.getInstance(props);
-		Store store = session.getStore("pop3s");
-		store.connect(pop3Host, user, password);
-
-		Folder inbox = store.getFolder("INBOX");
-		inbox.open(Folder.READ_WRITE);
-
-		Message mensaje = inbox.getMessage(indice + 1);
-		mensaje.setFlag(Flags.Flag.DELETED, true);
-
-		inbox.close(true);
-		store.close();
-
-		System.out.println("[POP3] Correo eliminado");
+	        Message[] encontrados = inbox.search(new HeaderTerm("Message-ID", messageId));
+	        if (encontrados.length > 0) {
+	            encontrados[0].setFlag(Flags.Flag.DELETED, true);
+	        }
+	        System.out.println("Correo eliminado con IMAP");
+	        inbox.close(true);
+	        store.close();
+	    } catch (Exception e) { e.printStackTrace(); }
 	}
 
 	public void marcarLeidoIMAP(String imapHost, String user, String password, String messageId) {
