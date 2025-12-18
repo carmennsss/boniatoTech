@@ -9,6 +9,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import modelo.MoTextos;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -91,6 +93,10 @@ public class ViMain {
 		return ventanaFormulario;
 	}
 
+	public ViFormulario getViFormulario() {
+		return ventanaFormulario;
+	}
+
 	public VistaLogin getPanelLogin() {
 		return vistaLogin;
 	}
@@ -110,11 +116,11 @@ public class ViMain {
 	}
 
 	public void mostrarMensajeError(String mensaje) {
-		JOptionPane.showMessageDialog(getVentanaActual(), mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(getVentanaActual(), mensaje, MoTextos.msg_error_title, JOptionPane.ERROR_MESSAGE);
 	}
 
 	public boolean mostrarConfirmacion(String mensaje) {
-		int confirmacion = JOptionPane.showConfirmDialog(getVentanaActual(), mensaje, "Confirmar",
+		int confirmacion = JOptionPane.showConfirmDialog(getVentanaActual(), mensaje, MoTextos.msg_confirm_title,
 				JOptionPane.YES_NO_OPTION);
 		return confirmacion == JOptionPane.YES_OPTION;
 	}
@@ -122,7 +128,7 @@ public class ViMain {
 	public int mostrarOpcionesTabla() {
 		final JDialog dialog = new JDialog(
 				(JFrame) SwingUtilities.getWindowAncestor(getVentanaActual()),
-				"Options",
+				MoTextos.dialog_select_action,
 				true);
 
 		dialog.setUndecorated(true);
@@ -134,7 +140,7 @@ public class ViMain {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-		JLabel lblTitulo = new JLabel("Select Action");
+		JLabel lblTitulo = new JLabel(MoTextos.dialog_select_action);
 		lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		lblTitulo.setForeground(new Color(74, 88, 89));
 		lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -146,10 +152,10 @@ public class ViMain {
 		Color colorBtn = new Color(110, 137, 115);
 		Color colorCancel = new Color(200, 100, 100);
 
-		JButton btnNew = crearBotonDialogo("Create New", colorBtn);
-		JButton btnUpdate = crearBotonDialogo("Update", colorBtn);
-		JButton btnDelete = crearBotonDialogo("Delete", colorCancel);
-		JButton btnCancel = crearBotonDialogo("Cancel", Color.GRAY);
+		JButton btnNew = crearBotonDialogo(MoTextos.btn_create_new, colorBtn);
+		JButton btnUpdate = crearBotonDialogo(MoTextos.btn_sys_update, colorBtn);
+		JButton btnDelete = crearBotonDialogo(MoTextos.btn_sys_delete, colorCancel);
+		JButton btnCancel = crearBotonDialogo(MoTextos.btn_sys_cancel, Color.GRAY);
 
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

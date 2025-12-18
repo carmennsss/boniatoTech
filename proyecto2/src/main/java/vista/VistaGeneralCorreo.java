@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import modelo.Correo;
+import modelo.MoTextos;
 
 public class VistaGeneralCorreo extends JFrame {
 
@@ -32,6 +33,7 @@ public class VistaGeneralCorreo extends JFrame {
 	private JTable emailTabla;
 	private JButton btnVolver;
 	private JButton btnRefrescar;
+	private JLabel etiquetaCorreo;
 
 	public VistaGeneralCorreo(String correo) {
 		this.correo = correo;
@@ -179,7 +181,7 @@ public class VistaGeneralCorreo extends JFrame {
 		JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 20));
 		panelSuperior.setBackground(Estilos.DARK_SPRUCE);
 
-		JLabel etiquetaCorreo = new JLabel(correo + " Inbox");
+		etiquetaCorreo = new JLabel(correo + " " + MoTextos.mail_title_inbox);
 		etiquetaCorreo.setFont(Estilos.FONT_TITULO);
 		etiquetaCorreo.setForeground(Estilos.BEIGE_CANVAS); // Light text on Dark background
 		etiquetaCorreo.setAlignmentX(SwingConstants.CENTER);
@@ -232,10 +234,33 @@ public class VistaGeneralCorreo extends JFrame {
 			});
 		}
 	}
+
 	public void hacerVisible() {
 		this.setVisible(true);
 	}
-	
+
+	public void actualizarTextos() {
+		this.setTitle(MoTextos.mail_title_inbox);
+		if (etiquetaCorreo != null) {
+			etiquetaCorreo.setText(correo + " " + MoTextos.mail_title_inbox);
+		}
+		if (botonEnviarCorreo != null)
+			botonEnviarCorreo.setText(MoTextos.mail_btn_compose);
+		if (btnRefrescar != null)
+			btnRefrescar.setText(MoTextos.mail_btn_refresh);
+		if (btnVolver != null)
+			btnVolver.setText(MoTextos.btn_back);
+
+		// Update table headers
+		if (emailTabla != null) {
+			emailTabla.getColumnModel().getColumn(0).setHeaderValue(MoTextos.mail_col_subject);
+			emailTabla.getColumnModel().getColumn(1).setHeaderValue(MoTextos.mail_col_from);
+			emailTabla.getColumnModel().getColumn(2).setHeaderValue(MoTextos.mail_col_date);
+			emailTabla.getTableHeader().repaint();
+		}
+		repaint();
+	}
+
 	public JButton getBotonEnviarCorreo() {
 		return botonEnviarCorreo;
 	}

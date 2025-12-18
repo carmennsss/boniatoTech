@@ -105,12 +105,22 @@ public class CoPrincipal {
             btn.addActionListener(oyCRUD);
         }
 
+        for (JButton btn : vista.getPanelAcciones().getBotones()) {
+            btn.addActionListener(oyCRUD);
+        }
+
         vista.getPanelTabla().getTabla().addMouseListener(oyT);
+
+        // Language Listener
+        OyenteIdioma oyIdioma = new OyenteIdioma(this);
+        vista.getPanelLogin().getComboIdiomas().addActionListener(oyIdioma);
+        vistaMenuPrincipal.getComboIdiomas().addActionListener(oyIdioma);
     }
 
     public void instanciarCorreos() {
-    	this.vistaGeneralCorreo = new VistaGeneralCorreo(bd.obtenerEmailPorUsuario(modeloFTP.getUser()));
-        this.controladorCorreos = new ControladorCorreos(bd.obtenerEmailPorUsuario(modeloFTP.getUser()), vistaGeneralCorreo, bd, vistaMenuPrincipal);
+        this.vistaGeneralCorreo = new VistaGeneralCorreo(bd.obtenerEmailPorUsuario(modeloFTP.getUser()));
+        this.controladorCorreos = new ControladorCorreos(bd.obtenerEmailPorUsuario(modeloFTP.getUser()),
+                vistaGeneralCorreo, bd, vistaMenuPrincipal);
     }
 
     public void setEditando(boolean editando) {
@@ -143,5 +153,37 @@ public class CoPrincipal {
 
     public VistaGeneralCorreo getVistaGeneralCorreo() {
         return this.vistaGeneralCorreo;
+    }
+
+    public void actualizarIdiomaGlobal() {
+        // Update all views
+        if (vista != null) {
+            // vista.actualizarTextos(); // ViMain might need this
+            if (vista.getViWhitelist() != null)
+                vista.getViWhitelist().actualizarTextos();
+            if (vista.getPanelLogin() != null)
+                vista.getPanelLogin().actualizarTextos();
+            if (vista.getViCrearRol() != null)
+                vista.getViCrearRol().actualizarTextos();
+            if (vista.getViAsignarRol() != null)
+                vista.getViAsignarRol().actualizarTextos();
+            if (vista.getViFormulario() != null)
+                vista.getViFormulario().actualizarTextos();
+        }
+
+        if (vistaMenuPrincipal != null)
+            vistaMenuPrincipal.actualizarTextos();
+        if (vistaArchivo != null)
+            vistaArchivo.actualizarTextos();
+        if (vistaAdmin != null)
+            vistaAdmin.actualizarTextos();
+        if (vistaUsuarios != null)
+            vistaUsuarios.actualizarTextos();
+        if (vistaEliminarUsuarios != null)
+            vistaEliminarUsuarios.actualizarTextos();
+        if (vistaGeneralCorreo != null)
+            vistaGeneralCorreo.actualizarTextos();
+
+        // Update any other active views or popups if accessible
     }
 }

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import modelo.MoTextos;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -46,7 +48,7 @@ public class VistaLogs extends JFrame {
 	}
 
 	public void propiedadesVentana() {
-		this.setTitle("Logs");
+		this.setTitle(MoTextos.logs_title);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setSize(630, 500);
 		this.setLocationRelativeTo(null);
@@ -60,8 +62,10 @@ public class VistaLogs extends JFrame {
 
 	private void inicializarTabla() {
 		JPanel panelTabla = new JPanel(new BorderLayout());
-//Consultar y exportar registros de operaciones como subidas/descargas, cambios en archivos y accesos no autorizados.
-		String[] nombresColumnas = { "Action", "User", "Date", "Result" };
+		// Consultar y exportar registros de operaciones como subidas/descargas, cambios
+		// en archivos y accesos no autorizados.
+		String[] nombresColumnas = { MoTextos.logs_col_action, MoTextos.logs_col_user, MoTextos.logs_col_date,
+				MoTextos.logs_col_result };
 
 		tablaModelo = new DefaultTableModel(nombresColumnas, 0) {
 			@Override
@@ -86,36 +90,36 @@ public class VistaLogs extends JFrame {
 		JScrollPane scrollPane = new JScrollPane(tabla);
 
 		panelTabla.add(scrollPane, BorderLayout.CENTER);
-
+		//
 		panel.add(panelTabla, BorderLayout.NORTH);
-		btnExport = new JButton("Export CSV");
-		btnExport.setPreferredSize(new Dimension(100,8));
+		btnExport = new JButton(MoTextos.logs_btn_export);
+		btnExport.setPreferredSize(new Dimension(100, 8));
 		panel.add(btnExport, BorderLayout.EAST);
 
 	}
-	
-	public File seleccionarArchivoGuardar() {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Save logs");
-        fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
-        
-        int userSelection = fileChooser.showSaveDialog(this);
 
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            File fileToSave = fileChooser.getSelectedFile();
-            // Asegurar extensión .csv
-            if (!fileToSave.getAbsolutePath().endsWith(".csv")) {
-                fileToSave = new File(fileToSave.getAbsolutePath() + ".csv");
-            }
-            return fileToSave;
-        }
-        return null;
-    }
+	public File seleccionarArchivoGuardar() {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle(MoTextos.logs_dialog_save_title);
+		fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
+
+		int userSelection = fileChooser.showSaveDialog(this);
+
+		if (userSelection == JFileChooser.APPROVE_OPTION) {
+			File fileToSave = fileChooser.getSelectedFile();
+			// Asegurar extensión .csv
+			if (!fileToSave.getAbsolutePath().endsWith(".csv")) {
+				fileToSave = new File(fileToSave.getAbsolutePath() + ".csv");
+			}
+			return fileToSave;
+		}
+		return null;
+	}
 
 	public void cargarLogs(ArrayList<Log> logs) {
 		tablaModelo.setRowCount(0);
-		//Ordenar el array por fecha
-		
+		// Ordenar el array por fecha
+
 		for (Log log : logs) {
 			Object[] fila = new Object[3];
 			fila[0] = log.getAction();
@@ -127,13 +131,14 @@ public class VistaLogs extends JFrame {
 			tablaModelo.addRow(fila);
 		}
 	}
-	
+
 	public void mostrarMensaje(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje);
-    }
+		JOptionPane.showMessageDialog(this, mensaje);
+	}
+
 	public void mostrarError(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
-    }
+		JOptionPane.showMessageDialog(this, mensaje, MoTextos.msg_error_title, JOptionPane.ERROR_MESSAGE);
+	}
 
 	public JButton getBtnExport() {
 		return btnExport;
@@ -143,5 +148,4 @@ public class VistaLogs extends JFrame {
 		this.btnExport = btnExport;
 	}
 
-	
 }

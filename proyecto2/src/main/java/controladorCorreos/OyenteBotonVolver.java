@@ -11,7 +11,8 @@ public class OyenteBotonVolver implements ActionListener {
     private VistaMenuPrincipal vistaMenu;
     private ControladorCorreos controlador;
 
-    public OyenteBotonVolver(VistaGeneralCorreo vistaGeneral, VistaMenuPrincipal vistaMenu, ControladorCorreos controladorCorreos) {
+    public OyenteBotonVolver(VistaGeneralCorreo vistaGeneral, VistaMenuPrincipal vistaMenu,
+            ControladorCorreos controladorCorreos) {
         this.vistaGeneral = vistaGeneral;
         this.vistaMenu = vistaMenu;
         this.controlador = controladorCorreos;

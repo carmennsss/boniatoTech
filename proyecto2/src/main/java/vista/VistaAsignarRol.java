@@ -22,6 +22,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import modelo.Rol;
+import modelo.MoTextos;
 
 public class VistaAsignarRol extends JFrame {
     private ArrayList<JLabel> textos;
@@ -30,12 +31,16 @@ public class VistaAsignarRol extends JFrame {
     private JComboBox<Rol> comboRoles = new JComboBox<>();
     private Image imagenFondo;
 
+    private JLabel lblRol;
+    private JLabel titulo;
+
     public VistaAsignarRol() {
+        // ... (constructor start)
         this.textos = new ArrayList<>();
         this.botones = new ArrayList<>();
         this.tabla = new ViTabla();
 
-        this.setTitle("Asignar Rol");
+        this.setTitle(MoTextos.roles_title_assign);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1000, 650);
         this.setLocationRelativeTo(null);
@@ -65,7 +70,9 @@ public class VistaAsignarRol extends JFrame {
         panelFondo.setBorder(new EmptyBorder(20, 20, 20, 20));
         this.setContentPane(panelFondo);
 
-        JLabel titulo = new JLabel("Asignar Roles a Usuarios");
+        this.setContentPane(panelFondo);
+
+        titulo = new JLabel(MoTextos.roles_title_assign);
         titulo.setFont(Estilos.FONT_TITULO);
         titulo.setForeground(Estilos.DARK_SPRUCE);
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -112,9 +119,9 @@ public class VistaAsignarRol extends JFrame {
         this.comboRoles.setFont(Estilos.FONT_TEXTO);
         this.comboRoles.setPreferredSize(new Dimension(200, 35));
 
-        JButton btnAsignar = new JButton("Asignar");
-        JButton btnDesasignar = new JButton("Desasignar");
-        JButton btnVolver = new JButton("Volver");
+        JButton btnAsignar = new JButton(MoTextos.roles_btn_assign);
+        JButton btnDesasignar = new JButton(MoTextos.btn_unassign);
+        JButton btnVolver = new JButton(MoTextos.btn_back_whitelist);
 
         estilarBoton(btnAsignar, Estilos.COLOR_BOTON_MENU);
         estilarBoton(btnDesasignar, Estilos.BLUE_SLATE);
@@ -124,7 +131,7 @@ public class VistaAsignarRol extends JFrame {
         this.botones.add(btnDesasignar);
         this.botones.add(btnVolver);
 
-        JLabel lblRol = new JLabel("Rol: ");
+        lblRol = new JLabel(MoTextos.roles_lbl_role);
         lblRol.setFont(Estilos.FONT_BOTON);
         lblRol.setForeground(Estilos.COLOR_LABEL);
 
@@ -135,6 +142,16 @@ public class VistaAsignarRol extends JFrame {
         panelSur.add(btnVolver);
 
         panelFondo.add(panelSur, BorderLayout.SOUTH);
+    }
+
+    public void actualizarTextos() {
+        this.setTitle(MoTextos.roles_title_assign);
+        titulo.setText(MoTextos.roles_title_assign);
+        botones.get(0).setText(MoTextos.roles_btn_assign);
+        botones.get(1).setText(MoTextos.btn_unassign);
+        botones.get(2).setText(MoTextos.btn_back_whitelist);
+        lblRol.setText(MoTextos.roles_lbl_role);
+        repaint();
     }
 
     private void estilarBoton(JButton btn, Color bgColor) {

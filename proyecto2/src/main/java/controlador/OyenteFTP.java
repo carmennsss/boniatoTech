@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
+import modelo.MoTextos;
 import modelo.MoView;
 import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
@@ -94,7 +95,7 @@ public class OyenteFTP implements ActionListener {
 			vistaCorr.hacerVisible();
 			controladorPrincipal.getControladorCorreos().cargarCorreos();
 		} else {
-			JOptionPane.showMessageDialog(null, "Error: La vista de correos no se ha inicializado correctamente.");
+			JOptionPane.showMessageDialog(null, MoTextos.msg_err_mail_init);
 		}
 
 	}
@@ -151,7 +152,8 @@ public class OyenteFTP implements ActionListener {
 			vistaAdmin.hacerVisible();
 			vistaMenuPrincipal.setVisible(false);
 		} else {
-			JOptionPane.showMessageDialog(viMain.getPanelLogin(), "You are not the administrator", "Error",
+			JOptionPane.showMessageDialog(viMain.getPanelLogin(), MoTextos.msg_not_admin,
+					MoTextos.msg_error_title,
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -219,7 +221,8 @@ public class OyenteFTP implements ActionListener {
 	private void login() {
 		if (viMain.getPanelLogin().getCajas().get(0).getText().trim().isEmpty()
 				|| viMain.getPanelLogin().getCajas().get(1).getText().trim().isEmpty()) {
-			JOptionPane.showMessageDialog(viMain.getPanelLogin(), "Please fill in all fields", "Error",
+			JOptionPane.showMessageDialog(viMain.getPanelLogin(), MoTextos.msg_fill_all_fields,
+					MoTextos.msg_error_title,
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -236,15 +239,17 @@ public class OyenteFTP implements ActionListener {
 				viMain.setVisible(false);
 
 			} else {
-				JOptionPane.showMessageDialog(viMain.getPanelLogin(), "Incorrect credentials", "Error",
+				JOptionPane.showMessageDialog(viMain.getPanelLogin(), MoTextos.msg_incorrect_creds,
+						MoTextos.msg_error_title,
 						JOptionPane.ERROR_MESSAGE);
 				System.out.println(modelo.getCliente().getReplyString());
 			}
 		} catch (org.apache.commons.net.ftp.FTPConnectionClosedException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(viMain.getPanelLogin(),
-					"The connection to the server was closed unexpectedly.\nPlease try again.",
-					"Connection Error",
+					MoTextos.msg_connection_error + "\n" + e.getMessage(), // Using general conn error for now or
+																			// add specific
+					MoTextos.msg_error_title,
 					JOptionPane.ERROR_MESSAGE);
 			try {
 				modelo.desconectar();
@@ -253,12 +258,14 @@ public class OyenteFTP implements ActionListener {
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(viMain.getPanelLogin(), "Connection error: " + ex.getMessage(), "Error",
+			JOptionPane.showMessageDialog(viMain.getPanelLogin(),
+					MoTextos.msg_connection_error + ": " + ex.getMessage(), MoTextos.msg_error_title,
 					JOptionPane.ERROR_MESSAGE);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(viMain.getPanelLogin(), "An unexpected error occurred: " + ex.getMessage(),
-					"Error",
+			JOptionPane.showMessageDialog(viMain.getPanelLogin(),
+					MoTextos.msg_unexpected_error_prefix + ex.getMessage(),
+					MoTextos.msg_error_title,
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}

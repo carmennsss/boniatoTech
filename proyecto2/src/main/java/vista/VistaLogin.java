@@ -1,10 +1,13 @@
 package vista;
 
 import java.awt.*;
+
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.net.URL;
+
+import modelo.MoTextos;
 
 public class VistaLogin extends JFrame {
 
@@ -14,8 +17,13 @@ public class VistaLogin extends JFrame {
 	private Image imagenFondo;
 	private URL logoUrl;
 
+	private JLabel titulo;
+	private JLabel lblUser;
+	private JLabel lblPass;
+	private JButton btnLogin;
+
 	public VistaLogin() {
-		super("Login");
+		super(MoTextos.login_title);
 		setSize(900, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -91,7 +99,7 @@ public class VistaLogin extends JFrame {
 		gbc.insets = new Insets(10, 10, 10, 10);
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		JLabel titulo = new JLabel("Zoo Manager", SwingConstants.CENTER);
+		titulo = new JLabel(MoTextos.app_title, SwingConstants.CENTER);
 		titulo.setFont(fontTitulo);
 		titulo.setForeground(Estilos.COLOR_TITULO_APP);
 
@@ -102,7 +110,7 @@ public class VistaLogin extends JFrame {
 
 		gbc.gridwidth = 1;
 
-		JLabel lblUser = new JLabel("User:");
+		lblUser = new JLabel(MoTextos.lbl_user);
 		lblUser.setFont(fontLabel);
 		lblUser.setForeground(Estilos.COLOR_LABEL);
 		textos.add(lblUser);
@@ -119,7 +127,7 @@ public class VistaLogin extends JFrame {
 		gbc.gridy = 1;
 		panelCentral.add(txtUser, gbc);
 
-		JLabel lblPass = new JLabel("Password:");
+		lblPass = new JLabel(MoTextos.lbl_password);
 		lblPass.setFont(fontLabel);
 		lblPass.setForeground(Estilos.COLOR_LABEL);
 		textos.add(lblPass);
@@ -136,7 +144,7 @@ public class VistaLogin extends JFrame {
 		gbc.gridy = 2;
 		panelCentral.add(txtPass, gbc);
 
-		JButton btnLogin = new JButton("Log in");
+		btnLogin = new JButton(MoTextos.btn_login);
 		btnLogin.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		btnLogin.setBackground(colorBoton);
 		btnLogin.setForeground(Color.WHITE);
@@ -149,6 +157,47 @@ public class VistaLogin extends JFrame {
 		gbc.gridwidth = 2;
 		gbc.anchor = GridBagConstraints.CENTER;
 		panelCentral.add(btnLogin, gbc);
+
+		// Language Combo
+		ImageIcon iconEng = null;
+		ImageIcon iconEsp = null;
+		try {
+			java.net.URL urlEng = getClass().getResource("/eng.png");
+			java.net.URL urlEsp = getClass().getResource("/esp.png");
+			if (urlEng != null)
+				iconEng = new ImageIcon(new ImageIcon(urlEng).getImage().getScaledInstance(30, 20, Image.SCALE_SMOOTH));
+			if (urlEsp != null)
+				iconEsp = new ImageIcon(new ImageIcon(urlEsp).getImage().getScaledInstance(30, 20, Image.SCALE_SMOOTH));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		comboIdiomas = new JComboBox<>();
+		comboIdiomas.setRenderer(new RenderComboIdioma());
+		comboIdiomas.setBackground(Color.WHITE);
+		comboIdiomas.setFocusable(false);
+		// Remove border if possible, or make it subtle
+		// ((JComponent)
+		// comboIdiomas.getEditor().getEditorComponent()).setBorder(BorderFactory.createEmptyBorder());
+
+		if (iconEng != null)
+			comboIdiomas.addItem(iconEng);
+		if (iconEsp != null)
+			comboIdiomas.addItem(iconEsp);
+
+		// Set initial selection based on current language
+		if (MoTextos.getIdioma() == 0 && iconEng != null) {
+			comboIdiomas.setSelectedItem(iconEng);
+		} else if (MoTextos.getIdioma() == 1 && iconEsp != null) {
+			comboIdiomas.setSelectedItem(iconEsp);
+		}
+
+		// Local listener removed - now handled by OyenteIdioma
+
+		// Local listener removed - now handled by OyenteIdioma
+
+		// Add to LayeredPane (PALETTE_LAYER to be on top)
+		layeredPane.add(comboIdiomas, JLayeredPane.PALETTE_LAYER);
 
 		layeredPane.add(panelCentral, JLayeredPane.DEFAULT_LAYER);
 		layeredPane.add(lblLogo, JLayeredPane.PALETTE_LAYER);
@@ -166,12 +215,24 @@ public class VistaLogin extends JFrame {
 
 				Dimension sizeLogo = lblLogo.getSize();
 				int xLogo = xPanel + sizePanel.width - sizeLogo.width + 40;
+
 				int overlap = 160;
 				int yLogo = yPanel - sizeLogo.height + overlap;
 
 				lblLogo.setBounds(xLogo, yLogo, sizeLogo.width, sizeLogo.height);
+
+				// Position Combo at Top Right
+				int comboW = 80;
+				int comboH = 40;
+				comboIdiomas.setBounds(width - comboW - 20, 20, comboW, comboH);
 			}
 		});
+	}
+
+	private JComboBox<ImageIcon> comboIdiomas;
+
+	public JComboBox<ImageIcon> getComboIdiomas() {
+		return comboIdiomas;
 	}
 
 	public ArrayList<JLabel> getTextos() {
@@ -184,5 +245,17 @@ public class VistaLogin extends JFrame {
 
 	public ArrayList<JButton> getBotones() {
 		return botones;
+	}
+
+	public void actualizarTextos() {
+		if (comboIdiomas != null) {
+			comboIdiomas.setSelectedIndex(MoTextos.getIdioma());
+		}
+		setTitle(MoTextos.login_title);
+		titulo.setText(MoTextos.app_title);
+		lblUser.setText(MoTextos.lbl_user);
+		lblPass.setText(MoTextos.lbl_password);
+		btnLogin.setText(MoTextos.btn_login);
+		repaint();
 	}
 }

@@ -9,20 +9,23 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.net.URL;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import modelo.ModeloClienteFTP;
+
+import modelo.MoTextos;
 
 public class VistaMenuPrincipal extends JFrame {
 	ModeloClienteFTP client;
@@ -33,10 +36,15 @@ public class VistaMenuPrincipal extends JFrame {
 	JButton botonCorreo;
 	ViMain vista;
 
+	private JComboBox<ImageIcon> comboIdiomas;
+
+	JLabel text;
+	JLabel subtext;
+
 	public VistaMenuPrincipal(ModeloClienteFTP client, ViMain vista) {
 		this.client = client;
 		this.vista = vista;
-		this.setTitle("Main Menu");
+		this.setTitle(MoTextos.menu_title);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1000, 600);
 		this.setLocationRelativeTo(null);
@@ -45,9 +53,13 @@ public class VistaMenuPrincipal extends JFrame {
 		Color colorTexto = new Color(74, 88, 89);
 		Color colorBoton = new Color(196, 164, 132);
 
+		// Main Container (LayeredPane for absolute positioning of Combo)
+		JLayeredPane layeredPane = new JLayeredPane();
+		setContentPane(layeredPane);
+
 		JPanel mainPanel = new JPanel(new GridBagLayout());
 		mainPanel.setBackground(colorFondo);
-		setContentPane(mainPanel);
+		// mainPanel will be added to layeredPane in componentResized or setBounds
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
@@ -91,22 +103,22 @@ public class VistaMenuPrincipal extends JFrame {
 		gbc.weighty = 1.0;
 		mainPanel.add(contentPanel, gbc);
 
-		JLabel text = new JLabel("Zoo Manager");
+		text = new JLabel(MoTextos.app_title);
 		text.setFont(new Font("Segoe UI", Font.BOLD, 42));
 		text.setForeground(new Color(60, 70, 60));
 		text.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		JLabel subtext = new JLabel("Select an option");
+		subtext = new JLabel(MoTextos.lbl_select_option);
 		subtext.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		subtext.setForeground(colorTexto);
 		subtext.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		botonCRUD = new JButton("Manage Data");
-		botonFileManager = new JButton("File Manager");
-		botonCerrarSesion = new JButton("Log out");
-		botonAdmin = new JButton("Administrate");
-		botonCorreo = new JButton("Mail controller");
-		
+		botonCRUD = new JButton(MoTextos.btn_manage_data);
+		botonFileManager = new JButton(MoTextos.btn_file_manager);
+		botonCerrarSesion = new JButton(MoTextos.btn_logout);
+		botonAdmin = new JButton(MoTextos.btn_administrate);
+		botonCorreo = new JButton(MoTextos.btn_mail_controller);
+
 		estilarBoton(botonCRUD, colorBoton, Color.WHITE);
 		estilarBoton(botonFileManager, colorBoton, Color.WHITE);
 		estilarBoton(botonAdmin, colorBoton, Color.WHITE);
@@ -128,6 +140,61 @@ public class VistaMenuPrincipal extends JFrame {
 		contentPanel.add(Box.createVerticalStrut(20));
 		contentPanel.add(botonCerrarSesion);
 		contentPanel.add(Box.createVerticalStrut(20));
+
+		// Language Combo
+		ImageIcon iconEng = null;
+		ImageIcon iconEsp = null;
+		try {
+			java.net.URL urlEng = getClass().getResource("/eng.png");
+			java.net.URL urlEsp = getClass().getResource("/esp.png");
+			if (urlEng != null)
+				iconEng = new ImageIcon(new ImageIcon(urlEng).getImage().getScaledInstance(30, 20, Image.SCALE_SMOOTH));
+			if (urlEsp != null)
+				iconEsp = new ImageIcon(new ImageIcon(urlEsp).getImage().getScaledInstance(30, 20, Image.SCALE_SMOOTH));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		comboIdiomas = new JComboBox<>();
+		comboIdiomas.setRenderer(new RenderComboIdioma());
+		comboIdiomas.setBackground(Color.WHITE);
+		comboIdiomas.setFocusable(false);
+
+		if (iconEng != null)
+			comboIdiomas.addItem(iconEng);
+		if (iconEsp != null)
+			comboIdiomas.addItem(iconEsp);
+
+		// Set initial selection based on current language
+		if (MoTextos.getIdioma() == 0 && iconEng != null) {
+			comboIdiomas.setSelectedItem(iconEng);
+		} else if (MoTextos.getIdioma() == 1 && iconEsp != null) {
+			comboIdiomas.setSelectedItem(iconEsp);
+		}
+
+		// Local listener removed - now handled by OyenteIdioma
+
+		// Local listener removed - now handled by OyenteIdioma
+
+		// Add components to layered pane
+		layeredPane.add(mainPanel, JLayeredPane.DEFAULT_LAYER);
+		layeredPane.add(comboIdiomas, JLayeredPane.PALETTE_LAYER);
+
+		layeredPane.addComponentListener(new java.awt.event.ComponentAdapter() {
+			@Override
+			public void componentResized(java.awt.event.ComponentEvent e) {
+				int width = layeredPane.getWidth();
+				int height = layeredPane.getHeight();
+
+				// Main Panel covers everything
+				mainPanel.setBounds(0, 0, width, height);
+
+				// Position Combo at Top Right
+				int comboW = 80;
+				int comboH = 40;
+				comboIdiomas.setBounds(width - comboW - 20, 20, comboW, comboH);
+			}
+		});
 
 	}
 
@@ -182,4 +249,22 @@ public class VistaMenuPrincipal extends JFrame {
 		setVisible(true);
 	}
 
+	public void actualizarTextos() {
+		if (comboIdiomas != null) {
+			comboIdiomas.setSelectedIndex(MoTextos.getIdioma());
+		}
+		setTitle(MoTextos.menu_title);
+		text.setText(MoTextos.app_title);
+		subtext.setText(MoTextos.lbl_select_option);
+		botonCRUD.setText(MoTextos.btn_manage_data);
+		botonFileManager.setText(MoTextos.btn_file_manager);
+		botonCerrarSesion.setText(MoTextos.btn_logout);
+		botonAdmin.setText(MoTextos.btn_administrate);
+		botonCorreo.setText(MoTextos.btn_mail_controller);
+		repaint();
+	}
+
+	public JComboBox<ImageIcon> getComboIdiomas() {
+		return comboIdiomas;
+	}
 }
