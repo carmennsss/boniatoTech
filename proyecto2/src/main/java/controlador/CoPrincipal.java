@@ -119,8 +119,9 @@ public class CoPrincipal {
     }
 
     public void instanciarCorreos() {
-    	this.vistaGeneralCorreo = new VistaGeneralCorreo(bd.obtenerEmailPorUsuario(modeloFTP.getUser()));
-        this.controladorCorreos = new ControladorCorreos(bd.obtenerEmailPorUsuario(modeloFTP.getUser()), vistaGeneralCorreo, bd);
+        this.vistaGeneralCorreo = new VistaGeneralCorreo(bd.obtenerEmailPorUsuario(modeloFTP.getUser()));
+        this.controladorCorreos = new ControladorCorreos(bd.obtenerEmailPorUsuario(modeloFTP.getUser()),
+                vistaGeneralCorreo, bd);
     }
 
     public void setEditando(boolean editando) {
@@ -179,6 +180,8 @@ public class CoPrincipal {
             vistaAdmin.actualizarTextos();
         if (vistaUsuarios != null)
             vistaUsuarios.actualizarTextos();
+        if (vistaEliminarUsuarios != null)
+            vistaEliminarUsuarios.actualizarTextos();
         if (vistaGeneralCorreo != null)
             vistaGeneralCorreo.actualizarTextos();
 

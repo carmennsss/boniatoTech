@@ -156,6 +156,10 @@ public class VistaMenuPrincipal extends JFrame {
 		}
 
 		comboIdiomas = new JComboBox<>();
+		comboIdiomas.setRenderer(new RenderComboIdioma());
+		comboIdiomas.setBackground(Color.WHITE);
+		comboIdiomas.setFocusable(false);
+
 		if (iconEng != null)
 			comboIdiomas.addItem(iconEng);
 		if (iconEsp != null)

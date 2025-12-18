@@ -2,7 +2,7 @@ package modelo;
 
 public class MoTextos {
     // General
-    public static String app_title = "Zoo Manager";
+    public static String app_title = "Serwo Manager";
     public static String login_title = "Login";
     public static String menu_title = "Main Menu";
 
@@ -168,13 +168,24 @@ public class MoTextos {
     public static String logs_btn_export = "Export CSV";
     public static String logs_dialog_save_title = "Save logs";
 
+    // Delete User
+    public static String del_user_title = "Delete User";
+    public static String del_user_col_user = "User";
+    public static String del_user_col_email = "Email";
+    public static String del_btn_delete = "Delete";
+    public static String del_btn_back = "Back";
+    public static String del_msg_select = "Select a user to delete";
+    public static String del_msg_confirm = "Are you sure you want to delete this user?";
+    public static String del_msg_success = "User deleted successfully";
+    public static String del_msg_error = "Error deleting user";
+
     // Messages - Mail
     public static String msg_err_pop3 = "[ERROR POP3] - Could not connect to inbox";
 
     public static void setIdioma(int idioma) {
         idiomaActual = idioma;
         if (idioma == 1) { // SPANISH
-            app_title = "Gestor de Zoo";
+            app_title = "Gestor de Serwo";
             login_title = "Iniciar Sesión";
             menu_title = "Menú Principal";
 
@@ -210,7 +221,7 @@ public class MoTextos {
 
             whitelist_title = "Gestión de Whitelist";
             btn_add = "Añadir";
-            btn_unassign = "Desasignar";
+            btn_unassign = "Quitar";
             btn_back_whitelist = "Volver";
             whitelist_dialog_title = "Agregar Usuario";
             whitelist_lbl_title = "Agregar a Whitelist";
@@ -218,6 +229,16 @@ public class MoTextos {
             whitelist_lbl_name = "Nombre:";
             btn_dialog_add = "Agregar";
             btn_dialog_cancel = "Cancelar";
+
+            del_user_title = "Eliminar Usuario";
+            del_user_col_user = "Usuario";
+            del_user_col_email = "Correo";
+            del_btn_delete = "Eliminar";
+            del_btn_back = "Volver";
+            del_msg_select = "Seleccione un usuario para eliminar";
+            del_msg_confirm = "¿Estás seguro de que deseas eliminar este usuario?";
+            del_msg_success = "Usuario eliminado correctamente";
+            del_msg_error = "Error al eliminar usuario";
 
             mail_title_compose = "Redactar Nuevo Correo";
             mail_title_check = "Leer Correo";
@@ -362,6 +383,16 @@ public class MoTextos {
             whitelist_lbl_name = "Name:";
             btn_dialog_add = "Add";
             btn_dialog_cancel = "Cancel";
+
+            del_user_title = "Delete User";
+            del_user_col_user = "User";
+            del_user_col_email = "Email";
+            del_btn_delete = "Delete";
+            del_btn_back = "Back";
+            del_msg_select = "Select a user to delete";
+            del_msg_confirm = "Are you sure you want to delete this user?";
+            del_msg_success = "User deleted successfully";
+            del_msg_error = "Error deleting user";
 
             mail_title_compose = "Compose new Mail";
             mail_title_check = "Check Mail";

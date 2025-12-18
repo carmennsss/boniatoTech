@@ -173,6 +173,13 @@ public class VistaLogin extends JFrame {
 		}
 
 		comboIdiomas = new JComboBox<>();
+		comboIdiomas.setRenderer(new RenderComboIdioma());
+		comboIdiomas.setBackground(Color.WHITE);
+		comboIdiomas.setFocusable(false);
+		// Remove border if possible, or make it subtle
+		// ((JComponent)
+		// comboIdiomas.getEditor().getEditorComponent()).setBorder(BorderFactory.createEmptyBorder());
+
 		if (iconEng != null)
 			comboIdiomas.addItem(iconEng);
 		if (iconEsp != null)

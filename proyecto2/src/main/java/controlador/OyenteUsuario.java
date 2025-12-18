@@ -98,7 +98,8 @@ public class OyenteUsuario implements ActionListener {
 			int filaSeleccionada = vistaEliminarUsuarios.getTabla().getTabla().getSelectedRow();
 
 			if (filaSeleccionada == -1) {
-				JOptionPane.showMessageDialog(vistaEliminarUsuarios, "Select a user to delete", "Error",
+				JOptionPane.showMessageDialog(vistaEliminarUsuarios, modelo.MoTextos.del_msg_select,
+						modelo.MoTextos.msg_error_title,
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
@@ -106,16 +107,18 @@ public class OyenteUsuario implements ActionListener {
 			String email = vistaEliminarUsuarios.getTabla().getTabla().getValueAt(filaSeleccionada, 1).toString();
 
 			int confirmacion = JOptionPane.showConfirmDialog(vistaEliminarUsuarios,
-					"Are you sure you want to delete this user?", "Confirm", JOptionPane.YES_NO_OPTION);
+					modelo.MoTextos.del_msg_confirm, modelo.MoTextos.msg_confirm_title, JOptionPane.YES_NO_OPTION);
 
 			if (confirmacion == JOptionPane.YES_OPTION) {
 				if (bd.eliminarUsuario(email)) {
 					client.eliminarUsuario(nombre);
-					JOptionPane.showMessageDialog(vistaEliminarUsuarios, "User deleted successfully", "Success",
+					JOptionPane.showMessageDialog(vistaEliminarUsuarios, modelo.MoTextos.del_msg_success,
+							modelo.MoTextos.msg_success_title,
 							JOptionPane.INFORMATION_MESSAGE);
 					rellenarTablaUsuarios();
 				} else {
-					JOptionPane.showMessageDialog(vistaEliminarUsuarios, "Error deleting user", "Error",
+					JOptionPane.showMessageDialog(vistaEliminarUsuarios, modelo.MoTextos.del_msg_error,
+							modelo.MoTextos.msg_error_title,
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -133,8 +136,8 @@ public class OyenteUsuario implements ActionListener {
 				return false;
 			}
 		};
-		modeloTabla.addColumn("Usuario");
-		modeloTabla.addColumn("Correo");
+		modeloTabla.addColumn(modelo.MoTextos.del_user_col_user);
+		modeloTabla.addColumn(modelo.MoTextos.del_user_col_email);
 		String sql = "SELECT nombre_usuario, email FROM usuarios;";
 		ResultSet rs = bd.getConsulta(sql);
 

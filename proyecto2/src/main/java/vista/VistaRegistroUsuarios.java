@@ -149,6 +149,7 @@ public class VistaRegistroUsuarios extends JFrame {
 		agregarCampo(panelCentral, gbc, 5, confContrasena, textConfContrasena);
 
 		aniadir = new JButton(modelo.MoTextos.reg_btn_register);
+		eliminar = new JButton(modelo.MoTextos.btn_sys_delete);
 		volver = new JButton(modelo.MoTextos.btn_back);
 
 		estilarBoton(aniadir, new Color(110, 137, 115));
@@ -343,6 +344,7 @@ public class VistaRegistroUsuarios extends JFrame {
 		contrasena.setText(modelo.MoTextos.reg_lbl_pass);
 		confContrasena.setText(modelo.MoTextos.reg_lbl_conf_pass);
 		aniadir.setText(modelo.MoTextos.reg_btn_register);
+		eliminar.setText(modelo.MoTextos.btn_sys_delete);
 		volver.setText(modelo.MoTextos.btn_back);
 	}
 
