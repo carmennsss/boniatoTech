@@ -31,7 +31,7 @@ public class HiloRecepcionCorreos implements Runnable {
 		try {
 	        while (!Thread.currentThread().isInterrupted() || vistaGeneral.getBtnRefrescar().isEnabled()) {
 
-	            Thread.sleep(10_000); // 10 segundos
+	            Thread.sleep(25_000); // 25 segundos
 
 	            if (vistaGeneral.getBtnRefrescar().isEnabled()) {
 		        	ArrayList<Correo> nuevos =
