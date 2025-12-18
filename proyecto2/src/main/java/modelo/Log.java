@@ -8,20 +8,12 @@ public class Log {
 	private String correo;
 	private String result;
 
-	public Log(String action, User user , boolean exito) {
+	public Log(String action, String correo, boolean exito) {
 		String resultado = exito ? "success" : "error";
 
 		this.action = action;
-		this.user = user;
+		this.correo = correo;
 		this.setResult(resultado);
-	}
-
-	public Log(int id, String action, User user, String date, String result) {
-		this.id = id;
-		this.action = action;
-		this.user = user;
-		this.date = date;
-		this.result = result;
 	}
 
 	public Log(int id, String action, String correo, String date, String result) {
@@ -71,6 +63,5 @@ public class Log {
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
-	
 
 }

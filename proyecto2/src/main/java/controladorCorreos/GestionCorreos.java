@@ -15,8 +15,6 @@ import java.util.Properties;
 
 public class GestionCorreos {
 
-	
-	
 	private Map<String, Boolean> estadosLocales = new HashMap<>();
 
 	public ArrayList<Correo> recibirCorreosPOP3(String pop3Host, String imapHost, String user, String password) {
@@ -47,18 +45,18 @@ public class GestionCorreos {
 
 			for (int i = messages.length - 1; i >= 0; i--) {
 				Message message = messages[i];
-				
+
 				Address[] from = message.getFrom();
 				String remitenteLimpio = "";
 
 				if (from != null && from.length > 0) {
-				    if (from[0] instanceof InternetAddress) {
-				        // extrae solo la dirección (ej: juan@gmail.com)
-				        remitenteLimpio = ((InternetAddress) from[0]).getAddress();
-				    } else {
-				        // fallback por si no es InternetAddress
-				        remitenteLimpio = from[0].toString();
-				    }
+					if (from[0] instanceof InternetAddress) {
+						// extrae solo la dirección (ej: juan@gmail.com)
+						remitenteLimpio = ((InternetAddress) from[0]).getAddress();
+					} else {
+						// fallback por si no es InternetAddress
+						remitenteLimpio = from[0].toString();
+					}
 				}
 
 				String emailLimpio = user.replace("recent:", "");
@@ -73,8 +71,6 @@ public class GestionCorreos {
 				if (headers != null && headers.length > 0 && headers[0] != null) {
 					messageId = headers[0];
 				}
-				
-				
 
 				Correo correo = new Correo(remitenteLimpio, asunto, fecha, cuerpo, messageId);
 
