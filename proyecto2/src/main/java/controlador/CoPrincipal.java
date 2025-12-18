@@ -42,7 +42,6 @@ public class CoPrincipal {
         this.controladorWhitelist = new ControladorWhitelist(vista, bd, modeloVista, vistaAdmin);
         this.vistaUsuarios = new VistaRegistroUsuarios(vistaAdmin, modeloFTP, bd);
         this.vistaEliminarUsuarios = new VistaEliminarUsuarios(vistaUsuarios, modeloFTP, bd);
-        this.vistaGeneralCorreo = new VistaGeneralCorreo("hola");
 
         vista.hacerVisible();
         asignarEventos();
