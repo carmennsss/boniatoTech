@@ -31,6 +31,7 @@ public class VistaGeneralCorreo extends JFrame {
 	private DefaultTableModel tablaModelo;
 	private JTable emailTabla;
 	private JButton btnVolver;
+	private JButton btnRefrescar;
 
 	public VistaGeneralCorreo(String correo) {
 		this.correo = correo;
@@ -135,8 +136,12 @@ public class VistaGeneralCorreo extends JFrame {
 		botonEnviarCorreo.setPreferredSize(new Dimension(150, 30));
 		btnVolver = new JButton("Back");
 		btnVolver.setPreferredSize(new Dimension(150, 30));
+		btnRefrescar = new JButton("Refresh");
+		btnRefrescar.setPreferredSize(new Dimension(150, 30));
+
 
 		panelMedio.add(btnVolver);
+		panelMedio.add(btnRefrescar);
 		panelMedio.add(botonEnviarCorreo);
 
 		panel.add(panelMedio, BorderLayout.SOUTH);
@@ -158,22 +163,6 @@ public class VistaGeneralCorreo extends JFrame {
 					c.getFecha()
 			});
 		}
-	}
-
-	public void cambiarColorFila(int fila) {
-		emailTabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-					boolean hasFocus, int row, int column) {
-				Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-				comp.setFont(new Font("Arial", Font.BOLD, 14));
-
-				return comp;
-			}
-		});
-
-		emailTabla.repaint(); // Refresca la tabla para aplicar el cambio
 	}
 
 	public JButton getBotonEnviarCorreo() {
@@ -207,5 +196,15 @@ public class VistaGeneralCorreo extends JFrame {
 	public void setBtnVolver(JButton btnVolver) {
 		this.btnVolver = btnVolver;
 	}
+
+	public JButton getBtnRefrescar() {
+		return btnRefrescar;
+	}
+
+	public void setBtnRefrescar(JButton btnRefrescar) {
+		this.btnRefrescar = btnRefrescar;
+	}
+	
+	
 
 }
