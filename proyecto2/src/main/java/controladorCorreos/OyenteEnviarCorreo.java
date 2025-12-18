@@ -32,7 +32,9 @@ public class OyenteEnviarCorreo implements ActionListener {
 		}
 
 		try {
-			//comprobarReceptorWhiteList(receptor);
+			if (!comprobarReceptorWhiteList(receptor)) {
+				return;
+			}
 			EnviarCorreo.enviarCorreo(remitente, asunto, cuerpoMensaje, receptor, passwordAplicacion, v.getAdjuntos());
 			JOptionPane.showMessageDialog(v, "Email successfully sent to" + receptor);
 		} catch (Exception e1) {
@@ -44,8 +46,15 @@ public class OyenteEnviarCorreo implements ActionListener {
 		v.dispose();
 	}
 
-	private void comprobarReceptorWhiteList(String receptor) {	
-		controlador.comprobarReceptorWhiteList(receptor);
+	private boolean comprobarReceptorWhiteList(String receptor) {	
+		boolean estaEnWhiteList;
+		estaEnWhiteList = controlador.comprobarReceptorWhiteList(receptor);
+		
+		if (!estaEnWhiteList) {
+			v.mostrarMensaje("The address is not in the whitelist", true);
+			return false;
+		}
+		return true;
 	}
 
 }
