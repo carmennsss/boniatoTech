@@ -27,17 +27,23 @@ public class ViMain {
 	private ViFormulario ventanaFormulario;
 	private ViCrearRol viCrearRol;
 	private VistaAsignarRol viAsignarRol;
+	private VistaWhitelist viWhitelist;
 
 	public ViMain() {
 		viCrearRol = new ViCrearRol();
 		vistaLogin = new VistaLogin();
 		viAsignarRol = new VistaAsignarRol();
+		viWhitelist = new VistaWhitelist();
 		vistaCRUD = new VistaCRUD();
 		ventanaFormulario = new ViFormulario();
 	}
 
 	public VistaAsignarRol getViAsignarRol() {
 		return viAsignarRol;
+	}
+
+	public VistaWhitelist getViWhitelist() {
+		return viWhitelist;
 	}
 
 	public void hacerVisible() {

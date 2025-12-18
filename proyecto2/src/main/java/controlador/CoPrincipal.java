@@ -16,8 +16,10 @@ public class CoPrincipal {
     private boolean editando;
     private ModeloClienteFTP modeloFTP;
 
+    private OyenteWhitelist oyenteWhitelist;
     private ControladorCRUD controladorCRUD;
     private ControladorRoles controladorRoles;
+    private ControladorWhitelist controladorWhitelist;
 
     public CoPrincipal() {
         this.bd = new ModeloBaseDatos();
@@ -33,6 +35,7 @@ public class CoPrincipal {
         OyenteArchivos oyenteArchivos = new OyenteArchivos(vistaArchivo, modeloFTP, bd, vistaMenuPrincipal);
         vistaArchivo.setControlador(oyenteArchivos);
         this.vistaAdmin = new VistaAdmin(vistaMenuPrincipal);
+        this.controladorWhitelist = new ControladorWhitelist(vista, bd, modeloVista, vistaAdmin);
         this.vistaUsuarios = new VistaRegistroUsuarios(vistaAdmin, modeloFTP, bd);
         vista.hacerVisible();
         asignarEventos();
@@ -48,6 +51,8 @@ public class CoPrincipal {
         controladorCRUD.setOyente(oyCRUD);
         OyenteTabla oyT = new OyenteTabla(this, vista, modeloVista);
 
+        this.oyenteWhitelist = new OyenteWhitelist(controladorWhitelist);
+
         JButton[] botonesLogin = {
                 vista.getPanelLogin().getBotones().get(0),
                 vistaMenuPrincipal.getBotonCRUD(),
@@ -58,15 +63,24 @@ public class CoPrincipal {
                 vista.getViCrearRol().getBotones().get(1),
                 vistaAdmin.getBotonCrearRoles(),
                 vistaAdmin.getBotonAsignarRoles(),
+                vistaAdmin.getBotonWhitelist(),
                 vista.getViAsignarRol().getBotones().get(0),
                 vista.getViAsignarRol().getBotones().get(1),
                 vista.getViAsignarRol().getBotones().get(2),
+
+                // Whitelist buttons removed from here to not trigger OyenteFTP
                 vistaAdmin.getBotonVolver()
         };
 
         for (JButton btn : botonesLogin) {
             btn.addActionListener(oyFTP);
         }
+
+        // Register OyenteWhitelist
+        vista.getViWhitelist().getBotones().get(0).addActionListener(oyenteWhitelist); // Add
+        vista.getViWhitelist().getBotones().get(1).addActionListener(oyenteWhitelist); // Remove
+        vista.getViWhitelist().getBotones().get(2).addActionListener(oyenteWhitelist); // Back
+        vista.getViWhitelist().getTabla().getTabla().addMouseListener(oyenteWhitelist); // Table Click
 
         vista.getViAsignarRol().getTabla().getTabla().addMouseListener(oyTablaRoles);
 
@@ -95,5 +109,9 @@ public class CoPrincipal {
 
     public ControladorRoles getControladorRoles() {
         return controladorRoles;
+    }
+
+    public ControladorWhitelist getControladorWhitelist() {
+        return controladorWhitelist;
     }
 }
