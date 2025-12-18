@@ -15,17 +15,31 @@ public class ViCrearRol extends JFrame {
     private ViTabla panelTabla;
 
     public ViCrearRol() {
+        propiedades();
+    }
+
+    private void propiedades() {
+        configurarVentana();
+        configurarFondo();
+        configurarTitulo();
+        configurarTabla();
+        configurarBotones();
+    }
+
+    private void configurarVentana() {
         this.setTitle(MoTextos.roles_title_create);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1000, 650);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+    }
 
-        // Panel with background image
+    private void configurarFondo() {
+
         JPanel panelFondo = new JPanel() {
             private java.awt.Image imagen;
             {
-                // java.net.URL url = getClass().getResource("/fondo_verde.png");
+
                 java.net.URL url = getClass().getResource("/fondo_zoo_1.png");
                 if (url != null) {
                     imagen = new javax.swing.ImageIcon(url).getImage();
@@ -47,24 +61,14 @@ public class ViCrearRol extends JFrame {
         };
         panelFondo.setLayout(new BorderLayout(20, 20));
         this.setContentPane(panelFondo);
+    }
 
-        panelTabla = new ViTabla();
-        panelTabla.setOpaque(false); // Make transparent if supported
-
+    private void configurarTitulo() {
         this.textos = new ArrayList<>();
-        this.botones = new ArrayList<>();
-
         JLabel titulo = new JLabel(MoTextos.roles_title_available, SwingConstants.CENTER);
         titulo.setFont(Estilos.FONT_TITULO);
         titulo.setForeground(Estilos.COLOR_TITULO_APP);
         this.textos.add(titulo);
-
-        this.botones.add(new JButton(MoTextos.roles_btn_create));
-        this.botones.add(new JButton(MoTextos.btn_back_whitelist)); // Reusing "Volver"
-
-        JPanel panelCentro = new JPanel(new BorderLayout(20, 20));
-        panelCentro.setOpaque(false);
-        panelCentro.setBorder(BorderFactory.createEmptyBorder(20, 40, 0, 40));
 
         JPanel panelTitulo = new JPanel(new FlowLayout(FlowLayout.CENTER)) {
             @Override
@@ -81,25 +85,46 @@ public class ViCrearRol extends JFrame {
         panelTitulo.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         panelTitulo.add(titulo);
 
-        panelCentro.add(panelTitulo, BorderLayout.NORTH);
-        panelCentro.add(panelTabla, BorderLayout.CENTER);
+        JPanel northContainer = new JPanel(new BorderLayout());
+        northContainer.setOpaque(false);
+        northContainer.setBorder(BorderFactory.createEmptyBorder(20, 40, 0, 40));
+        northContainer.add(panelTitulo, BorderLayout.CENTER);
+
+        getContentPane().add(northContainer, BorderLayout.NORTH);
+    }
+
+    private void configurarTabla() {
+        panelTabla = new ViTabla();
+        panelTabla.setOpaque(false);
+
+        JPanel centerContainer = new JPanel(new BorderLayout());
+        centerContainer.setOpaque(false);
+        centerContainer.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 40));
+        centerContainer.add(panelTabla, BorderLayout.CENTER);
+
+        getContentPane().add(centerContainer, BorderLayout.CENTER);
+    }
+
+    private void configurarBotones() {
+        this.botones = new ArrayList<>();
+        this.botones.add(new JButton(MoTextos.roles_btn_create));
+        this.botones.add(new JButton(MoTextos.btn_back_whitelist));
 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
         panelBotones.setOpaque(false);
 
-        estilarBoton(this.botones.get(0));
-        estilarBoton(this.botones.get(1));
-        // Special color for back button
+        aniadirEstiloBoton(this.botones.get(0));
+        aniadirEstiloBoton(this.botones.get(1));
+
         this.botones.get(1).setBackground(new java.awt.Color(200, 100, 100));
 
         panelBotones.add(this.botones.get(0));
         panelBotones.add(this.botones.get(1));
 
-        panelFondo.add(panelCentro, BorderLayout.CENTER);
-        panelFondo.add(panelBotones, BorderLayout.SOUTH);
+        getContentPane().add(panelBotones, BorderLayout.SOUTH);
     }
 
-    private void estilarBoton(JButton btn) {
+    private void aniadirEstiloBoton(JButton btn) {
         btn.setFont(Estilos.FONT_BOTON);
         btn.setBackground(Estilos.COLOR_BOTON_MENU);
         btn.setForeground(java.awt.Color.WHITE);
@@ -119,7 +144,7 @@ public class ViCrearRol extends JFrame {
         dialog.setLayout(new java.awt.BorderLayout());
 
         javax.swing.JPanel panel = new javax.swing.JPanel();
-        panel.setBackground(Estilos.BEIGE_CANVAS); // Use defined color
+        panel.setBackground(Estilos.BEIGE_CANVAS);
         panel.setBorder(javax.swing.BorderFactory.createLineBorder(Estilos.DARK_SPRUCE, 2));
         panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.Y_AXIS));
         panel.setBorder(new javax.swing.border.EmptyBorder(20, 20, 20, 20));
@@ -136,7 +161,7 @@ public class ViCrearRol extends JFrame {
         lblNombre.setForeground(Estilos.COLOR_LABEL);
 
         txtNombre = new JTextField();
-        estilarInput(txtNombre);
+        aniadirEstiloInput(txtNombre);
 
         panel.add(lblNombre);
         panel.add(txtNombre);
@@ -147,7 +172,7 @@ public class ViCrearRol extends JFrame {
         lblDescripcion.setForeground(Estilos.COLOR_LABEL);
 
         txtDescripcion = new JTextField();
-        estilarInput(txtDescripcion);
+        aniadirEstiloInput(txtDescripcion);
 
         panel.add(lblDescripcion);
         panel.add(txtDescripcion);
@@ -187,7 +212,7 @@ public class ViCrearRol extends JFrame {
         return result[0];
     }
 
-    private void estilarInput(javax.swing.JComponent input) {
+    private void aniadirEstiloInput(javax.swing.JComponent input) {
         input.setFont(Estilos.FONT_TEXTO);
         input.setBackground(Estilos.COLOR_INPUT_BG);
         input.setForeground(Estilos.COLOR_INPUT_TEXT);

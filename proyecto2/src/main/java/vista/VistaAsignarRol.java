@@ -35,10 +35,20 @@ public class VistaAsignarRol extends JFrame {
     private JLabel titulo;
 
     public VistaAsignarRol() {
-        // ... (constructor start)
+        propiedades();
+    }
+
+    private void propiedades() {
+        configurarVentana();
+        configurarFondo();
+        configurarTitulo();
+        configurarTabla();
+        configurarBotones();
+    }
+
+    private void configurarVentana() {
         this.textos = new ArrayList<>();
         this.botones = new ArrayList<>();
-        this.tabla = new ViTabla();
 
         this.setTitle(MoTextos.roles_title_assign);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,7 +56,9 @@ public class VistaAsignarRol extends JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setLayout(new BorderLayout());
+    }
 
+    private void configurarFondo() {
         URL url = getClass().getResource("/fondo_abstracto_2.png");
         if (url != null) {
             imagenFondo = new ImageIcon(url).getImage();
@@ -69,9 +81,9 @@ public class VistaAsignarRol extends JFrame {
         panelFondo.setLayout(new BorderLayout(20, 20));
         panelFondo.setBorder(new EmptyBorder(20, 20, 20, 20));
         this.setContentPane(panelFondo);
+    }
 
-        this.setContentPane(panelFondo);
-
+    private void configurarTitulo() {
         titulo = new JLabel(MoTextos.roles_title_assign);
         titulo.setFont(Estilos.FONT_TITULO);
         titulo.setForeground(Estilos.DARK_SPRUCE);
@@ -92,9 +104,12 @@ public class VistaAsignarRol extends JFrame {
         panelTitulo.setOpaque(false);
         panelTitulo.setBorder(new EmptyBorder(10, 20, 10, 20));
         panelTitulo.add(titulo);
-        panelFondo.add(panelTitulo, BorderLayout.NORTH);
+        getContentPane().add(panelTitulo, BorderLayout.NORTH);
+    }
 
-        // Container for table with semi-transparent background
+    private void configurarTabla() {
+        this.tabla = new ViTabla();
+
         JPanel panelTablaContenedor = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -110,9 +125,10 @@ public class VistaAsignarRol extends JFrame {
 
         this.tabla.setOpaque(false);
         panelTablaContenedor.add(this.tabla, BorderLayout.CENTER);
-        panelFondo.add(panelTablaContenedor, BorderLayout.CENTER);
+        getContentPane().add(panelTablaContenedor, BorderLayout.CENTER);
+    }
 
-        // Bottom panel for controls
+    private void configurarBotones() {
         JPanel panelSur = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         panelSur.setOpaque(false);
 
@@ -141,7 +157,7 @@ public class VistaAsignarRol extends JFrame {
         panelSur.add(btnDesasignar);
         panelSur.add(btnVolver);
 
-        panelFondo.add(panelSur, BorderLayout.SOUTH);
+        getContentPane().add(panelSur, BorderLayout.SOUTH);
     }
 
     public void actualizarTextos() {

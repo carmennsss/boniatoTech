@@ -33,23 +33,12 @@ public class VistaCorreoBase extends JFrame {
     private JLabel lblMessage;
 
     public VistaCorreoBase(String remitente) {
-        this.setTitle(MoTextos.mail_title_compose);
         this.remitente = remitente;
-
-        inicializarComponentes();
-        propiedadesGenerales();
-
-        // Ya no creamos el panel aquí, dejamos que ensamblarVista lo haga
-        ensamblarVista(true);
-
+        propiedades(true);
     }
 
-    // CONSTRUCTOR CONSULTAR
     public VistaCorreoBase(Correo correo) {
-        this.setTitle(MoTextos.mail_title_check);
-
-        inicializarComponentes();
-        propiedadesGenerales();
+        propiedades(false);
 
         textoPara.setText(correo.getRemitente());
         textoAsunto.setText(correo.getAsunto());
@@ -58,14 +47,22 @@ public class VistaCorreoBase extends JFrame {
         textoPara.setEditable(false);
         textoAsunto.setEditable(false);
         textoCuerpo.setEditable(false);
-
-        ensamblarVista(false);
-
     }
 
-    // M�todo para inicializar todos los componentes una sola vez
+    private void propiedades(boolean esEnvio) {
+        if (esEnvio) {
+            this.setTitle(MoTextos.mail_title_compose);
+        } else {
+            this.setTitle(MoTextos.mail_title_check);
+        }
+
+        inicializarComponentes();
+        propiedadesGenerales();
+        ensamblarVista(esEnvio);
+    }
+
     private void inicializarComponentes() {
-        textoPara = new JTextField(40); // M�s ancho por defecto
+        textoPara = new JTextField(40);
         textoAsunto = new JTextField(40);
         textoCuerpo = new JTextArea(15, 50);
         textoCuerpo.setLineWrap(true);
@@ -82,11 +79,10 @@ public class VistaCorreoBase extends JFrame {
     }
 
     private void ensamblarVista(boolean esEnvio) {
-        // Main Container
+
         panelPrincipal = new JPanel(new BorderLayout());
         panelPrincipal.setBackground(Estilos.FONDO_PRINCIPAL);
 
-        // --- SIDEBAR (Decorative) ---
         JPanel sidebar = new JPanel() {
             private java.awt.Image bgImage;
 
@@ -108,18 +104,15 @@ public class VistaCorreoBase extends JFrame {
                     int imgW = bgImage.getWidth(this);
                     int imgH = bgImage.getHeight(this);
 
-                    // Avoid division by zero
                     if (imgW > 0 && imgH > 0) {
                         int panelW = getWidth();
                         int panelH = getHeight();
 
-                        // Scale to cover
                         double scale = Math.max((double) panelW / imgW, (double) panelH / imgH);
 
                         int newW = (int) (imgW * scale);
                         int newH = (int) (imgH * scale);
 
-                        // Center the image
                         int x = (panelW - newW) / 2;
                         int y = (panelH - newH) / 2;
 
@@ -132,16 +125,14 @@ public class VistaCorreoBase extends JFrame {
             }
         };
         sidebar.setPreferredSize(new Dimension(250, 0));
-        sidebar.setBackground(Estilos.DARK_SPRUCE); // Fallback
+        sidebar.setBackground(Estilos.DARK_SPRUCE);
 
         panelPrincipal.add(sidebar, BorderLayout.WEST);
 
-        // --- MAIN CONTENT AREA ---
         JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
         contentPanel.setBackground(Estilos.FONDO_PRINCIPAL);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Header Fields Panel
         JPanel panelDatosSuperiores = new JPanel(new GridLayout(0, 1, 5, 10));
         panelDatosSuperiores.setBackground(Estilos.FONDO_PRINCIPAL);
 
@@ -156,7 +147,6 @@ public class VistaCorreoBase extends JFrame {
 
         contentPanel.add(panelDatosSuperiores, BorderLayout.NORTH);
 
-        // Body Panel
         JPanel panelCuerpo = new JPanel(new BorderLayout(5, 5));
         panelCuerpo.setBackground(Estilos.FONDO_PRINCIPAL);
 
@@ -170,7 +160,6 @@ public class VistaCorreoBase extends JFrame {
 
         contentPanel.add(panelCuerpo, BorderLayout.CENTER);
 
-        // Action Buttons Panel
         JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panelBoton.setBackground(Estilos.FONDO_PRINCIPAL);
 
@@ -198,7 +187,6 @@ public class VistaCorreoBase extends JFrame {
         JPanel p = new JPanel(new BorderLayout(5, 5));
         p.setBackground(Estilos.FONDO_PRINCIPAL);
 
-        // JLabel lbl = new JLabel(labelText); // Removed local creation
         lbl.setFont(Estilos.FONT_TEXTO.deriveFont(Font.BOLD));
         lbl.setForeground(Estilos.TEXTO_PRINCIPAL);
         lbl.setPreferredSize(new Dimension(80, 25));
@@ -240,14 +228,12 @@ public class VistaCorreoBase extends JFrame {
     public File exportarCorreo(String nombreSugerido) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Export EML");
-        // Filtro para archivos .eml
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Files (*.eml)", "eml"));
         fileChooser.setSelectedFile(new File(nombreSugerido + ".eml"));
 
         int seleccion = fileChooser.showSaveDialog(this);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
-            // Forzar extensión .eml si el usuario no la puso
             if (!f.getName().toLowerCase().endsWith(".eml")) {
                 f = new File(f.getAbsolutePath() + ".eml");
             }

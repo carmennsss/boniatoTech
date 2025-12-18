@@ -132,7 +132,7 @@ public class OyenteArchivos implements ActionListener {
         String tipo;
         String emailUsuario;
 
-        fc.setDialogTitle("Select the file to upload"); // Could allow this to remain or externalize later if critical
+        fc.setDialogTitle("Select the file to upload");
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int respuesta = fc.showDialog(fc, "OK");
         if (respuesta == JFileChooser.APPROVE_OPTION) {

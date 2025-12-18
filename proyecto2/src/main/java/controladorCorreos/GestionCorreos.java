@@ -51,10 +51,8 @@ public class GestionCorreos {
 
 				if (from != null && from.length > 0) {
 					if (from[0] instanceof InternetAddress) {
-						// extrae solo la dirección (ej: juan@gmail.com)
 						remitenteLimpio = ((InternetAddress) from[0]).getAddress();
 					} else {
-						// fallback por si no es InternetAddress
 						remitenteLimpio = from[0].toString();
 					}
 				}
@@ -185,7 +183,6 @@ public class GestionCorreos {
 			System.out.println("[POP3] No se encontró el mensaje en el servidor para borrar.");
 		}
 
-		// Al cerrar con 'true', se ejecuta el EXPUNGE (borrado físico)
 		inbox.close(true);
 		store.close();
 

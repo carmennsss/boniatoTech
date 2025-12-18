@@ -54,8 +54,8 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
                     return;
                 }
 
-                String nombreRol = (String) modeloTabla.getValueAt(filaModificada, 1); // Roles is now col 1
-                String nombrePermiso = listaNombresPermisos.get(columnaModificada - 3); // -3 offset
+                String nombreRol = (String) modeloTabla.getValueAt(filaModificada, 1);
+                String nombrePermiso = listaNombresPermisos.get(columnaModificada - 3);
                 Boolean nuevoValor = (Boolean) modeloTabla.getValueAt(filaModificada, columnaModificada);
 
                 controlador.getControladorRoles().actualizarPermiso(nombreRol, nombrePermiso, nuevoValor);

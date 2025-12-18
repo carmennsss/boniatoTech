@@ -20,6 +20,7 @@ import vista.VistaGestorArchivos;
 import vista.VistaLogs;
 import vista.VistaMenuPrincipal;
 import vista.VistaRegistroUsuarios;
+import controladorLogs.ControladorLogs;
 
 public class OyenteFTP implements ActionListener {
 	private ViMain viMain;
@@ -33,6 +34,7 @@ public class OyenteFTP implements ActionListener {
 	private VistaGeneralCorreo vistaGeneralCorreo;
 	private VistaLogs vistaLogs;
 	private ModeloBaseDatos modeloBaseDatos;
+	private ControladorLogs controladorLogs;
 
 	public OyenteFTP(MoView modeloVista, ViMain viMain, ModeloClienteFTP modelo, CoPrincipal ctrl,
 			VistaGestorArchivos vistaArchivo, VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin,
@@ -91,10 +93,11 @@ public class OyenteFTP implements ActionListener {
 	}
 
 	private void abrirLogs() {
-
 		vistaAdmin.setVisible(false);
-		vistaLogs.hacerVisible();
-
+		if (controladorLogs == null) {
+			controladorLogs = new ControladorLogs(modeloBaseDatos.getConexion(), vistaLogs);
+		}
+		controladorLogs.mostrar();
 	}
 
 	private void abrirCorreo() {
@@ -241,7 +244,7 @@ public class OyenteFTP implements ActionListener {
 		String contrasenia = viMain.getPanelLogin().getCajas().get(1).getText();
 		modelo.setUser(usuario);
 		modelo.setPass(contrasenia);
-		vistaArchivo.inicializarFileManager();
+
 		try {
 			modelo.establecerConexion();
 			if (modelo.getCliente().login(usuario, contrasenia)) {
@@ -258,14 +261,12 @@ public class OyenteFTP implements ActionListener {
 		} catch (org.apache.commons.net.ftp.FTPConnectionClosedException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(viMain.getPanelLogin(),
-					MoTextos.msg_connection_error + "\n" + e.getMessage(), // Using general conn error for now or
-																			// add specific
+					MoTextos.msg_connection_error + "\n" + e.getMessage(),
 					MoTextos.msg_error_title,
 					JOptionPane.ERROR_MESSAGE);
 			try {
 				modelo.desconectar();
 			} catch (Exception ex) {
-				// Ignorar errores al desconectar si ya estaba cerrado
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();

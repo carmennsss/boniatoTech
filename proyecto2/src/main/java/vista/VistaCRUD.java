@@ -18,11 +18,23 @@ public class VistaCRUD extends JFrame {
     private JPanel panelFondo;
 
     public VistaCRUD() {
-        super("Gestión Serwo - Animales");
+        propiedades();
+    }
+
+    private void propiedades() {
+        configurarVentana();
+        configurarFondo();
+        configurarComponentes();
+    }
+
+    private void configurarVentana() {
+        this.setTitle("Gestión Serwo - Animales");
         setSize(900, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+    }
 
+    private void configurarFondo() {
         panelFondo = new JPanel() {
             private Image imagen;
             {
@@ -58,7 +70,9 @@ public class VistaCRUD extends JFrame {
         };
         panelFondo.setLayout(new BorderLayout());
         setContentPane(panelFondo);
+    }
 
+    private void configurarComponentes() {
         ArrayList<String> textosMenu = new ArrayList<>(Arrays.asList(
                 "ESPECIES", "RECINTOS", "CUIDADORES", "ANIMALES", "TRASLADOS", "ESPECIES_RECINTOS", "ELEMENTOS"));
         panelMenu = new ViBotones(textosMenu);
@@ -106,10 +120,6 @@ public class VistaCRUD extends JFrame {
 
     public void actualizarTextos() {
         lblInstrucciones.setText(MoTextos.lbl_crud_instructions);
-        // For ViBotones, we might need to access individual buttons if we want to
-        // update them in-place,
-        // or we rely on the fact their logic is tied to index/text.
-        // Assuming ViBotones exposes buttons:
         if (panelAcciones.getBotones().size() > 0)
             panelAcciones.getBotones().get(0).setText(MoTextos.btn_new);
         if (panelAcciones.getBotones().size() > 1)
