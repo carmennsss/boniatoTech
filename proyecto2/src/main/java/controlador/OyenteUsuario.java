@@ -138,7 +138,8 @@ public class OyenteUsuario implements ActionListener {
 		};
 		modeloTabla.addColumn(modelo.MoTextos.del_user_col_user);
 		modeloTabla.addColumn(modelo.MoTextos.del_user_col_email);
-		String sql = "SELECT nombre_usuario, email FROM usuarios;";
+		String sql = "SELECT nombre_usuario, email FROM usuarios WHERE email NOT LIKE '"
+				+ bd.obtenerEmailPorUsuario(client.getUser()) + "'";
 		ResultSet rs = bd.getConsulta(sql);
 
 		try {
