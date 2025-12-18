@@ -16,6 +16,7 @@ import javax.swing.SwingUtilities;
 import modelo.Correo;
 import modelo.ModeloBaseDatos;
 import vista.VistaGeneralCorreo;
+import vista.VistaMenuPrincipal;
 
 public class ControladorCorreos {
 
@@ -28,9 +29,11 @@ public class ControladorCorreos {
 	private static GestionCorreos gestion;
 	private Thread hiloRecepcion;
 	private ModeloBaseDatos db;
+	private VistaMenuPrincipal vistaMenuPrincipal; 
 
-	public ControladorCorreos(String CORREO, VistaGeneralCorreo vistaGeneral, ModeloBaseDatos bd) {
+	public ControladorCorreos(String CORREO, VistaGeneralCorreo vistaGeneral, ModeloBaseDatos bd, VistaMenuPrincipal vistaMenu) {
 		this.vistaGeneral = vistaGeneral;
+		this.vistaMenuPrincipal = vistaMenu;
 		this.db = bd;
 		this.CORREO = CORREO;
 		this.PASSWORD_APLICACION = obtenerClaveCorreoPorUsuario(CORREO);
@@ -112,6 +115,7 @@ public class ControladorCorreos {
 		vistaGeneral.getEmailTabla()
 				.addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this, CORREO));
 		vistaGeneral.getBtnRefrescar().addActionListener(new OyenteRefrescarCorreo(this));
+		vistaGeneral.getBtnVolver().addActionListener(new OyenteBotonVolver(vistaGeneral, vistaMenuPrincipal));
 	}
 
 	// ELIMINAR
