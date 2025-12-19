@@ -184,7 +184,7 @@ public class ModeloBaseDatos {
         boolean valido = false;
         try {
             PreparedStatement pstmt = getConexion().prepareStatement(
-                    "SELECT * FROM usuarios WHERE correo = ? AND password = ?");
+                    "SELECT * FROM usuarios WHERE email = ? AND contrasena = ?");
             pstmt.setString(1, correo);
             pstmt.setString(2, password);
             ResultSet rs = pstmt.executeQuery();
