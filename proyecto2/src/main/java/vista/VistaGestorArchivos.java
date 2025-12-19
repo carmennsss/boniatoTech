@@ -97,8 +97,14 @@ public class VistaGestorArchivos extends JFrame {
 		subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		subtitle.setForeground(new Color(150, 150, 150));
 
+		pathLabel = new JLabel(MoTextos.lbl_current_path + " /");
+		pathLabel.setFont(new Font("Segoe UI", Font.ITALIC, 12));
+		pathLabel.setForeground(new Color(100, 100, 100));
+
 		header.add(title);
 		header.add(Box.createVerticalStrut(5));
+		header.add(pathLabel);
+		header.add(Box.createVerticalStrut(3));
 		header.add(subtitle);
 		header.add(Box.createVerticalStrut(20));
 
@@ -178,6 +184,7 @@ public class VistaGestorArchivos extends JFrame {
 	// UI Components for text update
 	private JLabel title;
 	private JLabel subtitle;
+	private JLabel pathLabel;
 	private JLabel lblActions;
 
 	private void estilarBoton(JButton btn, Color bg, Color fg) {
@@ -266,6 +273,9 @@ public class VistaGestorArchivos extends JFrame {
 		setTitle(MoTextos.file_manager_title);
 		title.setText(MoTextos.file_repo_title);
 		subtitle.setText(MoTextos.file_repo_subtitle);
+		// Actualizar el prefijo de la ruta, pero mantener la ruta actual
+		String currentPath = pathLabel.getText().substring(pathLabel.getText().indexOf(" ") + 1);
+		pathLabel.setText(MoTextos.lbl_current_path + " " + currentPath);
 
 		botonSubida.setText(MoTextos.btn_upload);
 		botonDescarga.setText(MoTextos.btn_download);
@@ -280,5 +290,14 @@ public class VistaGestorArchivos extends JFrame {
 		botonVolverMenuPrincipal.setText(MoTextos.btn_main_menu);
 
 		repaint();
+	}
+
+	/**
+	 * Actualiza la etiqueta que muestra la ruta actual.
+	 * 
+	 * @param ruta La ruta actual del directorio FTP.
+	 */
+	public void actualizarRutaActual(String ruta) {
+		pathLabel.setText(MoTextos.lbl_current_path + " " + ruta);
 	}
 }
