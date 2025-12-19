@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 import controladorLogs.ControladorLogs;
 import controladorLogs.GestionLogs;
 import modelo.Correo;
+import modelo.Log;
 import vista.VistaGeneralCorreo;
 
 /**
@@ -34,8 +35,10 @@ public class HiloRecepcionCorreos implements Runnable {
 	 */
 	public HiloRecepcionCorreos(GestionCorreos gestionPop3, String host, String correo, String PASSWORD_APLICACION,
 			VistaGeneralCorreo vistaGeneral, ControladorCorreos controlador) {
+
 		this.gestionPop3 = gestionPop3;
 		this.host = host;
+		this.hostImap = "imap.gmail.com";
 		this.PASSWORD_APLICACION = PASSWORD_APLICACION;
 		this.correo = correo;
 		this.vistaGeneral = vistaGeneral;
@@ -55,11 +58,34 @@ public class HiloRecepcionCorreos implements Runnable {
 				Thread.sleep(25_000);
 
 				if (!Thread.currentThread().isInterrupted()) {
+
 					ArrayList<Correo> nuevos = gestionPop3.recibirCorreosPOP3(host, hostImap, correo,
 							PASSWORD_APLICACION);
 
-					if (nuevos != null && nuevos.size() != ultimoNumeroCorreos) {
-						ultimoNumeroCorreos = nuevos.size();
+					if (nuevos == null) {
+						continue;
+					}
+
+					int cantidadActual = nuevos.size();
+
+					if (ultimoNumeroCorreos == -1) {
+						ultimoNumeroCorreos = cantidadActual;
+
+						SwingUtilities.invokeLater(() -> {
+							controlador.actualizarListaDesdeHilo(nuevos);
+						});
+
+						continue;
+					}
+
+					if (cantidadActual > ultimoNumeroCorreos) {
+
+						GestionLogs.writeLog(new Log("MAIL_RECEIVED", correo.replaceFirst("^recent:", ""), true));
+					}
+
+					if (cantidadActual != ultimoNumeroCorreos) {
+						ultimoNumeroCorreos = cantidadActual;
+
 						SwingUtilities.invokeLater(() -> {
 							controlador.actualizarListaDesdeHilo(nuevos);
 						});
@@ -67,7 +93,8 @@ public class HiloRecepcionCorreos implements Runnable {
 				}
 			}
 		} catch (InterruptedException e) {
-		} finally {
+			Thread.currentThread().interrupt();
 		}
 	}
+
 }
