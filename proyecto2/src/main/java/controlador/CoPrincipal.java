@@ -34,8 +34,6 @@ public class CoPrincipal {
     private ControladorRoles controladorRoles;
     private ControladorWhitelist controladorWhitelist;
     private ControladorCorreos controladorCorreos;
-    private ControladorLogs controladorLogs;
-
     /**
      * Constructor principal.
      * Inicializa la base de datos, el cliente FTP, las vistas y los controladores
@@ -58,7 +56,7 @@ public class CoPrincipal {
         this.vistaUsuarios = new VistaRegistroUsuarios(vistaAdmin, modeloFTP, bd);
         this.vistaEliminarUsuarios = new VistaEliminarUsuarios(vistaUsuarios, modeloFTP, bd);
         this.vistaLogs = new VistaLogs(vistaAdmin);
-        this.controladorLogs = new ControladorLogs(modelo.ModeloBaseDatos.getConexion(), vistaLogs);
+        new ControladorLogs(modelo.ModeloBaseDatos.getConexion(), vistaLogs);
 
         vista.hacerVisible();
         asignarEventos();
