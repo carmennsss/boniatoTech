@@ -312,19 +312,6 @@ public class ModeloBaseDatos {
         }
     }
 
-    public boolean renombrarArchivoSQL(String nombreActual, String nuevoNombre, String ruta) {
-        String sql = "UPDATE archivos SET nombre_archivo = ? WHERE nombre_archivo = ? AND directorio = ?";
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, nuevoNombre);
-            ps.setString(2, nombreActual);
-            ps.setString(3, ruta);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     public boolean renombrarArchivo(String nombreActual, String nuevoNombre, String ruta, String extension) {
         String sql = "UPDATE archivos SET nombre_archivo = ?, extension = ? WHERE nombre_archivo = ? AND directorio = ?;";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
