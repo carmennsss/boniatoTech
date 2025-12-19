@@ -37,6 +37,7 @@
 			<attribute name="maven.groupId" value="com.mysql"/>
 		</attributes>
 	</classpathentry>
+	
 	<classpathentry kind="lib" path="c:/Users/carme/.m2/repository/com/google/protobuf/protobuf-java/3.21.9/protobuf-java-3.21.9.jar">
 		<attributes>
 			<attribute name="maven.artifactId" value="protobuf-java"/>
@@ -123,6 +124,33 @@
 		<attributes>
 			<attribute name="maven.artifactId" value="hamcrest-core"/>
 			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="c:/Users/carme/.m2/repository/org/kordamp/ikonli/ikonli-swing/12.3.1/ikonli-swing-12.3.1.jar">
+		<attributes>
+			<attribute name="maven.artifactId" value="ikonli-swing"/>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.scope" value="compile"/>
+			<attribute name="maven.version" value="12.3.1"/>
+			<attribute name="maven.groupId" value="org.kordamp.ikonli"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="c:/Users/carme/.m2/repository/org/kordamp/ikonli/ikonli-materialdesign-pack/12.3.1/ikonli-materialdesign-pack-12.3.1.jar">
+		<attributes>
+			<attribute name="maven.artifactId" value="ikonli-materialdesign-pack"/>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.scope" value="compile"/>
+			<attribute name="maven.version" value="12.3.1"/>
+			<attribute name="maven.groupId" value="org.kordamp.ikonli"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="c:/Users/carme/.m2/repository/org/kordamp/ikonli/ikonli-core/12.3.1/ikonli-core-12.3.1.jar">
+		<attributes>
+			<attribute name="maven.artifactId" value="ikonli-core"/>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.scope" value="compile"/>
+			<attribute name="maven.version" value="12.3.1"/>
+			<attribute name="maven.groupId" value="org.kordamp.ikonli"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="target/generated-sources/annotations">
