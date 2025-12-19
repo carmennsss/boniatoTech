@@ -291,8 +291,8 @@ public class ModeloBaseDatos {
     }
 
     public boolean eliminarUsuario(String email) {
-        String sql = "DELETE FROM usuarios WHERE email = ?";
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        String sql = "DELETE FROM usuarios WHERE email = ?s";
+        try (PreparedStatement ps = getConexion().prepareStatement(sql)) {
             ps.setString(1, email);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
