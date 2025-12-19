@@ -292,7 +292,7 @@ public class ModeloBaseDatos {
 
     public boolean eliminarUsuario(String email) {
         String sql = "DELETE FROM usuarios WHERE email = ?";
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try (PreparedStatement ps = getConexion().prepareStatement(sql)) {
             ps.setString(1, email);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -309,19 +309,6 @@ public class ModeloBaseDatos {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-    }
-
-    public boolean renombrarArchivoSQL(String nombreActual, String nuevoNombre, String ruta) {
-        String sql = "UPDATE archivos SET nombre_archivo = ? WHERE nombre_archivo = ? AND directorio = ?";
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, nuevoNombre);
-            ps.setString(2, nombreActual);
-            ps.setString(3, ruta);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
         }
     }
 
