@@ -112,6 +112,9 @@ public class VistaGestorArchivos extends JFrame {
 		listaArchivos.setBackground(Color.WHITE);
 		listaArchivos.setBorder(new EmptyBorder(5, 5, 5, 5));
 
+		// Configurar el renderizador personalizado para mostrar iconos
+		listaArchivos.setCellRenderer(new FileListCellRenderer());
+
 		JScrollPane scrollPane = new JScrollPane(listaArchivos);
 		scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220)));
 		contentPanel.add(scrollPane, BorderLayout.CENTER);
