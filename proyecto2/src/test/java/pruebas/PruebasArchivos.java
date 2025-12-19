@@ -42,7 +42,7 @@ public class PruebasArchivos {
 
         // 1. Insertar
         // id_padre null, email del usuario creado
-        boolean insertado = modeloDB.insertarArchivo(testFile, testPath, "txt", "archivo", null, TEST_EMAIL_FILES);
+        boolean insertado = modeloDB.insertarArchivo(testFile, testPath, "txt", "File", null, TEST_EMAIL_FILES);
 
         if (insertado) {
             assertTrue("Debería insertar el registro del archivo", insertado);
