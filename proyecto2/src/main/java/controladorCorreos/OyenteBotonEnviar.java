@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 import vista.VistaCorreoBase;
 
 /**
- * Oyente del bot贸n "Enviar" en la vista de correos. Abre la ventana de
- * redacci贸n de un nuevo correo.
+ * Oyente del bot髇 "Enviar" en la vista de correos. Abre la ventana de
+ * redacci髇 de un nuevo correo.
  */
 public class OyenteBotonEnviar implements ActionListener {
 
@@ -18,8 +18,8 @@ public class OyenteBotonEnviar implements ActionListener {
 	/**
 	 * Constructor del oyente.
 	 *
-	 * @param correo             Direcci贸n de correo del remitente.
-	 * @param passwordAplicacion Contrase帽a de aplicaci贸n.
+	 * @param correo              Direcci髇 de correo del remitente.
+	 * @param passwordAplicacion Contrase馻 de aplicaci髇.
 	 * @param controladorCorreos Controlador de correos.
 	 */
 	public OyenteBotonEnviar(String correo, String passwordAplicacion, ControladorCorreos controladorCorreos) {
@@ -29,9 +29,9 @@ public class OyenteBotonEnviar implements ActionListener {
 	}
 
 	/**
-	 * Abre la ventana de redacci贸n de nuevo correo.
+	 * Abre la ventana de redacci髇 de nuevo correo.
 	 *
-	 * @param e Evento de acci贸n.
+	 * @param e Evento de acci髇.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {

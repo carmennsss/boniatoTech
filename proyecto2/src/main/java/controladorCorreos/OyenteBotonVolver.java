@@ -6,8 +6,8 @@ import vista.VistaGeneralCorreo;
 import vista.VistaMenuPrincipal;
 
 /**
- * Oyente del botÃ³n "Volver" en la vista de correos.
- * Regresa al menÃº principal y detiene la recepciÃ³n automÃ¡tica de correos.
+ * Oyente del botón "Volver" en la vista de correos.
+ * Regresa al menú principal y detiene la recepción automática de correos.
  */
 public class OyenteBotonVolver implements ActionListener {
 
@@ -19,7 +19,7 @@ public class OyenteBotonVolver implements ActionListener {
      * Constructor del oyente.
      *
      * @param vistaGeneral       Vista general de correos.
-     * @param vistaMenu          Vista del menÃº principal.
+     * @param vistaMenu          Vista del menú principal.
      * @param controladorCorreos Controlador de correos.
      */
     public OyenteBotonVolver(VistaGeneralCorreo vistaGeneral, VistaMenuPrincipal vistaMenu,
@@ -30,9 +30,9 @@ public class OyenteBotonVolver implements ActionListener {
     }
 
     /**
-     * Vuelve al menÃº principal y detiene la recepciÃ³n automÃ¡tica de correos.
+     * Vuelve al menú principal y detiene la recepción automática de correos.
      *
-     * @param e Evento de acciÃ³n.
+     * @param e Evento de acción.
      */
     @Override
     public void actionPerformed(ActionEvent e) {

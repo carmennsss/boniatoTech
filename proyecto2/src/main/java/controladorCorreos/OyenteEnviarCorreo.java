@@ -12,8 +12,8 @@ import modelo.MoTextos;
 import vista.VistaCorreoBase;
 
 /**
- * Oyente del bot√≥n "Enviar" en la vista de redacci√≥n de correos.
- * Valida los datos del formulario y env√≠a el correo electr√≥nico.
+ * Oyente del botÛn "Enviar" en la vista de redacciÛn de correos.
+ * Valida los datos del formulario y envÌa el correo electrÛnico.
  */
 public class OyenteEnviarCorreo implements ActionListener {
 
@@ -24,8 +24,8 @@ public class OyenteEnviarCorreo implements ActionListener {
 	/**
 	 * Constructor del oyente.
 	 *
-	 * @param v                  Vista de redacci√≥n de correo.
-	 * @param passwordAplicacion Contrase√±a de aplicaci√≥n.
+	 * @param v                  Vista de redacciÛn de correo.
+	 * @param passwordAplicacion ContraseÒa de aplicaciÛn.
 	 * @param controlador        Controlador de correos.
 	 */
 	public OyenteEnviarCorreo(VistaCorreoBase v, String passwordAplicacion, ControladorCorreos controlador) {
@@ -35,11 +35,11 @@ public class OyenteEnviarCorreo implements ActionListener {
 	}
 
 	/**
-	 * Recopila los datos del formulario (destinatario, asunto, cuerpo) y env√≠a el
+	 * Recopila los datos del formulario (destinatario, asunto, cuerpo) y envÌa el
 	 * correo.
-	 * Valida que los campos no est√©n vac√≠os y que el destinatario est√© permitido.
+	 * Valida que los campos no estÈn vacÌos y que el destinatario estÈ permitido.
 	 *
-	 * @param e Evento de acci√≥n.
+	 * @param e Evento de acciÛn.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -69,11 +69,11 @@ public class OyenteEnviarCorreo implements ActionListener {
 	}
 
 	/**
-	 * Verifica si el destinatario est√° en la lista blanca (whitelist) o es un
+	 * Verifica si el destinatario est· en la lista blanca (whitelist) o es un
 	 * usuario registrado.
 	 *
-	 * @param receptor Direcci√≥n de correo del destinatario.
-	 * @return true si el destinatario es v√°lido, false en caso contrario.
+	 * @param receptor DirecciÛn de correo del destinatario.
+	 * @return true si el destinatario es v·lido, false en caso contrario.
 	 */
 	private boolean comprobarReceptorWhiteList(String receptor) {
 		boolean estaEnWhiteList;

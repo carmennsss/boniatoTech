@@ -8,8 +8,8 @@ import modelo.Log;
 import vista.VistaGeneralCorreo;
 
 /**
- * Hilo de ejecuci贸n en segundo plano para la recepci贸n autom谩tica de
- * correos. Comprueba peri贸dicamente si hay nuevos correos y actualiza la
+ * Hilo de ejecuci髇 en segundo plano para la recepci髇 autom醫ica de
+ * correos. Comprueba peri骴icamente si hay nuevos correos y actualiza la
  * vista.
  */
 public class HiloRecepcionCorreos implements Runnable {
@@ -21,12 +21,12 @@ public class HiloRecepcionCorreos implements Runnable {
 	private ControladorCorreos controlador;
 
 	/**
-	 * Constructor del hilo de recepci贸n de correos.
+	 * Constructor del hilo de recepci髇 de correos.
 	 *
 	 * @param gestionPop3         Gestor de correos POP3.
 	 * @param host                Host del servidor de correo.
-	 * @param correo              Direcci贸n de correo del usuario.
-	 * @param PASSWORD_APLICACION Contrase帽a de aplicaci贸n.
+	 * @param correo              Direcci髇 de correo del usuario.
+	 * @param PASSWORD_APLICACION Contrase馻 de aplicaci髇.
 	 * @param vistaGeneral        Vista general de correos.
 	 * @param controlador         Controlador de correos.
 	 */
@@ -43,7 +43,7 @@ public class HiloRecepcionCorreos implements Runnable {
 	}
 
 	/**
-	 * Ejecuta el bucle de recepci贸n de correos en segundo plano. Comprueba nuevos
+	 * Ejecuta el bucle de recepci髇 de correos en segundo plano. Comprueba nuevos
 	 * correos cada 25 segundos y actualiza la vista si hay cambios.
 	 */
 	@Override

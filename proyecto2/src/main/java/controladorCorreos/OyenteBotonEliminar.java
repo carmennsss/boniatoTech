@@ -7,7 +7,7 @@ import modelo.Correo;
 import vista.VistaCorreoBase;
 
 /**
- * Oyente del botÃ³n "Eliminar" en la vista de lectura de correos.
+ * Oyente del botón "Eliminar" en la vista de lectura de correos.
  * Elimina el correo seleccionado de la base de datos y cierra la ventana.
  */
 public class OyenteBotonEliminar implements ActionListener {
@@ -32,7 +32,7 @@ public class OyenteBotonEliminar implements ActionListener {
 	/**
 	 * Elimina el correo seleccionado tanto de la base de datos como de la vista.
 	 *
-	 * @param e Evento de acciÃ³n.
+	 * @param e Evento de acción.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {

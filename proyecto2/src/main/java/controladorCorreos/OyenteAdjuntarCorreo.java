@@ -10,7 +10,7 @@ import modelo.MoTextos;
 import vista.VistaCorreoBase;
 
 /**
- * Oyente del bot贸n "Adjuntar" en la vista de redacci贸n de correos.
+ * Oyente del bot髇 "Adjuntar" en la vista de redacci髇 de correos.
  * Permite seleccionar archivos para adjuntar al correo.
  */
 public class OyenteAdjuntarCorreo implements ActionListener {
@@ -20,7 +20,7 @@ public class OyenteAdjuntarCorreo implements ActionListener {
 	/**
 	 * Constructor del oyente.
 	 *
-	 * @param v Vista de redacci贸n de correo.
+	 * @param v Vista de redacci髇 de correo.
 	 */
 	public OyenteAdjuntarCorreo(VistaCorreoBase v) {
 		this.v = v;
@@ -29,7 +29,7 @@ public class OyenteAdjuntarCorreo implements ActionListener {
 	/**
 	 * Abre el selector de archivos para adjuntar un documento al correo.
 	 *
-	 * @param e Evento de acci贸n.
+	 * @param e Evento de acci髇.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {

@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import modelo.Correo;
 
 /**
- * Oyente del botÃ³n "Marcar como no leÃ­do" en la vista de correos.
+ * Oyente del botón "Marcar como no leído" en la vista de correos.
  * Cambia el estado de lectura del correo seleccionado.
  */
 public class OyenteBotonNoLeido implements ActionListener {
@@ -17,7 +17,7 @@ public class OyenteBotonNoLeido implements ActionListener {
 	/**
 	 * Constructor del oyente.
 	 *
-	 * @param correo             Correo a marcar como no leÃ­do.
+	 * @param correo              Correo a marcar como no leído.
 	 * @param controladorCorreos Controlador de correos.
 	 */
 	public OyenteBotonNoLeido(Correo correo, ControladorCorreos controladorCorreos) {
@@ -26,9 +26,9 @@ public class OyenteBotonNoLeido implements ActionListener {
 	}
 
 	/**
-	 * Marca el correo seleccionado como no leÃ­do.
+	 * Marca el correo seleccionado como no leído.
 	 *
-	 * @param e Evento de acciÃ³n.
+	 * @param e Evento de acción.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {

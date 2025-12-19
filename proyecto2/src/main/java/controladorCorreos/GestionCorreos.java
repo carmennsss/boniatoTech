@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Gestor de l√≥gica de negocio para el correo electr√≥nico.
- * Maneja la recepci√≥n (POP3/IMAP), eliminaci√≥n y marcado de correos.
+ * Gestor de lÛgica de negocio para el correo electrÛnico.
+ * Maneja la recepciÛn (POP3/IMAP), eliminaciÛn y marcado de correos.
  */
 public class GestionCorreos {
 
@@ -23,12 +23,12 @@ public class GestionCorreos {
 
 	/**
 	 * Recibe correos mediante POP3 y sincroniza el estado de lectura mediante IMAP
-	 * (si est√° disponible).
+	 * (si est· disponible).
 	 *
 	 * @param pop3Host Host del servidor POP3.
-	 * @param imapHost Host del servidor IMAP (para sincronizaci√≥n de estados).
-	 * @param user     Usuario de correo.
-	 * @param password Contrase√±a o contrase√±a de aplicaci√≥n.
+	 * @param imapHost Host del servidor IMAP (para sincronizaciÛn de estados).
+	 * @param user      Usuario de correo.
+	 * @param password ContraseÒa o contraseÒa de aplicaciÛn.
 	 * @return Lista de objetos Correo recibidos.
 	 */
 	public ArrayList<Correo> recibirCorreosPOP3(String pop3Host, String imapHost, String user, String password) {
@@ -45,7 +45,7 @@ public class GestionCorreos {
 			Store store = session.getStore("pop3s");
 			store.connect(pop3Host, user, password);
 
-			System.out.println("[POP3] Conexion establecida");
+			System.out.println("[POP3] ConexiÛn establecida");
 
 			Folder inbox = store.getFolder("INBOX");
 			inbox.open(Folder.READ_ONLY);
@@ -65,7 +65,7 @@ public class GestionCorreos {
 
 				if (from != null && from.length > 0) {
 					if (from[0] instanceof InternetAddress) {
-						// extrae solo la direcci√≥n (ej: juan@gmail.com)
+						// extrae solo la direcciÛn (ej: juan@gmail.com)
 						remitenteLimpio = ((InternetAddress) from[0]).getAddress();
 					} else {
 						// fallback por si no es InternetAddress
@@ -120,14 +120,14 @@ public class GestionCorreos {
 	}
 
 	/**
-	 * Obtiene un mapa con el estado de lectura (le√≠do/no le√≠do) de los mensajes
+	 * Obtiene un mapa con el estado de lectura (leÌdo/no leÌdo) de los mensajes
 	 * mediante IMAP.
 	 *
 	 * @param imapHost Host del servidor IMAP.
-	 * @param user     Usuario de correo.
-	 * @param password Contrase√±a.
-	 * @return Mapa donde la clave es el Message-ID y el valor es true si est√°
-	 *         le√≠do.
+	 * @param user      Usuario de correo.
+	 * @param password ContraseÒa.
+	 * @return Mapa donde la clave es el Message-ID y el valor es true si est·
+	 * leÌdo.
 	 */
 	public Map<String, Boolean> obtenerEstadosIMAP(String imapHost, String user, String password) {
 
@@ -148,7 +148,7 @@ public class GestionCorreos {
 			Store store = session.getStore("imaps");
 			store.connect(imapHost, user, password);
 
-			System.out.println("[IMAP] Conexion establecida");
+			System.out.println("[IMAP] ConexiÛn establecida");
 
 			Folder inbox = store.getFolder("INBOX");
 			inbox.open(Folder.READ_ONLY);
@@ -176,14 +176,14 @@ public class GestionCorreos {
 	}
 
 	/**
-	 * Elimina un correo espec√≠fico del servidor utilizando POP3.
+	 * Elimina un correo especÌfico del servidor utilizando POP3.
 	 * Marca el mensaje con el Message-ID coincidente para borrado.
 	 *
 	 * @param pop3Host      Host POP3.
 	 * @param user          Usuario.
-	 * @param password      Contrase√±a.
+	 * @param password      ContraseÒa.
 	 * @param correoABorrar Objeto Correo a eliminar.
-	 * @throws Exception Si ocurre un error durante la conexi√≥n o eliminaci√≥n.
+	 * @throws Exception Si ocurre un error durante la conexiÛn o eliminaciÛn.
 	 */
 	public void eliminarCorreoPOP3(String pop3Host, String user, String password, Correo correoABorrar)
 			throws Exception {
@@ -216,7 +216,7 @@ public class GestionCorreos {
 		}
 
 		if (!encontrado) {
-			System.out.println("[POP3] No se encontr√≥ el mensaje en el servidor para borrar.");
+			System.out.println("[POP3] No se encontrÛ el mensaje en el servidor para borrar.");
 		}
 
 		inbox.close(true);
@@ -226,11 +226,11 @@ public class GestionCorreos {
 	}
 
 	/**
-	 * Marca un correo como LE√çDO en el servidor IMAP.
+	 * Marca un correo como LEÕDO en el servidor IMAP.
 	 *
 	 * @param imapHost  Host IMAP.
 	 * @param user      Usuario.
-	 * @param password  Contrase√±a.
+	 * @param password  ContraseÒa.
 	 * @param messageId ID del mensaje a marcar.
 	 */
 	public void marcarLeidoIMAP(String imapHost, String user, String password, String messageId) {
@@ -267,11 +267,11 @@ public class GestionCorreos {
 	}
 
 	/**
-	 * Marca un correo como NO LE√çDO en el servidor IMAP.
+	 * Marca un correo como NO LEÕDO en el servidor IMAP.
 	 *
 	 * @param imapHost  Host IMAP.
 	 * @param user      Usuario.
-	 * @param password  Contrase√±a.
+	 * @param password  ContraseÒa.
 	 * @param messageId ID del mensaje a marcar.
 	 */
 	public void marcarNoLeidoIMAP(String imapHost, String user, String password, String messageId) {
@@ -312,8 +312,8 @@ public class GestionCorreos {
 	 *
 	 * @param message Mensaje a procesar.
 	 * @return Contenido del mensaje como String.
-	 * @throws MessagingException Error de mensajer√≠a.
-	 * @throws IOException        Error de entrada/salida.
+	 * @throws MessagingException Error de mensajerÌa.
+	 * @throws IOException         Error de entrada/salida.
 	 */
 	private String getTextFromMessage(Message message) throws MessagingException, IOException {
 
@@ -329,12 +329,12 @@ public class GestionCorreos {
 	}
 
 	/**
-	 * M√©todo auxiliar recursivo para extraer texto de contenido Multipart.
+	 * MÈtodo auxiliar recursivo para extraer texto de contenido Multipart.
 	 *
 	 * @param mimeMultipart Contenido Multipart.
-	 * @return Texto extra√≠do.
-	 * @throws MessagingException Error de mensajer√≠a.
-	 * @throws IOException        Error de entrada/salida.
+	 * @return Texto extraÌdo.
+	 * @throws MessagingException Error de mensajerÌa.
+	 * @throws IOException         Error de entrada/salida.
 	 */
 	private String getTextFromMimeMultipart(MimeMultipart mimeMultipart) throws MessagingException, IOException {
 

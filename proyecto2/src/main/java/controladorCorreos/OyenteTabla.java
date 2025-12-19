@@ -24,9 +24,9 @@ public class OyenteTabla extends MouseAdapter {
      * Constructor del oyente.
      *
      * @param tabla       Tabla de correos.
-     * @param correos     Lista de correos.
+     * @param correos      Lista de correos.
      * @param controlador Controlador de correos.
-     * @param miCorreo    DirecciÃ³n de correo del usuario.
+     * @param miCorreo    Dirección de correo del usuario.
      */
     public OyenteTabla(JTable tabla, ArrayList<Correo> correos, ControladorCorreos controlador, String miCorreo) {
         this.tabla = tabla;
@@ -38,9 +38,9 @@ public class OyenteTabla extends MouseAdapter {
     /**
      * Maneja el doble clic en la tabla de correos para abrir el mensaje
      * seleccionado.
-     * Si el mensaje no estaba leÃ­do, lo marca como leÃ­do en un hilo separado.
+     * Si el mensaje no estaba leído, lo marca como leído en un hilo separado.
      *
-     * @param e Evento del ratÃ³n.
+     * @param e Evento del ratón.
      */
     @Override
     public void mouseClicked(MouseEvent e) {
