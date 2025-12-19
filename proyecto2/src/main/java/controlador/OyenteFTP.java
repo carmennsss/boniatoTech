@@ -24,6 +24,12 @@ import vista.VistaRegistroUsuarios;
 import controladorLogs.ControladorLogs;
 import controladorLogs.GestionLogs;
 
+/**
+ * Oyente principal que maneja la lógica de navegación y eventos generales de la
+ * aplicación.
+ * Gestiona el inicio de sesión, la navegación entre menús y llamadas a otros
+ * controladores.
+ */
 public class OyenteFTP implements ActionListener {
 	private ViMain viMain;
 	private ModeloClienteFTP modelo;
@@ -38,6 +44,20 @@ public class OyenteFTP implements ActionListener {
 	private ModeloBaseDatos modeloBaseDatos;
 	private ControladorLogs controladorLogs;
 
+	/**
+	 * Constructor del oyente principal.
+	 *
+	 * @param modeloVista        Modelo de vista para estado compartido.
+	 * @param viMain             Vista principal.
+	 * @param modelo             Modelo del cliente FTP.
+	 * @param ctrl               Controlador principal.
+	 * @param vistaArchivo       Vista del gestor de archivos.
+	 * @param vistaMenuPrincipal Vista del menú principal.
+	 * @param vistaAdmin         Vista de administración.
+	 * @param vistaUsuarios      Vista de registro de usuarios.
+	 * @param vistaLogs          Vista de logs.
+	 * @param modeloBaseDatos    Modelo de base de datos.
+	 */
 	public OyenteFTP(MoView modeloVista, ViMain viMain, ModeloClienteFTP modelo, CoPrincipal ctrl,
 			VistaGestorArchivos vistaArchivo, VistaMenuPrincipal vistaMenuPrincipal, VistaAdmin vistaAdmin,
 			VistaRegistroUsuarios vistaUsuarios, VistaLogs vistaLogs, ModeloBaseDatos modeloBaseDatos) {
@@ -53,6 +73,12 @@ public class OyenteFTP implements ActionListener {
 		this.modeloBaseDatos = modeloBaseDatos;
 	}
 
+	/**
+	 * Maneja los eventos de los botones del menú principal, login y panel
+	 * administrativo.
+	 *
+	 * @param e El evento de acción detectado.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
@@ -94,6 +120,9 @@ public class OyenteFTP implements ActionListener {
 		}
 	}
 
+	/**
+	 * Abre la vista de logs.
+	 */
 	private void abrirLogs() {
 		vistaAdmin.setVisible(false);
 		if (controladorLogs == null) {
@@ -102,6 +131,9 @@ public class OyenteFTP implements ActionListener {
 		controladorLogs.mostrar();
 	}
 
+	/**
+	 * Abre la vista de correos electrónicos.
+	 */
 	private void abrirCorreo() {
 
 		VistaGeneralCorreo vistaCorr = controladorPrincipal.getVistaGeneralCorreo();
@@ -116,6 +148,9 @@ public class OyenteFTP implements ActionListener {
 
 	}
 
+	/**
+	 * Cierra la sesión del usuario y vuelve a la pantalla de login.
+	 */
 	private void logOut() {
 		modelo.desconectar();
 		vistaMenuPrincipal.setVisible(false);
@@ -126,32 +161,50 @@ public class OyenteFTP implements ActionListener {
 
 	}
 
+	/**
+	 * Vuelve al menú principal desde el panel de administración.
+	 */
 	private void volverMenuPrincipal() {
 		vistaAdmin.setVisible(false);
 		vistaMenuPrincipal.hacerVisible();
 	}
 
+	/**
+	 * Vuelve al panel de administración desde la gestión de usuarios.
+	 */
 	private void volverAdminDesdeUsuarios() {
 		vistaUsuarios.setVisible(false);
 		vistaAdmin.hacerVisible();
 	}
 
+	/**
+	 * Vuelve al menú principal desde la vista de correos.
+	 */
 	private void volverMenuDesdeCorreos() {
 		controladorPrincipal.getVistaGeneralCorreo().setVisible(false);
 		vistaMenuPrincipal.hacerVisible();
 	}
 
+	/**
+	 * Vuelve al panel de administración desde la gestión de roles.
+	 */
 	private void volverAdminDesdeRoles() {
 		viMain.getViCrearRol().setVisible(false);
 		viMain.getViAsignarRol().setVisible(false);
 		vistaAdmin.hacerVisible();
 	}
 
+	/**
+	 * Abre el gestor de archivos FTP.
+	 */
 	private void abrirFileManager() {
 		vistaArchivo.hacerVisible();
 		vistaMenuPrincipal.setVisible(false);
 	}
 
+	/**
+	 * Abre la vista de gestión de datos (CRUD).
+	 */
 	private void abrirManageData() {
 		viMain.hacerVisible();
 		viMain.mostrarCRUD();
@@ -159,6 +212,10 @@ public class OyenteFTP implements ActionListener {
 		controladorPrincipal.getControladorCRUD().rellenarTabla("animales");
 	}
 
+	/**
+	 * Verifica si el usuario tiene permisos de administrador.
+	 * Si es administrador, abre el panel de administración.
+	 */
 	private void verificarAdministrador() {
 		String sql = "SELECT u.* FROM usuarios u JOIN usuarios_roles ur ON u.email = ur.email_usuario WHERE u.email = ? AND ur.roles_id = 3;";
 		String email = modeloBaseDatos.obtenerEmailPorUsuario(modelo.getUser());
@@ -174,41 +231,62 @@ public class OyenteFTP implements ActionListener {
 		}
 	}
 
+	/**
+	 * Abre la vista de administración de usuarios.
+	 */
 	private void abrirAdministrarUsuarios() {
 		vistaUsuarios.hacerVisible();
 		vistaAdmin.setVisible(false);
 	}
 
+	/**
+	 * Abre la vista de creación de roles.
+	 */
 	private void abrirCrearRol() {
 		controladorPrincipal.getControladorRoles().rellenarVentanaCrearRol();
 		viMain.getViCrearRol().hacerVisible();
 		vistaAdmin.setVisible(false);
 	}
 
+	/**
+	 * Muestra el diálogo para agregar un nuevo rol.
+	 */
 	private void agregarRol() {
 		if (viMain.getViCrearRol().mostrarAgregarRol() == 0) {
 			controladorPrincipal.getControladorRoles().agregarRol();
 		}
 	}
 
+	/**
+	 * Desasigna el rol seleccionado de los usuarios marcados.
+	 */
 	private void desasignarRol() {
 		controladorPrincipal.getControladorRoles().asignarRol(false, modeloVista.getCorreoSeleccionados(),
 				(Rol) viMain.getViAsignarRol().getComboRoles().getSelectedItem());
 		limpiarSeleccionRoles();
 	}
 
+	/**
+	 * Asigna el rol seleccionado a los usuarios marcados.
+	 */
 	private void asignarRol() {
 		controladorPrincipal.getControladorRoles().asignarRol(true, modeloVista.getCorreoSeleccionados(),
 				(Rol) viMain.getViAsignarRol().getComboRoles().getSelectedItem());
 		limpiarSeleccionRoles();
 	}
 
+	/**
+	 * Limpia la selección de usuarios y actualiza la tabla.
+	 */
 	private void limpiarSeleccionRoles() {
 		modeloVista.getCorreoSeleccionados().clear();
 		viMain.getViAsignarRol().getTabla().deseleccionarFilas();
 		controladorPrincipal.getControladorRoles().rellenarTablaUsuarios();
 	}
 
+	/**
+	 * Abre la vista de asignación de roles.
+	 */
 	private void abrirAsignarRoles() {
 		controladorPrincipal.getControladorRoles().rellenarComboRoles();
 		controladorPrincipal.getControladorRoles().rellenarTablaUsuarios();
@@ -216,24 +294,37 @@ public class OyenteFTP implements ActionListener {
 		vistaAdmin.setVisible(false);
 	}
 
+	/**
+	 * Abre la vista de gestión de whitelist.
+	 */
 	private void abrirWhitelist() {
 		controladorPrincipal.getControladorWhitelist().rellenarTablaWhitelist();
 		viMain.getViWhitelist().hacerVisible();
 		vistaAdmin.setVisible(false);
 	}
 
+	/**
+	 * Maneja la acción de desasignar rol si la vista está activa.
+	 */
 	private void manejarDesasignar() {
 		if (viMain.getViAsignarRol().isVisible()) {
 			desasignarRol();
 		}
 	}
 
+	/**
+	 * Maneja la acción de volver desde las vistas de roles.
+	 */
 	private void manejarVolver() {
 		if (viMain.getViCrearRol().isVisible() || viMain.getViAsignarRol().isVisible()) {
 			volverAdminDesdeRoles();
 		}
 	}
 
+	/**
+	 * Realiza el proceso de inicio de sesión.
+	 * Valida campos, conecta al servidor FTP y verifica credenciales.
+	 */
 	private void login() {
 		if (viMain.getPanelLogin().getCajas().get(0).getText().trim().isEmpty()
 				|| viMain.getPanelLogin().getCajas().get(1).getText().trim().isEmpty()) {

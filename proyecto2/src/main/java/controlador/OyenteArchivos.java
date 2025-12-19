@@ -23,6 +23,11 @@ import servidor.FileManager;
 import vista.VistaGestorArchivos;
 import vista.VistaMenuPrincipal;
 
+/**
+ * Oyente que gestiona las operaciones de archivos en la vista del Gestor de
+ * Archivos.
+ * Maneja subidas, descargas, creación y eliminación de archivos y carpetas.
+ */
 public class OyenteArchivos implements ActionListener {
 
     private VistaGestorArchivos vista;
@@ -32,6 +37,14 @@ public class OyenteArchivos implements ActionListener {
     private FileManager ftp;
     private String rutaActual = "/";
 
+    /**
+     * Constructor del oyente de archivos.
+     *
+     * @param vista  Vista del gestor de archivos.
+     * @param client Cliente FTP.
+     * @param db     Modelo de base de datos.
+     * @param menu   Vista del menú principal.
+     */
     public OyenteArchivos(VistaGestorArchivos vista, ModeloClienteFTP client, ModeloBaseDatos db,
             VistaMenuPrincipal menu) {
         this.vista = vista;
@@ -44,11 +57,19 @@ public class OyenteArchivos implements ActionListener {
         detectarDobleClick(vista.getListaArchivos());
     }
 
+    /**
+     * Inicializa el gestor de archivos con las credenciales actuales del usuario.
+     */
     public void inicializarFileManager() {
         this.ftp = new FileManager("13.62.51.110", 21, client.getUser(), client.getPass());
         actualizarListaFTP();
     }
 
+    /**
+     * Maneja los eventos de los botones en la vista del gestor de archivos.
+     *
+     * @param e El evento de acción.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -63,6 +84,8 @@ public class OyenteArchivos implements ActionListener {
             accionBotonCrearCarpeta();
         } else if (source == vista.getBotonBorrarCarpeta()) {
             accionBotonBorrarCarpeta();
+        } else if (source == vista.getBotonRenombrar()) {
+            accionBotonRenombrar();
         } else if (source == vista.getBotonVolver()) {
             accionBotonVolver();
         } else if (source == vista.getBotonVolverMenuPrincipal()) {
@@ -70,6 +93,14 @@ public class OyenteArchivos implements ActionListener {
         }
     }
 
+    /**
+     * Verifica si el usuario actual tiene permiso para realizar una acción
+     * específica sobre un archivo o carpeta.
+     *
+     * @param ruta   La ruta del archivo o carpeta.
+     * @param accion La acción a realizar (e.g., "Subir archivos").
+     * @return true si tiene permiso, false en caso contrario.
+     */
     public boolean verificarPermiso(String ruta, String accion) {
         String emailUsuario = db.obtenerEmailPorUsuario(client.getUser());
 
@@ -79,6 +110,10 @@ public class OyenteArchivos implements ActionListener {
                 return true;
             }
         } catch (Exception e) {
+            return false;
+        }
+
+        if (accion.equals("Renombrar")) {
             return false;
         }
 
@@ -94,6 +129,10 @@ public class OyenteArchivos implements ActionListener {
         }
     }
 
+    /**
+     * Acción para subir un archivo al servidor FTP.
+     * Abre un selector de archivos y gestiona la subida si hay permisos.
+     */
     public void accionBotonSubida() {
         if (!verificarPermiso(rutaActual, "Subir archivos")) {
             JOptionPane.showMessageDialog(null, MoTextos.msg_permission_denied_upload,
@@ -111,7 +150,7 @@ public class OyenteArchivos implements ActionListener {
         String tipo;
         String emailUsuario;
 
-        fc.setDialogTitle("Select the file to upload");
+        fc.setDialogTitle(MoTextos.title_select_upload);
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int respuesta = fc.showDialog(fc, "OK");
         if (respuesta == JFileChooser.APPROVE_OPTION) {
@@ -133,6 +172,9 @@ public class OyenteArchivos implements ActionListener {
         }
     }
 
+    /**
+     * Acción para descargar un archivo o carpeta del servidor FTP.
+     */
     public void accionBotonDescarga() {
         JFileChooser fc = new JFileChooser();
         File carpeta;
@@ -152,7 +194,7 @@ public class OyenteArchivos implements ActionListener {
             return;
         }
 
-        fc.setDialogTitle("Select where to download the file");
+        fc.setDialogTitle(MoTextos.title_select_download);
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int respuesta = fc.showDialog(fc, "OK");
         if (respuesta == JFileChooser.APPROVE_OPTION) {
@@ -162,6 +204,10 @@ public class OyenteArchivos implements ActionListener {
         }
     }
 
+    /**
+     * Acción para eliminar un archivo del servidor FTP.
+     * Verifica permisos antes de proceder.
+     */
     public void accionBotonEliminar() {
         FTPFile select = vista.getListaArchivos().getSelectedValue();
         if (select != null) {
@@ -183,6 +229,10 @@ public class OyenteArchivos implements ActionListener {
         }
     }
 
+    /**
+     * Acción para crear una nueva carpeta en el servidor FTP.
+     * Solicita el nombre de la carpeta y verifica permisos.
+     */
     public void accionBotonCrearCarpeta() {
         if (!verificarPermiso(rutaActual, "Crear carpeta")) {
             JOptionPane.showMessageDialog(null, MoTextos.msg_permission_denied_create_folder,
@@ -214,6 +264,10 @@ public class OyenteArchivos implements ActionListener {
         }
     }
 
+    /**
+     * Acción para borrar una carpeta del servidor FTP.
+     * Verifica que sea un directorio y que el usuario tenga permisos.
+     */
     public void accionBotonBorrarCarpeta() {
         FTPFile select = vista.getListaArchivos().getSelectedValue();
         String rutaCarpeta;
@@ -245,6 +299,9 @@ public class OyenteArchivos implements ActionListener {
         actualizarListaFTP();
     }
 
+    /**
+     * Acción para volver al directorio padre en la navegación FTP.
+     */
     public void accionBotonVolver() {
         String rutaPadre;
         if (!rutaActual.equals("/")) {
@@ -255,11 +312,20 @@ public class OyenteArchivos implements ActionListener {
         }
     }
 
+    /**
+     * Acción para volver al menú principal desde el gestor de archivos.
+     */
     public void accionBotonVolverMenuPrincipal() {
         vista.setVisible(false);
         menu.hacerVisible();
     }
 
+    /**
+     * Actualiza la lista de archivos mostrada en la vista obteniendo el contenido
+     * del servidor FTP.
+     *
+     * @param ruta La ruta del directorio a listar.
+     */
     public void actualizarListaFTP(String ruta) {
         FTPFile[] archivos;
         if (this.ftp.conectar()) {
@@ -273,10 +339,18 @@ public class OyenteArchivos implements ActionListener {
         }
     }
 
+    /**
+     * Actualiza la lista de archivos en la ruta actual.
+     */
     public void actualizarListaFTP() {
         actualizarListaFTP(this.rutaActual);
     }
 
+    /**
+     * Detecta doble clic en la lista de archivos para navegar a carpetas.
+     * 
+     * @param listaArchivos La lista de archivos FTP.
+     */
     public void detectarDobleClick(JList<FTPFile> listaArchivos) {
         listaArchivos.addMouseListener(new MouseAdapter() {
             FTPFile seleccionado;
@@ -292,5 +366,54 @@ public class OyenteArchivos implements ActionListener {
                 }
             }
         });
+    }
+
+    private void accionBotonRenombrar() {
+        if (!verificarPermiso(rutaActual, "Renombrar")) {
+            JOptionPane.showMessageDialog(null, MoTextos.msg_permission_denied_rename,
+                    MoTextos.msg_permission_denied_title,
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        FTPFile select = vista.getListaArchivos().getSelectedValue();
+        if (select == null) {
+            JOptionPane.showMessageDialog(null, MoTextos.msg_select_file, MoTextos.msg_error_title,
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        String nuevoNombre = JOptionPane.showInputDialog(vista, MoTextos.msg_enter_new_name, select.getName());
+        if (nuevoNombre == null || nuevoNombre.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(vista, MoTextos.msg_invalid_name, MoTextos.msg_info_title,
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        if (select.isDirectory()) {
+            if (db.renombrarCarpeta(select.getName(), nuevoNombre.trim(), rutaActual)) {
+                GestionLogs.writeLog(
+                        new Log("Rename, folder renamed " + select.getName() + " to " + nuevoNombre.trim(), "", true));
+                ftp.renombrar(select, nuevoNombre.trim(), rutaActual);
+                actualizarListaFTP();
+            } else {
+                JOptionPane.showMessageDialog(vista, MoTextos.msg_rename_canceled, MoTextos.msg_info_title,
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            String extension = "";
+            if (nuevoNombre.contains(".")) {
+                extension = nuevoNombre.substring(nuevoNombre.lastIndexOf(".") + 1);
+            }
+            if (db.renombrarArchivo(select.getName(), nuevoNombre.trim(), rutaActual, extension)) {
+                GestionLogs.writeLog(
+                        new Log("Rename, file renamed " + select.getName() + " to " + nuevoNombre.trim(), "", true));
+                ftp.renombrar(select, nuevoNombre.trim(), rutaActual);
+                actualizarListaFTP();
+            } else {
+                JOptionPane.showMessageDialog(vista, MoTextos.msg_rename_canceled, MoTextos.msg_info_title,
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
     }
 }

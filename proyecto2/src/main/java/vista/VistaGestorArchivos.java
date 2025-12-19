@@ -9,6 +9,11 @@ import java.net.URL;
 import controlador.OyenteArchivos;
 import modelo.MoTextos;
 
+/**
+ * Vista para la gestión de archivos mediante FTP.
+ * Muestra el repositorio remoto y permite subir, descargar y eliminar archivos
+ * o carpetas.
+ */
 public class VistaGestorArchivos extends JFrame {
 
 	private DefaultListModel<FTPFile> listaModel;
@@ -19,6 +24,7 @@ public class VistaGestorArchivos extends JFrame {
 	private JButton botonEliminar;
 	private JButton botonCrearCarpeta;
 	private JButton botonBorrarCarpeta;
+	private JButton botonRenombrar;
 	private JButton botonVolver;
 	private JButton botonVolverMenuPrincipal;
 
@@ -123,12 +129,14 @@ public class VistaGestorArchivos extends JFrame {
 		botonEliminar = new JButton(MoTextos.btn_delete);
 		botonCrearCarpeta = new JButton(MoTextos.btn_new_folder);
 		botonBorrarCarpeta = new JButton(MoTextos.btn_delete_folder);
+		botonRenombrar = new JButton(MoTextos.btn_rename);
 
 		estilarBoton(botonSubida, colorBotonAccion, Color.WHITE);
 		estilarBoton(botonDescarga, colorBotonAccion, Color.WHITE);
 		estilarBoton(botonEliminar, new Color(200, 100, 100), Color.WHITE);
 		estilarBoton(botonCrearCarpeta, colorBotonAccion, Color.WHITE);
 		estilarBoton(botonBorrarCarpeta, new Color(200, 100, 100), Color.WHITE);
+		estilarBoton(botonRenombrar, colorBotonAccion, Color.WHITE);
 
 		lblActions = new JLabel(MoTextos.lbl_actions);
 		botonesPanel.add(lblActions);
@@ -142,6 +150,8 @@ public class VistaGestorArchivos extends JFrame {
 		botonesPanel.add(botonCrearCarpeta);
 		botonesPanel.add(Box.createVerticalStrut(10));
 		botonesPanel.add(botonBorrarCarpeta);
+		botonesPanel.add(Box.createVerticalStrut(10));
+		botonesPanel.add(botonRenombrar);
 		botonesPanel.add(Box.createVerticalGlue());
 
 		centerContainer.add(botonesPanel, BorderLayout.EAST);
@@ -187,10 +197,15 @@ public class VistaGestorArchivos extends JFrame {
 		botonEliminar.addActionListener(c);
 		botonCrearCarpeta.addActionListener(c);
 		botonBorrarCarpeta.addActionListener(c);
+		botonRenombrar.addActionListener(c);
 		botonVolver.addActionListener(c);
 		botonVolverMenuPrincipal.addActionListener(c);
 	}
 
+	/**
+	 * Inicializa el gestor de archivos llamando al controlador.
+	 * Carga la lista de archivos inicial.
+	 */
 	public void inicializarFileManager() {
 		if (controlador != null) {
 			controlador.inicializarFileManager();
@@ -229,6 +244,10 @@ public class VistaGestorArchivos extends JFrame {
 		return botonBorrarCarpeta;
 	}
 
+	public JButton getBotonRenombrar() {
+		return botonRenombrar;
+	}
+
 	public JButton getBotonVolver() {
 		return botonVolver;
 	}
@@ -237,6 +256,9 @@ public class VistaGestorArchivos extends JFrame {
 		return botonVolverMenuPrincipal;
 	}
 
+	/**
+	 * Actualiza los textos de la interfaz según el idioma seleccionado.
+	 */
 	public void actualizarTextos() {
 		setTitle(MoTextos.file_manager_title);
 		title.setText(MoTextos.file_repo_title);
@@ -247,6 +269,7 @@ public class VistaGestorArchivos extends JFrame {
 		botonEliminar.setText(MoTextos.btn_delete);
 		botonCrearCarpeta.setText(MoTextos.btn_new_folder);
 		botonBorrarCarpeta.setText(MoTextos.btn_delete_folder);
+		botonRenombrar.setText(MoTextos.btn_rename);
 
 		lblActions.setText(MoTextos.lbl_actions);
 

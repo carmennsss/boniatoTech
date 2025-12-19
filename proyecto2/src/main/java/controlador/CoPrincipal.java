@@ -8,6 +8,13 @@ import javax.swing.*;
 import controladorCorreos.ControladorCorreos;
 import controladorLogs.ControladorLogs;
 
+/**
+ * Controlador Principal de la aplicación (Main Controller).
+ * Coordina la inicialización de vistas, modelos y otros controladores
+ * específicos.
+ * Actúa como punto central para la gestión de eventos y la navegación entre
+ * módulos.
+ */
 public class CoPrincipal {
     private ModeloBaseDatos bd;
     private MoView modeloVista;
@@ -29,6 +36,11 @@ public class CoPrincipal {
     private ControladorCorreos controladorCorreos;
     private ControladorLogs controladorLogs;
 
+    /**
+     * Constructor principal.
+     * Inicializa la base de datos, el cliente FTP, las vistas y los controladores
+     * secundarios.
+     */
     public CoPrincipal() {
         this.bd = new ModeloBaseDatos();
         this.modeloVista = new MoView();
@@ -121,6 +133,11 @@ public class CoPrincipal {
         vistaMenuPrincipal.getComboIdiomas().addActionListener(oyIdioma);
     }
 
+    /**
+     * Inicializa los componentes relacionados con el correo electrónico una vez
+     * logueado el usuario.
+     * Crea la vista de correo y su controlador asociado.
+     */
     public void instanciarCorreos() {
         this.vistaGeneralCorreo = new VistaGeneralCorreo(bd.obtenerEmailPorUsuario(modeloFTP.getUser()));
         this.controladorCorreos = new ControladorCorreos(bd.obtenerEmailPorUsuario(modeloFTP.getUser()),
@@ -160,6 +177,10 @@ public class CoPrincipal {
         return this.vistaGeneralCorreo;
     }
 
+    /**
+     * Notifica a todas las vistas registradas para que actualicen sus textos
+     * según el idioma seleccionado globalmente.
+     */
     public void actualizarIdiomaGlobal() {
         if (vista != null) {
             if (vista.getViWhitelist() != null)
@@ -172,6 +193,8 @@ public class CoPrincipal {
                 vista.getViAsignarRol().actualizarTextos();
             if (vista.getViFormulario() != null)
                 vista.getViFormulario().actualizarTextos();
+            if (vista.getVistaCRUD() != null)
+                vista.getVistaCRUD().actualizarTextos();
         }
 
         if (vistaMenuPrincipal != null)

@@ -23,6 +23,9 @@ import javax.swing.border.EmptyBorder;
 import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
 
+/**
+ * Vista para la eliminación de usuarios del sistema.
+ */
 public class VistaEliminarUsuarios extends JFrame {
     VistaRegistroUsuarios vistaUsuarios;
     ModeloClienteFTP modeloFTP;
@@ -194,6 +197,9 @@ public class VistaEliminarUsuarios extends JFrame {
         this.tabla.setVisible(true);
     }
 
+    /**
+     * Actualiza los textos de la interfaz según el idioma seleccionado.
+     */
     public void actualizarTextos() {
         this.setTitle(modelo.MoTextos.del_user_title);
         if (textos.size() > 0 && textos.get(0) instanceof JLabel) {

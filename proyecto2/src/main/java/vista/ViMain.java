@@ -23,6 +23,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * Gestor principal de la interfaz gráfica de usuario.
+ * Inicializa y controla la visibilidad de todas las vistas principales de la
+ * aplicación.
+ */
 public class ViMain {
 	private VistaLogin vistaLogin;
 	private VistaCRUD vistaCRUD;
@@ -44,33 +49,71 @@ public class ViMain {
 		ventanaFormulario = new ViFormulario();
 	}
 
+	/**
+	 * Obtiene la vista de gestión CRUD.
+	 * 
+	 * @return Vista CRUD.
+	 */
+	public VistaCRUD getVistaCRUD() {
+		return vistaCRUD;
+	}
+
+	/**
+	 * Obtiene la vista de asignación de roles.
+	 * 
+	 * @return Vista de asignar rol.
+	 */
 	public VistaAsignarRol getViAsignarRol() {
 		return viAsignarRol;
 	}
 
+	/**
+	 * Obtiene la vista de gestión de whitelist.
+	 * 
+	 * @return Vista de whitelist.
+	 */
 	public VistaWhitelist getViWhitelist() {
 		return viWhitelist;
 	}
 
+	/**
+	 * Muestra la vista de inicio de sesión.
+	 */
 	public void hacerVisible() {
 		mostrarLogin();
 	}
 
+	/**
+	 * Obtiene la vista de creación de roles.
+	 * 
+	 * @return Vista de crear rol.
+	 */
 	public ViCrearRol getViCrearRol() {
 		return viCrearRol;
 	}
 
+	/**
+	 * Oculta otras vistas y activa la pantalla de login.
+	 */
 	public void mostrarLogin() {
 		vistaCRUD.setVisible(false);
 		ventanaFormulario.setVisible(false);
 		vistaLogin.setVisible(true);
 	}
 
+	/**
+	 * Oculta el login y muestra la vista principal de gestión (CRUD).
+	 */
 	public void mostrarCRUD() {
 		vistaLogin.setVisible(false);
 		vistaCRUD.setVisible(true);
 	}
 
+	/**
+	 * Controla la visibilidad de todas las ventanas.
+	 * 
+	 * @param b true para mostrar login, false para ocultar todo.
+	 */
 	public void setVisible(boolean b) {
 		if (!b) {
 			vistaLogin.setVisible(false);
@@ -81,26 +124,56 @@ public class ViMain {
 		}
 	}
 
+	/**
+	 * Obtiene el panel de botones del menú CRUD.
+	 * 
+	 * @return Panel de botones del menú.
+	 */
 	public ViBotones getPanelMenu() {
 		return vistaCRUD.getPanelMenu();
 	}
 
+	/**
+	 * Obtiene el panel de tabla del CRUD.
+	 * 
+	 * @return Panel de tabla.
+	 */
 	public ViTabla getPanelTabla() {
 		return vistaCRUD.getPanelTabla();
 	}
 
+	/**
+	 * Obtiene el panel de acciones del CRUD.
+	 * 
+	 * @return Panel de acciones.
+	 */
 	public ViBotones getPanelAcciones() {
 		return vistaCRUD.getPanelAcciones();
 	}
 
+	/**
+	 * Obtiene la ventana de formulario.
+	 * 
+	 * @return Ventana de formulario.
+	 */
 	public ViFormulario getVentanaFormulario() {
 		return ventanaFormulario;
 	}
 
+	/**
+	 * Obtiene la vista de formulario.
+	 * 
+	 * @return Vista de formulario.
+	 */
 	public ViFormulario getViFormulario() {
 		return ventanaFormulario;
 	}
 
+	/**
+	 * Obtiene el panel de login.
+	 * 
+	 * @return Panel de login.
+	 */
 	public VistaLogin getPanelLogin() {
 		return vistaLogin;
 	}
@@ -115,20 +188,42 @@ public class ViMain {
 		return null;
 	}
 
+	/**
+	 * Muestra un mensaje de éxito al usuario.
+	 * 
+	 * @param mensaje Texto del mensaje.
+	 */
 	public void mostrarMensajeExito(String mensaje) {
 		JOptionPane.showMessageDialog(getVentanaActual(), mensaje);
 	}
 
+	/**
+	 * Muestra un mensaje de error al usuario.
+	 * 
+	 * @param mensaje Texto del mensaje de error.
+	 */
 	public void mostrarMensajeError(String mensaje) {
 		JOptionPane.showMessageDialog(getVentanaActual(), mensaje, MoTextos.msg_error_title, JOptionPane.ERROR_MESSAGE);
 	}
 
+	/**
+	 * Muestra un cuadro de diálogo de confirmación con Sí/No.
+	 *
+	 * @param mensaje Texto de la pregunta.
+	 * @return true si el usuario selecciona "Sí", false si selecciona "No".
+	 */
 	public boolean mostrarConfirmacion(String mensaje) {
 		int confirmacion = JOptionPane.showConfirmDialog(getVentanaActual(), mensaje, MoTextos.msg_confirm_title,
 				JOptionPane.YES_NO_OPTION);
 		return confirmacion == JOptionPane.YES_OPTION;
 	}
 
+	/**
+	 * Muestra un diálogo personalizado para seleccionar una acción sobre una fila.
+	 * Ofrece opciones para Crear Nuevo, Actualizar, Borrar o Cancelar.
+	 *
+	 * @return 0 para Nuevo, 1 para Actualizar, 2 para Borrar, 3 para Cancelar.
+	 */
 	public int mostrarOpcionesTabla() {
 		final JDialog dialog = new JDialog(
 				(JFrame) SwingUtilities.getWindowAncestor(getVentanaActual()),

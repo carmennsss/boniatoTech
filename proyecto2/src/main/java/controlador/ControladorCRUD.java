@@ -11,6 +11,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Controlador para las operaciones CRUD (Crear, Leer, Actualizar, Borrar) en la
+ * base de datos.
+ * Maneja la interacción entre las tablas de la vista y el modelo de datos.
+ */
 public class ControladorCRUD {
     private ModeloBaseDatos bd;
     private ViMain vista;
@@ -29,6 +34,12 @@ public class ControladorCRUD {
         this.modeloVista = modeloVista;
     }
 
+    /**
+     * Rellena la tabla de la vista con los datos de la base de datos.
+     * Configura el modelo de la tabla para que no sea editable directamente.
+     *
+     * @param tabla Nombre de la tabla en la base de datos.
+     */
     public void rellenarTabla(String tabla) {
         if (tabla.isEmpty()) {
             vista.getPanelTabla().setModelo(new DefaultTableModel());
@@ -66,6 +77,10 @@ public class ControladorCRUD {
         vista.getPanelTabla().setModelo(modelo);
     }
 
+    /**
+     * Prepara y muestra el formulario para insertar un nuevo registro.
+     * Configura los campos y listeners necesarios.
+     */
     public void mostrarFormularioNuevo() {
         coPrincipal.setEditando(false);
         String tabla = modeloVista.getTablaActual();
@@ -96,6 +111,10 @@ public class ControladorCRUD {
         vista.getVentanaFormulario().hacerVisible();
     }
 
+    /**
+     * Prepara y muestra el formulario para actualizar un registro existente.
+     * Rellena los campos con los valores de la fila seleccionada.
+     */
     public void mostrarFormularioActualizar() {
         coPrincipal.setEditando(true);
         int fila = vista.getPanelTabla().getTabla().getSelectedRow();
@@ -147,6 +166,10 @@ public class ControladorCRUD {
         vista.getVentanaFormulario().hacerVisible();
     }
 
+    /**
+     * Guarda un nuevo registro en la base de datos con la información del
+     * formulario.
+     */
     public void guardarNuevo() {
         String tabla = modeloVista.getTablaActual();
         ArrayList<String> columnas = bd.getNombresColumnas(tabla);
@@ -178,6 +201,10 @@ public class ControladorCRUD {
         }
     }
 
+    /**
+     * Actualiza el registro seleccionado en la base de datos con la información del
+     * formulario.
+     */
     public void guardarActualizar() {
         int fila = vista.getPanelTabla().getTabla().getSelectedRow();
         String tabla = modeloVista.getTablaActual();
@@ -222,6 +249,10 @@ public class ControladorCRUD {
         }
     }
 
+    /**
+     * Elimina el registro seleccionado de la tabla y de la base de datos.
+     * Pide confirmación al usuario antes de proceder.
+     */
     public void eliminarRegistro() {
         int fila = vista.getPanelTabla().getTabla().getSelectedRow();
         if (fila == -1)
