@@ -17,8 +17,8 @@ import vista.VistaGeneralCorreo;
 import vista.VistaMenuPrincipal;
 
 /**
- * Controlador principal para la gesti√≥n de correos electr√≥nicos.
- * Maneja la recepci√≥n (POP3/IMAP), env√≠o, eliminaci√≥n y visualizaci√≥n de
+ * Controlador principal para la gestiÛn de correos electrÛnicos.
+ * Maneja la recepciÛn (POP3/IMAP), envÌo, eliminaciÛn y visualizaciÛn de
  * correos.
  */
 public class ControladorCorreos {
@@ -47,11 +47,11 @@ public class ControladorCorreos {
 	}
 
 	/**
-	 * Obtiene la contrase√±a de aplicaci√≥n de Gmail almacenada en la base de datos
+	 * Obtiene la contraseÒa de aplicaciÛn de Gmail almacenada en la base de datos
 	 * para un usuario.
 	 *
 	 * @param correo El correo del usuario.
-	 * @return La clave de aplicaci√≥n o null si no se encuentra.
+	 * @return La clave de aplicaciÛn o null si no se encuentra.
 	 */
 	private String obtenerClaveCorreoPorUsuario(String correo) {
 		String contrasenaAplicacion = null;
@@ -76,7 +76,7 @@ public class ControladorCorreos {
 
 	/**
 	 * Inicia el proceso de carga de correos en un hilo secundario.
-	 * Actualiza la interfaz gr√°fica una vez descargados los mensajes.
+	 * Actualiza la interfaz gr·fica una vez descargados los mensajes.
 	 */
 	public void cargarCorreos() {
 
@@ -118,7 +118,7 @@ public class ControladorCorreos {
 	}
 
 	/**
-	 * Detiene el hilo de recepci√≥n de correos si est√° en ejecuci√≥n.
+	 * Detiene el hilo de recepciÛn de correos si est· en ejecuciÛn.
 	 */
 	public void detenerHiloRecepcion() {
 		if (hiloRecepcion != null && hiloRecepcion.isAlive()) {
@@ -170,9 +170,9 @@ public class ControladorCorreos {
 	}
 
 	/**
-	 * Marca un correo como le√≠do en el servidor IMAP y actualiza la vista.
+	 * Marca un correo como leÌdo en el servidor IMAP y actualiza la vista.
 	 *
-	 * @param correo El correo a marcar como le√≠do.
+	 * @param correo El correo a marcar como leÌdo.
 	 */
 	public synchronized void marcarCorreoLeido(Correo correo) {
 		try {
@@ -191,9 +191,9 @@ public class ControladorCorreos {
 	}
 
 	/**
-	 * Marca un correo como no le√≠do en el servidor IMAP y actualiza la vista.
+	 * Marca un correo como no leÌdo en el servidor IMAP y actualiza la vista.
 	 *
-	 * @param correo El correo a marcar como no le√≠do.
+	 * @param correo El correo a marcar como no leÌdo.
 	 */
 	public synchronized void marcarCorreoNoLeido(Correo correo) {
 		try {
@@ -213,7 +213,7 @@ public class ControladorCorreos {
 
 	/**
 	 * Actualiza la lista de correos local con nuevos correos recibidos desde el
-	 * hilo de recepci√≥n.
+	 * hilo de recepciÛn.
 	 *
 	 * @param nuevosCorreos Lista de nuevos correos.
 	 */
@@ -236,19 +236,19 @@ public class ControladorCorreos {
 	}
 
 	/**
-	 * Obtiene la contrase√±a de aplicaci√≥n utilizada para la autenticaci√≥n.
+	 * Obtiene la contrase√±a de aplicaciÛn utilizada para la autenticaci√≥n.
 	 * 
-	 * @return Contrase√±a de aplicaci√≥n.
+	 * @return Contrase√±a de aplicaciÛn.
 	 */
 	public String getPasswordAplicacion() {
 		return PASSWORD_APLICACION;
 	}
 
 	/**
-	 * Comprueba si un receptor est√° en la lista blanca o es un usuario registrado.
+	 * Comprueba si un receptor est· en la lista blanca o es un usuario registrado.
 	 *
 	 * @param receptor Email del receptor.
-	 * @return true si es v√°lido, false en caso contrario.
+	 * @return true si es v·lido, false en caso contrario.
 	 */
 	public boolean comprobarReceptorWhiteList(String receptor) {
 		ArrayList<String> whitelist = new ArrayList<>();
@@ -277,18 +277,18 @@ public class ControladorCorreos {
 	}
 
 	/**
-	 * Obtiene el correo electr√≥nico del usuario actual.
+	 * Obtiene el correo electrÛnico del usuario actual.
 	 * 
-	 * @return Direcci√≥n de correo.
+	 * @return DirecciÛn de correo.
 	 */
 	public String getCORREO() {
 		return CORREO;
 	}
 
 	/**
-	 * Establece el correo electr√≥nico del usuario.
+	 * Establece el correo electrÛnico del usuario.
 	 * 
-	 * @param cORREO Direcci√≥n de correo.
+	 * @param cORREO DirecciÛn de correo.
 	 */
 	public void setCORREO(String cORREO) {
 		CORREO = cORREO;
