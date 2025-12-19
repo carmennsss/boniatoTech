@@ -7,16 +7,31 @@ import java.awt.event.MouseListener;
 import javax.swing.JTable;
 import vista.VistaWhitelist;
 
+/**
+ * Oyente que maneja los eventos de usuario en la vista de Whitelist (clics en
+ * botones y tabla).
+ */
 public class OyenteWhitelist implements ActionListener, MouseListener {
 
     private VistaWhitelist vista;
     private ControladorWhitelist controller;
 
+    /**
+     * Constructor del oyente de whitelist.
+     *
+     * @param controller Controlador de whitelist.
+     * @param vista      Vista de whitelist.
+     */
     public OyenteWhitelist(ControladorWhitelist controller, VistaWhitelist vista) {
         this.controller = controller;
         this.vista = vista;
     }
 
+    /**
+     * Maneja los eventos de acción (clics en botones).
+     *
+     * @param e El evento de acción.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -30,6 +45,11 @@ public class OyenteWhitelist implements ActionListener, MouseListener {
         }
     }
 
+    /**
+     * Maneja los clics del ratón en la tabla para seleccionar usuarios.
+     *
+     * @param e El evento de ratón.
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() instanceof JTable) {

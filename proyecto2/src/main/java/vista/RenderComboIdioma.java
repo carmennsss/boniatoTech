@@ -8,8 +8,15 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * Renderizador personalizado para el ComboBox de selección de idioma.
+ * Permite mostrar iconos (banderas) junto con el comportamiento de selección.
+ */
 public class RenderComboIdioma extends DefaultListCellRenderer {
 
+    /**
+     * Devuelve el componente visual para cada elemento de la lista (icono).
+     */
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
             boolean cellHasFocus) {

@@ -1,5 +1,11 @@
 package modelo;
 
+/**
+ * Clase que almacena todas las cadenas de texto utilizadas en la aplicación.
+ * Permite la internacionalización (i18n) cambiando los valores de las variables
+ * estáticas
+ * según el idioma seleccionado.
+ */
 public class MoTextos {
 
     public static String app_title = "Serwo Manager";
@@ -43,16 +49,19 @@ public class MoTextos {
     public static String btn_save = "Guardar";
     public static String btn_cancel = "Cancelar";
 
-    public static String whitelist_title = "Gestión de Whitelist";
-    public static String btn_add = "Añadir";
-    public static String btn_unassign = "Desasignar";
-    public static String btn_back_whitelist = "Volver";
-    public static String whitelist_dialog_title = "Agregar Usuario";
-    public static String whitelist_lbl_title = "Agregar a Whitelist";
+    public static String whitelist_title = "Whitelist Management";
+    public static String btn_add = "Add";
+    public static String btn_unassign = "Unassign";
+    public static String btn_back_whitelist = "Back";
+    public static String whitelist_dialog_title = "Add User";
+    public static String whitelist_lbl_title = "Add to Whitelist";
     public static String whitelist_lbl_email = "Email:";
-    public static String whitelist_lbl_name = "Nombre:";
-    public static String btn_dialog_add = "Agregar";
-    public static String btn_dialog_cancel = "Cancelar";
+    public static String whitelist_lbl_name = "Name:";
+    public static String whitelist_col_email = "Email";
+    public static String whitelist_col_name = "Name";
+    public static String whitelist_col_date = "Registration Date";
+    public static String btn_dialog_add = "Add";
+    public static String btn_dialog_cancel = "Cancel";
 
     public static String mail_title_compose = "Compose new Mail";
     public static String mail_title_check = "Check Mail";
@@ -65,35 +74,35 @@ public class MoTextos {
     public static String btn_export = "Export";
     public static String btn_attach = "Attach";
 
-    public static String roles_title_create = "Crear Rol";
-    public static String roles_title_available = "Roles disponibles";
-    public static String roles_btn_create = "Agregar Rol";
-    public static String roles_lbl_name = "Nombre:";
-    public static String roles_lbl_desc = "Descripción:";
-    public static String roles_lbl_role = "Rol:";
-    public static String roles_dialog_title = "Agregar Rol";
-    public static String roles_btn_assign = "Asignar Rol";
-    public static String roles_title_assign = "Asignar Roles";
+    public static String roles_title_create = "Create Role";
+    public static String roles_title_available = "Available Roles";
+    public static String roles_btn_create = "Add Role";
+    public static String roles_lbl_name = "Name:";
+    public static String roles_lbl_desc = "Description:";
+    public static String roles_lbl_role = "Role:";
+    public static String roles_dialog_title = "Add Role";
+    public static String roles_btn_assign = "Assign Role";
+    public static String roles_title_assign = "Assign Roles";
 
-    public static String admin_title = "Panel de Administración";
-    public static String btn_manage_users = "Gestión de Usuarios";
-    public static String btn_manage_roles = "Gestión de Roles";
+    public static String admin_title = "Administration Panel";
+    public static String btn_manage_users = "Manage Users";
+    public static String btn_manage_roles = "Manage Roles";
 
-    public static String reg_title_window = "Registro de Usuario";
-    public static String reg_title_main = "Registrar Usuario";
-    public static String reg_lbl_name = "Nombre:";
-    public static String reg_lbl_email = "Email:";
-    public static String reg_lbl_key = "Clave del Correo:";
-    public static String reg_lbl_pass = "Contraseña:";
-    public static String reg_lbl_conf_pass = "Confirmar Contraseña:";
-    public static String reg_btn_register = "Registrar";
+    public static String reg_title_window = "User Register";
+    public static String reg_title_main = "Register User";
+    public static String reg_lbl_name = "Name:";
+    public static String reg_lbl_email = "Email Address:";
+    public static String reg_lbl_key = "Address Key:";
+    public static String reg_lbl_pass = "Password:";
+    public static String reg_lbl_conf_pass = "Confirm Password:";
+    public static String reg_btn_register = "Register";
 
-    public static String mail_title_inbox = "Bandeja de Entrada";
-    public static String mail_btn_compose = "Redactar";
-    public static String mail_btn_refresh = "Actualizar";
-    public static String mail_col_subject = "Asunto";
-    public static String mail_col_from = "De";
-    public static String mail_col_date = "Fecha";
+    public static String mail_title_inbox = "Inbox";
+    public static String mail_btn_compose = "Compose";
+    public static String mail_btn_refresh = "Refresh";
+    public static String mail_col_subject = "Subject";
+    public static String mail_col_from = "From";
+    public static String mail_col_date = "Date";
 
     public static String msg_error_title = "Error";
     public static String msg_success_title = "Success";
@@ -136,6 +145,7 @@ public class MoTextos {
     public static String msg_select_folder = "Please select a folder";
     public static String msg_permission_denied_delete_folder = "You do not have permission to delete this folder";
     public static String msg_select_folder_not_file = "You must select a folder, not a file";
+    public static String msg_permission_denied_rename = "You do not have permission to rename this file";
 
     public static String mail_msg_recipient_obligatory = "The recipient and the message body are obligatory";
     public static String mail_msg_sent_prefix = "Email successfully sent to ";
@@ -162,6 +172,43 @@ public class MoTextos {
 
     public static String msg_err_pop3 = "[ERROR POP3] - Could not connect to inbox";
 
+    // FileManager Strings
+    public static String msg_confirm_delete_file = "Do you want to delete the selected file?";
+    public static String msg_could_not_delete = "Could not be deleted...";
+    public static String msg_confirm_delete_folder = "Do you want to delete the selected folder?";
+    public static String msg_folder_not_empty = "The folder may not be empty.";
+    public static String msg_could_not_create = "Could not be created...";
+
+    // OyenteArchivos Strings
+    public static String title_select_upload = "Select the file to upload";
+    public static String title_select_download = "Select where to download the file";
+    public static String msg_enter_new_name = "Enter new name for the file:";
+    public static String msg_invalid_name = "Invalid name.";
+    public static String msg_info_title = "Info";
+    public static String msg_rename_canceled = "Renaming canceled or invalid name.";
+
+    // VistaCRUD Strings
+    public static String title_crud_animals = "Serwo Management - Animals";
+    public static String menu_species = "Species";
+    public static String menu_enclosures = "Enclosures";
+    public static String menu_caretakers = "Caretakers";
+    public static String menu_animals = "Animals";
+    public static String menu_transfers = "Transfers";
+    public static String menu_species_enclosures = "Species-Enclosures";
+    public static String menu_elements = "Elements";
+
+    // ControladorWhitelist Strings
+    public static String msg_removed_prefix = "Removed ";
+    public static String msg_removed_suffix = " users.";
+
+    // VistaAdmin Strings (if any missing)
+
+    /**
+     * Establece el idioma actual de la aplicación y actualiza todas las cadenas de
+     * texto.
+     *
+     * @param idioma Código del idioma (e.g., 0 para inglés, 1 para español).
+     */
     public static void setIdioma(int idioma) {
         idiomaActual = idioma;
         if (idioma == 1) {
@@ -208,6 +255,9 @@ public class MoTextos {
             whitelist_lbl_title = "Agregar a Whitelist";
             whitelist_lbl_email = "Email:";
             whitelist_lbl_name = "Nombre:";
+            whitelist_col_email = "Email";
+            whitelist_col_name = "Nombre";
+            whitelist_col_date = "Fecha Registro";
             btn_dialog_add = "Agregar";
             btn_dialog_cancel = "Cancelar";
 
@@ -305,6 +355,7 @@ public class MoTextos {
             msg_select_folder = "Por favor, selecciona una carpeta";
             msg_permission_denied_delete_folder = "No tienes permiso para eliminar esta carpeta";
             msg_select_folder_not_file = "Debes seleccionar una carpeta, no un archivo";
+            msg_permission_denied_rename = "No tienes permiso para renombrar este archivo";
 
             mail_msg_recipient_obligatory = "El destinatario y el cuerpo del mensaje son obligatorios";
             mail_msg_sent_prefix = "Correo enviado correctamente a ";
@@ -317,7 +368,42 @@ public class MoTextos {
             logs_col_date = "Fecha";
             logs_col_result = "Resultado";
             logs_btn_export = "Exportar CSV";
+            logs_title = "Registros";
+            logs_col_action = "Operación";
+            logs_col_user = "Usuario";
+            logs_col_date = "Fecha";
+            logs_col_result = "Resultado";
+            logs_btn_export = "Exportar CSV";
             logs_dialog_save_title = "Guardar registros";
+
+            // FileManager Strings (Spanish)
+            msg_confirm_delete_file = "¿Quieres borrar el archivo seleccionado?";
+            msg_could_not_delete = "No se pudo borrar...";
+            msg_confirm_delete_folder = "¿Quieres borrar la carpeta seleccionada?";
+            msg_folder_not_empty = "La carpeta podría no estar vacía.";
+            msg_could_not_create = "No se pudo crear...";
+
+            // OyenteArchivos Strings (Spanish)
+            title_select_upload = "Selecciona el archivo a subir";
+            title_select_download = "Selecciona dónde descargar el archivo";
+            msg_enter_new_name = "Ingresa el nuevo nombre para el archivo:";
+            msg_invalid_name = "Nombre inválido.";
+            msg_info_title = "Información";
+            msg_rename_canceled = "Renombrado cancelado o nombre inválido.";
+
+            // VistaCRUD Strings (Spanish)
+            title_crud_animals = "Gestión Serwo - Animales";
+            menu_species = "ESPECIES";
+            menu_enclosures = "RECINTOS";
+            menu_caretakers = "CUIDADORES";
+            menu_animals = "ANIMALES";
+            menu_transfers = "TRASLADOS";
+            menu_species_enclosures = "ESPECIES_RECINTOS";
+            menu_elements = "ELEMENTOS";
+
+            // ControladorWhitelist Strings (Spanish)
+            msg_removed_prefix = "Eliminados ";
+            msg_removed_suffix = " usuarios.";
 
         } else {
             app_title = "Zoo Manager";
@@ -362,6 +448,9 @@ public class MoTextos {
             whitelist_lbl_title = "Add to Whitelist";
             whitelist_lbl_email = "Email:";
             whitelist_lbl_name = "Name:";
+            whitelist_col_email = "Email";
+            whitelist_col_name = "Name";
+            whitelist_col_date = "Registration Date";
             btn_dialog_add = "Add";
             btn_dialog_cancel = "Cancel";
 

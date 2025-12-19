@@ -8,6 +8,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Controlador para la gestión de roles y permisos.
+ * Maneja la creación de roles, asignación de permisos a roles y asignación de
+ * roles a usuarios.
+ */
 public class ControladorRoles {
     private ModeloBaseDatos bd;
     private ViMain vista;
@@ -24,6 +29,12 @@ public class ControladorRoles {
         this.modeloVista = modeloVista;
     }
 
+    /**
+     * Rellena la tabla de creación de roles con los roles existentes y sus
+     * permisos.
+     * Configura el modelo de la tabla para permitir la edición de permisos
+     * (checkboxes).
+     */
     public void rellenarVentanaCrearRol() {
         DefaultTableModel modeloTabla = new DefaultTableModel() {
             @Override
@@ -135,6 +146,9 @@ public class ControladorRoles {
         vista.getViCrearRol().getPanelTabla().getTabla().getColumnModel().getColumn(0).setWidth(0);
     }
 
+    /**
+     * Rellena la tabla de usuarios con su información y roles asignados.
+     */
     public void rellenarTablaUsuarios() {
         DefaultTableModel modeloTabla = new DefaultTableModel() {
             @Override
@@ -167,6 +181,10 @@ public class ControladorRoles {
         vista.getViAsignarRol().getTabla().setModelo(modeloTabla);
     }
 
+    /**
+     * Rellena el combobox de selección de roles con los roles disponibles en la
+     * base de datos.
+     */
     public void rellenarComboRoles() {
         String sql = "SELECT * FROM roles;";
         ResultSet rs = bd.getConsulta(sql);
@@ -182,6 +200,10 @@ public class ControladorRoles {
         }
     }
 
+    /**
+     * Agrega un nuevo rol a la base de datos con el nombre y descripción
+     * proporcionados en la vista.
+     */
     public void agregarRol() {
         String nombre = vista.getViCrearRol().getTextFieldNombre().getText();
         if (nombre.isEmpty()) {
@@ -203,6 +225,14 @@ public class ControladorRoles {
         rellenarVentanaCrearRol();
     }
 
+    /**
+     * Actualiza el estado de un permiso para un rol específico.
+     *
+     * @param rolNombre     El nombre del rol.
+     * @param permisoNombre El nombre del permiso.
+     * @param isChecked     true si el permiso debe ser asignado, false si debe ser
+     *                      revocado.
+     */
     public void actualizarPermiso(String rolNombre, String permisoNombre, boolean isChecked) {
         String sql;
         ArrayList<String> params = new ArrayList<>();
@@ -221,6 +251,13 @@ public class ControladorRoles {
 
     }
 
+    /**
+     * Asigna o desasigna un rol a una lista de usuarios seleccionados.
+     *
+     * @param asignar             true para asignar el rol, false para desasignar.
+     * @param correoSeleccionados Lista de correos electrónicos de los usuarios.
+     * @param rol                 El rol a asignar o desasignar.
+     */
     public void asignarRol(boolean asignar, ArrayList<String> correoSeleccionados, Rol rol) {
         String sql = "";
         String accion = "";

@@ -15,6 +15,10 @@ import javax.swing.*;
 import modelo.Correo;
 import modelo.MoTextos;
 
+/**
+ * Vista base para la visualización y composición de correos electrónicos.
+ * Se reutiliza tanto para enviar nuevos correos como para leer los existentes.
+ */
 public class VistaCorreoBase extends JFrame {
 
     private JPanel panelPrincipal;
@@ -32,11 +36,21 @@ public class VistaCorreoBase extends JFrame {
     private JLabel lblAsunto;
     private JLabel lblMessage;
 
+    /**
+     * Constructor para el modo de redacción de nuevo correo.
+     *
+     * @param remitente Dirección de correo del usuarios que envía el mensaje.
+     */
     public VistaCorreoBase(String remitente) {
         this.remitente = remitente;
         propiedades(true);
     }
 
+    /**
+     * Constructor para el modo de lectura de correo existente.
+     *
+     * @param correo Objeto Correo con los datos a visualizar.
+     */
     public VistaCorreoBase(Correo correo) {
         propiedades(false);
 
@@ -225,6 +239,12 @@ public class VistaCorreoBase extends JFrame {
         this.setMinimumSize(new Dimension(700, 400));
     }
 
+    /**
+     * Abre un diálogo para guardar el correo actual como archivo .eml.
+     *
+     * @param nombreSugerido Nombre sugerido para el archivo.
+     * @return El objeto File seleccionado por el usuario, o null si cancela.
+     */
     public File exportarCorreo(String nombreSugerido) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Export EML");
@@ -248,6 +268,12 @@ public class VistaCorreoBase extends JFrame {
                 esError ? JOptionPane.ERROR_MESSAGE : JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Abre un diálogo para seleccionar archivos adjuntos.
+     * Permite selección múltiple.
+     *
+     * @return El archivo seleccionado (o el último de los seleccionados).
+     */
     public File mostrarSelectorAdjuntos() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setMultiSelectionEnabled(true);
@@ -322,6 +348,9 @@ public class VistaCorreoBase extends JFrame {
         this.botonAdjuntar = botonAdjuntar;
     }
 
+    /**
+     * Actualiza los textos de la interfaz según el idioma seleccionado.
+     */
     public void actualizarTextos() {
         if (getTitle().equals(MoTextos.mail_title_compose) || getTitle().equals("Compose new Mail")
                 || getTitle().equals("Redactar Nuevo Correo")) {

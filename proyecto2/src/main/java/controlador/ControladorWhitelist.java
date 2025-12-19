@@ -8,12 +8,17 @@ import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+import modelo.MoTextos;
 import modelo.MoView;
 import modelo.ModeloBaseDatos;
 import vista.ViMain;
 import vista.VistaAdmin;
 import vista.VistaWhitelist;
 
+/**
+ * Controlador para la gestión de la lista blanca (Whitelist) de correos.
+ * Permite añadir y eliminar usuarios de la whitelist.
+ */
 public class ControladorWhitelist {
 
     private ViMain viMain;
@@ -28,6 +33,10 @@ public class ControladorWhitelist {
         this.vistaAdmin = vistaAdmin;
     }
 
+    /**
+     * Muestra un diálogo para agregar un nuevo usuario a la whitelist.
+     * Valida el email y el nombre antes de insertarlo en la base de datos.
+     */
     public void anadirUsuario() {
         VistaWhitelist vista = viMain.getViWhitelist();
         int result = vista.mostrarAgregarUsuario();
@@ -75,6 +84,9 @@ public class ControladorWhitelist {
         return modeloBaseDatos.existeRegistro(sql, new ArrayList<String>(Arrays.asList(email)));
     }
 
+    /**
+     * Elimina los usuarios seleccionados de la whitelist tras confirmación.
+     */
     public void desasignarUsuarios() {
         ArrayList<String> seleccionados = moView.getCorreosWhitelist();
         if (seleccionados.isEmpty()) {
@@ -95,24 +107,31 @@ public class ControladorWhitelist {
                     eliminados++;
                 }
             }
-            JOptionPane.showMessageDialog(viMain.getViWhitelist(), "Removed " + eliminados + " users.");
+            JOptionPane.showMessageDialog(viMain.getViWhitelist(),
+                    MoTextos.msg_removed_prefix + eliminados + MoTextos.msg_removed_suffix);
             seleccionados.clear();
             rellenarTablaWhitelist();
         }
     }
 
+    /**
+     * Cierra la ventana de whitelist y vuelve a la vista de administración.
+     */
     public void volver() {
         viMain.getViWhitelist().setVisible(false);
         vistaAdmin.setVisible(true);
     }
 
+    /**
+     * Rellena la tabla de la whitelist con los datos de la base de datos.
+     */
     public void rellenarTablaWhitelist() {
         DefaultTableModel modelo = (DefaultTableModel) viMain.getViWhitelist().getTabla().getTabla().getModel();
         modelo.setRowCount(0);
         modelo.setColumnCount(0);
-        modelo.addColumn("Email");
-        modelo.addColumn("Name");
-        modelo.addColumn("Registration Date");
+        modelo.addColumn(MoTextos.whitelist_col_email);
+        modelo.addColumn(MoTextos.whitelist_col_name);
+        modelo.addColumn(MoTextos.whitelist_col_date);
 
         String sql = "SELECT * FROM whitelist";
         ResultSet rs = modeloBaseDatos.getConsulta(sql);
@@ -133,6 +152,12 @@ public class ControladorWhitelist {
         viMain.getViWhitelist().getTabla().deseleccionarFilas();
     }
 
+    /**
+     * Maneja la selección visual de un usuario en la tabla.
+     *
+     * @param email El email del usuario.
+     * @param fila  El índice de la fila seleccionada.
+     */
     public void seleccionarUsuario(String email, int fila) {
         boolean selected = moView.buscarCorreoWhitelist(email);
         viMain.getViWhitelist().getTabla().cambiarColorFila(fila, !selected);

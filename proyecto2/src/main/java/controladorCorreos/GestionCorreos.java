@@ -13,10 +13,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * Gestor de lógica de negocio para el correo electrónico.
+ * Maneja la recepción (POP3/IMAP), eliminación y marcado de correos.
+ */
 public class GestionCorreos {
 
 	private Map<String, Boolean> estadosLocales = new HashMap<>();
 
+	/**
+	 * Recibe correos mediante POP3 y sincroniza el estado de lectura mediante IMAP
+	 * (si está disponible).
+	 *
+	 * @param pop3Host Host del servidor POP3.
+	 * @param imapHost Host del servidor IMAP (para sincronización de estados).
+	 * @param user     Usuario de correo.
+	 * @param password Contraseña o contraseña de aplicación.
+	 * @return Lista de objetos Correo recibidos.
+	 */
 	public ArrayList<Correo> recibirCorreosPOP3(String pop3Host, String imapHost, String user, String password) {
 
 		ArrayList<Correo> listaCorreos = new ArrayList<>();
@@ -51,8 +65,10 @@ public class GestionCorreos {
 
 				if (from != null && from.length > 0) {
 					if (from[0] instanceof InternetAddress) {
+						// extrae solo la dirección (ej: juan@gmail.com)
 						remitenteLimpio = ((InternetAddress) from[0]).getAddress();
 					} else {
+						// fallback por si no es InternetAddress
 						remitenteLimpio = from[0].toString();
 					}
 				}
@@ -103,6 +119,16 @@ public class GestionCorreos {
 		return listaCorreos;
 	}
 
+	/**
+	 * Obtiene un mapa con el estado de lectura (leído/no leído) de los mensajes
+	 * mediante IMAP.
+	 *
+	 * @param imapHost Host del servidor IMAP.
+	 * @param user     Usuario de correo.
+	 * @param password Contraseña.
+	 * @return Mapa donde la clave es el Message-ID y el valor es true si está
+	 *         leído.
+	 */
 	public Map<String, Boolean> obtenerEstadosIMAP(String imapHost, String user, String password) {
 
 		Map<String, Boolean> estados = new HashMap<>();
@@ -149,6 +175,16 @@ public class GestionCorreos {
 		return estados;
 	}
 
+	/**
+	 * Elimina un correo específico del servidor utilizando POP3.
+	 * Marca el mensaje con el Message-ID coincidente para borrado.
+	 *
+	 * @param pop3Host      Host POP3.
+	 * @param user          Usuario.
+	 * @param password      Contraseña.
+	 * @param correoABorrar Objeto Correo a eliminar.
+	 * @throws Exception Si ocurre un error durante la conexión o eliminación.
+	 */
 	public void eliminarCorreoPOP3(String pop3Host, String user, String password, Correo correoABorrar)
 			throws Exception {
 
@@ -189,6 +225,14 @@ public class GestionCorreos {
 		System.out.println("[POP3] Correo eliminado");
 	}
 
+	/**
+	 * Marca un correo como LEÍDO en el servidor IMAP.
+	 *
+	 * @param imapHost  Host IMAP.
+	 * @param user      Usuario.
+	 * @param password  Contraseña.
+	 * @param messageId ID del mensaje a marcar.
+	 */
 	public void marcarLeidoIMAP(String imapHost, String user, String password, String messageId) {
 
 		System.out.println("[IMAP] Marcar LEIDO -> " + messageId);
@@ -222,6 +266,14 @@ public class GestionCorreos {
 		}
 	}
 
+	/**
+	 * Marca un correo como NO LEÍDO en el servidor IMAP.
+	 *
+	 * @param imapHost  Host IMAP.
+	 * @param user      Usuario.
+	 * @param password  Contraseña.
+	 * @param messageId ID del mensaje a marcar.
+	 */
 	public void marcarNoLeidoIMAP(String imapHost, String user, String password, String messageId) {
 
 		System.out.println("[IMAP] Marcar NO LEIDO -> " + messageId);
@@ -255,6 +307,14 @@ public class GestionCorreos {
 		}
 	}
 
+	/**
+	 * Extrae el contenido de texto plano o HTML de un mensaje de correo.
+	 *
+	 * @param message Mensaje a procesar.
+	 * @return Contenido del mensaje como String.
+	 * @throws MessagingException Error de mensajería.
+	 * @throws IOException        Error de entrada/salida.
+	 */
 	private String getTextFromMessage(Message message) throws MessagingException, IOException {
 
 		if (message.isMimeType("text/plain")) {
@@ -268,6 +328,14 @@ public class GestionCorreos {
 		return "";
 	}
 
+	/**
+	 * Método auxiliar recursivo para extraer texto de contenido Multipart.
+	 *
+	 * @param mimeMultipart Contenido Multipart.
+	 * @return Texto extraído.
+	 * @throws MessagingException Error de mensajería.
+	 * @throws IOException        Error de entrada/salida.
+	 */
 	private String getTextFromMimeMultipart(MimeMultipart mimeMultipart) throws MessagingException, IOException {
 
 		StringBuilder result = new StringBuilder();

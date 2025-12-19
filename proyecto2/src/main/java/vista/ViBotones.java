@@ -9,6 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * Panel personalizado que contiene y organiza una lista horizontal de botones.
+ */
 public class ViBotones extends JPanel {
     private ArrayList<JButton> botones;
 
@@ -28,6 +31,11 @@ public class ViBotones extends JPanel {
         setBorder(new EmptyBorder(5, 5, 5, 5));
     }
 
+    /**
+     * Crea e inicializa los botones basados en la lista de textos proporcionada.
+     *
+     * @param textos Lista de etiquetas para los botones.
+     */
     private void crearBotones(ArrayList<String> textos) {
         for (String texto : textos) {
             JButton btn = new JButton(texto);
@@ -37,6 +45,11 @@ public class ViBotones extends JPanel {
         }
     }
 
+    /**
+     * Aplica el estilo visual estándar a un botón.
+     *
+     * @param btn El botón a estilar.
+     */
     private void estilarBoton(JButton btn) {
         btn.setFont(new Font("SansSerif", Font.BOLD, 11));
         btn.setBackground(Estilos.DARK_SPRUCE);
@@ -46,6 +59,11 @@ public class ViBotones extends JPanel {
         btn.setPreferredSize(new java.awt.Dimension(115, 35));
     }
 
+    /**
+     * Obtiene la lista de botones del panel.
+     * 
+     * @return Lista de botones.
+     */
     public ArrayList<JButton> getBotones() {
         return botones;
     }

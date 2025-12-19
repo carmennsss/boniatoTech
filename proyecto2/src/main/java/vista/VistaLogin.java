@@ -9,6 +9,10 @@ import java.net.URL;
 
 import modelo.MoTextos;
 
+/**
+ * Vista de inicio de sesión de la aplicación.
+ * Permite al usuario entrar con su nombre y contraseña.
+ */
 public class VistaLogin extends JFrame {
 
 	private ArrayList<JLabel> textos;
@@ -269,6 +273,9 @@ public class VistaLogin extends JFrame {
 		return botones;
 	}
 
+	/**
+	 * Actualiza los textos de la interfaz según el idioma seleccionado.
+	 */
 	public void actualizarTextos() {
 		if (comboIdiomas != null) {
 			comboIdiomas.setSelectedIndex(MoTextos.getIdioma());

@@ -27,6 +27,10 @@ import javax.swing.border.EmptyBorder;
 import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
 
+/**
+ * Vista para el registro de nuevos usuarios en el sistema.
+ * Contiene un formulario con campos para nombre, correo, contraseñas, etc.
+ */
 public class VistaRegistroUsuarios extends JFrame {
 
 	ModeloClienteFTP client;
@@ -357,6 +361,9 @@ public class VistaRegistroUsuarios extends JFrame {
 		this.setVisible(true);
 	}
 
+	/**
+	 * Actualiza los textos de la interfaz según el idioma seleccionado.
+	 */
 	public void actualizarTextos() {
 		this.setTitle(modelo.MoTextos.reg_title_window);
 		titulo.setText(modelo.MoTextos.reg_title_main);

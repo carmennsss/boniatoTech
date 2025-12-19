@@ -3,6 +3,9 @@ package vista;
 import java.awt.Color;
 import java.awt.Font;
 
+/**
+ * Clase que define los estilos globales (Colores y Fuentes) para la aplicación.
+ */
 public class Estilos {
     public static final Color DARK_SPRUCE = new Color(40, 80, 46);
     public static final Color BEIGE_CANVAS = new Color(242, 235, 226);

@@ -13,6 +13,13 @@ import javax.swing.JOptionPane;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 
+import modelo.MoTextos;
+
+/**
+ * Gestor de archivos que utiliza FTP para realizar operaciones de
+ * transferencia.
+ * Encapsula la librería FTPClient de Apache Commons Net.
+ */
 public class FileManager {
 
 	private FTPClient ftpClient;
@@ -29,6 +36,13 @@ public class FileManager {
 		this.contrasena = contrasena;
 	}
 
+	/**
+	 * Sube un archivo local al servidor FTP.
+	 *
+	 * @param archivo       Ruta absoluta del archivo local.
+	 * @param nombreArchivo Nombre del archivo.
+	 * @param rutaActual    Directorio destino en el servidor FTP.
+	 */
 	public void subirArchivo(String archivo, String nombreArchivo, String rutaActual) {
 		BufferedInputStream in;
 		String rutaCompleta;
@@ -62,6 +76,13 @@ public class FileManager {
 		this.desconectar();
 	}
 
+	/**
+	 * Descarga un archivo del servidor FTP al sistema local.
+	 *
+	 * @param select     Archivo FTP seleccionado para descarga.
+	 * @param rutaLocal  Ruta del directorio local destino.
+	 * @param rutaActual Ruta del directorio actual en el FTP.
+	 */
 	public void descargarArchivo(FTPFile select, String rutaLocal, String rutaActual) {
 		BufferedOutputStream out;
 		File archivoLocal;
@@ -100,6 +121,12 @@ public class FileManager {
 		this.desconectar();
 	}
 
+	/**
+	 * Borra un archivo del servidor FTP.
+	 *
+	 * @param select     Archivo FTP a borrar.
+	 * @param rutaActual Directorio donde se encuentra el archivo.
+	 */
 	public void borrarArchivo(FTPFile select, String rutaActual) {
 		String rutaCompleta;
 		if (!this.conectar()) {
@@ -112,11 +139,11 @@ public class FileManager {
 			rutaCompleta += "/";
 		}
 		rutaCompleta += select.getName();
-		int confirmacion = JOptionPane.showConfirmDialog(null, "Do you want to delete the selected file?");
+		int confirmacion = JOptionPane.showConfirmDialog(null, MoTextos.msg_confirm_delete_file);
 		if (confirmacion == JOptionPane.OK_OPTION) {
 			try {
 				if (!ftpClient.deleteFile(rutaCompleta)) {
-					JOptionPane.showMessageDialog(null, select.getName() + " => Could not be deleted...");
+					JOptionPane.showMessageDialog(null, select.getName() + " => " + MoTextos.msg_could_not_delete);
 				}
 			} catch (IOException el) {
 				el.printStackTrace();
@@ -126,6 +153,12 @@ public class FileManager {
 		this.desconectar();
 	}
 
+	/**
+	 * Crea un nuevo directorio en el servidor FTP.
+	 *
+	 * @param nombreCarpeta Nombre de la nueva carpeta.
+	 * @param rutaActual    Ruta donde se creará la carpeta.
+	 */
 	public void crearCarpeta(String nombreCarpeta, String rutaActual) {
 		String rutaCompleta;
 		try {
@@ -142,7 +175,7 @@ public class FileManager {
 				JOptionPane.showMessageDialog(null, "Folder created successfully.", "",
 						JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				JOptionPane.showMessageDialog(null, nombreCarpeta + " => Could not be created...", "Error",
+				JOptionPane.showMessageDialog(null, nombreCarpeta + " => " + MoTextos.msg_could_not_create, "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (IOException el) {
@@ -151,6 +184,12 @@ public class FileManager {
 		this.desconectar();
 	}
 
+	/**
+	 * Elimina una carpeta del servidor FTP.
+	 *
+	 * @param nombreCarpeta Nombre de la carpeta a borrar.
+	 * @param rutaActual    Ruta donde se encuentra la carpeta.
+	 */
 	public void borrarCarpeta(String nombreCarpeta, String rutaActual) {
 
 		String rutaCompleta;
@@ -167,7 +206,7 @@ public class FileManager {
 		}
 		rutaCompleta += nombreCarpeta;
 
-		int confirmacion = JOptionPane.showConfirmDialog(null, "Do you want to delete the selected folder?",
+		int confirmacion = JOptionPane.showConfirmDialog(null, MoTextos.msg_confirm_delete_folder,
 				"Confirm deletion", JOptionPane.OK_CANCEL_OPTION);
 
 		if (confirmacion == JOptionPane.OK_OPTION) {
@@ -176,7 +215,8 @@ public class FileManager {
 
 				if (!borrada) {
 					JOptionPane.showMessageDialog(null,
-							nombreCarpeta + " => Could not be deleted.\n" + "The folder may not be empty.",
+							nombreCarpeta + " => " + MoTextos.msg_could_not_delete + "\n"
+									+ MoTextos.msg_folder_not_empty,
 							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 
@@ -190,6 +230,12 @@ public class FileManager {
 		this.desconectar();
 	}
 
+	/**
+	 * Lista los archivos y carpetas en un directorio del servidor FTP.
+	 *
+	 * @param ruta Ruta del directorio a listar.
+	 * @return Array de objetos FTPFile con la información de los archivos.
+	 */
 	public FTPFile[] listarArchivos(String ruta) {
 		try {
 			return this.ftpClient.listFiles(ruta);
@@ -199,6 +245,11 @@ public class FileManager {
 		}
 	}
 
+	/**
+	 * Establece la conexión y realiza el login con el servidor FTP.
+	 *
+	 * @return true si la conexión y login fueron exitosos, false en caso contrario.
+	 */
 	public boolean conectar() {
 		try {
 			this.ftpClient.connect(this.servidor, this.puerto);
@@ -209,6 +260,9 @@ public class FileManager {
 		}
 	}
 
+	/**
+	 * Cierra la sesión y desconecta del servidor FTP.
+	 */
 	public void desconectar() {
 		try {
 			if (this.ftpClient.isConnected()) {
@@ -220,6 +274,53 @@ public class FileManager {
 		}
 	}
 
+	public void renombrar(FTPFile archivoSeleccionado, String nuevoNombre, String rutaActual) {
+		if (!this.conectar()) {
+			JOptionPane.showMessageDialog(null, "Could not connect to the server", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		String rutaVieja = rutaActual;
+		if (!rutaVieja.endsWith("/")) {
+			rutaVieja += "/";
+		}
+		rutaVieja += archivoSeleccionado.getName();
+
+		String rutaNueva = rutaActual;
+		if (!rutaNueva.endsWith("/")) {
+			rutaNueva += "/";
+		}
+		rutaNueva += nuevoNombre;
+
+		int confirmacion = JOptionPane.showConfirmDialog(null,
+				"Do you want to rename the file '" + archivoSeleccionado.getName() + "' to '" + nuevoNombre + "'?",
+				"Confirm Rename", JOptionPane.OK_CANCEL_OPTION);
+
+		if (confirmacion == JOptionPane.OK_OPTION) {
+			try {
+				boolean exito = ftpClient.rename(rutaVieja, rutaNueva);
+				if (exito) {
+					JOptionPane.showMessageDialog(null, "File renamed successfully.", "",
+							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "Could not rename the file.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error renaming the file: " + e.getMessage(), "Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+
+		this.desconectar();
+	}
+
+	/**
+	 * Obtiene el nombre de usuario configurado para la conexión FTP.
+	 *
+	 * @return El nombre de usuario.
+	 */
 	public String getUserName() {
 		return usuario;
 	}

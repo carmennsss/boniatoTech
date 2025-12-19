@@ -9,11 +9,18 @@ import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
+import controladorLogs.GestionLogs;
 import modelo.Correo;
+import modelo.Log;
 import modelo.ModeloBaseDatos;
 import vista.VistaGeneralCorreo;
 import vista.VistaMenuPrincipal;
 
+/**
+ * Controlador principal para la gestión de correos electrónicos.
+ * Maneja la recepción (POP3/IMAP), envío, eliminación y visualización de
+ * correos.
+ */
 public class ControladorCorreos {
 
 	private String CORREO;
@@ -26,6 +33,8 @@ public class ControladorCorreos {
 	private Thread hiloRecepcion;
 	private ModeloBaseDatos db;
 	private VistaMenuPrincipal vistaMenuPrincipal;
+	private ArrayList<Correo> listaDescargada;
+	private ArrayList<Correo> listaDescargadaAnterior;
 
 	public ControladorCorreos(String CORREO, VistaGeneralCorreo vistaGeneral, ModeloBaseDatos bd,
 			VistaMenuPrincipal vistaMenu) {
@@ -39,6 +48,13 @@ public class ControladorCorreos {
 
 	}
 
+	/**
+	 * Obtiene la contraseña de aplicación de Gmail almacenada en la base de datos
+	 * para un usuario.
+	 *
+	 * @param correo El correo del usuario.
+	 * @return La clave de aplicación o null si no se encuentra.
+	 */
 	private String obtenerClaveCorreoPorUsuario(String correo) {
 		String contrasenaAplicacion = null;
 		try {
@@ -60,20 +76,33 @@ public class ControladorCorreos {
 		return contrasenaAplicacion;
 	}
 
+	/**
+	 * Inicia el proceso de carga de correos en un hilo secundario.
+	 * Actualiza la interfaz gráfica una vez descargados los mensajes.
+	 */
 	public void cargarCorreos() {
 		vistaGeneral.getBtnRefrescar().setEnabled(false);
 
 		new Thread(() -> {
 			try {
 				System.out.println("Conectando con Gmail...");
-				ArrayList<Correo> listaDescargada = obtenerCorreos();
+				listaDescargada = obtenerCorreos();
 
 				SwingUtilities.invokeLater(() -> {
+					listaDescargadaAnterior = this.correos;
 					this.correos.clear();
 					this.correos.addAll(listaDescargada);
 					vistaGeneral.cargarCorreos(this.correos);
 
 					vistaGeneral.getBtnRefrescar().setEnabled(true);
+
+					// Comparo lista anterior con la actual
+					if (listaDescargadaAnterior.size() < listaDescargada.size()
+							&& listaDescargadaAnterior.size() != 0) {
+
+						controladorLogs.GestionLogs.writeLog(new Log("MAIL_RECEIVED", CORREO, true));
+
+					}
 
 					if (hiloRecepcion == null || !hiloRecepcion.isAlive()) {
 						HiloRecepcionCorreos hilo = new HiloRecepcionCorreos(gestion, HOST, "recent:" + CORREO,
@@ -91,12 +120,20 @@ public class ControladorCorreos {
 
 	}
 
+	/**
+	 * Detiene el hilo de recepción de correos si está en ejecución.
+	 */
 	public void detenerHiloRecepcion() {
 		if (hiloRecepcion != null && hiloRecepcion.isAlive()) {
 			hiloRecepcion.interrupt();
 		}
 	}
 
+	/**
+	 * Obtiene la lista de correos del servidor mediante POP3.
+	 *
+	 * @return Lista de correos recibidos.
+	 */
 	public ArrayList<Correo> obtenerCorreos() {
 		ArrayList<Correo> listaCorreos = gestion.recibirCorreosPOP3(HOST, HOSTIMAP, "recent:" + CORREO,
 				PASSWORD_APLICACION);
@@ -104,6 +141,9 @@ public class ControladorCorreos {
 		return listaCorreos;
 	}
 
+	/**
+	 * Configura los escuchadores de los botones y la tabla en la vista general.
+	 */
 	private void configurarVistaGeneral() {
 		vistaGeneral.getBotonEnviarCorreo()
 				.addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo(), PASSWORD_APLICACION, this));
@@ -113,6 +153,12 @@ public class ControladorCorreos {
 		vistaGeneral.getBtnVolver().addActionListener(new OyenteBotonVolver(vistaGeneral, vistaMenuPrincipal, this));
 	}
 
+	/**
+	 * Elimina un correo seleccionado tanto de la lista local como del servidor
+	 * POP3.
+	 *
+	 * @param correo El correo a eliminar.
+	 */
 	public void eliminarCorreoSeleccionado(Correo correo) {
 		try {
 
@@ -126,6 +172,11 @@ public class ControladorCorreos {
 		}
 	}
 
+	/**
+	 * Marca un correo como leído en el servidor IMAP y actualiza la vista.
+	 *
+	 * @param correo El correo a marcar como leído.
+	 */
 	public synchronized void marcarCorreoLeido(Correo correo) {
 		try {
 			String idParaMarcar = correo.getMessageId();
@@ -142,6 +193,11 @@ public class ControladorCorreos {
 		}
 	}
 
+	/**
+	 * Marca un correo como no leído en el servidor IMAP y actualiza la vista.
+	 *
+	 * @param correo El correo a marcar como no leído.
+	 */
 	public synchronized void marcarCorreoNoLeido(Correo correo) {
 		try {
 			String idParaMarcar = correo.getMessageId();
@@ -158,6 +214,12 @@ public class ControladorCorreos {
 		}
 	}
 
+	/**
+	 * Actualiza la lista de correos local con nuevos correos recibidos desde el
+	 * hilo de recepción.
+	 *
+	 * @param nuevosCorreos Lista de nuevos correos.
+	 */
 	public synchronized void actualizarListaDesdeHilo(ArrayList<Correo> nuevosCorreos) {
 		this.correos.clear();
 		this.correos.addAll(nuevosCorreos);
@@ -167,14 +229,30 @@ public class ControladorCorreos {
 		System.out.println("Lista de correos sincronizada. Total: " + this.correos.size());
 	}
 
+	/**
+	 * Devuelve la lista actual de correos almacenados localmente.
+	 * 
+	 * @return Lista de correos.
+	 */
 	public ArrayList<Correo> getListaCorreosActual() {
 		return this.correos;
 	}
 
+	/**
+	 * Obtiene la contraseña de aplicación utilizada para la autenticación.
+	 * 
+	 * @return Contraseña de aplicación.
+	 */
 	public String getPasswordAplicacion() {
 		return PASSWORD_APLICACION;
 	}
 
+	/**
+	 * Comprueba si un receptor está en la lista blanca o es un usuario registrado.
+	 *
+	 * @param receptor Email del receptor.
+	 * @return true si es válido, false en caso contrario.
+	 */
 	public boolean comprobarReceptorWhiteList(String receptor) {
 		ArrayList<String> whitelist = new ArrayList<>();
 		try {
@@ -201,10 +279,20 @@ public class ControladorCorreos {
 		}
 	}
 
+	/**
+	 * Obtiene el correo electrónico del usuario actual.
+	 * 
+	 * @return Dirección de correo.
+	 */
 	public String getCORREO() {
 		return CORREO;
 	}
 
+	/**
+	 * Establece el correo electrónico del usuario.
+	 * 
+	 * @param cORREO Dirección de correo.
+	 */
 	public void setCORREO(String cORREO) {
 		CORREO = cORREO;
 	}
