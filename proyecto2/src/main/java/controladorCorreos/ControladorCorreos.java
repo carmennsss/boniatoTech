@@ -34,8 +34,6 @@ public class ControladorCorreos {
 	private ModeloBaseDatos db;
 	private VistaMenuPrincipal vistaMenuPrincipal;
 	private ArrayList<Correo> listaDescargada;
-	private ArrayList<Correo> listaDescargadaAnterior;
-
 	public ControladorCorreos(String CORREO, VistaGeneralCorreo vistaGeneral, ModeloBaseDatos bd,
 			VistaMenuPrincipal vistaMenu) {
 		this.vistaGeneral = vistaGeneral;
@@ -44,7 +42,6 @@ public class ControladorCorreos {
 		this.CORREO = CORREO;
 		this.PASSWORD_APLICACION = obtenerClaveCorreoPorUsuario(CORREO);
 		gestion = new GestionCorreos();
-		new GestionLogs(db.getConexion());
 		configurarVistaGeneral();
 
 	}

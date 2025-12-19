@@ -2,11 +2,7 @@ package controlador;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-
-import javax.swing.event.TableModelEvent;
 import modelo.MoView;
-import modelo.User;
 import vista.ViMain;
 
 /**
@@ -14,7 +10,6 @@ import vista.ViMain;
  * asignación de roles.
  */
 public class OyenteTablaRoles extends MouseAdapter {
-    private CoPrincipal controlador;
     private ViMain vista;
     private MoView modeloVista;
 
@@ -26,7 +21,6 @@ public class OyenteTablaRoles extends MouseAdapter {
      * @param modeloVista Modelo de vista.
      */
     public OyenteTablaRoles(CoPrincipal controlador, ViMain vista, MoView modeloVista) {
-        this.controlador = controlador;
         this.vista = vista;
         this.modeloVista = modeloVista;
     }

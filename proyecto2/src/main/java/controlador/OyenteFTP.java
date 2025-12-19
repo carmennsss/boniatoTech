@@ -39,7 +39,6 @@ public class OyenteFTP implements ActionListener {
 	private VistaMenuPrincipal vistaMenuPrincipal;
 	private VistaAdmin vistaAdmin;
 	private VistaRegistroUsuarios vistaUsuarios;
-	private VistaGeneralCorreo vistaGeneralCorreo;
 	private VistaLogs vistaLogs;
 	private ModeloBaseDatos modeloBaseDatos;
 	private ControladorLogs controladorLogs;
@@ -166,22 +165,6 @@ public class OyenteFTP implements ActionListener {
 	 */
 	private void volverMenuPrincipal() {
 		vistaAdmin.setVisible(false);
-		vistaMenuPrincipal.hacerVisible();
-	}
-
-	/**
-	 * Vuelve al panel de administración desde la gestión de usuarios.
-	 */
-	private void volverAdminDesdeUsuarios() {
-		vistaUsuarios.setVisible(false);
-		vistaAdmin.hacerVisible();
-	}
-
-	/**
-	 * Vuelve al menú principal desde la vista de correos.
-	 */
-	private void volverMenuDesdeCorreos() {
-		controladorPrincipal.getVistaGeneralCorreo().setVisible(false);
 		vistaMenuPrincipal.hacerVisible();
 	}
 

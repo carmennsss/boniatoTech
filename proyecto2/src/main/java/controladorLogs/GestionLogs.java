@@ -7,13 +7,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-
 import modelo.Log;
 import modelo.ModeloBaseDatos;
-import modelo.User;
-import vista.VistaLogs;
 
 /**
  * Clase para realizar operaciones de base de datos relacionadas con los Logs.
@@ -137,11 +133,6 @@ public class GestionLogs {
 			e.printStackTrace();
 			return false;
 		}
-	}
-
-	public void mostrarLogs() {
-		ArrayList<Log> logs = new ArrayList<>();
-
 	}
 
 }
