@@ -3,8 +3,6 @@ package controladorCorreos;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.PrintWriter;
-
 import modelo.Correo;
 import vista.VistaCorreoBase;
 

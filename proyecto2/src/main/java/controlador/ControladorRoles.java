@@ -16,7 +16,6 @@ import java.util.Arrays;
 public class ControladorRoles {
     private ModeloBaseDatos bd;
     private ViMain vista;
-    private ModeloClienteFTP modeloFTP;
     private MoView modeloVista;
     private CoPrincipal coPrincipal;
 
@@ -25,7 +24,6 @@ public class ControladorRoles {
         this.coPrincipal = coPrincipal;
         this.bd = bd;
         this.vista = vista;
-        this.modeloFTP = modeloFTP;
         this.modeloVista = modeloVista;
     }
 

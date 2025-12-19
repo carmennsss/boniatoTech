@@ -16,13 +16,11 @@ import vista.VistaLogs;
  */
 public class ControladorLogs {
 
-	private Connection conn;
 	private VistaLogs vistaLogs;
 
 	private GestionLogs gestionLogs;
 
 	public ControladorLogs(Connection conn, VistaLogs vistaLogs) {
-		this.conn = conn;
 		this.vistaLogs = vistaLogs;
 		this.gestionLogs = new GestionLogs();
 		asignarOyenteBtnExport();
