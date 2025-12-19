@@ -227,7 +227,7 @@ public class ModeloBaseDatos {
         boolean valido = false;
         try {
             PreparedStatement pstmt = getConexion().prepareStatement(
-                    "SELECT * FROM usuarios WHERE correo = ? AND password = ?");
+                    "SELECT * FROM usuarios WHERE email = ? AND contrasena = ?");
             pstmt.setString(1, correo);
             pstmt.setString(2, password);
             ResultSet rs = pstmt.executeQuery();
@@ -417,7 +417,7 @@ public class ModeloBaseDatos {
      */
     public boolean renombrarArchivoSQL(String nombreActual, String nuevoNombre, String ruta) {
         String sql = "UPDATE archivos SET nombre_archivo = ? WHERE nombre_archivo = ? AND directorio = ?";
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try (PreparedStatement ps = getConexion().prepareStatement(sql)) {
             ps.setString(1, nuevoNombre);
             ps.setString(2, nombreActual);
             ps.setString(3, ruta);
@@ -439,7 +439,7 @@ public class ModeloBaseDatos {
      */
     public boolean renombrarArchivo(String nombreActual, String nuevoNombre, String ruta, String extension) {
         String sql = "UPDATE archivos SET nombre_archivo = ?, extension = ? WHERE nombre_archivo = ? AND directorio = ?;";
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try (PreparedStatement ps = getConexion().prepareStatement(sql)) {
             ps.setString(1, nuevoNombre);
             ps.setString(2, extension);
             ps.setString(3, nombreActual);

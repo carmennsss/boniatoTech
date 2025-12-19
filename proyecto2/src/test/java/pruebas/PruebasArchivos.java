@@ -48,7 +48,7 @@ public class PruebasArchivos {
             assertTrue("Debería insertar el registro del archivo", insertado);
 
             // 2. Renombrar (Simula renombrado SQL)
-            boolean renombrado = modeloDB.renombrarArchivoSQL(testFile, "test_file_renamed.txt", testPath);
+            boolean renombrado = modeloDB.renombrarArchivo(testFile, "test_file_renamed.txt", testPath, "txt");
             assertTrue("Debería renombrar el archivo en BD", renombrado);
 
             // 3. Eliminar
