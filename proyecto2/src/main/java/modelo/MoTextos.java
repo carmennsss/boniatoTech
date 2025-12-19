@@ -145,6 +145,7 @@ public class MoTextos {
     public static String msg_select_folder = "Please select a folder";
     public static String msg_permission_denied_delete_folder = "You do not have permission to delete this folder";
     public static String msg_select_folder_not_file = "You must select a folder, not a file";
+    public static String msg_permission_denied_rename = "You do not have permission to rename this file";
 
     public static String mail_msg_recipient_obligatory = "The recipient and the message body are obligatory";
     public static String mail_msg_sent_prefix = "Email successfully sent to ";
@@ -181,6 +182,10 @@ public class MoTextos {
     // OyenteArchivos Strings
     public static String title_select_upload = "Select the file to upload";
     public static String title_select_download = "Select where to download the file";
+    public static String msg_enter_new_name = "Enter new name for the file:";
+    public static String msg_invalid_name = "Invalid name.";
+    public static String msg_info_title = "Info";
+    public static String msg_rename_canceled = "Renaming canceled or invalid name.";
 
     // VistaCRUD Strings
     public static String title_crud_animals = "Serwo Management - Animals";
@@ -350,6 +355,7 @@ public class MoTextos {
             msg_select_folder = "Por favor, selecciona una carpeta";
             msg_permission_denied_delete_folder = "No tienes permiso para eliminar esta carpeta";
             msg_select_folder_not_file = "Debes seleccionar una carpeta, no un archivo";
+            msg_permission_denied_rename = "No tienes permiso para renombrar este archivo";
 
             mail_msg_recipient_obligatory = "El destinatario y el cuerpo del mensaje son obligatorios";
             mail_msg_sent_prefix = "Correo enviado correctamente a ";
@@ -380,6 +386,10 @@ public class MoTextos {
             // OyenteArchivos Strings (Spanish)
             title_select_upload = "Selecciona el archivo a subir";
             title_select_download = "Selecciona dónde descargar el archivo";
+            msg_enter_new_name = "Ingresa el nuevo nombre para el archivo:";
+            msg_invalid_name = "Nombre inválido.";
+            msg_info_title = "Información";
+            msg_rename_canceled = "Renombrado cancelado o nombre inválido.";
 
             // VistaCRUD Strings (Spanish)
             title_crud_animals = "Gestión Serwo - Animales";

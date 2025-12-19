@@ -84,6 +84,8 @@ public class OyenteArchivos implements ActionListener {
             accionBotonCrearCarpeta();
         } else if (source == vista.getBotonBorrarCarpeta()) {
             accionBotonBorrarCarpeta();
+        } else if (source == vista.getBotonRenombrar()) {
+            accionBotonRenombrar();
         } else if (source == vista.getBotonVolver()) {
             accionBotonVolver();
         } else if (source == vista.getBotonVolverMenuPrincipal()) {
@@ -108,6 +110,10 @@ public class OyenteArchivos implements ActionListener {
                 return true;
             }
         } catch (Exception e) {
+            return false;
+        }
+
+        if (accion.equals("Renombrar")) {
             return false;
         }
 
@@ -360,5 +366,54 @@ public class OyenteArchivos implements ActionListener {
                 }
             }
         });
+    }
+
+    private void accionBotonRenombrar() {
+        if (!verificarPermiso(rutaActual, "Renombrar")) {
+            JOptionPane.showMessageDialog(null, MoTextos.msg_permission_denied_rename,
+                    MoTextos.msg_permission_denied_title,
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        FTPFile select = vista.getListaArchivos().getSelectedValue();
+        if (select == null) {
+            JOptionPane.showMessageDialog(null, MoTextos.msg_select_file, MoTextos.msg_error_title,
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        String nuevoNombre = JOptionPane.showInputDialog(vista, MoTextos.msg_enter_new_name, select.getName());
+        if (nuevoNombre == null || nuevoNombre.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(vista, MoTextos.msg_invalid_name, MoTextos.msg_info_title,
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        if (select.isDirectory()) {
+            if (db.renombrarCarpeta(select.getName(), nuevoNombre.trim(), rutaActual)) {
+                GestionLogs.writeLog(
+                        new Log("Rename, folder renamed " + select.getName() + " to " + nuevoNombre.trim(), "", true));
+                ftp.renombrar(select, nuevoNombre.trim(), rutaActual);
+                actualizarListaFTP();
+            } else {
+                JOptionPane.showMessageDialog(vista, MoTextos.msg_rename_canceled, MoTextos.msg_info_title,
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            String extension = "";
+            if (nuevoNombre.contains(".")) {
+                extension = nuevoNombre.substring(nuevoNombre.lastIndexOf(".") + 1);
+            }
+            if (db.renombrarArchivo(select.getName(), nuevoNombre.trim(), rutaActual, extension)) {
+                GestionLogs.writeLog(
+                        new Log("Rename, file renamed " + select.getName() + " to " + nuevoNombre.trim(), "", true));
+                ftp.renombrar(select, nuevoNombre.trim(), rutaActual);
+                actualizarListaFTP();
+            } else {
+                JOptionPane.showMessageDialog(vista, MoTextos.msg_rename_canceled, MoTextos.msg_info_title,
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
     }
 }
