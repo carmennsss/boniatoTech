@@ -1,3 +1,4 @@
+
 package controlador;
 
 import java.awt.event.ActionEvent;
@@ -335,6 +336,7 @@ public class OyenteArchivos implements ActionListener {
                 vista.getListaModel().addElement(archivo);
             }
             this.rutaActual = ruta;
+            vista.actualizarRutaActual(ruta);
             this.ftp.desconectar();
         }
     }

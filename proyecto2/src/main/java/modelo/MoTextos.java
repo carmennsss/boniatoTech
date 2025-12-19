@@ -33,6 +33,7 @@ public class MoTextos {
     public static String btn_delete_folder = "Delete Folder";
     public static String btn_rename = "Rename";
     public static String lbl_actions = "Actions";
+    public static String lbl_current_path = "Current Path:";
     public static String btn_back = "Back";
     public static String btn_main_menu = "Main Menu";
 
@@ -237,6 +238,7 @@ public class MoTextos {
             btn_delete_folder = "Borrar Carpeta";
             btn_rename = "Renombrar";
             lbl_actions = "Acciones";
+            lbl_current_path = "Ruta Actual:";
             btn_back = "Volver";
             btn_main_menu = "Menú Principal";
 
@@ -430,6 +432,7 @@ public class MoTextos {
             btn_new_folder = "New Folder";
             btn_delete_folder = "Delete Folder";
             lbl_actions = "Actions";
+            lbl_current_path = "Current Path:";
             btn_back = "Back";
             btn_main_menu = "Main Menu";
 
