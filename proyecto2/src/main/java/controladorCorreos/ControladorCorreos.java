@@ -44,7 +44,6 @@ public class ControladorCorreos {
 		this.CORREO = CORREO;
 		this.PASSWORD_APLICACION = obtenerClaveCorreoPorUsuario(CORREO);
 		gestion = new GestionCorreos();
-		new GestionLogs(db.getConexion());
 		configurarVistaGeneral();
 
 	}
