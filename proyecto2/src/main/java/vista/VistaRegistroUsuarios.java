@@ -13,6 +13,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,68 +29,75 @@ import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
 
 /**
- * Vista para el registro de nuevos usuarios en el sistema.
- * Contiene un formulario con campos para nombre, correo, contraseÃ±as, etc.
+ * Vista para el registro de nuevos usuarios en el sistema. Proporciona un
+ * formulario detallado para capturar la información necesaria, permitiendo la
+ * creación de cuentas con credenciales de acceso y de correo.
  */
 public class VistaRegistroUsuarios extends JFrame {
 
-	/** Modelo del cliente FTP. */
-	ModeloClienteFTP client;
+	/** Modelo del cliente FTP asociado. */
+	private ModeloClienteFTP client;
 
-	/** Modelo de base de datos. */
-	ModeloBaseDatos db;
+	/** Modelo de base de datos asociado. */
+	private ModeloBaseDatos db;
 
-	/** Vista de administraciÃ³n asociada. */
-	VistaAdmin vistaAdmin;
+	/** Referencia a la vista de administración para la navegación. */
+	private VistaAdmin vistaAdmin;
 
-	/** Etiqueta del campo nombre. */
-	JLabel nombre;
+	/** Etiqueta para el campo de nombre. */
+	private JLabel nombre;
 
-	/** Campo de texto para el nombre. */
-	JTextField textNombre;
+	/** Campo de texto para el nombre de usuario. */
+	private JTextField textNombre;
 
-	/** Etiqueta del campo correo. */
-	JLabel correo;
+	/** Etiqueta para el campo de correo electrónico. */
+	private JLabel correo;
 
-	/** Campo de texto para el correo. */
-	JTextField textCorreo;
+	/** Campo de texto para la dirección de correo. */
+	private JTextField textCorreo;
 
-	/** Etiqueta del campo clave de correo. */
-	JLabel claveCorreo;
+	/** Etiqueta para el campo de clave de correo. */
+	private JLabel claveCorreo;
 
-	/** Campo de texto para la clave de correo. */
-	JTextField textClaveCorreo;
+	/** Campo de texto para la clave de aplicación del correo. */
+	private JTextField textClaveCorreo;
 
-	/** Etiqueta del campo contraseÃ±a. */
-	JLabel contrasena;
+	/** Etiqueta para the campo de contraseña. */
+	private JLabel contrasena;
 
-	/** Campo de texto para la contraseÃ±a. */
-	JPasswordField textContrasena;
+	/** Campo de texto oculto para la contraseña de acceso. */
+	private JPasswordField textContrasena;
 
-	/** Etiqueta del campo confirmaciÃ³n de contraseÃ±a. */
-	JLabel confContrasena;
+	/** Etiqueta para la confirmación de la contraseña. */
+	private JLabel confContrasena;
 
-	/** Campo de texto para confirmar la contraseÃ±a. */
-	JPasswordField textConfContrasena;
+	/** Campo de texto oculto para confirmar la contraseña. */
+	private JPasswordField textConfContrasena;
 
-	/** BotÃ³n para aÃ±adir un nuevo usuario. */
-	JButton aniadir;
+	/** Botón para registrar el usuario. */
+	private JButton aniadir;
 
-	/** BotÃ³n para eliminar usuarios. */
-	JButton eliminar;
+	/** Botón para acceder a la funcionalidad de borrado. */
+	private JButton eliminar;
 
-	/** BotÃ³n para volver a la vista anterior. */
-	JButton volver;
+	/** Botón para regresar a la vista administrativa. */
+	private JButton volver;
 
 	/** Imagen de fondo de la ventana. */
 	private Image imagenFondo;
 
-	/** Etiqueta del tÃ­tulo de la ventana. */
+	/** Etiqueta del título principal en el panel. */
 	private JLabel titulo;
 
-	/** Panel central que contiene el formulario. */
+	/** Panel central redondeado que contiene el formulario. */
 	private JPanel panelCentral;
 
+	/**
+	 * Constructor que inicializa la vista de registro y vincula sus dependencias.
+	 * * @param vistaAdmin Instancia de la vista administrativa padre.
+	 * @param client     Instancia del modelo de cliente FTP.
+	 * @param db         Instancia del modelo de base de datos.
+	 */
 	public VistaRegistroUsuarios(VistaAdmin vistaAdmin, ModeloClienteFTP client, ModeloBaseDatos db) {
 		this.vistaAdmin = vistaAdmin;
 		this.client = client;
@@ -97,6 +105,9 @@ public class VistaRegistroUsuarios extends JFrame {
 		propiedades();
 	}
 
+	/**
+	 * Orquesta la configuración visual de la ventana y sus componentes internos.
+	 */
 	private void propiedades() {
 		configurarVentana();
 		configurarFondo();
@@ -104,6 +115,9 @@ public class VistaRegistroUsuarios extends JFrame {
 		configurarBotones();
 	}
 
+	/**
+	 * Establece las propiedades básicas del marco de la ventana (JFrame).
+	 */
 	private void configurarVentana() {
 		this.setTitle(modelo.MoTextos.reg_title_window);
 		this.setSize(900, 600);
@@ -111,6 +125,9 @@ public class VistaRegistroUsuarios extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
+	/**
+	 * Configura el panel de fondo con imagen decorativa escalada.
+	 */
 	private void configurarFondo() {
 		URL url = getClass().getResource("/fondo_abstracto_1.png");
 		if (url != null) {
@@ -122,9 +139,9 @@ public class VistaRegistroUsuarios extends JFrame {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				if (imagenFondo != null) {
-					int width = getWidth();
-					int height = getHeight();
-					g.drawImage(imagenFondo, 0, 0, width, height, this);
+					Graphics2D g2d = (Graphics2D) g;
+					g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+					g2d.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
 				} else {
 					g.setColor(new Color(248, 245, 242));
 					g.fillRect(0, 0, getWidth(), getHeight());
@@ -135,6 +152,9 @@ public class VistaRegistroUsuarios extends JFrame {
 		setContentPane(panelFondo);
 	}
 
+	/**
+	 * Diseña el panel central redondeado y distribuye los campos de entrada.
+	 */
 	private void configurarFormulario() {
 		panelCentral = new JPanel(new GridBagLayout()) {
 			@Override
@@ -207,6 +227,10 @@ public class VistaRegistroUsuarios extends JFrame {
 		getContentPane().add(panelCentral);
 	}
 
+	/**
+	 * Configura los botones de acción principal y los posiciona en el panel
+	 * central.
+	 */
 	private void configurarBotones() {
 		aniadir = new JButton(modelo.MoTextos.reg_btn_register);
 		eliminar = new JButton(modelo.MoTextos.btn_sys_delete);
@@ -235,142 +259,9 @@ public class VistaRegistroUsuarios extends JFrame {
 		}
 	}
 
-	public JButton getEliminar() {
-		return eliminar;
-	}
-
-	public void setEliminar(JButton eliminar) {
-		this.eliminar = eliminar;
-	}
-
-	public JButton getAniadir() {
-		return aniadir;
-	}
-
-	public void setAniadir(JButton aniadir) {
-		this.aniadir = aniadir;
-	}
-
-	public JButton getVolver() {
-		return volver;
-	}
-
-	public void setVolver(JButton volver) {
-		this.volver = volver;
-	}
-
-	public ModeloClienteFTP getClient() {
-		return client;
-	}
-
-	public void setClient(ModeloClienteFTP client) {
-		this.client = client;
-	}
-
-	public ModeloBaseDatos getDb() {
-		return db;
-	}
-
-	public void setDb(ModeloBaseDatos db) {
-		this.db = db;
-	}
-
-	public VistaAdmin getVistaAdmin() {
-		return vistaAdmin;
-	}
-
-	public void setVistaAdmin(VistaAdmin vistaAdmin) {
-		this.vistaAdmin = vistaAdmin;
-	}
-
-	public JLabel getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(JLabel nombre) {
-		this.nombre = nombre;
-	}
-
-	public JTextField getTextNombre() {
-		return textNombre;
-	}
-
-	public void setTextNombre(JTextField textNombre) {
-		this.textNombre = textNombre;
-	}
-
-	public JLabel getCorreo() {
-		return correo;
-	}
-
-	public void setCorreo(JLabel correo) {
-		this.correo = correo;
-	}
-
-	public JTextField getTextCorreo() {
-		return textCorreo;
-	}
-
-	public void setTextCorreo(JTextField textCorreo) {
-		this.textCorreo = textCorreo;
-	}
-
-	public JLabel getClaveCorreo() {
-		return claveCorreo;
-	}
-
-	public void setClaveCorreo(JLabel claveCorreo) {
-		this.claveCorreo = claveCorreo;
-	}
-
-	public JTextField getTextClaveCorreo() {
-		return textClaveCorreo;
-	}
-
-	public void setTextClaveCorreo(JTextField textClaveCorreo) {
-		this.textClaveCorreo = textClaveCorreo;
-	}
-
-	public JLabel getContrasena() {
-		return contrasena;
-	}
-
-	public void setContrasena(JLabel contrasena) {
-		this.contrasena = contrasena;
-	}
-
-	public JPasswordField getTextContrasena() {
-		return textContrasena;
-	}
-
-	public void setTextContrasena(JPasswordField textContrasena) {
-		this.textContrasena = textContrasena;
-	}
-
-	public JLabel getConfContrasena() {
-		return confContrasena;
-	}
-
-	public void setConfContrasena(JLabel confContrasena) {
-		this.confContrasena = confContrasena;
-	}
-
-	public JPasswordField getTextConfContrasena() {
-		return textConfContrasena;
-	}
-
-	public void setTextConfContrasena(JPasswordField textConfContrasena) {
-		this.textConfContrasena = textConfContrasena;
-	}
-
-	public Image getImagenFondo() {
-		return imagenFondo;
-	}
-
-	public void setImagenFondo(Image imagenFondo) {
-		this.imagenFondo = imagenFondo;
-	}
-
+	/**
+	 * Método auxiliar para alinear y añadir una etiqueta con su respectivo campo.
+	 */
 	private void agregarCampo(JPanel panel, GridBagConstraints gbc, int fila, JLabel label, JTextField campo) {
 		gbc.gridx = 0;
 		gbc.gridy = fila;
@@ -383,6 +274,9 @@ public class VistaRegistroUsuarios extends JFrame {
 		panel.add(campo, gbc);
 	}
 
+	/**
+	 * Aplica el estilo visual unificado de la aplicación a un botón.
+	 */
 	private void aniadirEstiloBoton(JButton btn, Color bgColor) {
 		btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		btn.setBackground(bgColor);
@@ -393,12 +287,16 @@ public class VistaRegistroUsuarios extends JFrame {
 		btn.setPreferredSize(new Dimension(150, 40));
 	}
 
+	/**
+	 * Hace visible la ventana de registro en pantalla.
+	 */
 	public void hacerVisible() {
 		this.setVisible(true);
 	}
 
 	/**
-	 * Actualiza los textos de la interfaz segÃºn el idioma seleccionado.
+	 * Actualiza dinámicamente los textos de las etiquetas y botones según el
+	 * idioma.
 	 */
 	public void actualizarTextos() {
 		this.setTitle(modelo.MoTextos.reg_title_window);
@@ -413,4 +311,277 @@ public class VistaRegistroUsuarios extends JFrame {
 		volver.setText(modelo.MoTextos.btn_back);
 	}
 
+	// --- SECCIÓN DE GETTERS Y SETTERS ---
+
+	/**
+	 * Obtiene el botón encargado de la eliminación de usuarios.
+	 * * @return El objeto JButton de eliminar.
+	 */
+	public JButton getEliminar() {
+		return eliminar;
+	}
+
+	/**
+	 * Establece el botón encargado de la eliminación de usuarios.
+	 * * @param eliminar La nueva instancia de JButton.
+	 */
+	public void setEliminar(JButton eliminar) {
+		this.eliminar = eliminar;
+	}
+
+	/**
+	 * Obtiene el botón encargado de procesar el registro (añadir).
+	 * * @return El objeto JButton de añadir.
+	 */
+	public JButton getAniadir() {
+		return aniadir;
+	}
+
+	/**
+	 * Establece el botón encargado de procesar el registro.
+	 * * @param aniadir La nueva instancia de JButton.
+	 */
+	public void setAniadir(JButton aniadir) {
+		this.aniadir = aniadir;
+	}
+
+	/**
+	 * Obtiene el botón para regresar a la vista anterior.
+	 * * @return El objeto JButton de volver.
+	 */
+	public JButton getVolver() {
+		return volver;
+	}
+
+	/**
+	 * Establece el botón para regresar a la vista anterior.
+	 * * @param volver La nueva instancia de JButton.
+	 */
+	public void setVolver(JButton volver) {
+		this.volver = volver;
+	}
+
+	/**
+	 * Obtiene el modelo del cliente FTP configurado.
+	 * * @return El objeto ModeloClienteFTP.
+	 */
+	public ModeloClienteFTP getClient() {
+		return client;
+	}
+
+	/**
+	 * Establece el modelo del cliente FTP.
+	 * * @param client El objeto ModeloClienteFTP a asignar.
+	 */
+	public void setClient(ModeloClienteFTP client) {
+		this.client = client;
+	}
+
+	/**
+	 * Obtiene el modelo de acceso a la base de datos.
+	 * * @return El objeto ModeloBaseDatos.
+	 */
+	public ModeloBaseDatos getDb() {
+		return db;
+	}
+
+	/**
+	 * Establece el modelo de acceso a la base de datos.
+	 * * @param db El objeto ModeloBaseDatos a asignar.
+	 */
+	public void setDb(ModeloBaseDatos db) {
+		this.db = db;
+	}
+
+	/**
+	 * Obtiene la referencia a la vista de administración principal.
+	 * * @return El objeto VistaAdmin.
+	 */
+	public VistaAdmin getVistaAdmin() {
+		return vistaAdmin;
+	}
+
+	/**
+	 * Establece la referencia a la vista de administración principal.
+	 * * @param vistaAdmin La instancia de VistaAdmin a asignar.
+	 */
+	public void setVistaAdmin(VistaAdmin vistaAdmin) {
+		this.vistaAdmin = vistaAdmin;
+	}
+
+	/**
+	 * Obtiene la etiqueta del campo Nombre.
+	 * * @return El objeto JLabel.
+	 */
+	public JLabel getNombre() {
+		return nombre;
+	}
+
+	/**
+	 * Establece la etiqueta del campo Nombre.
+	 * * @param nombre La nueva etiqueta JLabel.
+	 */
+	public void setNombre(JLabel nombre) {
+		this.nombre = nombre;
+	}
+
+	/**
+	 * Obtiene el campo de texto donde se ingresa el nombre.
+	 * * @return El objeto JTextField.
+	 */
+	public JTextField getTextNombre() {
+		return textNombre;
+	}
+
+	/**
+	 * Establece el campo de texto para el nombre.
+	 * * @param textNombre El nuevo campo JTextField.
+	 */
+	public void setTextNombre(JTextField textNombre) {
+		this.textNombre = textNombre;
+	}
+
+	/**
+	 * Obtiene la etiqueta del campo Correo.
+	 * * @return El objeto JLabel.
+	 */
+	public JLabel getCorreo() {
+		return correo;
+	}
+
+	/**
+	 * Establece la etiqueta del campo Correo.
+	 * * @param correo La nueva etiqueta JLabel.
+	 */
+	public void setCorreo(JLabel correo) {
+		this.correo = correo;
+	}
+
+	/**
+	 * Obtiene el campo de texto donde se ingresa el correo electrónico.
+	 * * @return El objeto JTextField.
+	 */
+	public JTextField getTextCorreo() {
+		return textCorreo;
+	}
+
+	/**
+	 * Establece el campo de texto para el correo electrónico.
+	 * * @param textCorreo El nuevo campo JTextField.
+	 */
+	public void setTextCorreo(JTextField textCorreo) {
+		this.textCorreo = textCorreo;
+	}
+
+	/**
+	 * Obtiene la etiqueta del campo Clave de Correo.
+	 * * @return El objeto JLabel.
+	 */
+	public JLabel getClaveCorreo() {
+		return claveCorreo;
+	}
+
+	/**
+	 * Establece la etiqueta del campo Clave de Correo.
+	 * * @param claveCorreo La nueva etiqueta JLabel.
+	 */
+	public void setClaveCorreo(JLabel claveCorreo) {
+		this.claveCorreo = claveCorreo;
+	}
+
+	/**
+	 * Obtiene el campo de texto para la clave de aplicación del correo.
+	 * * @return El objeto JTextField.
+	 */
+	public JTextField getTextClaveCorreo() {
+		return textClaveCorreo;
+	}
+
+	/**
+	 * Establece el campo de texto para la clave de aplicación del correo.
+	 * * @param textClaveCorreo El nuevo campo JTextField.
+	 */
+	public void setTextClaveCorreo(JTextField textClaveCorreo) {
+		this.textClaveCorreo = textClaveCorreo;
+	}
+
+	/**
+	 * Obtiene la etiqueta del campo Contraseña.
+	 * * @return El objeto JLabel.
+	 */
+	public JLabel getContrasena() {
+		return contrasena;
+	}
+
+	/**
+	 * Establece la etiqueta del campo Contraseña.
+	 * * @param contrasena La nueva etiqueta JLabel.
+	 */
+	public void setContrasena(JLabel contrasena) {
+		this.contrasena = contrasena;
+	}
+
+	/**
+	 * Obtiene el campo de contraseña de acceso al sistema.
+	 * * @return El objeto JPasswordField.
+	 */
+	public JPasswordField getTextContrasena() {
+		return textContrasena;
+	}
+
+	/**
+	 * Establece el campo de contraseña de acceso.
+	 * * @param textContrasena El nuevo campo JPasswordField.
+	 */
+	public void setTextContrasena(JPasswordField textContrasena) {
+		this.textContrasena = textContrasena;
+	}
+
+	/**
+	 * Obtiene la etiqueta del campo Confirmar Contraseña.
+	 * * @return El objeto JLabel.
+	 */
+	public JLabel getConfContrasena() {
+		return confContrasena;
+	}
+
+	/**
+	 * Establece la etiqueta del campo Confirmar Contraseña.
+	 * * @param confContrasena La nueva etiqueta JLabel.
+	 */
+	public void setConfContrasena(JLabel confContrasena) {
+		this.confContrasena = confContrasena;
+	}
+
+	/**
+	 * Obtiene el campo para validar la contraseña de acceso.
+	 * * @return El objeto JPasswordField.
+	 */
+	public JPasswordField getTextConfContrasena() {
+		return textConfContrasena;
+	}
+
+	/**
+	 * Establece el campo para validar la contraseña de acceso.
+	 * * @param textConfContrasena El nuevo campo JPasswordField.
+	 */
+	public void setTextConfContrasena(JPasswordField textConfContrasena) {
+		this.textConfContrasena = textConfContrasena;
+	}
+
+	/**
+	 * Obtiene la imagen de fondo utilizada en la ventana.
+	 * * @return El objeto Image.
+	 */
+	public Image getImagenFondo() {
+		return imagenFondo;
+	}
+
+	/**
+	 * Establece la imagen de fondo para la ventana.
+	 * * @param imagenFondo La nueva imagen Image.
+	 */
+	public void setImagenFondo(Image imagenFondo) {
+		this.imagenFondo = imagenFondo;
+	}
 }

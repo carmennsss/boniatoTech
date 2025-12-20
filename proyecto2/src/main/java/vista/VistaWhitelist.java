@@ -28,60 +28,50 @@ import javax.swing.border.EmptyBorder;
 import modelo.MoTextos;
 
 /**
- * Vista para la gestiÃ³n de la Whitelist de correos permitidos.
- * Permite aÃ±adir nuevos correos de confianza o eliminar existentes.
+ * Vista encargada de la gestión de la Whitelist (lista blanca) de correos permitidos.
+ * Esta interfaz permite a los administradores del sistema añadir nuevas direcciones
+ * autorizadas o eliminar las existentes a través de una tabla dinámica.
  */
 public class VistaWhitelist extends JFrame {
-    /** Lista de botones de la interfaz. */
+    /** Lista que almacena las instancias de los botones de acción de la vista. */
     private ArrayList<JButton> botones;
 
-    /** Panel que contiene la tabla de whitelist. */
+    /** Panel personalizado que contiene la tabla de datos y su modelo. */
     private ViTabla tabla;
 
-    /** Campo de texto para el email. */
+    /** Campo de texto utilizado en el diálogo modal para capturar el email. */
     private JTextField txtEmail;
 
-    /** Campo de texto para el nombre. */
+    /** Campo de texto utilizado en el diálogo modal para capturar el nombre del usuario. */
     private JTextField txtNombre;
 
-    /** Imagen de fondo de la ventana. */
+    /** Imagen de fondo para la personalización estética de la ventana. */
     private Image imagenFondo;
 
-    /** BotÃ³n para aÃ±adir a la whitelist. */
+    /** Botón para disparar el flujo de adición de un nuevo registro. */
     private JButton btnAnadir;
 
-    /** BotÃ³n para quitar de la whitelist. */
+    /** Botón para eliminar un registro seleccionado de la lista de confianza. */
     private JButton btnDesasignar;
 
-    /** BotÃ³n para volver a la vista anterior. */
+    /** Botón para regresar a la vista de administración principal. */
     private JButton btnVolver;
 
-    /** Etiqueta del tÃ­tulo de la ventana. */
+    /** Etiqueta que muestra el título principal de la sección. */
     private JLabel titulo;
 
     /**
-     * Actualiza los textos de la interfaz segÃºn el idioma seleccionado.
+     * Constructor de la clase. Inicializa todos los componentes y aplica las
+     * configuraciones visuales base.
      */
-    public void actualizarTextos() {
-        this.setTitle(MoTextos.whitelist_title);
-        titulo.setText(MoTextos.whitelist_title);
-        btnAnadir.setText(MoTextos.btn_add);
-        btnDesasignar.setText(MoTextos.btn_unassign);
-        btnVolver.setText(MoTextos.btn_back_whitelist);
-        btnVolver.setText(MoTextos.btn_back_whitelist);
-
-        // Update table headers
-        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tabla.getTabla().getModel();
-        String[] header = { MoTextos.whitelist_col_email, MoTextos.whitelist_col_name, MoTextos.whitelist_col_date };
-        model.setColumnIdentifiers(header);
-
-        repaint();
-    }
-
     public VistaWhitelist() {
         propiedades();
     }
 
+    /**
+     * Orquesta la configuración de la ventana invocando los métodos de diseño
+     * y disposición de componentes.
+     */
     private void propiedades() {
         configurarVentana();
         configurarPanelFondo();
@@ -90,6 +80,10 @@ public class VistaWhitelist extends JFrame {
         configurarBotones();
     }
 
+    /**
+     * Establece los parámetros básicos del JFrame como tamaño, posición inicial
+     * y comportamiento de cierre.
+     */
     private void configurarVentana() {
         this.botones = new ArrayList<>();
         this.tabla = new ViTabla();
@@ -102,6 +96,10 @@ public class VistaWhitelist extends JFrame {
         this.setLayout(new BorderLayout());
     }
 
+    /**
+     * Carga el recurso de imagen y configura el panel principal con un
+     * renderizado de alta calidad para el fondo.
+     */
     private void configurarPanelFondo() {
         URL url = getClass().getResource("/fondo_abstracto_2.png");
         if (url != null) {
@@ -113,9 +111,9 @@ public class VistaWhitelist extends JFrame {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (imagenFondo != null) {
-                    int width = getWidth();
-                    int height = getHeight();
-                    g.drawImage(imagenFondo, 0, 0, width, height, this);
+                    Graphics2D g2d = (Graphics2D) g;
+                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                    g2d.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
                 } else {
                     g.setColor(Estilos.FONDO_PRINCIPAL);
                     g.fillRect(0, 0, getWidth(), getHeight());
@@ -127,6 +125,9 @@ public class VistaWhitelist extends JFrame {
         this.setContentPane(panelFondo);
     }
 
+    /**
+     * Crea y posiciona el título de la ventana dentro de un panel con bordes redondeados.
+     */
     private void configurarTitulo() {
         titulo = new JLabel(MoTextos.whitelist_title);
         titulo.setFont(Estilos.FONT_TITULO);
@@ -150,8 +151,10 @@ public class VistaWhitelist extends JFrame {
         getContentPane().add(panelTitulo, BorderLayout.NORTH);
     }
 
+    /**
+     * Inicializa y coloca el contenedor de la tabla en la zona central de la vista.
+     */
     private void configurarTabla() {
-
         JPanel panelTablaContenedor = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -164,14 +167,14 @@ public class VistaWhitelist extends JFrame {
         };
         panelTablaContenedor.setOpaque(false);
         panelTablaContenedor.setBorder(new EmptyBorder(20, 20, 20, 20));
-
-        this.tabla.setOpaque(false);
         panelTablaContenedor.add(this.tabla, BorderLayout.CENTER);
         getContentPane().add(panelTablaContenedor, BorderLayout.CENTER);
     }
 
+    /**
+     * Instancia los botones de acción y los organiza en la parte inferior (Sur) de la ventana.
+     */
     private void configurarBotones() {
-
         JPanel panelSur = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         panelSur.setOpaque(false);
 
@@ -194,6 +197,11 @@ public class VistaWhitelist extends JFrame {
         getContentPane().add(panelSur, BorderLayout.SOUTH);
     }
 
+    /**
+     * Aplica el esquema de colores, fuentes y cursores unificado a un botón.
+     * @param btn El botón a procesar.
+     * @param bgColor El color de fondo para el botón.
+     */
     private void estilarBoton(JButton btn, Color bgColor) {
         btn.setFont(Estilos.FONT_BOTON);
         btn.setBackground(bgColor);
@@ -204,6 +212,10 @@ public class VistaWhitelist extends JFrame {
         btn.setPreferredSize(new Dimension(150, 40));
     }
 
+    /**
+     * Aplica estilos visuales (fuente, borde, fondo) a los campos de entrada de datos.
+     * @param input El componente de entrada a estilar.
+     */
     private void estilarInput(JComponent input) {
         input.setFont(Estilos.FONT_TEXTO);
         input.setBackground(Estilos.COLOR_INPUT_BG);
@@ -214,6 +226,12 @@ public class VistaWhitelist extends JFrame {
         input.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
     }
 
+    /**
+     * Crea un botón configurado específicamente para ser usado en ventanas emergentes.
+     * @param texto Texto que mostrará el botón.
+     * @param color Color de fondo del botón.
+     * @return El botón configurado.
+     */
     private JButton crearBotonDialogo(String texto, Color color) {
         JButton btn = new JButton(texto);
         btn.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
@@ -227,75 +245,51 @@ public class VistaWhitelist extends JFrame {
     }
 
     /**
-     * Muestra un diÃ¡logo modal para aÃ±adir un nuevo usuario a la whitelist.
-     *
-     * @return 0 si se confirma la adiciÃ³n, 1 si se cancela.
+     * Despliega un diálogo modal para solicitar los datos del nuevo correo a añadir.
+     * @return 0 si el usuario confirma la acción ("Añadir"), 1 si la cancela.
      */
     public int mostrarAgregarUsuario() {
-        final JDialog dialog = new JDialog(
-                this,
-                MoTextos.whitelist_dialog_title,
-                true);
-
+        final JDialog dialog = new JDialog(this, MoTextos.whitelist_dialog_title, true);
         dialog.setUndecorated(true);
-        dialog.setLayout(new java.awt.BorderLayout());
+        dialog.setLayout(new BorderLayout());
 
-        javax.swing.JPanel panel = new javax.swing.JPanel();
+        JPanel panel = new JPanel();
         panel.setBackground(Estilos.BEIGE_CANVAS);
-        panel.setBorder(javax.swing.BorderFactory.createLineBorder(Estilos.DARK_SPRUCE, 2));
+        panel.setBorder(BorderFactory.createLineBorder(Estilos.DARK_SPRUCE, 2));
         panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.Y_AXIS));
-        panel.setBorder(new javax.swing.border.EmptyBorder(20, 20, 20, 20));
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        javax.swing.JLabel lblTitulo = new javax.swing.JLabel(MoTextos.whitelist_lbl_title);
+        JLabel lblTitulo = new JLabel(MoTextos.whitelist_lbl_title);
         lblTitulo.setFont(Estilos.FONT_TITULO);
         lblTitulo.setForeground(Estilos.COLOR_TITULO_APP);
         lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(lblTitulo);
         panel.add(javax.swing.Box.createVerticalStrut(20));
 
-        JLabel lblEmail = new JLabel(MoTextos.whitelist_lbl_email);
-        lblEmail.setFont(Estilos.FONT_BOTON);
-        lblEmail.setForeground(Estilos.COLOR_LABEL);
-
         txtEmail = new JTextField();
         estilarInput(txtEmail);
-
-        panel.add(lblEmail);
+        panel.add(new JLabel(MoTextos.whitelist_lbl_email));
         panel.add(txtEmail);
         panel.add(javax.swing.Box.createVerticalStrut(20));
 
-        JLabel lblNombre = new JLabel(MoTextos.whitelist_lbl_name);
-        lblNombre.setFont(Estilos.FONT_BOTON);
-        lblNombre.setForeground(Estilos.COLOR_LABEL);
-
         txtNombre = new JTextField();
         estilarInput(txtNombre);
-
-        panel.add(lblNombre);
+        panel.add(new JLabel(MoTextos.whitelist_lbl_name));
         panel.add(txtNombre);
         panel.add(javax.swing.Box.createVerticalStrut(20));
 
         final int[] result = { -1 };
-
         JButton btnNew = crearBotonDialogo(MoTextos.btn_dialog_add, Estilos.COLOR_BOTON_MENU);
-        JButton btnCancel = crearBotonDialogo(MoTextos.btn_dialog_cancel, new java.awt.Color(200, 100, 100));
+        JButton btnCancel = crearBotonDialogo(MoTextos.btn_dialog_cancel, new Color(200, 100, 100));
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
-
-        btnNew.addActionListener(e -> {
-            result[0] = 0;
-            dialog.dispose();
-        });
-
-        btnCancel.addActionListener(e -> {
-            result[0] = 1;
-            dialog.dispose();
-        });
-
         buttonPanel.add(btnNew);
         buttonPanel.add(btnCancel);
         panel.add(buttonPanel);
+
+        btnNew.addActionListener(e -> { result[0] = 0; dialog.dispose(); });
+        btnCancel.addActionListener(e -> { result[0] = 1; dialog.dispose(); });
 
         dialog.add(panel);
         dialog.pack();
@@ -305,40 +299,94 @@ public class VistaWhitelist extends JFrame {
         return result[0];
     }
 
-    public ViTabla getTabla() {
-        return this.tabla;
+    /**
+     * Actualiza dinámicamente los textos de la interfaz y las cabeceras de la
+     * tabla según el idioma configurado en MoTextos.
+     */
+    public void actualizarTextos() {
+        this.setTitle(MoTextos.whitelist_title);
+        titulo.setText(MoTextos.whitelist_title);
+        btnAnadir.setText(MoTextos.btn_add);
+        btnDesasignar.setText(MoTextos.btn_unassign);
+        btnVolver.setText(MoTextos.btn_back_whitelist);
+
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tabla.getTabla().getModel();
+        String[] header = { MoTextos.whitelist_col_email, MoTextos.whitelist_col_name, MoTextos.whitelist_col_date };
+        model.setColumnIdentifiers(header);
+
+        repaint();
     }
 
-    public ArrayList<JButton> getBotones() {
-        return botones;
-    }
-
-    public void setTabla(ViTabla tabla) {
-        this.tabla = tabla;
-    }
-
-    public JTextField getTxtEmail() {
-        return txtEmail;
-    }
-
-    public JTextField getTxtNombre() {
-        return txtNombre;
-    }
-
-    public JButton getBtnAnadir() {
-        return btnAnadir;
-    }
-
-    public JButton getBtnDesasignar() {
-        return btnDesasignar;
-    }
-
-    public JButton getBtnVolver() {
-        return btnVolver;
-    }
-
+    /**
+     * Hace visible la ventana principal.
+     */
     public void hacerVisible() {
         this.setVisible(true);
     }
 
+    // --- SECCIÓN DE GETTERS Y SETTERS CON JAVADOC ---
+
+    /**
+     * Obtiene el panel que contiene la tabla de datos.
+     * @return El componente ViTabla de la vista.
+     */
+    public ViTabla getTabla() {
+        return this.tabla;
+    }
+
+    /**
+     * Establece un nuevo panel de tabla para la vista.
+     * @param tabla El objeto ViTabla a asignar.
+     */
+    public void setTabla(ViTabla tabla) {
+        this.tabla = tabla;
+    }
+
+    /**
+     * Obtiene la lista completa de botones de acción.
+     * @return Un ArrayList con los objetos JButton.
+     */
+    public ArrayList<JButton> getBotones() {
+        return botones;
+    }
+
+    /**
+     * Obtiene el campo de entrada para el correo electrónico.
+     * @return El objeto JTextField de email.
+     */
+    public JTextField getTxtEmail() {
+        return txtEmail;
+    }
+
+    /**
+     * Obtiene el campo de entrada para el nombre de usuario.
+     * @return El objeto JTextField de nombre.
+     */
+    public JTextField getTxtNombre() {
+        return txtNombre;
+    }
+
+    /**
+     * Obtiene el botón encargado de la acción de añadir.
+     * @return La instancia de JButton correspondiente.
+     */
+    public JButton getBtnAnadir() {
+        return btnAnadir;
+    }
+
+    /**
+     * Obtiene el botón encargado de la acción de desasignar/quitar.
+     * @return La instancia de JButton correspondiente.
+     */
+    public JButton getBtnDesasignar() {
+        return btnDesasignar;
+    }
+
+    /**
+     * Obtiene el botón encargado de la navegación de retorno.
+     * @return La instancia de JButton correspondiente.
+     */
+    public JButton getBtnVolver() {
+        return btnVolver;
+    }
 }

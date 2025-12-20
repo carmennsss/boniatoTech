@@ -11,37 +11,37 @@ import java.io.IOException;
 import java.security.MessageDigest;
 
 /**
- * Cliente FTP encargado de la gesti贸n de archivos y usuarios en el servidor FTP
+ * Cliente FTP encargado de la gesti髇 de archivos y usuarios en el servidor FTP
  * FileZilla.
- * Realiza operaciones de conexi贸n, creaci贸n de roles, asignaci贸n de permisos y
- * gesti贸n de usuarios mediante manipulaci贸n del archivo de configuraci贸n XML.
+ * Realiza operaciones de conexi髇, creaci髇 de roles, asignaci髇 de permisos y
+ * gesti髇 de usuarios mediante manipulaci髇 del archivo de configuraci髇 XML.
  */
 public class ModeloClienteFTP {
-    /** Cliente FTP para las operaciones de conexi贸n. */
+    /** Cliente FTP para las operaciones de conexi髇. */
     private FTPClient cliente;
 
-    /** Direcci贸n del servidor FTP. */
+    /** Direcci髇 del servidor FTP. */
     private String servidor = "13.62.51.110";
 
     /** Puerto del servidor FTP. */
     private int puerto = 21;
 
-    /** Nombre de usuario para la conexi贸n FTP. */
+    /** Nombre de usuario para la conexi髇 FTP. */
     private String user = "";
 
-    /** Contrase帽a para la conexi贸n FTP. */
+    /** Contrase馻 para la conexi髇 FTP. */
     private String pass = "";
 
     /** Ruta remota a la carpeta compartida de FileZilla. */
     private static final String RUTA_REMOTA = "\\\\13.62.51.110\\FileZillaFTP";
 
-    /** Ruta al archivo de configuraci贸n XML de FileZilla. */
+    /** Ruta al archivo de configuraci髇 XML de FileZilla. */
     private static final String RUTA_XML = RUTA_REMOTA + "\\FileZilla Server.xml";
 
-    /** Usuario de Windows para acceder a la m谩quina virtual. */
+    /** Usuario de Windows para acceder a la m醧uina virtual. */
     private static final String USUARIO_WINDOWS_VM = "Administrator";
 
-    /** Contrase帽a de Windows para acceder a la m谩quina virtual. */
+    /** Contrase馻 de Windows para acceder a la m醧uina virtual. */
     private static final String PASS_WINDOWS_VM = "-riMth%@$GAW2NmZVsjKG@px.gxfflrx";
 
     /**
@@ -52,11 +52,11 @@ public class ModeloClienteFTP {
     }
 
     /**
-     * A帽ade un nuevo usuario al servidor FTP con configuraciones predeterminadas.
-     * Genera un hash MD5 de la contrase帽a encript谩ndola.
+     * A馻de un nuevo usuario al servidor FTP con configuraciones predeterminadas.
+     * Genera un hash MD5 de la contrase馻 encript醤dola.
      *
      * @param nombre   El nombre de usuario.
-     * @param password La contrase帽a del usuario.
+     * @param password La contrase馻 del usuario.
      */
     public void aniadirUsuario(String nombre, String password) {
 
@@ -140,7 +140,7 @@ public class ModeloClienteFTP {
     }
 
     /**
-     * Asigna permisos a un rol sobre una carpeta espec铆fica.
+     * Asigna permisos a un rol sobre una carpeta espec韋ica.
      *
      * @param nombreRol   El nombre del rol (grupo).
      * @param carpeta     La ruta de la carpeta.
@@ -214,7 +214,7 @@ public class ModeloClienteFTP {
 
     /**
      * Crea un nuevo rol (grupo) en el servidor FTP editando el archivo de
-     * configuraci贸n XML.
+     * configuraci髇 XML.
      * Configura opciones por defecto para el grupo.
      *
      * @param nombreRol El nombre del nuevo rol.
@@ -263,8 +263,7 @@ public class ModeloClienteFTP {
     }
 
     /**
-     * Cierra la sesi贸n y desconecta del servidor FTP.
-     * Captura cualquier excepci贸n silenciosamente.
+     * Cierra la sesi髇 y desconecta del servidor FTP.
      */
     public void desconectar() {
         try {
@@ -273,6 +272,7 @@ public class ModeloClienteFTP {
                 cliente.disconnect();
             }
         } catch (Exception e) {
+            // Error silencioso en desconexi髇
         }
     }
 
@@ -319,10 +319,9 @@ public class ModeloClienteFTP {
     }
 
     /**
-     * Establece la conexi贸n con el servidor FTP.
-     * Si no est谩 conectado, entra en modo pasivo y conecta.
+     * Establece la conexi髇 con el servidor FTP.
      *
-     * @throws IOException Si ocurre un error de conexi贸n.
+     * @throws IOException Si ocurre un error de conexi髇.
      */
     public void establecerConexion() throws IOException {
         if (!cliente.isConnected()) {
@@ -341,16 +340,16 @@ public class ModeloClienteFTP {
     }
 
     /**
-     * Obtiene la contrase帽a de la conexi贸n FTP.
+     * Obtiene la contrase馻 de la conexi髇 FTP.
      *
-     * @return La contrase帽a.
+     * @return La contrase馻.
      */
     public String getPass() {
         return pass;
     }
 
     /**
-     * Obtiene el nombre de usuario de la conexi贸n FTP.
+     * Obtiene el nombre de usuario de la conexi髇 FTP.
      *
      * @return El nombre de usuario.
      */
@@ -359,16 +358,16 @@ public class ModeloClienteFTP {
     }
 
     /**
-     * Establece la contrase帽a de la conexi贸n FTP.
+     * Establece la contrase馻 de la conexi髇 FTP.
      *
-     * @param pass La nueva contrase帽a.
+     * @param pass La nueva contrase馻.
      */
     public void setPass(String pass) {
         this.pass = pass;
     }
 
     /**
-     * Establece el nombre de usuario de la conexi贸n FTP.
+     * Establece el nombre de usuario de la conexi髇 FTP.
      *
      * @param user El nuevo nombre de usuario.
      */
@@ -377,12 +376,12 @@ public class ModeloClienteFTP {
     }
 
     /**
-     * Actualiza una opci贸n existente o la crea si no existe.
+     * Actualiza una opci髇 existente o la crea si no existe.
      *
      * @param doc    Documento XML.
      * @param parent Elemento padre.
-     * @param name   Nombre de la opci贸n.
-     * @param value  Valor de la opci贸n.
+     * @param name   Nombre de la opci髇.
+     * @param value  Valor de la opci髇.
      */
     private void actualizarOpcion(Document doc, Element parent, String name, String value) {
         NodeList options = parent.getElementsByTagName("Option");
@@ -398,12 +397,12 @@ public class ModeloClienteFTP {
     }
 
     /**
-     * Agrega una nueva opci贸n al elemento padre.
+     * Agrega una nueva opci髇 al elemento padre.
      *
      * @param doc    Documento XML.
      * @param parent Elemento padre.
-     * @param name   Nombre de la opci贸n.
-     * @param value  Valor de la opci贸n.
+     * @param name   Nombre de la opci髇.
+     * @param value  Valor de la opci髇.
      */
     private void agregarOpcion(Document doc, Element parent, String name, String value) {
         Element opt = doc.createElement("Option");
@@ -413,24 +412,24 @@ public class ModeloClienteFTP {
     }
 
     /**
-     * Conecta a la carpeta compartida de FileZilla en la m谩quina virtual.
+     * Conecta a la carpeta compartida de FileZilla en la m醧uina virtual.
      */
     private void conectarCarpetaCompartida() {
         try {
             String comando = "net use \"" + RUTA_REMOTA + "\" /user:" + USUARIO_WINDOWS_VM + " " + PASS_WINDOWS_VM;
             Process p = Runtime.getRuntime().exec(comando);
             p.waitFor();
-            System.out.println("Conexi贸n a carpeta compartida establecida.");
+            System.out.println("Conexi髇 a carpeta compartida establecida.");
         } catch (Exception e) {
             System.err.println("No se pudo conectar a la carpeta de red: " + e.getMessage());
         }
     }
 
     /**
-     * Encripta una contrase帽a usando MD5.
+     * Encripta una contrase馻 usando MD5.
      *
-     * @param input La contrase帽a a encriptar.
-     * @return El hash MD5 de la contrase帽a.
+     * @param input La contrase馻 a encriptar.
+     * @return El hash MD5 de la contrase馻.
      */
     private String encriptarContrasenia(String input) {
         try {
@@ -467,5 +466,4 @@ public class ModeloClienteFTP {
         StreamResult result = new StreamResult(xmlFile);
         transformer.transform(source, result);
     }
-
 }

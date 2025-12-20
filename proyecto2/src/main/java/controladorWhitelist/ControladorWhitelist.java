@@ -15,17 +15,17 @@ import vista.VistaAdmin;
 import vista.VistaWhitelist;
 
 /**
- * Controlador para la gesti贸n de la lista blanca (Whitelist) de correos.
- * Permite a帽adir y eliminar usuarios de la whitelist.
+ * Controlador para la gesti髇 de la lista blanca (Whitelist) de correos.
+ * Permite a馻dir y eliminar usuarios de la whitelist.
  */
 public class ControladorWhitelist {
     /** Modelo de base de datos para operaciones de persistencia. */
     private ModeloBaseDatos modeloBaseDatos;
 
-    /** Modelo de vista para gesti贸n de datos. */
+    /** Modelo de vista para gesti髇 de datos. */
     private MoView moView;
 
-    /** Vista de administraci贸n. */
+    /** Vista de administraci髇. */
     private VistaAdmin vistaAdmin;
 
     /** Vista de whitelist. */
@@ -37,7 +37,7 @@ public class ControladorWhitelist {
      * @param vistaWhitelist  Vista de whitelist.
      * @param modeloBaseDatos Modelo de base de datos.
      * @param moView          Modelo de vista.
-     * @param vistaAdmin      Vista de administraci贸n.
+     * @param vistaAdmin      Vista de administraci髇.
      */
     public ControladorWhitelist(VistaWhitelist vistaWhitelist, ModeloBaseDatos modeloBaseDatos, MoView moView,
             VistaAdmin vistaAdmin) {
@@ -48,8 +48,8 @@ public class ControladorWhitelist {
     }
 
     /**
-     * Abre la vista de gesti贸n de whitelist.
-     * Rellena la tabla y muestra la vista, ocultando la vista de administraci贸n.
+     * Abre la vista de gesti髇 de whitelist.
+     * Rellena la tabla y muestra la vista, ocultando la vista de administraci髇.
      */
     public void abrirWhitelist() {
         rellenarTablaWhitelist();
@@ -58,7 +58,7 @@ public class ControladorWhitelist {
     }
 
     /**
-     * Muestra un di谩logo para agregar un nuevo usuario a la whitelist.
+     * Muestra un di醠ogo para agregar un nuevo usuario a la whitelist.
      * Valida el email y el nombre antes de insertarlo en la base de datos.
      */
     public void anadirUsuario() {
@@ -106,7 +106,7 @@ public class ControladorWhitelist {
     }
 
     /**
-     * Elimina los usuarios seleccionados de la whitelist tras confirmaci贸n.
+     * Elimina los usuarios seleccionados de la whitelist tras confirmaci髇.
      */
     public void desasignarUsuarios() {
         ArrayList<String> seleccionados = moView.getCorreosWhitelist();
@@ -166,10 +166,10 @@ public class ControladorWhitelist {
     }
 
     /**
-     * Maneja la selecci贸n visual de un usuario en la tabla.
+     * Maneja la selecci髇 visual de un usuario en la tabla.
      *
      * @param email El email del usuario.
-     * @param fila  El 铆ndice de la fila seleccionada.
+     * @param fila  El 韓dice de la fila seleccionada.
      */
     public void seleccionarUsuario(String email, int fila) {
         boolean selected = moView.buscarCorreoWhitelist(email);
@@ -177,7 +177,7 @@ public class ControladorWhitelist {
     }
 
     /**
-     * Cierra la ventana de whitelist y vuelve a la vista de administraci贸n.
+     * Cierra la ventana de whitelist y vuelve a la vista de administraci髇.
      */
     public void volver() {
         vistaWhitelist.setVisible(false);
@@ -193,5 +193,39 @@ public class ControladorWhitelist {
     private boolean existeEnWhitelist(String email) {
         String sql = "SELECT * FROM whitelist WHERE correo = ?";
         return modeloBaseDatos.existeRegistro(sql, new ArrayList<String>(Arrays.asList(email)));
+    }
+
+    // --- GETTERS Y SETTERS ---
+
+    public ModeloBaseDatos getModeloBaseDatos() {
+        return modeloBaseDatos;
+    }
+
+    public void setModeloBaseDatos(ModeloBaseDatos modeloBaseDatos) {
+        this.modeloBaseDatos = modeloBaseDatos;
+    }
+
+    public MoView getMoView() {
+        return moView;
+    }
+
+    public void setMoView(MoView moView) {
+        this.moView = moView;
+    }
+
+    public VistaAdmin getVistaAdmin() {
+        return vistaAdmin;
+    }
+
+    public void setVistaAdmin(VistaAdmin vistaAdmin) {
+        this.vistaAdmin = vistaAdmin;
+    }
+
+    public VistaWhitelist getVistaWhitelist() {
+        return vistaWhitelist;
+    }
+
+    public void setVistaWhitelist(VistaWhitelist vistaWhitelist) {
+        this.vistaWhitelist = vistaWhitelist;
     }
 }

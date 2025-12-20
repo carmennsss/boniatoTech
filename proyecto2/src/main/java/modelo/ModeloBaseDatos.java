@@ -10,24 +10,24 @@ import java.util.ArrayList;
 import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
 /**
- * Clase encargada de la gesti√≥n de la base de datos.
- * Maneja la conexi√≥n, consultas y actualizaciones en la base de datos MySQL.
+ * Clase encargada de la gestiÛn de la base de datos.
+ * Maneja la conexiÛn, consultas y actualizaciones en la base de datos MySQL.
  */
 public class ModeloBaseDatos {
-    /** URL de conexi√≥n a la base de datos MySQL. */
+    /** URL de conexiÛn a la base de datos MySQL. */
     private final static String url = "jdbc:mysql://13.62.51.110:3306/serwo?useSSL=false&serverTimezone=UTC";
 
     /** Usuario de la base de datos. */
     private final static String usuario = "appuser";
 
-    /** Contrase√±a de la base de datos. */
+    /** ContraseÒa de la base de datos. */
     private final static String password = "mariaenmiami";
 
-    /** Conexi√≥n activa a la base de datos (Singleton). */
+    /** ConexiÛn activa a la base de datos (Singleton). */
     public static Connection conexion;
 
     /**
-     * Cierra la conexi√≥n actual con la base de datos si est√° abierta.
+     * Cierra la conexiÛn actual con la base de datos si est· abierta.
      */
     public void cerrarConexion() {
         try {
@@ -40,10 +40,10 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Verifica si un campo es una clave for√°nea (Foreign Key).
+     * Verifica si un campo es una clave for·nea (Foreign Key).
      *
      * @param nombreCampo Nombre del campo a verificar.
-     * @return true si el campo es una clave for√°nea, false en caso contrario.
+     * @return true si el campo es una clave for·nea, false en caso contrario.
      */
     public boolean esCampoFK(String nombreCampo) {
         return nombreCampo.endsWith("_id") && !nombreCampo.equals("animal_id")
@@ -52,13 +52,13 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Ejecuta una actualizaci√≥n en la base de datos (INSERT, UPDATE, DELETE) con
-     * par√°metros preparados.
+     * Ejecuta una actualizaciÛn en la base de datos (INSERT, UPDATE, DELETE) con
+     * par·metros preparados.
      *
      * @param consulta   La sentencia SQL preparada (con ?).
-     * @param parametros Lista de par√°metros (Strings) para sustituir en la
-     *                   consulta.
-     * @return El n√∫mero de filas afectadas, o -1 si ocurre un error.
+     * @param parametros Lista de par·metros (Strings) para sustituir en la
+     * consulta.
+     * @return El n˙mero de filas afectadas, o -1 si ocurre un error.
      */
     public int ejecutarActualizacion(String consulta, ArrayList<String> parametros) {
         try {
@@ -74,7 +74,7 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Elimina un archivo de la base de datos.
+     * Elimina un registro de archivo de la base de datos.
      *
      * @param nombreArchivo Nombre del archivo a eliminar.
      * @param ruta          Ruta donde se encuentra el archivo.
@@ -91,10 +91,10 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Elimina un usuario de la base de datos.
+     * Elimina un usuario de la base de datos mediante su email.
      *
      * @param email Email del usuario a eliminar.
-     * @return true si la eliminaci√≥n fue exitosa, false en caso contrario.
+     * @return true si la eliminaciÛn fue exitosa, false en caso contrario.
      */
     public boolean eliminarUsuario(String email) {
         String sql = "DELETE FROM usuarios WHERE email = ?";
@@ -112,7 +112,7 @@ public class ModeloBaseDatos {
      * proporcionada.
      *
      * @param sql        Consulta SQL preparada (con ?).
-     * @param parametros Lista de par√°metros para la consulta.
+     * @param parametros Lista de par·metros para la consulta.
      * @return true si existe al menos un registro, false en caso contrario.
      */
     public boolean existeRegistro(String sql, ArrayList<String> parametros) {
@@ -153,8 +153,8 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Obtiene la instancia √∫nica de la conexi√≥n a la base de datos (Singleton).
-     * Si no existe o est√° cerrada, crea una nueva.
+     * Obtiene la instancia ˙nica de la conexiÛn a la base de datos (Singleton).
+     * Si no existe o est· cerrada, crea una nueva.
      *
      * @return Objeto Connection activo.
      */
@@ -170,11 +170,11 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Ejecuta una consulta SQL de selecci√≥n (SELECT).
+     * Ejecuta una consulta SQL de selecciÛn (SELECT).
      *
      * @param consulta La sentencia SQL a ejecutar.
      * @return ResultSet con los resultados de la consulta, o null si ocurre un
-     *         error.
+     * error.
      */
     public ResultSet getConsulta(String consulta) {
         try {
@@ -188,8 +188,7 @@ public class ModeloBaseDatos {
     /**
      * Obtiene todos los cuidadores registrados en la base de datos.
      *
-     * @return Lista de objetos Cuidador con todos los registros de la tabla
-     *         cuidadores.
+     * @return Lista de objetos Cuidador con todos los registros de la tabla cuidadores.
      */
     public ArrayList<Cuidador> getCuidadores() {
         ArrayList<Cuidador> lista = new ArrayList<>();
@@ -208,8 +207,7 @@ public class ModeloBaseDatos {
     /**
      * Obtiene todas las especies registradas en la base de datos.
      *
-     * @return Lista de objetos Especie con todos los registros de la tabla
-     *         especies.
+     * @return Lista de objetos Especie con todos los registros de la tabla especies.
      */
     public ArrayList<Especie> getEspecies() {
         ArrayList<Especie> lista = new ArrayList<>();
@@ -225,7 +223,7 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Obtiene los nombres de todas las columnas de una tabla espec√≠fica.
+     * Obtiene los nombres de todas las columnas de una tabla especÌfica.
      *
      * @param tabla Nombre de la tabla de la cual obtener las columnas.
      * @return Lista con los nombres de todas las columnas de la tabla.
@@ -250,8 +248,7 @@ public class ModeloBaseDatos {
     /**
      * Obtiene todos los recintos registrados en la base de datos.
      *
-     * @return Lista de objetos Recinto con todos los registros de la tabla
-     *         recintos.
+     * @return Lista de objetos Recinto con todos los registros de la tabla recintos.
      */
     public ArrayList<Recinto> getRecintos() {
         ArrayList<Recinto> lista = new ArrayList<>();
@@ -271,7 +268,7 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Obtiene todos los registros de una tabla espec√≠fica.
+     * Obtiene todos los registros de una tabla especÌfica.
      *
      * @param tabla Nombre de la tabla.
      * @return ResultSet con todos los registros.
@@ -281,15 +278,15 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Inserta un nuevo archivo o carpeta en la base de datos.
+     * Inserta un nuevo archivo o carpeta en el registro de la base de datos.
      *
      * @param nombre        Nombre del archivo o carpeta.
      * @param directorio    Ruta completa del directorio.
-     * @param extension     Extensi√≥n del archivo (vac√≠o para carpetas).
+     * @param extension     ExtensiÛn del archivo (vacÌo para carpetas).
      * @param tipo          Tipo de elemento ("File" o "Folder").
-     * @param id_padre      ID del directorio padre (null si est√° en ra√≠z).
+     * @param id_padre      ID del directorio padre (null si est· en raÌz).
      * @param email_usuario Email del usuario propietario.
-     * @return true si la inserci√≥n fue exitosa, false en caso contrario.
+     * @return true si la inserciÛn fue exitosa, false en caso contrario.
      */
     public boolean insertarArchivo(String nombre, String directorio, String extension, String tipo, Integer id_padre,
             String email_usuario) {
@@ -314,7 +311,7 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Obtiene el email de un usuario bas√°ndose en su nombre de usuario.
+     * Obtiene el email de un usuario bas·ndose en su nombre de usuario.
      *
      * @param nombreUsuario Nombre del usuario.
      * @return Email del usuario, o null si no se encuentra.
@@ -336,10 +333,10 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Obtiene el ID del directorio padre bas√°ndose en la ruta actual.
+     * Obtiene el ID del directorio padre bas·ndose en la ruta actual.
      *
      * @param rutaActual Ruta del directorio actual.
-     * @return ID del archivo padre, o null si est√° en la ra√≠z.
+     * @return ID del archivo padre, o null si est· en la raÌz.
      */
     public Integer obtenerIdPadre(String rutaActual) {
         if (rutaActual.equals("/")) {
@@ -368,9 +365,9 @@ public class ModeloBaseDatos {
     /**
      * Registra un nuevo usuario en la base de datos.
      *
-     * @param correo      Correo electr√≥nico del usuario.
+     * @param correo      Correo electrÛnico del usuario.
      * @param nombre      Nombre del usuario.
-     * @param password    Contrase√±a del usuario.
+     * @param password    ContraseÒa del usuario.
      * @param claveCorreo Clave de correo del usuario.
      * @return true si el registro fue exitoso, false en caso contrario.
      */
@@ -390,12 +387,12 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Renombra un archivo en la base de datos actualizando nombre y extensi√≥n.
+     * Renombra un archivo en la base de datos actualizando nombre y extensiÛn.
      *
      * @param nombreActual Nombre actual del archivo.
      * @param nuevoNombre  Nuevo nombre para el archivo.
-     * @param ruta         Ruta donde se encuentra el archivo.
-     * @param extension    Nueva extensi√≥n del archivo.
+     * @param ruta          Ruta donde se encuentra el archivo.
+     * @param extension     Nueva extensiÛn del archivo.
      * @return true si el renombrado fue exitoso, false en caso contrario.
      */
     public boolean renombrarArchivo(String nombreActual, String nuevoNombre, String ruta, String extension) {
@@ -417,7 +414,7 @@ public class ModeloBaseDatos {
      *
      * @param nombreActual Nombre actual del archivo.
      * @param nuevoNombre  Nuevo nombre para el archivo.
-     * @param ruta         Ruta donde se encuentra el archivo.
+     * @param ruta          Ruta donde se encuentra el archivo.
      * @return true si el renombrado fue exitoso, false en caso contrario.
      */
     public boolean renombrarArchivoSQL(String nombreActual, String nuevoNombre, String ruta) {
@@ -436,11 +433,9 @@ public class ModeloBaseDatos {
     /**
      * Renombra una carpeta y actualiza recursivamente todas las rutas de archivos y
      * subcarpetas contenidos.
-     * 
-     * @param nombreActual El nombre actual de la carpeta.
+     * * @param nombreActual El nombre actual de la carpeta.
      * @param nuevoNombre  El nuevo nombre para la carpeta.
-     * @param rutaPadre    La ruta del directorio padre donde se encuentra la
-     *                     carpeta.
+     * @param rutaPadre    La ruta del directorio padre donde se encuentra la carpeta.
      * @return true si el renombrado fue exitoso, false en caso contrario.
      */
     public boolean renombrarCarpeta(String nombreActual, String nuevoNombre, String rutaPadre) {
@@ -494,9 +489,9 @@ public class ModeloBaseDatos {
     /**
      * Valida las credenciales de un usuario.
      *
-     * @param correo   Correo electr√≥nico del usuario.
-     * @param password Contrase√±a del usuario.
-     * @return true si las credenciales son v√°lidas, false en caso contrario.
+     * @param correo   Correo electrÛnico del usuario.
+     * @param password ContraseÒa del usuario.
+     * @return true si las credenciales son v·lidas, false en caso contrario.
      */
     public boolean validarUsuario(String correo, String password) {
         boolean valido = false;
@@ -514,5 +509,4 @@ public class ModeloBaseDatos {
         }
         return valido;
     }
-
 }

@@ -5,39 +5,51 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
-
 import java.util.ArrayList;
 
 /**
  * Componente reutilizable que encapsula una JTable con estilos personalizados.
- * Permite manejar selecciones m煤ltiples y coloreado de filas.
+ * Permite manejar selecciones m鷏tiples de forma visual y aplicar un dise駉
+ * coherente con la identidad visual de la aplicaci髇.
  */
 public class ViTabla extends JPanel {
-    /** Tabla de datos. */
+    /** Instancia del componente JTable interno. */
     private JTable tabla;
 
-    /** Panel de desplazamiento que contiene la tabla. */
+    /** Panel de desplazamiento que proporciona soporte para grandes vol鷐enes de datos. */
     private JScrollPane scrollPane;
 
-    /** Lista de 铆ndices de filas seleccionadas. */
+    /** Lista que almacena los 韓dices de las filas marcadas como seleccionadas. */
     private ArrayList<Integer> filasSeleccionadas;
 
+    /**
+     * Constructor del componente. Inicializa las estructuras de datos y el dise駉 visual.
+     */
     public ViTabla() {
         propiedades();
     }
 
+    /**
+     * Orquesta la configuraci髇 del panel y la inicializaci髇 de la tabla.
+     */
     private void propiedades() {
         filasSeleccionadas = new ArrayList<>();
         configurarPanel();
         configurarTabla();
     }
 
+    /**
+     * Establece el dise駉 BorderLayout y los m醨genes del panel contenedor.
+     */
     private void configurarPanel() {
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setOpaque(false);
     }
 
+    /**
+     * Instancia la tabla y la incorpora dentro de un JScrollPane sin bordes.
+     */
     private void configurarTabla() {
         tabla = new JTable();
         estilarTabla();
@@ -47,6 +59,10 @@ public class ViTabla extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
+    /**
+     * Aplica los estilos visuales de la aplicaci髇, incluyendo fuentes, colores de cabecera
+     * y el renderizador de celdas personalizado.
+     */
     private void estilarTabla() {
         tabla.setRowHeight(30);
         tabla.setFont(Estilos.FONT_TEXTO);
@@ -60,10 +76,11 @@ public class ViTabla extends JPanel {
         header.setForeground(Color.WHITE);
         header.setPreferredSize(new Dimension(0, 40));
 
+        // Renderizador personalizado para gestionar el color de las filas seleccionadas
         tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                    boolean hasFocus, int row, int column) {
+                                                           boolean hasFocus, int row, int column) {
                 Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
                 if (filasSeleccionadas.contains(row)) {
@@ -80,33 +97,10 @@ public class ViTabla extends JPanel {
     }
 
     /**
-     * Establece el modelo de datos de la tabla.
-     * 
-     * @param modelo DefaultTableModel con los datos a mostrar.
-     */
-    public void setModelo(DefaultTableModel modelo) {
-        tabla.setModel(modelo);
-    }
-
-    /**
-     * Obtiene la instancia del JTable interno.
-     * 
-     * @return El JTable.
-     */
-    public JTable getTabla() {
-        return tabla;
-    }
-
-    /**
-     * Cambia el color de fondo de una fila espec铆fica para indicar selecci贸n o
-     * deselecci贸n visual.
+     * Cambia el estado visual de una fila espec韋ica para indicar selecci髇.
      *
-     * @param fila         脥ndice de la fila.
-     * @param seleccionado true para marcar como seleccionada (quita el color),
-     *                     false para marcar como no seleccionada (a帽ade color).
-     *                     (Nota: La l贸gica parece invertida en el nombre del
-     *                     par谩metro vs implementaci贸n, se mantiene comportamiento
-     *                     original).
+     * @param fila         蚽dice de la fila a modificar.
+     * @param seleccionado true para desmarcar (quitar de la lista), false para marcar (a馻dir a la lista).
      */
     public void cambiarColorFila(int fila, boolean seleccionado) {
         if (!seleccionado) {
@@ -120,10 +114,28 @@ public class ViTabla extends JPanel {
     }
 
     /**
-     * Deselecciona todas las filas de la tabla.
+     * Limpia la lista de selecci髇 y restaura el color original de todas las filas.
      */
     public void deseleccionarFilas() {
         filasSeleccionadas.clear();
         tabla.repaint();
+    }
+
+    // --- GETTERS Y SETTERS ---
+
+    /**
+     * Establece el modelo de datos de la tabla.
+     * * @param modelo DefaultTableModel con las columnas y filas a mostrar.
+     */
+    public void setModelo(DefaultTableModel modelo) {
+        tabla.setModel(modelo);
+    }
+
+    /**
+     * Obtiene la instancia del JTable para manipulaci髇 directa o asignaci髇 de oyentes.
+     * * @return El objeto JTable interno.
+     */
+    public JTable getTabla() {
+        return tabla;
     }
 }

@@ -1,12 +1,12 @@
 package modelo;
 
 /**
- * Representa un animal dentro del zoolÃ³gico.
- * Contiene informaciÃ³n sobre su identificaciÃ³n, nombre, tipo, y relaciones con
+ * Representa un animal dentro del zoológico.
+ * Contiene información sobre su identificación, nombre, tipo, y relaciones con
  * especie y cuidador.
  */
 public class Animal {
-    /** Identificador Ãºnico del animal. */
+    /** Identificador único del animal. */
     private int animal_id;
 
     /** Nombre del animal. */
@@ -24,7 +24,7 @@ public class Animal {
     /**
      * Constructor de la clase Animal.
      *
-     * @param animal_id       Identificador Ãºnico del animal.
+     * @param animal_id       Identificador único del animal.
      * @param nombre_animales Nombre del animal.
      * @param tipo            Tipo de animal.
      * @param especie_id      Identificador de la especie a la que pertenece.

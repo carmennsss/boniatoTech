@@ -1,7 +1,7 @@
 package vista;
 
+import java.awt.image.BufferedImage;
 import java.awt.*;
-
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,63 +10,84 @@ import java.net.URL;
 import modelo.MoTextos;
 
 /**
- * Vista de inicio de sesiÃ³n de la aplicaciÃ³n.
- * Permite al usuario entrar con su nombre y contraseÃ±a.
+ * Vista de inicio de sesión de la aplicación.
+ * Proporciona una interfaz gráfica con soporte multiidioma para que el usuario
+ * se autentique mediante su nombre de usuario y contraseña.
  */
 public class VistaLogin extends JFrame {
 
-	/** Lista de etiquetas de texto de la interfaz. */
+	/** Lista de etiquetas de texto de la interfaz para gestión de idiomas. */
 	private ArrayList<JLabel> textos;
 
-	/** Lista de campos de texto de la interfaz. */
+	/** Lista de campos de entrada (usuario y contraseña). */
 	private ArrayList<JTextField> cajas;
 
 	/** Lista de botones de la interfaz. */
 	private ArrayList<JButton> botones;
 
-	/** Imagen de fondo de la ventana. */
+	/** Imagen de fondo de la ventana (Panda background). */
 	private Image imagenFondo;
 
-	/** URL del logo de la aplicaciÃ³n. */
+	/** URL del recurso del logo de la aplicación. */
 	private URL logoUrl;
 
-	/** Etiqueta del tÃ­tulo de la aplicaciÃ³n. */
+	/** Etiqueta que muestra el título de la aplicación en el panel central. */
 	private JLabel titulo;
 
-	/** Etiqueta del campo de usuario. */
+	/** Etiqueta para el campo de identificación de usuario. */
 	private JLabel lblUser;
 
-	/** Etiqueta del campo de contraseÃ±a. */
+	/** Etiqueta para el campo de clave de acceso. */
 	private JLabel lblPass;
 
-	/** BotÃ³n de inicio de sesiÃ³n. */
+	/** Botón que dispara la acción de validación de credenciales. */
 	private JButton btnLogin;
 
+	/** Selector de idioma con representación visual mediante banderas. */
+	private JComboBox<ImageIcon> comboIdiomas;
+
+	/** Panel central que contiene el formulario de acceso. */
+	private JPanel panelCentral;
+
+	/**
+	 * Constructor de la vista. Inicializa la ventana y sus componentes.
+	 */
 	public VistaLogin() {
 		super(MoTextos.login_title);
 		propiedades();
 	}
 
+	/**
+	 * Orquesta la configuración de listas, ventana y paneles.
+	 */
 	private void propiedades() {
 		inicializarListas();
 		configurarVentana();
 		configurarPaneles();
 	}
 
+	/**
+	 * Crea las instancias de las listas para el almacenamiento de componentes.
+	 */
 	private void inicializarListas() {
 		textos = new ArrayList<>();
 		cajas = new ArrayList<>();
 		botones = new ArrayList<>();
 	}
 
+	/**
+	 * Establece los parámetros básicos del JFrame.
+	 */
 	private void configurarVentana() {
 		setSize(900, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
 
+	/**
+	 * Configura el panel de contenido con imagen de fondo reactiva y capas.
+	 */
 	private void configurarPaneles() {
-
 		URL url = getClass().getResource("/panditas.png");
 		if (url != null) {
 			imagenFondo = new ImageIcon(url).getImage();
@@ -88,7 +109,10 @@ public class VistaLogin extends JFrame {
 						int newH = (int) (imgH * scale);
 						int x = (panelW - newW) / 2;
 						int y = (panelH - newH) / 2;
-						g.drawImage(imagenFondo, x, y, newW, newH, this);
+						Graphics2D g2d = (Graphics2D) g;
+						g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+								RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+						g2d.drawImage(imagenFondo, x, y, newW, newH, this);
 					}
 				}
 			}
@@ -105,7 +129,7 @@ public class VistaLogin extends JFrame {
 			float ratio = (float) icon.getIconWidth() / icon.getIconHeight();
 			int logoW = 280;
 			int logoH = (int) (logoW / ratio);
-			Image img = icon.getImage().getScaledInstance(logoW, logoH, Image.SCALE_SMOOTH);
+			Image img = escalarImagen(icon.getImage(), logoW, logoH);
 			lblLogo.setIcon(new ImageIcon(img));
 			lblLogo.setSize(logoW, logoH);
 		}
@@ -149,9 +173,10 @@ public class VistaLogin extends JFrame {
 		});
 	}
 
-	/** Panel central que contiene el formulario de login. */
-	private JPanel panelCentral;
-
+	/**
+	 * Configura el diseño y los componentes internos del formulario de acceso.
+	 * @param layeredPane Capa donde se añadirá el panel.
+	 */
 	private void configurarPanelCentral(JLayeredPane layeredPane) {
 		Color colorFondoPanel = new Color(255, 255, 255, 245);
 		Color colorBoton = new Color(74, 88, 89);
@@ -238,17 +263,20 @@ public class VistaLogin extends JFrame {
 		layeredPane.add(panelCentral, JLayeredPane.DEFAULT_LAYER);
 	}
 
+	/**
+	 * Configura el selector de idioma en la parte superior derecha de la ventana.
+	 * @param layeredPane Capa donde se añadirá el componente.
+	 */
 	private void configurarIdioma(JLayeredPane layeredPane) {
-
 		ImageIcon iconEng = null;
 		ImageIcon iconEsp = null;
 		try {
 			java.net.URL urlEng = getClass().getResource("/eng.png");
 			java.net.URL urlEsp = getClass().getResource("/esp.png");
 			if (urlEng != null)
-				iconEng = new ImageIcon(new ImageIcon(urlEng).getImage().getScaledInstance(30, 20, Image.SCALE_SMOOTH));
+				iconEng = new ImageIcon(escalarImagen(new ImageIcon(urlEng).getImage(), 30, 20));
 			if (urlEsp != null)
-				iconEsp = new ImageIcon(new ImageIcon(urlEsp).getImage().getScaledInstance(30, 20, Image.SCALE_SMOOTH));
+				iconEsp = new ImageIcon(escalarImagen(new ImageIcon(urlEsp).getImage(), 30, 20));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -258,10 +286,8 @@ public class VistaLogin extends JFrame {
 		comboIdiomas.setBackground(Color.WHITE);
 		comboIdiomas.setFocusable(false);
 
-		if (iconEng != null)
-			comboIdiomas.addItem(iconEng);
-		if (iconEsp != null)
-			comboIdiomas.addItem(iconEsp);
+		if (iconEng != null) comboIdiomas.addItem(iconEng);
+		if (iconEsp != null) comboIdiomas.addItem(iconEsp);
 
 		if (MoTextos.getIdioma() == 0 && iconEng != null) {
 			comboIdiomas.setSelectedItem(iconEng);
@@ -272,27 +298,8 @@ public class VistaLogin extends JFrame {
 		layeredPane.add(comboIdiomas, JLayeredPane.PALETTE_LAYER);
 	}
 
-	/** ComboBox para seleccionar el idioma de la aplicaciÃ³n. */
-	private JComboBox<ImageIcon> comboIdiomas;
-
-	public JComboBox<ImageIcon> getComboIdiomas() {
-		return comboIdiomas;
-	}
-
-	public ArrayList<JLabel> getTextos() {
-		return textos;
-	}
-
-	public ArrayList<JTextField> getCajas() {
-		return cajas;
-	}
-
-	public ArrayList<JButton> getBotones() {
-		return botones;
-	}
-
 	/**
-	 * Actualiza los textos de la interfaz segÃºn el idioma seleccionado.
+	 * Actualiza todos los textos de la interfaz según el idioma seleccionado.
 	 */
 	public void actualizarTextos() {
 		if (comboIdiomas != null) {
@@ -304,5 +311,56 @@ public class VistaLogin extends JFrame {
 		lblPass.setText(MoTextos.lbl_password);
 		btnLogin.setText(MoTextos.btn_login);
 		repaint();
+	}
+
+	/**
+	 * Escala una imagen con suavizado de alta calidad.
+	 *
+	 * @param srcImg Imagen original.
+	 * @param w      Ancho deseado.
+	 * @param h      Alto deseado.
+	 * @return Imagen procesada y escalada.
+	 */
+	private Image escalarImagen(Image srcImg, int w, int h) {
+		BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2 = resizedImg.createGraphics();
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2.drawImage(srcImg, 0, 0, w, h, null);
+		g2.dispose();
+		return resizedImg;
+	}
+
+	// --- GETTERS Y SETTERS ---
+
+	/**
+	 * Obtiene el selector de idiomas de la ventana.
+	 * @return El componente JComboBox de iconos.
+	 */
+	public JComboBox<ImageIcon> getComboIdiomas() {
+		return comboIdiomas;
+	}
+
+	/**
+	 * Obtiene la lista de etiquetas de texto para gestión dinámica.
+	 * @return ArrayList con los JLabels.
+	 */
+	public ArrayList<JLabel> getTextos() {
+		return textos;
+	}
+
+	/**
+	 * Obtiene la lista de campos de entrada de datos.
+	 * @return ArrayList con los JTextFields.
+	 */
+	public ArrayList<JTextField> getCajas() {
+		return cajas;
+	}
+
+	/**
+	 * Obtiene la lista de botones de la interfaz de login.
+	 * @return ArrayList con los JButtons.
+	 */
+	public ArrayList<JButton> getBotones() {
+		return botones;
 	}
 }

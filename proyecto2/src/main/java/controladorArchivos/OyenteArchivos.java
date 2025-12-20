@@ -26,20 +26,20 @@ import vista.VistaMenuPrincipal;
 /**
  * Oyente que gestiona las operaciones de archivos en la vista del Gestor de
  * Archivos.
- * Maneja subidas, descargas, creaciÃ³n y eliminaciÃ³n de archivos y carpetas.
+ * Maneja subidas, descargas, creación y eliminación de archivos y carpetas.
  */
 public class OyenteArchivos implements ActionListener {
 
     /** Vista del gestor de archivos. */
     private VistaGestorArchivos vista;
 
-    /** Cliente FTP para operaciones de conexiÃ³n. */
+    /** Cliente FTP para operaciones de conexión. */
     private ModeloClienteFTP client;
 
     /** Modelo de base de datos para persistencia. */
     private ModeloBaseDatos db;
 
-    /** Vista del menÃº principal. */
+    /** Vista del menú principal. */
     private VistaMenuPrincipal menu;
 
     /** Gestor de archivos FTP. */
@@ -54,7 +54,7 @@ public class OyenteArchivos implements ActionListener {
      * @param vista  Vista del gestor de archivos.
      * @param client Cliente FTP.
      * @param db     Modelo de base de datos.
-     * @param menu   Vista del menÃº principal.
+     * @param menu   Vista del menú principal.
      */
     public OyenteArchivos(VistaGestorArchivos vista, ModeloClienteFTP client, ModeloBaseDatos db,
             VistaMenuPrincipal menu) {
@@ -71,7 +71,7 @@ public class OyenteArchivos implements ActionListener {
     /**
      * Maneja los eventos de los botones en la vista del gestor de archivos.
      *
-     * @param e El evento de acciÃ³n.
+     * @param e El evento de acción.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -125,8 +125,7 @@ public class OyenteArchivos implements ActionListener {
 
     /**
      * Detecta doble clic en la lista de archivos para navegar a carpetas.
-     * 
-     * @param listaArchivos La lista de archivos FTP.
+     * * @param listaArchivos La lista de archivos FTP.
      */
     public void detectarDobleClick(JList<FTPFile> listaArchivos) {
         listaArchivos.addMouseListener(new MouseAdapter() {
@@ -154,11 +153,11 @@ public class OyenteArchivos implements ActionListener {
     }
 
     /**
-     * Verifica si el usuario actual tiene permiso para realizar una acciÃ³n
-     * especÃ­fica sobre un archivo o carpeta.
+     * Verifica si el usuario actual tiene permiso para realizar una acción
+     * específica sobre un archivo o carpeta.
      *
      * @param ruta   La ruta del archivo o carpeta.
-     * @param accion La acciÃ³n a realizar (e.g., "Subir archivos").
+     * @param accion La acción a realizar (e.g., "Subir archivos").
      * @return true si tiene permiso, false en caso contrario.
      */
     public boolean verificarPermiso(String ruta, String accion) {
@@ -190,7 +189,7 @@ public class OyenteArchivos implements ActionListener {
     }
 
     /**
-     * AcciÃ³n para borrar una carpeta del servidor FTP.
+     * Acción para borrar una carpeta del servidor FTP.
      * Verifica que sea un directorio y que el usuario tenga permisos.
      */
     private void accionBotonBorrarCarpeta() {
@@ -225,7 +224,7 @@ public class OyenteArchivos implements ActionListener {
     }
 
     /**
-     * AcciÃ³n para crear una nueva carpeta en el servidor FTP.
+     * Acción para crear una nueva carpeta en el servidor FTP.
      * Solicita el nombre de la carpeta y verifica permisos.
      */
     private void accionBotonCrearCarpeta() {
@@ -260,7 +259,7 @@ public class OyenteArchivos implements ActionListener {
     }
 
     /**
-     * AcciÃ³n para descargar un archivo o carpeta del servidor FTP.
+     * Acción para descargar un archivo o carpeta del servidor FTP.
      */
     private void accionBotonDescarga() {
         JFileChooser fc = new JFileChooser();
@@ -292,7 +291,7 @@ public class OyenteArchivos implements ActionListener {
     }
 
     /**
-     * AcciÃ³n para eliminar un archivo del servidor FTP.
+     * Acción para eliminar un archivo del servidor FTP.
      * Verifica permisos antes de proceder.
      */
     private void accionBotonEliminar() {
@@ -317,7 +316,7 @@ public class OyenteArchivos implements ActionListener {
     }
 
     /**
-     * AcciÃ³n para renombrar un archivo o carpeta en el servidor FTP.
+     * Acción para renombrar un archivo o carpeta en el servidor FTP.
      * Verifica permisos antes de proceder.
      */
     private void accionBotonRenombrar() {
@@ -370,7 +369,7 @@ public class OyenteArchivos implements ActionListener {
     }
 
     /**
-     * AcciÃ³n para subir un archivo al servidor FTP.
+     * Acción para subir un archivo al servidor FTP.
      * Abre un selector de archivos y gestiona la subida si hay permisos.
      */
     private void accionBotonSubida() {
@@ -413,7 +412,7 @@ public class OyenteArchivos implements ActionListener {
     }
 
     /**
-     * AcciÃ³n para volver al directorio padre en la navegaciÃ³n FTP.
+     * Acción para volver al directorio padre en la navegación FTP.
      */
     private void accionBotonVolver() {
         String rutaPadre;
@@ -426,7 +425,7 @@ public class OyenteArchivos implements ActionListener {
     }
 
     /**
-     * AcciÃ³n para volver al menÃº principal desde el gestor de archivos.
+     * Acción para volver al menú principal desde el gestor de archivos.
      */
     private void accionBotonVolverMenuPrincipal() {
         vista.setVisible(false);

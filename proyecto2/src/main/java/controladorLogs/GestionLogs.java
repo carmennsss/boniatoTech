@@ -16,28 +16,28 @@ import modelo.ModeloBaseDatos;
  * Permite registrar acciones, consultar logs con filtros y exportar a CSV.
  */
 public class GestionLogs {
-	/** Conexi贸n a la base de datos. */
+	/** Conexi髇 a la base de datos. */
 	private static Connection conexion;
 
 	/**
-	 * Constructor de la gesti贸n de logs.
-	 * Inicializa la conexi贸n a la base de datos.
+	 * Constructor de la gesti髇 de logs.
+	 * Inicializa la conexi髇 a la base de datos.
 	 */
 	public GestionLogs() {
-		this.conexion = ModeloBaseDatos.getConexion();
+		conexion = ModeloBaseDatos.getConexion();
 	}
 
 	/**
-	 * Consulta los logs de la base de datos aplicando un criterio de ordenaci贸n.
+	 * Consulta los logs de la base de datos aplicando un criterio de ordenaci髇.
 	 *
-	 * @param consulta Criterio de ordenaci贸n ("actions", "users", "dates",
-	 *                 "results").
+	 * @param consulta Criterio de ordenaci髇 ("actions", "users", "dates",
+	 * "results").
 	 * @return Lista de logs recuperados.
 	 */
 	public static ArrayList<Log> consultLogs(String consulta) {
 		if (conexion == null) {
 			conexion = ModeloBaseDatos.getConexion();
-			return null;
+			if (conexion == null) return new ArrayList<>();
 		}
 		ArrayList<Log> logs = new ArrayList<>();
 
@@ -76,19 +76,19 @@ public class GestionLogs {
 	 * Exporta todos los logs a un archivo CSV.
 	 *
 	 * @param file El archivo destino.
-	 * @return true si la exportaci贸n fue exitosa, false en caso contrario.
+	 * @return true si la exportaci髇 fue exitosa, false en caso contrario.
 	 */
 	public boolean exportLogs(File file) {
 		if (conexion == null) {
 			conexion = ModeloBaseDatos.getConexion();
-			return false;
+			if (conexion == null) return false;
 		}
 
 		ArrayList<Log> logs = consultLogs("all");
 
 		try (FileWriter fw = new FileWriter(file)) {
 
-			if (logs.isEmpty()) {
+			if (logs == null || logs.isEmpty()) {
 				fw.write("There aren't logs registered in the database.\n");
 				return true;
 			}
@@ -109,17 +109,9 @@ public class GestionLogs {
 	}
 
 	/**
-	 * Muestra los logs en consola (m茅todo auxiliar no implementado).
-	 */
-	public void mostrarLogs() {
-		ArrayList<Log> logs = new ArrayList<>();
-
-	}
-
-	/**
 	 * Registra un nuevo log en la base de datos.
 	 *
-	 * @param log Objeto Log con la informaci贸n de la acci贸n, usuario y resultado.
+	 * @param log Objeto Log con la informaci髇 de la acci髇, usuario y resultado.
 	 */
 	public static void writeLog(Log log) {
 		if (conexion == null) {
@@ -145,7 +137,30 @@ public class GestionLogs {
 			System.err.println("Error al insertar log: " + e.getMessage());
 			e.printStackTrace();
 		}
-
 	}
 
+	/**
+	 * Muestra los logs en consola (m閠odo auxiliar no implementado).
+	 */
+	public void mostrarLogs() {
+		// Implementaci髇 futura si es necesaria
+	}
+
+	// --- GETTERS Y SETTERS ---
+
+	/**
+	 * Obtiene la conexi髇 actual de la gesti髇 de logs.
+	 * @return La conexi髇 a la base de datos.
+	 */
+	public static Connection getConexion() {
+		return conexion;
+	}
+
+	/**
+	 * Establece la conexi髇 de la gesti髇 de logs.
+	 * @param conexion La nueva conexi髇.
+	 */
+	public static void setConexion(Connection conexion) {
+		GestionLogs.conexion = conexion;
+	}
 }

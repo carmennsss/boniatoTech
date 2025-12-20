@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import javax.swing.JButton;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,41 +25,51 @@ import modelo.Correo;
 import modelo.MoTextos;
 
 /**
- * Vista principal o "BuzÃ³n de Entrada" para la gestiÃ³n de correos.
- * Muestra una lista de correos recibidos y permite navegar a la redacciÃ³n o
- * lectura.
+ * Vista principal o "Buzón de Entrada" para la gestión de correos electrónicos.
+ * Muestra una lista de mensajes recibidos en una tabla y permite la navegación
+ * hacia las funciones de redacción, lectura y refresco de datos.
  */
 public class VistaGeneralCorreo extends JFrame {
 
-	/** Panel principal de la ventana. */
+	/** Panel principal que contiene la organización de la ventana. */
 	private JPanel panel;
 
-	/** DirecciÃ³n de correo electrÃ³nico del usuario. */
+	/** Dirección de correo electrónico del usuario actual. */
 	private String correo;
 
-	/** BotÃ³n para redactar un nuevo correo. */
+	/** Botón para abrir la ventana de redacción de correos. */
 	private JButton botonEnviarCorreo;
 
-	/** Modelo de datos de la tabla de correos. */
+	/** Modelo de datos que gestiona las filas y columnas de la tabla. */
 	private DefaultTableModel tablaModelo;
 
-	/** Tabla que muestra la lista de correos. */
+	/** Componente de tabla para la visualización de los correos. */
 	private JTable emailTabla;
 
-	/** BotÃ³n para volver al menÃº principal. */
+	/** Botón para regresar al menú principal de la aplicación. */
 	private JButton btnVolver;
 
-	/** BotÃ³n para refrescar la lista de correos. */
+	/** Botón para solicitar una nueva sincronización con el servidor de correo. */
 	private JButton btnRefrescar;
 
-	/** Etiqueta que muestra el correo del usuario. */
+	/** Etiqueta que identifica al usuario y el título de la sección. */
 	private JLabel etiquetaCorreo;
 
+	/** Lista interna de objetos Correo sincronizada con la tabla visual. */
+	private ArrayList<Correo> correosActuales = new ArrayList<>();
+
+	/**
+	 * Constructor que inicializa la vista del buzón de correo.
+	 * * @param correo Dirección de correo electrónico del usuario logueado.
+	 */
 	public VistaGeneralCorreo(String correo) {
 		this.correo = correo;
 		propiedades();
 	}
 
+	/**
+	 * Orquesta la configuración inicial de componentes y estilos.
+	 */
 	private void propiedades() {
 		inicializarPanel();
 		propiedadesVentana();
@@ -68,6 +77,10 @@ public class VistaGeneralCorreo extends JFrame {
 		inicializarTabla();
 	}
 
+	/**
+	 * Configura la tabla de correos con un renderizador personalizado para
+	 * destacar mensajes no leídos.
+	 */
 	private void inicializarTabla() {
 		JPanel panelTabla = new JPanel(new BorderLayout());
 		panelTabla.setOpaque(false);
@@ -104,22 +117,14 @@ public class VistaGeneralCorreo extends JFrame {
 		scrollPane.setBorder(null);
 
 		panelTabla.add(scrollPane, BorderLayout.CENTER);
-
 		panel.add(panelTabla, BorderLayout.CENTER);
 
 		emailTabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-
 			@Override
-			public Component getTableCellRendererComponent(
-					JTable table,
-					Object value,
-					boolean isSelected,
-					boolean hasFocus,
-					int row,
-					int column) {
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
 
-				Component comp = super.getTableCellRendererComponent(
-						table, value, isSelected, hasFocus, row, column);
+				Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 				if (!isSelected) {
 					comp.setBackground(row % 2 == 0 ? new Color(255, 255, 255, 150) : new Color(245, 245, 245, 150));
@@ -131,10 +136,7 @@ public class VistaGeneralCorreo extends JFrame {
 
 				((javax.swing.JComponent) comp).setOpaque(true);
 
-				Correo correoFila = ((VistaGeneralCorreo) SwingUtilities
-						.getWindowAncestor(table))
-						.getCorreoPorFila(row);
-
+				Correo correoFila = getCorreoPorFila(row);
 				if (correoFila != null && !correoFila.isLeido()) {
 					comp.setFont(Estilos.FONT_TEXTO.deriveFont(Font.BOLD));
 				} else {
@@ -142,13 +144,14 @@ public class VistaGeneralCorreo extends JFrame {
 				}
 
 				setBorder(noFocusBorder);
-
 				return comp;
 			}
 		});
-
 	}
 
+	/**
+	 * Configura los parámetros básicos del JFrame.
+	 */
 	private void propiedadesVentana() {
 		this.setTitle(MoTextos.mail_title_inbox);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -158,18 +161,8 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	/**
-	 * Recupera el objeto Correo asociado a una fila especÃ­fica de la tabla visual.
-	 *
-	 * @param fila Ãndice de la fila.
-	 * @return El objeto Correo correpondiente o null si el Ã­ndice es invÃ¡lido.
+	 * Inicializa el contenedor principal con una imagen de fondo decorativa.
 	 */
-	public Correo getCorreoPorFila(int fila) {
-		if (fila >= 0 && fila < correosActuales.size()) {
-			return correosActuales.get(fila);
-		}
-		return null;
-	}
-
 	private void inicializarPanel() {
 		panel = new JPanel(new BorderLayout()) {
 			@Override
@@ -178,12 +171,11 @@ public class VistaGeneralCorreo extends JFrame {
 				try {
 					java.awt.Graphics2D g2d = (java.awt.Graphics2D) g.create();
 					java.awt.Image bgImage = javax.imageio.ImageIO.read(getClass().getResource("/olas_verdes.png"));
-
 					g2d.setComposite(java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.SRC_OVER, 0.15f));
 					g2d.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
 					g2d.dispose();
 				} catch (Exception e) {
-
+					// Fallback si la imagen no carga
 				}
 			}
 		};
@@ -191,6 +183,9 @@ public class VistaGeneralCorreo extends JFrame {
 		this.add(panel, BorderLayout.CENTER);
 	}
 
+	/**
+	 * Crea los paneles superior e inferior y añade los botones de control.
+	 */
 	private void inicializarVista() {
 		JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 20));
 		panelSuperior.setBackground(Estilos.DARK_SPRUCE);
@@ -198,18 +193,16 @@ public class VistaGeneralCorreo extends JFrame {
 		etiquetaCorreo = new JLabel(correo + " " + MoTextos.mail_title_inbox);
 		etiquetaCorreo.setFont(Estilos.FONT_TITULO);
 		etiquetaCorreo.setForeground(Estilos.BEIGE_CANVAS);
-		etiquetaCorreo.setAlignmentX(SwingConstants.CENTER);
 
 		panelSuperior.add(etiquetaCorreo);
-
 		panel.add(panelSuperior, BorderLayout.NORTH);
 
 		JPanel panelMedio = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
 		panelMedio.setOpaque(false);
 
-		botonEnviarCorreo = crearBotonEstilizado("Compose");
-		btnVolver = crearBotonEstilizado("Back");
-		btnRefrescar = crearBotonEstilizado("Refresh");
+		botonEnviarCorreo = crearBotonEstilizado(MoTextos.mail_btn_compose);
+		btnVolver = crearBotonEstilizado(MoTextos.btn_back);
+		btnRefrescar = crearBotonEstilizado(MoTextos.mail_btn_refresh);
 
 		panelMedio.add(btnVolver);
 		panelMedio.add(btnRefrescar);
@@ -218,6 +211,11 @@ public class VistaGeneralCorreo extends JFrame {
 		panel.add(panelMedio, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * Crea un botón con el estilo visual unificado de la aplicación.
+	 * * @param texto Etiqueta del botón.
+	 * @return JButton configurado.
+	 */
 	private JButton crearBotonEstilizado(String texto) {
 		JButton btn = new JButton(texto);
 		btn.setPreferredSize(new Dimension(150, 40));
@@ -230,14 +228,9 @@ public class VistaGeneralCorreo extends JFrame {
 		return btn;
 	}
 
-	/** Lista de correos actualmente mostrados en la tabla. */
-	private ArrayList<Correo> correosActuales = new ArrayList<>();
-
 	/**
-	 * Carga y muestra una lista de correos en la tabla.
-	 * Ordena los correos por fecha descendente.
-	 *
-	 * @param correos Lista de objetos Correo a visualizar.
+	 * Carga una lista de correos en la tabla y los ordena cronológicamente.
+	 * * @param correos Lista de objetos Correo a visualizar.
 	 */
 	public void cargarCorreos(ArrayList<Correo> correos) {
 		correosActuales.clear();
@@ -255,12 +248,15 @@ public class VistaGeneralCorreo extends JFrame {
 		}
 	}
 
+	/**
+	 * Hace visible la ventana del buzón.
+	 */
 	public void hacerVisible() {
 		this.setVisible(true);
 	}
 
 	/**
-	 * Actualiza los textos de la interfaz segÃºn el idioma seleccionado.
+	 * Actualiza dinámicamente los textos de la interfaz según el idioma seleccionado.
 	 */
 	public void actualizarTextos() {
 		this.setTitle(MoTextos.mail_title_inbox);
@@ -283,42 +279,97 @@ public class VistaGeneralCorreo extends JFrame {
 		repaint();
 	}
 
+	// --- GETTERS Y SETTERS AL FINAL ---
+
+	/**
+	 * Recupera el objeto Correo asociado a una fila específica de la tabla visual.
+	 *
+	 * @param fila Índice de la fila.
+	 * @return El objeto Correo correpondiente o null si el índice es inválido.
+	 */
+	public Correo getCorreoPorFila(int fila) {
+		if (fila >= 0 && fila < correosActuales.size()) {
+			return correosActuales.get(fila);
+		}
+		return null;
+	}
+
+	/**
+	 * Obtiene el botón de redacción de correo.
+	 * @return Objeto JButton.
+	 */
 	public JButton getBotonEnviarCorreo() {
 		return botonEnviarCorreo;
 	}
 
+	/**
+	 * Establece el botón de redacción.
+	 * @param botonEnviarCorreo Nuevo botón de composición.
+	 */
 	public void setBotonEnviarCorreo(JButton botonEnviarCorreo) {
 		this.botonEnviarCorreo = botonEnviarCorreo;
 	}
 
+	/**
+	 * Obtiene la dirección de correo del usuario.
+	 * @return String con el correo.
+	 */
 	public String getCorreo() {
 		return correo;
 	}
 
+	/**
+	 * Establece la dirección de correo del usuario.
+	 * @param correo Nueva dirección de correo.
+	 */
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
 
+	/**
+	 * Obtiene el componente de tabla de correos.
+	 * @return Objeto JTable.
+	 */
 	public JTable getEmailTabla() {
 		return emailTabla;
 	}
 
+	/**
+	 * Establece la tabla de correos.
+	 * @param emailTabla Nueva tabla JTable.
+	 */
 	public void setEmailTabla(JTable emailTabla) {
 		this.emailTabla = emailTabla;
 	}
 
+	/**
+	 * Obtiene el botón para volver al menú anterior.
+	 * @return Objeto JButton.
+	 */
 	public JButton getBtnVolver() {
 		return btnVolver;
 	}
 
+	/**
+	 * Establece el botón de retorno.
+	 * @param btnVolver Nuevo botón JButton.
+	 */
 	public void setBtnVolver(JButton btnVolver) {
 		this.btnVolver = btnVolver;
 	}
 
+	/**
+	 * Obtiene el botón de refresco de bandeja de entrada.
+	 * @return Objeto JButton.
+	 */
 	public JButton getBtnRefrescar() {
 		return btnRefrescar;
 	}
 
+	/**
+	 * Establece el botón de refresco.
+	 * @param btnRefrescar Nuevo botón JButton.
+	 */
 	public void setBtnRefrescar(JButton btnRefrescar) {
 		this.btnRefrescar = btnRefrescar;
 	}

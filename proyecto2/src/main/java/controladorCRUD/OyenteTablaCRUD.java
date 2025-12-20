@@ -17,17 +17,17 @@ import java.awt.event.MouseEvent;
 
 /**
  * Oyente para manejar eventos en la tabla CRUD general y la tabla de roles.
- * Maneja doble clic para men√∫ de opciones y cambios en celdas (checkboxes de
+ * Maneja doble clic para men˙ de opciones y cambios en celdas (checkboxes de
  * permisos).
  */
 public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener {
-    /** Controlador principal de la aplicaci√≥n. */
+    /** Controlador principal de la aplicaciÛn. */
     private CoPrincipal controlador;
 
     /** Vista CRUD principal. */
     private VistaCRUD vistaCRUD;
 
-    /** Modelo de vista para gesti√≥n de datos. */
+    /** Modelo de vista para gestiÛn de datos. */
     private MoView modeloVista;
 
     /** Lista de nombres de permisos para la tabla de roles. */
@@ -49,7 +49,7 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
     /**
      * Maneja el doble clic para mostrar las opciones (Nuevo, Actualizar, Borrar).
      *
-     * @param e El evento de rat√≥n.
+     * @param e El evento de ratÛn.
      */
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -63,16 +63,7 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
     }
 
     /**
-     * Establece la lista de nombres de permisos para la tabla de roles.
-     * 
-     * @param listaNombresPermisos Lista de nombres de permisos.
-     */
-    public void setListaNombresPermisos(java.util.ArrayList<String> listaNombresPermisos) {
-        this.listaNombresPermisos = listaNombresPermisos;
-    }
-
-    /**
-     * Detecta cambios en la tabla, espec√≠ficamente para la edici√≥n de permisos de
+     * Detecta cambios en la tabla, especÌficamente para la ediciÛn de permisos de
      * roles.
      *
      * @param eventoModelo El evento de cambio en el modelo de la tabla.
@@ -106,11 +97,11 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
     }
 
     /**
-     * Crea un bot√≥n para el di√°logo de opciones.
+     * Crea un botÛn para el di·logo de opciones.
      *
-     * @param texto Texto del bot√≥n.
-     * @param color Color de fondo del bot√≥n.
-     * @return Bot√≥n configurado.
+     * @param texto Texto del botÛn.
+     * @param color Color de fondo del botÛn.
+     * @return BotÛn configurado.
      */
     private JButton crearBotonDialogo(String texto, Color color) {
         JButton btn = new JButton(texto);
@@ -126,7 +117,7 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
     }
 
     /**
-     * Muestra un di√°logo personalizado para seleccionar una acci√≥n sobre una fila.
+     * Muestra un di·logo personalizado para seleccionar una acciÛn sobre una fila.
      * Ofrece opciones para Crear Nuevo, Actualizar, Borrar o Cancelar.
      *
      * @return 0 para Nuevo, 1 para Actualizar, 2 para Borrar, 3 para Cancelar.
@@ -208,7 +199,7 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
     }
 
     /**
-     * Muestra el di√°logo de opciones y ejecuta la acci√≥n seleccionada.
+     * Muestra el di·logo de opciones y ejecuta la acciÛn seleccionada.
      */
     private void mostrarOpciones() {
         int eleccion = mostrarDialogoOpciones();
@@ -222,4 +213,37 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
         }
     }
 
+    // --- GETTERS Y SETTERS ---
+
+    /**
+     * Establece la lista de nombres de permisos para la tabla de roles.
+     * * @param listaNombresPermisos Lista de nombres de permisos.
+     */
+    public void setListaNombresPermisos(java.util.ArrayList<String> listaNombresPermisos) {
+        this.listaNombresPermisos = listaNombresPermisos;
+    }
+
+    /**
+     * Obtiene el controlador principal.
+     * @return El objeto CoPrincipal.
+     */
+    public CoPrincipal getControlador() {
+        return controlador;
+    }
+
+    /**
+     * Obtiene la vista CRUD.
+     * @return El objeto VistaCRUD.
+     */
+    public VistaCRUD getVistaCRUD() {
+        return vistaCRUD;
+    }
+
+    /**
+     * Obtiene el modelo de la vista.
+     * @return El objeto MoView.
+     */
+    public MoView getModeloVista() {
+        return modeloVista;
+    }
 }

@@ -24,36 +24,45 @@ import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
 
 /**
- * Vista para la eliminaciÃ³n de usuarios del sistema.
+ * Vista encargada de la interfaz para la eliminación de usuarios del sistema.
+ * Proporciona una tabla para visualizar los usuarios registrados y botones 
+ * para ejecutar la baja tanto en la base de datos como en el servidor FTP.
  */
 public class VistaEliminarUsuarios extends JFrame {
-    /** Vista de registro de usuarios. */
-    VistaRegistroUsuarios vistaUsuarios;
+    /** Referencia a la vista de registro para permitir la navegación. */
+    private VistaRegistroUsuarios vistaUsuarios;
 
-    /** Modelo del cliente FTP. */
-    ModeloClienteFTP modeloFTP;
+    /** Modelo encargado de las operaciones en el servidor FTP. */
+    private ModeloClienteFTP modeloFTP;
 
-    /** Modelo de base de datos. */
-    ModeloBaseDatos bd;
+    /** Modelo encargado de las operaciones en la base de datos. */
+    private ModeloBaseDatos bd;
 
-    /** Lista de etiquetas de texto de la interfaz. */
+    /** Lista de etiquetas de texto para la gestión de internacionalización. */
     private ArrayList<JLabel> textos;
 
     /** Lista de botones de la interfaz. */
     private ArrayList<JButton> botones;
 
-    /** BotÃ³n para eliminar usuarios. */
-    JButton btnEliminar;
+    /** Botón para ejecutar la acción de eliminar. */
+    private JButton btnEliminar;
 
-    /** BotÃ³n para volver a la vista anterior. */
-    JButton btnVolver;
+    /** Botón para cancelar la operación y volver. */
+    private JButton btnVolver;
 
-    /** Panel que contiene la tabla de usuarios. */
+    /** Componente de tabla personalizado para mostrar la lista de usuarios. */
     private ViTabla tabla;
 
-    /** Imagen de fondo de la ventana. */
+    /** Imagen de fondo para la personalización estética de la ventana. */
     private Image imagenFondo;
 
+    /**
+     * Constructor que inicializa la vista con las dependencias necesarias.
+     *
+     * @param vistaUsuarios Vista de registro previa.
+     * @param modeloFTP     Lógica del cliente FTP.
+     * @param bd            Lógica de la base de datos.
+     */
     public VistaEliminarUsuarios(VistaRegistroUsuarios vistaUsuarios, ModeloClienteFTP modeloFTP, ModeloBaseDatos bd) {
         this.vistaUsuarios = vistaUsuarios;
         this.modeloFTP = modeloFTP;
@@ -61,6 +70,9 @@ public class VistaEliminarUsuarios extends JFrame {
         propiedades();
     }
 
+    /**
+     * Configura la ventana y orquesta la creación de todos los componentes visuales.
+     */
     private void propiedades() {
         configurarVentana();
         configurarFondo();
@@ -69,6 +81,9 @@ public class VistaEliminarUsuarios extends JFrame {
         configurarBotones();
     }
 
+    /**
+     * Establece los parámetros básicos del JFrame.
+     */
     private void configurarVentana() {
         this.textos = new ArrayList<>();
         this.botones = new ArrayList<>();
@@ -81,6 +96,9 @@ public class VistaEliminarUsuarios extends JFrame {
         this.setLayout(new BorderLayout());
     }
 
+    /**
+     * Carga y configura el panel de fondo con imagen o color sólido.
+     */
     private void configurarFondo() {
         URL url = getClass().getResource("/fondo_abstracto_2.png");
         if (url != null) {
@@ -106,6 +124,9 @@ public class VistaEliminarUsuarios extends JFrame {
         this.setContentPane(panelFondo);
     }
 
+    /**
+     * Configura la sección superior con el título dinámico.
+     */
     private void configurarTitulo() {
         JLabel titulo = new JLabel(modelo.MoTextos.del_user_title);
         titulo.setFont(Estilos.FONT_TITULO);
@@ -130,6 +151,9 @@ public class VistaEliminarUsuarios extends JFrame {
         getContentPane().add(panelTitulo, BorderLayout.NORTH);
     }
 
+    /**
+     * Inicializa el contenedor central con la tabla de datos.
+     */
     private void configurarTabla() {
         this.tabla = new ViTabla();
 
@@ -151,8 +175,10 @@ public class VistaEliminarUsuarios extends JFrame {
         getContentPane().add(panelTablaContenedor, BorderLayout.CENTER);
     }
 
+    /**
+     * Configura la zona inferior con los botones de acción principal.
+     */
     private void configurarBotones() {
-
         JPanel panelSur = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         panelSur.setOpaque(false);
 
@@ -171,22 +197,12 @@ public class VistaEliminarUsuarios extends JFrame {
         getContentPane().add(panelSur, BorderLayout.SOUTH);
     }
 
-    public JButton getBtnEliminar() {
-        return btnEliminar;
-    }
-
-    public void setBtnEliminar(JButton btnEliminar) {
-        this.btnEliminar = btnEliminar;
-    }
-
-    public JButton getBtnVolver() {
-        return btnVolver;
-    }
-
-    public void setBtnVolver(JButton btnVolver) {
-        this.btnVolver = btnVolver;
-    }
-
+    /**
+     * Aplica el esquema de diseño institucional a los botones.
+     *
+     * @param btn     Botón a procesar.
+     * @param bgColor Color de fondo deseado.
+     */
     private void estilarBoton(JButton btn, Color bgColor) {
         btn.setFont(Estilos.FONT_BOTON);
         btn.setBackground(bgColor);
@@ -197,25 +213,16 @@ public class VistaEliminarUsuarios extends JFrame {
         btn.setPreferredSize(new Dimension(150, 40));
     }
 
-    public ViTabla getTabla() {
-        return this.tabla;
-    }
-
-    public ArrayList<JButton> getBotones() {
-        return botones;
-    }
-
-    public void setTabla(ViTabla tabla) {
-        this.tabla = tabla;
-    }
-
+    /**
+     * Hace visible la ventana y refresca la tabla interna.
+     */
     public void hacerVisible() {
         this.setVisible(true);
         this.tabla.setVisible(true);
     }
 
     /**
-     * Actualiza los textos de la interfaz segÃºn el idioma seleccionado.
+     * Actualiza dinámicamente los textos de la interfaz según el idioma.
      */
     public void actualizarTextos() {
         this.setTitle(modelo.MoTextos.del_user_title);
@@ -224,5 +231,63 @@ public class VistaEliminarUsuarios extends JFrame {
         }
         btnEliminar.setText(modelo.MoTextos.del_btn_delete);
         btnVolver.setText(modelo.MoTextos.del_btn_back);
+    }
+
+    // --- GETTERS Y SETTERS AL FINAL ---
+
+    /**
+     * Obtiene el botón de eliminar.
+     * @return El objeto JButton.
+     */
+    public JButton getBtnEliminar() {
+        return btnEliminar;
+    }
+
+    /**
+     * Establece el botón de eliminar.
+     * @param btnEliminar Nueva instancia de botón.
+     */
+    public void setBtnEliminar(JButton btnEliminar) {
+        this.btnEliminar = btnEliminar;
+    }
+
+    /**
+     * Obtiene el botón de volver.
+     * @return El objeto JButton.
+     */
+    public JButton getBtnVolver() {
+        return btnVolver;
+    }
+
+    /**
+     * Establece el botón de volver.
+     * @param btnVolver Nueva instancia de botón.
+     */
+    public void setBtnVolver(JButton btnVolver) {
+        this.btnVolver = btnVolver;
+    }
+
+    /**
+     * Obtiene el panel de la tabla.
+     * @return El objeto ViTabla.
+     */
+    public ViTabla getTabla() {
+        return this.tabla;
+    }
+
+    /**
+     * Establece la tabla de usuarios.
+     * @param tabla Nueva instancia de ViTabla.
+     */
+    public void setTabla(ViTabla tabla) {
+        this.tabla = tabla;
+    }
+
+    /**
+     * Obtiene la lista completa de botones de la vista.
+     * @return ArrayList de botones.
+     */
+    public ArrayList<JButton> getBotones() {
+        return botones;
     }
 }

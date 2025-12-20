@@ -5,24 +5,25 @@ import java.util.ArrayList;
 /**
  * Modelo de la vista (ViewModel) que almacena el estado temporal de la interfaz
  * de usuario.
- * Gestiona selecciones de tablas, filas y listas de correos seleccionados.
+ * Gestiona selecciones de tablas, filas y listas de correos seleccionados, 
+ * actuando como un puente de estado entre controladores.
  */
 public class MoView {
     /** Nombre de la tabla actualmente activa en la vista CRUD. */
     private String tablaActual;
 
-    /** √çndice de la fila seleccionada en una tabla. */
+    /** Õndice de la fila seleccionada en una tabla. */
     private int filaSeleccionada;
 
-    /** Lista de correos seleccionados en la bandeja de entrada. */
+    /** Lista de correos seleccionados en la bandeja de entrada para gestiÛn de roles. */
     private ArrayList<String> correoSeleccionados;
 
-    /** Lista de correos seleccionados para la whitelist (borrado/gesti√≥n). */
+    /** Lista de correos seleccionados para la whitelist (borrado/gestiÛn). */
     private ArrayList<String> correosWhitelist;
 
     /**
      * Constructor que inicializa el estado de la vista con valores por defecto.
-     * La tabla por defecto es "especies" y no hay fila seleccionada (-1).
+     * La tabla por defecto es "especies" y el Ìndice de fila se inicializa en -1.
      */
     public MoView() {
         this.tablaActual = "especies";
@@ -32,11 +33,11 @@ public class MoView {
     }
 
     /**
-     * Gestiona la selecci√≥n/deselecci√≥n de un correo.
-     * Si el correo ya est√° en la lista, lo elimina. Si no, lo a√±ade.
+     * Gestiona la selecciÛn o deselecciÛn de un correo electrÛnico.
+     * Si el correo ya est· en la lista, lo elimina. Si no, lo aÒade.
      *
-     * @param correo El correo a seleccionar o deseleccionar.
-     * @return true si el correo fue a√±adido, false si fue eliminado.
+     * @param correo El correo electrÛnico a seleccionar o deseleccionar.
+     * @return true si el correo fue aÒadido, false si fue eliminado de la lista.
      */
     public boolean buscarCorreo(String correo) {
         if (!this.correoSeleccionados.contains(correo)) {
@@ -48,11 +49,11 @@ public class MoView {
     }
 
     /**
-     * Gestiona la selecci√≥n/deselecci√≥n de un correo en la whitelist.
-     * Si el correo ya est√° en la lista, lo elimina. Si no, lo a√±ade.
+     * Gestiona la selecciÛn o deselecciÛn de un correo en la secciÛn de whitelist.
+     * Si el correo ya est· en la lista, lo elimina. Si no, lo aÒade.
      *
-     * @param correo El correo a seleccionar o deseleccionar.
-     * @return true si fue a√±adido, false si fue eliminado.
+     * @param correo El correo electrÛnico a gestionar.
+     * @return true si fue aÒadido satisfactoriamente, false si fue eliminado.
      */
     public boolean buscarCorreoWhitelist(String correo) {
         if (!this.correosWhitelist.contains(correo)) {
@@ -63,38 +64,39 @@ public class MoView {
         return false;
     }
 
+    // --- GETTERS Y SETTERS AL FINAL ---
+
     /**
      * Obtiene la lista de correos seleccionados en la bandeja de entrada.
      *
-     * @return Lista de correos seleccionados.
+     * @return Lista de correos electrÛnicos seleccionados.
      */
     public ArrayList<String> getCorreoSeleccionados() {
         return correoSeleccionados;
     }
 
     /**
-     * Obtiene la lista de correos seleccionados para la whitelist
-     * (borrado/gesti√≥n).
+     * Obtiene la lista de correos seleccionados para la gestiÛn de whitelist.
      *
-     * @return Lista de correos.
+     * @return Lista de correos marcados para borrado o gestiÛn.
      */
     public ArrayList<String> getCorreosWhitelist() {
         return correosWhitelist;
     }
 
     /**
-     * Obtiene el √≠ndice de la fila seleccionada en una tabla.
+     * Obtiene el Ìndice de la fila seleccionada actualmente en la tabla activa.
      *
-     * @return El √≠ndice de la fila.
+     * @return El Ìndice de la fila (entero).
      */
     public int getFilaSeleccionada() {
         return filaSeleccionada;
     }
 
     /**
-     * Obtiene el nombre de la tabla actualmente activa en la vista CRUD.
+     * Obtiene el nombre de la tabla actualmente activa en la interfaz CRUD.
      *
-     * @return Nombre de la tabla.
+     * @return Nombre de la tabla como cadena de texto.
      */
     public String getTablaActual() {
         return tablaActual;
@@ -103,7 +105,7 @@ public class MoView {
     /**
      * Establece la lista de correos seleccionados en la bandeja de entrada.
      *
-     * @param correoSeleccionados Nueva lista de correos.
+     * @param correoSeleccionados Nueva lista de correos seleccionados.
      */
     public void setCorreoSeleccionados(ArrayList<String> correoSeleccionados) {
         this.correoSeleccionados = correoSeleccionados;
@@ -112,25 +114,25 @@ public class MoView {
     /**
      * Establece la lista de correos de la whitelist seleccionados.
      *
-     * @param correosWhitelist Nueva lista de correos.
+     * @param correosWhitelist Nueva lista de correos para la gestiÛn de whitelist.
      */
     public void setCorreosWhitelist(ArrayList<String> correosWhitelist) {
         this.correosWhitelist = correosWhitelist;
     }
 
     /**
-     * Establece el √≠ndice de la fila seleccionada.
+     * Establece el Ìndice de la fila que se ha seleccionado en la vista.
      *
-     * @param filaSeleccionada El nuevo √≠ndice.
+     * @param filaSeleccionada El nuevo Ìndice de fila seleccionada.
      */
     public void setFilaSeleccionada(int filaSeleccionada) {
         this.filaSeleccionada = filaSeleccionada;
     }
 
     /**
-     * Establece la tabla actual.
+     * Establece el nombre de la tabla actual para la vista CRUD.
      *
-     * @param tablaActual El nombre de la nueva tabla.
+     * @param tablaActual El nombre de la nueva tabla activa.
      */
     public void setTablaActual(String tablaActual) {
         this.tablaActual = tablaActual;

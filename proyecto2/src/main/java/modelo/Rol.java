@@ -1,26 +1,27 @@
 package modelo;
 
 /**
- * Representa un rol de usuario dentro del sistema, utilizado para la gesti贸n de
- * permisos en el servidor FTP.
+ * Representa un rol de usuario dentro del sistema.
+ * Se utiliza para la gesti髇 de niveles de acceso y permisos, tanto en la base
+ * de datos como en la configuraci髇 de usuarios del servidor FTP.
  */
 public class Rol {
 
-	/** Identificador 煤nico del rol. */
+	/** Identificador 鷑ico del rol en la base de datos. */
 	private int id_roles;
 
-	/** Nombre del rol. */
+	/** Nombre descriptivo del rol (ej. Administrador, Cuidador). */
 	private String nombre_roles;
 
-	/** Descripci贸n del rol y sus permisos. */
+	/** Explicaci髇 detallada de las funciones y alcances del rol. */
 	private String descripcion_roles;
 
 	/**
-	 * Constructor de la clase Rol.
+	 * Constructor para instanciar un objeto Rol con todos sus atributos.
 	 *
-	 * @param id_roles          Identificador 煤nico del rol.
-	 * @param nombre_roles      Nombre del rol.
-	 * @param descripcion_roles Descripci贸n del rol y sus permisos.
+	 * @param id_roles          Identificador num閞ico 鷑ico del rol.
+	 * @param nombre_roles      Nombre asignado al rol.
+	 * @param descripcion_roles Descripci髇 de las capacidades del rol.
 	 */
 	public Rol(int id_roles, String nombre_roles, String descripcion_roles) {
 		this.id_roles = id_roles;
@@ -29,21 +30,50 @@ public class Rol {
 	}
 
 	/**
-	 * Obtiene la descripci贸n del rol.
+	 * Devuelve la representaci髇 textual del rol.
+	 * * @return El nombre del rol, facilitando su uso en componentes de interfaz gr醘ica.
+	 */
+	@Override
+	public String toString() {
+		return nombre_roles;
+	}
+
+	// --- GETTERS Y SETTERS AL FINAL ---
+
+	/**
+	 * Obtiene la descripci髇 detallada del rol.
 	 *
-	 * @return La descripci贸n del rol.
+	 * @return Cadena de texto con la descripci髇.
 	 */
 	public String getDescripcion_roles() {
 		return descripcion_roles;
 	}
 
 	/**
-	 * Obtiene el ID del rol.
+	 * Establece una nueva descripci髇 para el rol.
+	 *
+	 * @param descripcion_roles La nueva descripci髇 a asignar.
+	 */
+	public void setDescripcion_roles(String descripcion_roles) {
+		this.descripcion_roles = descripcion_roles;
+	}
+
+	/**
+	 * Obtiene el identificador 鷑ico del rol.
 	 *
 	 * @return El ID del rol.
 	 */
 	public int getId_roles() {
 		return id_roles;
+	}
+
+	/**
+	 * Establece el identificador 鷑ico del rol.
+	 *
+	 * @param id_roles El nuevo ID num閞ico.
+	 */
+	public void setId_roles(int id_roles) {
+		this.id_roles = id_roles;
 	}
 
 	/**
@@ -56,35 +86,11 @@ public class Rol {
 	}
 
 	/**
-	 * Establece la descripci贸n del rol.
-	 *
-	 * @param descripcion_roles La nueva descripci贸n del rol.
-	 */
-	public void setDescripcion_roles(String descripcion_roles) {
-		this.descripcion_roles = descripcion_roles;
-	}
-
-	/**
-	 * Establece el ID del rol.
-	 *
-	 * @param id_roles El nuevo ID del rol.
-	 */
-	public void setId_roles(int id_roles) {
-		this.id_roles = id_roles;
-	}
-
-	/**
 	 * Establece el nombre del rol.
 	 *
-	 * @param nombre_roles El nuevo nombre del rol.
+	 * @param nombre_roles El nuevo nombre para el rol.
 	 */
 	public void setNombre_roles(String nombre_roles) {
 		this.nombre_roles = nombre_roles;
 	}
-
-	@Override
-	public String toString() {
-		return nombre_roles;
-	}
-
 }

@@ -12,11 +12,11 @@ import vista.VistaLogs;
 
 /**
  * Controlador de la vista de Logs.
- * Gestiona la visualizaci贸n, filtros y exportaci贸n de logs del sistema.
+ * Gestiona la visualizaci髇, filtros y exportaci髇 de logs del sistema.
  */
 public class ControladorLogs {
 
-	/** Conexi贸n a la base de datos. */
+	/** Conexi髇 a la base de datos. */
 	private Connection conn;
 
 	/** Vista de logs. */
@@ -28,10 +28,11 @@ public class ControladorLogs {
 	/**
 	 * Constructor del controlador de logs.
 	 *
-	 * @param conn      Conexi贸n a la base de datos.
+	 * @param conn      Conexi髇 a la base de datos.
 	 * @param vistaLogs Vista de logs.
 	 */
 	public ControladorLogs(Connection conn, VistaLogs vistaLogs) {
+		this.conn = conn;
 		this.vistaLogs = vistaLogs;
 		this.gestionLogs = new GestionLogs();
 		asignarOyenteBtnExport();
@@ -39,11 +40,11 @@ public class ControladorLogs {
 	}
 
 	/**
-	 * Carga y filtra los logs en la vista seg煤n el tipo de consulta.
-	 * Actualiza el t铆tulo de la vista seg煤n el filtro aplicado.
+	 * Carga y filtra los logs en la vista seg鷑 el tipo de consulta.
+	 * Actualiza el t韙ulo de la vista seg鷑 el filtro aplicado.
 	 *
 	 * @param consulta Tipo de filtro ("actions", "users", "dates", "results", o
-	 *                 "all").
+	 * "all").
 	 */
 	public void cargarLogs(String consulta) {
 		ArrayList<Log> logs = new ArrayList<>();
@@ -63,7 +64,6 @@ public class ControladorLogs {
 		logs = GestionLogs.consultLogs(consulta);
 
 		vistaLogs.cargarLogs(logs);
-
 	}
 
 	/**
@@ -84,11 +84,52 @@ public class ControladorLogs {
 	}
 
 	/**
-	 * Asigna los oyentes a los botones de exportaci贸n y volver.
+	 * Asigna los oyentes a los botones de exportaci髇 y volver.
 	 */
 	private void asignarOyenteBtnExport() {
 		vistaLogs.getBtnExport().addActionListener(new OyenteBtnExport(gestionLogs, vistaLogs));
-
 		vistaLogs.getBtnVolver().addActionListener(new OyenteBotonVolverLogs(vistaLogs));
+	}
+
+	// --- GETTERS Y SETTERS ---
+
+	/**
+	 * Obtiene la conexi髇 a la base de datos.
+	 * @return La conexi髇 actual.
+	 */
+	public Connection getConn() {
+		return conn;
+	}
+
+	/**
+	 * Establece la conexi髇 a la base de datos.
+	 * @param conn La nueva conexi髇.
+	 */
+	public void setConn(Connection conn) {
+		this.conn = conn;
+	}
+
+	/**
+	 * Obtiene la vista de logs.
+	 * @return El objeto VistaLogs.
+	 */
+	public VistaLogs getVistaLogs() {
+		return vistaLogs;
+	}
+
+	/**
+	 * Establece la vista de logs.
+	 * @param vistaLogs La nueva vista.
+	 */
+	public void setVistaLogs(VistaLogs vistaLogs) {
+		this.vistaLogs = vistaLogs;
+	}
+
+	/**
+	 * Obtiene el gestor de logs.
+	 * @return El objeto GestionLogs.
+	 */
+	public GestionLogs getGestionLogs() {
+		return gestionLogs;
 	}
 }

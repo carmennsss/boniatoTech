@@ -25,220 +25,258 @@ import modelo.Rol;
 import modelo.MoTextos;
 
 /**
- * Vista para la asignaciÃ³n y desasignaciÃ³n de roles a los usuarios existentes.
+ * Vista encargada de la interfaz para la asignación y desasignación de roles a
+ * los usuarios. Permite visualizar los usuarios registrados en una tabla y
+ * aplicar cambios de permisos mediante un selector de roles y botones de
+ * acción.
  */
 public class VistaAsignarRol extends JFrame {
-    /** Lista de etiquetas de texto de la interfaz. */
-    private ArrayList<JLabel> textos;
+	/** Lista de etiquetas de texto para la gestión de internacionalización. */
+	private ArrayList<JLabel> textos;
 
-    /** Lista de botones de la interfaz. */
-    private ArrayList<JButton> botones;
+	/** Lista de botones de la interfaz (Asignar, Quitar, Volver). */
+	private ArrayList<JButton> botones;
 
-    /** Panel que contiene la tabla de usuarios. */
-    private ViTabla tabla;
+	/**
+	 * Panel personalizado que contiene la tabla de usuarios y sus roles actuales.
+	 */
+	private ViTabla tabla;
 
-    /** ComboBox para seleccionar el rol a asignar. */
-    private JComboBox<Rol> comboRoles = new JComboBox<>();
+	/** Selector desplegable para elegir el rol que se desea procesar. */
+	private JComboBox<Rol> comboRoles = new JComboBox<>();
 
-    /** Imagen de fondo de la ventana. */
-    private Image imagenFondo;
+	/** Imagen de fondo para la personalización visual de la ventana. */
+	private Image imagenFondo;
 
-    /** Etiqueta para el selector de rol. */
-    private JLabel lblRol;
+	/** Etiqueta descriptiva para el componente selector de rol. */
+	private JLabel lblRol;
 
-    /** Etiqueta del tÃ­tulo de la ventana. */
-    private JLabel titulo;
+	/** Etiqueta que muestra el título principal de la ventana. */
+	private JLabel titulo;
 
-    public VistaAsignarRol() {
-        propiedades();
-    }
+	/**
+	 * Constructor que inicializa la vista y configura todos los componentes
+	 * gráficos.
+	 */
+	public VistaAsignarRol() {
+		propiedades();
+	}
 
-    private void propiedades() {
-        configurarVentana();
-        configurarFondo();
-        configurarTitulo();
-        configurarTabla();
-        configurarBotones();
-    }
+	/**
+	 * Configura las propiedades generales de la ventana y orquesta la creación de
+	 * componentes.
+	 */
+	private void propiedades() {
+		configurarVentana();
+		configurarFondo();
+		configurarTitulo();
+		configurarTabla();
+		configurarBotones();
+	}
 
-    private void configurarVentana() {
-        this.textos = new ArrayList<>();
-        this.botones = new ArrayList<>();
+	/**
+	 * Establece los parámetros básicos del JFrame (tamaño, cierre, posición).
+	 */
+	private void configurarVentana() {
+		this.textos = new ArrayList<>();
+		this.botones = new ArrayList<>();
 
-        this.setTitle(MoTextos.roles_title_assign);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1000, 650);
-        this.setLocationRelativeTo(null);
-        this.setResizable(false);
-        this.setLayout(new BorderLayout());
-    }
+		this.setTitle(MoTextos.roles_title_assign);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(1000, 650);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
+		this.setLayout(new BorderLayout());
+	}
 
-    private void configurarFondo() {
-        URL url = getClass().getResource("/fondo_abstracto_2.png");
-        if (url != null) {
-            imagenFondo = new ImageIcon(url).getImage();
-        }
+	/**
+	 * Carga la imagen de fondo y configura el panel principal con renderizado de
+	 * alta calidad.
+	 */
+	private void configurarFondo() {
+		URL url = getClass().getResource("/fondo_abstracto_2.png");
+		if (url != null) {
+			imagenFondo = new ImageIcon(url).getImage();
+		}
 
-        JPanel panelFondo = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                if (imagenFondo != null) {
-                    int width = getWidth();
-                    int height = getHeight();
-                    g.drawImage(imagenFondo, 0, 0, width, height, this);
-                } else {
-                    g.setColor(Estilos.FONDO_PRINCIPAL);
-                    g.fillRect(0, 0, getWidth(), getHeight());
-                }
-            }
-        };
-        panelFondo.setLayout(new BorderLayout(20, 20));
-        panelFondo.setBorder(new EmptyBorder(20, 20, 20, 20));
-        this.setContentPane(panelFondo);
-    }
+		JPanel panelFondo = new JPanel() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				if (imagenFondo != null) {
+					Graphics2D g2d = (Graphics2D) g;
+					g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+					g2d.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
+				} else {
+					g.setColor(Estilos.FONDO_PRINCIPAL);
+					g.fillRect(0, 0, getWidth(), getHeight());
+				}
+			}
+		};
+		panelFondo.setLayout(new BorderLayout(20, 20));
+		panelFondo.setBorder(new EmptyBorder(20, 20, 20, 20));
+		this.setContentPane(panelFondo);
+	}
 
-    private void configurarTitulo() {
-        titulo = new JLabel(MoTextos.roles_title_assign);
-        titulo.setFont(Estilos.FONT_TITULO);
-        titulo.setForeground(Estilos.DARK_SPRUCE);
-        titulo.setHorizontalAlignment(SwingConstants.CENTER);
-        this.textos.add(titulo);
+	/**
+	 * Configura la parte superior de la ventana con el título estilizado.
+	 */
+	private void configurarTitulo() {
+		titulo = new JLabel(MoTextos.roles_title_assign);
+		titulo.setFont(Estilos.FONT_TITULO);
+		titulo.setForeground(Estilos.DARK_SPRUCE);
+		titulo.setHorizontalAlignment(SwingConstants.CENTER);
+		this.textos.add(titulo);
 
-        JPanel panelTitulo = new JPanel(new FlowLayout(FlowLayout.CENTER)) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(new Color(255, 255, 255, 200));
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
-                g2.dispose();
-                super.paintComponent(g);
-            }
-        };
-        panelTitulo.setOpaque(false);
-        panelTitulo.setBorder(new EmptyBorder(10, 20, 10, 20));
-        panelTitulo.add(titulo);
-        getContentPane().add(panelTitulo, BorderLayout.NORTH);
-    }
+		JPanel panelTitulo = new JPanel(new FlowLayout(FlowLayout.CENTER)) {
+			@Override
+			protected void paintComponent(Graphics g) {
+				Graphics2D g2 = (Graphics2D) g.create();
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setColor(new Color(255, 255, 255, 200));
+				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+				g2.dispose();
+				super.paintComponent(g);
+			}
+		};
+		panelTitulo.setOpaque(false);
+		panelTitulo.setBorder(new EmptyBorder(10, 20, 10, 20));
+		panelTitulo.add(titulo);
+		getContentPane().add(panelTitulo, BorderLayout.NORTH);
+	}
 
-    private void configurarTabla() {
-        this.tabla = new ViTabla();
+	/**
+	 * Configura la sección central donde se ubica la tabla de datos de usuarios.
+	 */
+	private void configurarTabla() {
+		this.tabla = new ViTabla();
 
-        JPanel panelTablaContenedor = new JPanel(new BorderLayout()) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(new Color(255, 255, 255, 180));
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
-                g2.dispose();
-            }
-        };
-        panelTablaContenedor.setOpaque(false);
-        panelTablaContenedor.setBorder(new EmptyBorder(20, 20, 20, 20));
+		JPanel panelTablaContenedor = new JPanel(new BorderLayout()) {
+			@Override
+			protected void paintComponent(Graphics g) {
+				Graphics2D g2 = (Graphics2D) g.create();
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setColor(new Color(255, 255, 255, 180));
+				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+				g2.dispose();
+			}
+		};
+		panelTablaContenedor.setOpaque(false);
+		panelTablaContenedor.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        this.tabla.setOpaque(false);
-        panelTablaContenedor.add(this.tabla, BorderLayout.CENTER);
-        getContentPane().add(panelTablaContenedor, BorderLayout.CENTER);
-    }
+		this.tabla.setOpaque(false);
+		panelTablaContenedor.add(this.tabla, BorderLayout.CENTER);
+		getContentPane().add(panelTablaContenedor, BorderLayout.CENTER);
+	}
 
-    private void configurarBotones() {
-        JPanel panelSur = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        panelSur.setOpaque(false);
+	/**
+	 * Configura la barra inferior de herramientas con el combo de roles y botones
+	 * de acción.
+	 */
+	private void configurarBotones() {
+		JPanel panelSur = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+		panelSur.setOpaque(false);
 
-        this.comboRoles.setFont(Estilos.FONT_TEXTO);
-        this.comboRoles.setPreferredSize(new Dimension(200, 35));
+		this.comboRoles.setFont(Estilos.FONT_TEXTO);
+		this.comboRoles.setPreferredSize(new Dimension(200, 35));
 
-        JButton btnAsignar = new JButton(MoTextos.roles_btn_assign);
-        JButton btnDesasignar = new JButton(MoTextos.btn_unassign);
-        JButton btnVolver = new JButton(MoTextos.btn_back_whitelist);
+		JButton btnAsignar = new JButton(MoTextos.roles_btn_assign);
+		JButton btnDesasignar = new JButton(MoTextos.btn_unassign);
+		JButton btnVolver = new JButton(MoTextos.btn_back_whitelist);
 
-        estilarBoton(btnAsignar, Estilos.COLOR_BOTON_MENU);
-        estilarBoton(btnDesasignar, Estilos.BLUE_SLATE);
-        estilarBoton(btnVolver, new Color(200, 100, 100));
+		estilarBoton(btnAsignar, Estilos.COLOR_BOTON_MENU);
+		estilarBoton(btnDesasignar, Estilos.BLUE_SLATE);
+		estilarBoton(btnVolver, new Color(200, 100, 100));
 
-        this.botones.add(btnAsignar);
-        this.botones.add(btnDesasignar);
-        this.botones.add(btnVolver);
+		this.botones.add(btnAsignar);
+		this.botones.add(btnDesasignar);
+		this.botones.add(btnVolver);
 
-        lblRol = new JLabel(MoTextos.roles_lbl_role);
-        lblRol.setFont(Estilos.FONT_BOTON);
-        lblRol.setForeground(Estilos.COLOR_LABEL);
+		lblRol = new JLabel(MoTextos.roles_lbl_role);
+		lblRol.setFont(Estilos.FONT_BOTON);
+		lblRol.setForeground(Estilos.COLOR_LABEL);
 
-        panelSur.add(lblRol);
-        panelSur.add(this.comboRoles);
-        panelSur.add(btnAsignar);
-        panelSur.add(btnDesasignar);
-        panelSur.add(btnVolver);
+		panelSur.add(lblRol);
+		panelSur.add(this.comboRoles);
+		panelSur.add(btnAsignar);
+		panelSur.add(btnDesasignar);
+		panelSur.add(btnVolver);
 
-        getContentPane().add(panelSur, BorderLayout.SOUTH);
-    }
+		getContentPane().add(panelSur, BorderLayout.SOUTH);
+	}
 
-    /**
-     * Actualiza los textos de la interfaz segÃºn el idioma seleccionado.
-     */
-    public void actualizarTextos() {
-        this.setTitle(MoTextos.roles_title_assign);
-        titulo.setText(MoTextos.roles_title_assign);
-        botones.get(0).setText(MoTextos.roles_btn_assign);
-        botones.get(1).setText(MoTextos.btn_unassign);
-        botones.get(2).setText(MoTextos.btn_back_whitelist);
-        lblRol.setText(MoTextos.roles_lbl_role);
-        repaint();
-    }
+	/**
+	 * Aplica el diseño unificado a los botones de la interfaz.
+	 * 
+	 * @param btn     El botón a estilar.
+	 * @param bgColor El color de fondo del botón.
+	 */
+	private void estilarBoton(JButton btn, Color bgColor) {
+		btn.setFont(Estilos.FONT_BOTON);
+		btn.setBackground(bgColor);
+		btn.setForeground(Color.WHITE);
+		btn.setFocusPainted(false);
+		btn.setBorderPainted(false);
+		btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btn.setPreferredSize(new Dimension(150, 40));
+	}
 
-    private void estilarBoton(JButton btn, Color bgColor) {
-        btn.setFont(Estilos.FONT_BOTON);
-        btn.setBackground(bgColor);
-        btn.setForeground(Color.WHITE);
-        btn.setFocusPainted(false);
-        btn.setBorderPainted(false);
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btn.setPreferredSize(new Dimension(150, 40));
-    }
+	/**
+	 * Actualiza los textos de la interfaz según el idioma seleccionado en la
+	 * aplicación.
+	 */
+	public void actualizarTextos() {
+		this.setTitle(MoTextos.roles_title_assign);
+		titulo.setText(MoTextos.roles_title_assign);
+		botones.get(0).setText(MoTextos.roles_btn_assign);
+		botones.get(1).setText(MoTextos.btn_unassign);
+		botones.get(2).setText(MoTextos.btn_back_whitelist);
+		lblRol.setText(MoTextos.roles_lbl_role);
+		repaint();
+	}
 
-    /**
-     * Obtiene el panel que contiene la tabla de usuarios.
-     * 
-     * @return Panel de la tabla.
-     */
-    public ViTabla getTabla() {
-        return this.tabla;
-    }
+	// --- GETTERS Y SETTERS AL FINAL ---
 
-    /**
-     * Obtiene la lista de botones.
-     * 
-     * @return Lista de botones.
-     */
-    public ArrayList<JButton> getBotones() {
-        return botones;
-    }
+	/**
+	 * Obtiene el componente de tabla personalizado.
+	 * 
+	 * @return El objeto ViTabla.
+	 */
+	public ViTabla getTabla() {
+		return this.tabla;
+	}
 
-    /**
-     * Establece el panel de tabla.
-     * 
-     * @param tabla Nuevo panel de tabla.
-     */
-    public void setTabla(ViTabla tabla) {
-        this.tabla = tabla;
-    }
+	/**
+	 * Establece un nuevo componente de tabla.
+	 * 
+	 * @param tabla El objeto ViTabla a asignar.
+	 */
+	public void setTabla(ViTabla tabla) {
+		this.tabla = tabla;
+	}
 
-    /**
-     * Obtiene el combo box de roles.
-     * 
-     * @return Combo box de roles.
-     */
-    public JComboBox<Rol> getComboRoles() {
-        return this.comboRoles;
-    }
+	/**
+	 * Obtiene la lista de botones de acción.
+	 * 
+	 * @return ArrayList de botones.
+	 */
+	public ArrayList<JButton> getBotones() {
+		return botones;
+	}
 
-    /**
-     * Hace visible la tabla.
-     */
-    public void hacerVisible() {
-        this.tabla.setVisible(true);
-    }
+	/**
+	 * Obtiene el selector desplegable de roles.
+	 * 
+	 * @return El objeto JComboBox con objetos de tipo Rol.
+	 */
+	public JComboBox<Rol> getComboRoles() {
+		return this.comboRoles;
+	}
 
+	/**
+	 * Muestra la ventana y asegura que sus componentes internos sean visibles.
+	 */
+	public void hacerVisible() {
+		this.setVisible(true);
+	}
 }

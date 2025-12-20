@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 import vista.VistaLogs;
 
 /**
- * Oyente para el botÃ³n "Volver" en la vista de logs.
- * Cierra la ventana actual y reabre el menÃº de administrador.
+ * Oyente para el botón "Volver" en la vista de logs.
+ * Cierra la ventana actual y reabre el menú de administrador.
  */
 public class OyenteBotonVolverLogs implements ActionListener {
 
@@ -26,7 +26,7 @@ public class OyenteBotonVolverLogs implements ActionListener {
 	/**
 	 * Cierra la vista de logs y hace visible la vista de administrador.
 	 *
-	 * @param e Evento de acciÃ³n.
+	 * @param e Evento de acción.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -34,6 +34,24 @@ public class OyenteBotonVolverLogs implements ActionListener {
 		if (vistaLogs.getVistaAdmin() != null) {
 			vistaLogs.getVistaAdmin().setVisible(true);
 		}
+	}
+
+	// --- GETTERS Y SETTERS ---
+
+	/**
+	 * Obtiene la vista de logs asociada.
+	 * @return El objeto VistaLogs.
+	 */
+	public VistaLogs getVistaLogs() {
+		return vistaLogs;
+	}
+
+	/**
+	 * Establece la vista de logs asociada.
+	 * @param vistaLogs La nueva vista de logs.
+	 */
+	public void setVistaLogs(VistaLogs vistaLogs) {
+		this.vistaLogs = vistaLogs;
 	}
 
 }

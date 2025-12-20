@@ -16,37 +16,38 @@ import org.apache.commons.net.ftp.FTPFile;
 import modelo.MoTextos;
 
 /**
- * Gestor de archivos que utiliza FTP para realizar operaciones de
- * transferencia.
- * Encapsula la librerÃ­a FTPClient de Apache Commons Net.
+ * Gestor de archivos que utiliza el protocolo FTP para realizar operaciones de 
+ * transferencia y administración de ficheros en un servidor remoto.
+ * Encapsula la lógica de la librería Apache Commons Net para facilitar 
+ * operaciones de subida, descarga, borrado y renombrado.
  */
 public class FileManager {
 
-	/** Cliente FTP para las operaciones de transferencia. */
+	/** Cliente FTP para gestionar la comunicación con el servidor. */
 	private FTPClient ftpClient;
 
-	/** DirecciÃ³n del servidor FTP. */
+	/** Dirección IP o nombre de dominio del servidor FTP. */
 	private String servidor;
 
-	/** Puerto del servidor FTP. */
+	/** Puerto de escucha del servicio FTP (habitualmente 21). */
 	private int puerto;
 
-	/** Nombre de usuario para la conexiÃ³n FTP. */
+	/** Credencial de usuario para la autenticación. */
 	private String usuario;
 
-	/** ContraseÃ±a para la conexiÃ³n FTP. */
+	/** Credencial de contraseña para la autenticación. */
 	private String contrasena;
 
 	/**
-	 * Constructor que inicializa el gestor de archivos FTP.
+	 * Constructor principal que inicializa las credenciales y el cliente FTP.
 	 *
-	 * @param servidor   DirecciÃ³n del servidor FTP.
-	 * @param puerto     Puerto del servidor FTP.
-	 * @param usuario    Nombre de usuario para la conexiÃ³n.
-	 * @param contrasena ContraseÃ±a para la conexiÃ³n.
+	 * @param servidor   Dirección del servidor remoto.
+	 * @param puerto     Puerto de conexión.
+	 * @param usuario    Nombre de usuario para el acceso.
+	 * @param contrasena Contraseña asociada al usuario.
 	 */
 	public FileManager(String servidor, int puerto, String usuario, String contrasena) {
-		ftpClient = new FTPClient();
+		this.ftpClient = new FTPClient();
 		this.servidor = servidor;
 		this.puerto = puerto;
 		this.usuario = usuario;
@@ -54,15 +55,15 @@ public class FileManager {
 	}
 
 	/**
-	 * Borra un archivo del servidor FTP.
+	 * Elimina un archivo específico del servidor FTP tras una confirmación del usuario.
 	 *
-	 * @param select     Archivo FTP a borrar.
-	 * @param rutaActual Directorio donde se encuentra el archivo.
+	 * @param select     El objeto FTPFile que representa el archivo a borrar.
+	 * @param rutaActual El directorio remoto donde se encuentra el archivo.
 	 */
 	public void borrarArchivo(FTPFile select, String rutaActual) {
 		String rutaCompleta;
 		if (!this.conectar()) {
-			JOptionPane.showMessageDialog(null, "Could not connect to the server", "Error",
+			JOptionPane.showMessageDialog(null, MoTextos.msg_connection_error, MoTextos.msg_error_title,
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -80,27 +81,23 @@ public class FileManager {
 			} catch (IOException el) {
 				el.printStackTrace();
 			}
-
 		}
 		this.desconectar();
 	}
 
 	/**
-	 * Elimina una carpeta del servidor FTP.
+	 * Elimina un directorio del servidor. Solo tendrá éxito si el directorio está vacío.
 	 *
-	 * @param nombreCarpeta Nombre de la carpeta a borrar.
-	 * @param rutaActual    Ruta donde se encuentra la carpeta.
+	 * @param nombreCarpeta Nombre de la carpeta a eliminar.
+	 * @param rutaActual    Ruta del directorio padre en el servidor.
 	 */
 	public void borrarCarpeta(String nombreCarpeta, String rutaActual) {
-
 		String rutaCompleta;
-
 		if (!this.conectar()) {
-			JOptionPane.showMessageDialog(null, "Could not connect to the server", "Error",
+			JOptionPane.showMessageDialog(null, MoTextos.msg_connection_error, MoTextos.msg_error_title,
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-
 		rutaCompleta = rutaActual;
 		if (!rutaCompleta.endsWith("/")) {
 			rutaCompleta += "/";
@@ -108,55 +105,50 @@ public class FileManager {
 		rutaCompleta += nombreCarpeta;
 
 		int confirmacion = JOptionPane.showConfirmDialog(null, MoTextos.msg_confirm_delete_folder,
-				"Confirm deletion", JOptionPane.OK_CANCEL_OPTION);
+				MoTextos.msg_confirm_title, JOptionPane.OK_CANCEL_OPTION);
 
 		if (confirmacion == JOptionPane.OK_OPTION) {
 			try {
 				boolean borrada = ftpClient.removeDirectory(rutaCompleta);
-
 				if (!borrada) {
 					JOptionPane.showMessageDialog(null,
 							nombreCarpeta + " => " + MoTextos.msg_could_not_delete + "\n"
 									+ MoTextos.msg_folder_not_empty,
-							"Error", JOptionPane.ERROR_MESSAGE);
+							MoTextos.msg_error_title, JOptionPane.ERROR_MESSAGE);
 				}
-
 			} catch (IOException e) {
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error deleting the folder:\n" + e.getMessage(), "Error",
-						JOptionPane.ERROR_MESSAGE);
 			}
 		}
-
 		this.desconectar();
 	}
 
 	/**
-	 * Establece la conexiÃ³n y realiza el login con el servidor FTP.
+	 * Establece la conexión física con el servidor y realiza la autenticación.
 	 *
-	 * @return true si la conexiÃ³n y login fueron exitosos, false en caso contrario.
+	 * @return true si la conexión y el login fueron exitosos; false en caso contrario.
 	 */
 	public boolean conectar() {
 		try {
 			this.ftpClient.connect(this.servidor, this.puerto);
 			return this.ftpClient.login(this.usuario, this.contrasena);
 		} catch (IOException e) {
-			System.out.println("Could not connect to the server");
+			System.err.println("Error de conexión: " + e.getMessage());
 			return false;
 		}
 	}
 
 	/**
-	 * Crea un nuevo directorio en el servidor FTP.
+	 * Crea un nuevo directorio en la ruta especificada del servidor.
 	 *
-	 * @param nombreCarpeta Nombre de la nueva carpeta.
-	 * @param rutaActual    Ruta donde se crearÃ¡ la carpeta.
+	 * @param nombreCarpeta Nombre que se le asignará a la nueva carpeta.
+	 * @param rutaActual    Ruta remota donde se creará el directorio.
 	 */
 	public void crearCarpeta(String nombreCarpeta, String rutaActual) {
 		String rutaCompleta;
 		try {
 			if (!this.conectar()) {
-				JOptionPane.showMessageDialog(null, "Could not connect to the server", "Error",
+				JOptionPane.showMessageDialog(null, MoTextos.msg_connection_error, MoTextos.msg_error_title,
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
@@ -165,11 +157,11 @@ public class FileManager {
 				rutaCompleta += "/";
 			}
 			if (ftpClient.makeDirectory(rutaCompleta + nombreCarpeta)) {
-				JOptionPane.showMessageDialog(null, "Folder created successfully.", "",
+				JOptionPane.showMessageDialog(null, MoTextos.msg_folder_created, MoTextos.msg_success_title,
 						JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				JOptionPane.showMessageDialog(null, nombreCarpeta + " => " + MoTextos.msg_could_not_create, "Error",
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, nombreCarpeta + " => " + MoTextos.msg_could_not_create, 
+						MoTextos.msg_error_title, JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (IOException el) {
 			el.printStackTrace();
@@ -178,11 +170,11 @@ public class FileManager {
 	}
 
 	/**
-	 * Descarga un archivo del servidor FTP al sistema local.
+	 * Descarga un archivo del servidor remoto al sistema de archivos local.
 	 *
-	 * @param select     Archivo FTP seleccionado para descarga.
-	 * @param rutaLocal  Ruta del directorio local destino.
-	 * @param rutaActual Ruta del directorio actual en el FTP.
+	 * @param select     Archivo FTP origen.
+	 * @param rutaLocal  Directorio de destino en el PC del usuario.
+	 * @param rutaActual Directorio de origen en el servidor FTP.
 	 */
 	public void descargarArchivo(FTPFile select, String rutaLocal, String rutaActual) {
 		BufferedOutputStream out;
@@ -191,7 +183,7 @@ public class FileManager {
 		boolean exito = false;
 		try {
 			if (!this.conectar()) {
-				JOptionPane.showMessageDialog(null, "Could not connect to the server", "Error",
+				JOptionPane.showMessageDialog(null, MoTextos.msg_connection_error, MoTextos.msg_error_title,
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
@@ -205,25 +197,21 @@ public class FileManager {
 			exito = this.ftpClient.retrieveFile(rutaCompleta, out);
 			out.close();
 			if (exito) {
-				JOptionPane.showMessageDialog(null, "File downloaded successfully.", "",
+				JOptionPane.showMessageDialog(null, MoTextos.msg_download_success, MoTextos.msg_success_title,
 						JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				JOptionPane.showMessageDialog(null, "Error downloading the file.", "Error",
+				JOptionPane.showMessageDialog(null, MoTextos.msg_download_error, MoTextos.msg_error_title,
 						JOptionPane.ERROR_MESSAGE);
 				archivoLocal.delete();
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Input/output error: " + e.getMessage(), "Error",
-					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
 		}
-
 		this.desconectar();
 	}
 
 	/**
-	 * Cierra la sesiÃ³n y desconecta del servidor FTP.
+	 * Cierra la sesión activa del usuario y desconecta el cliente del servidor de forma segura.
 	 */
 	public void desconectar() {
 		try {
@@ -237,19 +225,10 @@ public class FileManager {
 	}
 
 	/**
-	 * Obtiene el nombre de usuario configurado para la conexiÃ³n FTP.
+	 * Obtiene un listado de los archivos y carpetas contenidos en una ruta remota.
 	 *
-	 * @return El nombre de usuario.
-	 */
-	public String getUserName() {
-		return usuario;
-	}
-
-	/**
-	 * Lista los archivos y carpetas en un directorio del servidor FTP.
-	 *
-	 * @param ruta Ruta del directorio a listar.
-	 * @return Array de objetos FTPFile con la informaciÃ³n de los archivos.
+	 * @param ruta Directorio a explorar.
+	 * @return Un array de objetos FTPFile con la información del contenido.
 	 */
 	public FTPFile[] listarArchivos(String ruta) {
 		try {
@@ -261,60 +240,41 @@ public class FileManager {
 	}
 
 	/**
-	 * Renombra un archivo o carpeta en el servidor FTP.
+	 * Cambia el nombre de un archivo o directorio en el servidor remoto.
 	 *
-	 * @param archivoSeleccionado Archivo FTP a renombrar.
-	 * @param nuevoNombre         Nuevo nombre para el archivo.
-	 * @param rutaActual          Ruta donde se encuentra el archivo.
+	 * @param archivoSeleccionado Objeto que representa el archivo actual.
+	 * @param nuevoNombre         Nombre de destino.
+	 * @param rutaActual          Ruta remota donde reside el archivo.
 	 */
 	public void renombrar(FTPFile archivoSeleccionado, String nuevoNombre, String rutaActual) {
 		if (!this.conectar()) {
-			JOptionPane.showMessageDialog(null, "Could not connect to the server", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MoTextos.msg_connection_error, MoTextos.msg_error_title, 
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		String rutaVieja = rutaActual + (rutaActual.endsWith("/") ? "" : "/") + archivoSeleccionado.getName();
+		String rutaNueva = rutaActual + (rutaActual.endsWith("/") ? "" : "/") + nuevoNombre;
 
-		String rutaVieja = rutaActual;
-		if (!rutaVieja.endsWith("/")) {
-			rutaVieja += "/";
-		}
-		rutaVieja += archivoSeleccionado.getName();
-
-		String rutaNueva = rutaActual;
-		if (!rutaNueva.endsWith("/")) {
-			rutaNueva += "/";
-		}
-		rutaNueva += nuevoNombre;
-
-		int confirmacion = JOptionPane.showConfirmDialog(null,
-				"Do you want to rename the file '" + archivoSeleccionado.getName() + "' to '" + nuevoNombre + "'?",
-				"Confirm Rename", JOptionPane.OK_CANCEL_OPTION);
-
-		if (confirmacion == JOptionPane.OK_OPTION) {
-			try {
-				boolean exito = ftpClient.rename(rutaVieja, rutaNueva);
-				if (exito) {
-					JOptionPane.showMessageDialog(null, "File renamed successfully.", "",
-							JOptionPane.INFORMATION_MESSAGE);
-				} else {
-					JOptionPane.showMessageDialog(null, "Could not rename the file.", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Error renaming the file: " + e.getMessage(), "Error",
+		try {
+			if (ftpClient.rename(rutaVieja, rutaNueva)) {
+				JOptionPane.showMessageDialog(null, MoTextos.msg_updated_ok, MoTextos.msg_success_title,
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, MoTextos.msg_update_error, MoTextos.msg_error_title,
 						JOptionPane.ERROR_MESSAGE);
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-
 		this.desconectar();
 	}
 
 	/**
-	 * Sube un archivo local al servidor FTP.
+	 * Transfiere un archivo desde el sistema local al servidor remoto.
 	 *
-	 * @param archivo       Ruta absoluta del archivo local.
-	 * @param nombreArchivo Nombre del archivo.
-	 * @param rutaActual    Directorio destino en el servidor FTP.
+	 * @param archivo       Ruta absoluta del archivo local a subir.
+	 * @param nombreArchivo Nombre que tendrá el archivo en el servidor.
+	 * @param rutaActual    Ruta remota de destino.
 	 */
 	public void subirArchivo(String archivo, String nombreArchivo, String rutaActual) {
 		BufferedInputStream in;
@@ -322,31 +282,112 @@ public class FileManager {
 		try {
 			in = new BufferedInputStream(new FileInputStream(archivo));
 			if (!this.conectar()) {
-				JOptionPane.showMessageDialog(null, "Could not connect to the server", "Error",
+				JOptionPane.showMessageDialog(null, MoTextos.msg_connection_error, MoTextos.msg_error_title,
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-
-			rutaCompleta = rutaActual;
-			if (!rutaActual.endsWith("/")) {
-				rutaCompleta += "/";
-			}
-			rutaCompleta += nombreArchivo;
-
+			rutaCompleta = rutaActual + (rutaActual.endsWith("/") ? "" : "/") + nombreArchivo;
 			if (this.ftpClient.storeFile(rutaCompleta, in)) {
-				JOptionPane.showMessageDialog(null, "File uploaded successfully.", "",
+				JOptionPane.showMessageDialog(null, MoTextos.msg_upload_success, MoTextos.msg_success_title,
 						JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				JOptionPane.showMessageDialog(null, "Error uploading the file.", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, MoTextos.msg_upload_error, MoTextos.msg_error_title, 
+						JOptionPane.ERROR_MESSAGE);
 			}
 			in.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Input/output error: " + e.getMessage(), "Error",
-					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
 		}
 		this.desconectar();
 	}
 
+	// --- GETTERS Y SETTERS ---
+
+	/**
+	 * Obtiene el nombre de usuario configurado para la conexión.
+	 * @return El nombre de usuario (String).
+	 */
+	public String getUserName() {
+		return usuario;
+	}
+
+	/**
+	 * Obtiene la instancia del cliente FTP de Apache Commons.
+	 * @return El objeto FTPClient utilizado internamente.
+	 */
+	public FTPClient getFtpClient() {
+		return ftpClient;
+	}
+
+	/**
+	 * Establece una nueva instancia para el cliente FTP.
+	 * @param ftpClient El nuevo objeto FTPClient.
+	 */
+	public void setFtpClient(FTPClient ftpClient) {
+		this.ftpClient = ftpClient;
+	}
+
+	/**
+	 * Obtiene la dirección o host del servidor FTP.
+	 * @return La dirección del servidor.
+	 */
+	public String getServidor() {
+		return servidor;
+	}
+
+	/**
+	 * Establece la dirección o host del servidor FTP.
+	 * @param servidor El host del servidor remoto.
+	 */
+	public void setServidor(String servidor) {
+		this.servidor = servidor;
+	}
+
+	/**
+	 * Obtiene el puerto de conexión al servidor FTP.
+	 * @return El puerto configurado (int).
+	 */
+	public int getPuerto() {
+		return puerto;
+	}
+
+	/**
+	 * Establece el puerto de conexión al servidor FTP.
+	 * @param puerto El nuevo número de puerto.
+	 */
+	public void setPuerto(int puerto) {
+		this.puerto = puerto;
+	}
+
+	/**
+	 * Obtiene el nombre del usuario configurado para la autenticación.
+	 * @return El nombre de usuario.
+	 */
+	public String getUsuario() {
+		return usuario;
+	}
+
+	/**
+	 * Establece el nombre de usuario para la autenticación en el servidor.
+	 * @param usuario El nuevo nombre de usuario.
+	 */
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	/**
+	 * Obtiene la contraseña configurada para la autenticación.
+	 * @return La contraseña (String).
+	 */
+	public String getContrasena() {
+		return contrasena;
+	}
+
+	/**
+	 * Establece la contraseña para la autenticación en el servidor.
+	 * @param contrasena La nueva contraseña.
+	 */
+	public void setContrasena(String contrasena) {
+		this.contrasena = contrasena;
+	}
 }

@@ -9,8 +9,8 @@ import javax.swing.JList;
 import javax.swing.border.EmptyBorder;
 
 /**
- * Renderizador personalizado para el ComboBox de selecci√≥n de idioma.
- * Permite mostrar iconos (banderas) junto con el comportamiento de selecci√≥n.
+ * Renderizador personalizado para el ComboBox de selecciÛn de idioma.
+ * Permite mostrar iconos (banderas) junto con el comportamiento de selecciÛn.
  */
 public class RenderComboIdioma extends DefaultListCellRenderer {
 
@@ -19,8 +19,8 @@ public class RenderComboIdioma extends DefaultListCellRenderer {
      *
      * @param list         Lista que contiene los elementos.
      * @param value        Valor del elemento actual.
-     * @param index        √çndice del elemento.
-     * @param isSelected   Indica si el elemento est√° seleccionado.
+     * @param index        Õndice del elemento.
+     * @param isSelected   Indica si el elemento est· seleccionado.
      * @param cellHasFocus Indica si la celda tiene el foco.
      * @return Componente renderizado para la celda.
      */

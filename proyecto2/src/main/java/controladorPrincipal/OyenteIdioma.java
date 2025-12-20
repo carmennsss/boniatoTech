@@ -6,38 +6,58 @@ import javax.swing.JComboBox;
 import modelo.MoTextos;
 
 /**
- * Oyente para el cambio de idioma a trav茅s del ComboBox en la interfaz.
+ * Oyente para el cambio de idioma a trav閟 del ComboBox en la interfaz.
  * Detecta cuando el usuario selecciona un nuevo idioma y actualiza todas las
  * vistas.
  */
 public class OyenteIdioma implements ActionListener {
 
-    /** Controlador principal de la aplicaci贸n. */
-    private CoPrincipal coPrincipal;
+	/** Controlador principal de la aplicaci髇. */
+	private CoPrincipal coPrincipal;
 
-    /**
-     * Constructor del oyente de idioma.
-     *
-     * @param coPrincipal Controlador principal de la aplicaci贸n.
-     */
-    public OyenteIdioma(CoPrincipal coPrincipal) {
-        this.coPrincipal = coPrincipal;
-    }
+	/**
+	 * Constructor del oyente de idioma.
+	 *
+	 * @param coPrincipal Controlador principal de la aplicaci髇.
+	 */
+	public OyenteIdioma(CoPrincipal coPrincipal) {
+		this.coPrincipal = coPrincipal;
+	}
 
-    /**
-     * Detecta la selecci贸n de un nuevo idioma y actualiza la configuraci贸n global.
-     *
-     * @param e El evento de acci贸n.
-     */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        JComboBox<?> combo = (JComboBox<?>) e.getSource();
-        int index = combo.getSelectedIndex();
+	/**
+	 * Detecta la selecci髇 de un nuevo idioma y actualiza la configuraci髇 global.
+	 *
+	 * @param e El evento de acci髇.
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JComboBox<?> combo = (JComboBox<?>) e.getSource();
+		int index = combo.getSelectedIndex();
 
-        MoTextos.setIdioma(index);
+		// Actualiza el 韓dice del idioma en el modelo de textos
+		MoTextos.setIdioma(index);
 
-        coPrincipal.actualizarIdiomaGlobal();
+		// Notifica al controlador principal para refrescar todas las vistas
+		coPrincipal.actualizarIdiomaGlobal();
 
-        System.out.println("Language switched to: " + (index == 0 ? "English" : "Spanish"));
-    }
+		System.out.println("Language switched to: " + (index == 0 ? "English" : "Spanish"));
+	}
+
+	// --- GETTERS Y SETTERS ---
+
+	/**
+	 * Obtiene el controlador principal asociado.
+	 * @return El objeto CoPrincipal.
+	 */
+	public CoPrincipal getCoPrincipal() {
+		return coPrincipal;
+	}
+
+	/**
+	 * Establece el controlador principal asociado.
+	 * @param coPrincipal El nuevo controlador principal.
+	 */
+	public void setCoPrincipal(CoPrincipal coPrincipal) {
+		this.coPrincipal = coPrincipal;
+	}
 }

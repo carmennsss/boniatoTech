@@ -7,7 +7,7 @@ import modelo.Correo;
 import vista.VistaCorreoBase;
 
 /**
- * Oyente del bot贸n "Exportar" en la vista de lectura de correos.
+ * Oyente del bot髇 "Exportar" en la vista de lectura de correos.
  * Exporta el correo seleccionado a formato .eml.
  */
 public class OyenteExportarCorreo implements ActionListener {
@@ -18,7 +18,7 @@ public class OyenteExportarCorreo implements ActionListener {
 	/** Vista de lectura del correo. */
 	private VistaCorreoBase vista;
 
-	/** Direcci贸n de correo del usuario. */
+	/** Direcci髇 de correo del usuario. */
 	private String correoUsuario;
 
 	/**
@@ -26,7 +26,7 @@ public class OyenteExportarCorreo implements ActionListener {
 	 *
 	 * @param correo        Correo a exportar.
 	 * @param vistaLectura  Vista de lectura del correo.
-	 * @param correoUsuario Direcci贸n de correo del usuario.
+	 * @param correoUsuario Direcci髇 de correo del usuario.
 	 */
 	public OyenteExportarCorreo(Correo correo, VistaCorreoBase vistaLectura, String correoUsuario) {
 		this.correo = correo;
@@ -35,10 +35,10 @@ public class OyenteExportarCorreo implements ActionListener {
 	}
 
 	/**
-	 * Exporta el correo seleccionado a un archivo .eml en la ubicaci贸n elegida por
+	 * Exporta el correo seleccionado a un archivo .eml en la ubicaci髇 elegida por
 	 * el usuario.
 	 *
-	 * @param e Evento de acci贸n.
+	 * @param e Evento de acci髇.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -72,4 +72,53 @@ public class OyenteExportarCorreo implements ActionListener {
 		}
 	}
 
+	// --- GETTERS Y SETTERS ---
+
+	/**
+	 * Obtiene el correo a exportar.
+	 * @return El objeto Correo.
+	 */
+	public Correo getCorreo() {
+		return correo;
+	}
+
+	/**
+	 * Establece el correo a exportar.
+	 * @param correo El nuevo objeto Correo.
+	 */
+	public void setCorreo(Correo correo) {
+		this.correo = correo;
+	}
+
+	/**
+	 * Obtiene la vista de lectura asociada.
+	 * @return La vista de correo base.
+	 */
+	public VistaCorreoBase getVista() {
+		return vista;
+	}
+
+	/**
+	 * Establece la vista de lectura asociada.
+	 * @param vista La nueva vista.
+	 */
+	public void setVista(VistaCorreoBase vista) {
+		this.vista = vista;
+	}
+
+	/**
+	 * Obtiene la direcci髇 de correo del usuario.
+	 * @return El correo del usuario.
+	 */
+	public String getCorreoUsuario() {
+		return correoUsuario;
+	}
+
+	/**
+	 * Establece la direcci髇 de correo del usuario.
+	 * @param correoUsuario El nuevo correo.
+	 */
+	public void setCorreoUsuario(String correoUsuario) {
+		this.correoUsuario = correoUsuario;
+	}
 }

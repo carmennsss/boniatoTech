@@ -14,23 +14,23 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Oyente que maneja los eventos de la vista CRUD (botones de menÃº de tablas y
- * botones de acciÃ³n nuevo/actualizar).
+ * Oyente que maneja los eventos de la vista CRUD (botones de menú de tablas y
+ * botones de acción nuevo/actualizar).
  */
 public class OyenteCRUD implements ActionListener {
-    /** Controlador principal de la aplicaciÃ³n. */
+    /** Controlador principal de la aplicación. */
     private CoPrincipal controlador;
 
     /** Vista CRUD principal. */
     private VistaCRUD vistaCRUD;
 
-    /** Vista del formulario de ediciÃ³n. */
+    /** Vista del formulario de edición. */
     private ViFormulario viFormulario;
 
-    /** Vista del menÃº principal. */
+    /** Vista del menú principal. */
     private VistaMenuPrincipal menuPrincipal;
 
-    /** Modelo de vista para gestiÃ³n de datos. */
+    /** Modelo de vista para gestión de datos. */
     private MoView modeloVista;
 
     /**
@@ -40,7 +40,7 @@ public class OyenteCRUD implements ActionListener {
      * @param vistaCRUD     Vista CRUD.
      * @param viFormulario  Vista del formulario.
      * @param modeloVista   Modelo de vista.
-     * @param menuPrincipal Vista del menÃº principal.
+     * @param menuPrincipal Vista del menú principal.
      */
     public OyenteCRUD(CoPrincipal controlador, VistaCRUD vistaCRUD, ViFormulario viFormulario, MoView modeloVista,
             VistaMenuPrincipal menuPrincipal) {
@@ -53,10 +53,10 @@ public class OyenteCRUD implements ActionListener {
 
     /**
      * Maneja las acciones de los botones.
-     * Cambia la tabla activa segÃºn el botÃ³n del menÃº presionado o abre formularios
-     * de ediciÃ³n.
+     * Cambia la tabla activa según el botón del menú presionado o abre formularios
+     * de edición.
      *
-     * @param e El evento de acciÃ³n.
+     * @param e El evento de acción.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -96,11 +96,77 @@ public class OyenteCRUD implements ActionListener {
     }
 
     /**
-     * Resetea el color de todos los botones del menÃº a su estado por defecto.
+     * Resetea el color de todos los botones del menú a su estado por defecto.
      */
     private void resetearEstiloBotones() {
         for (JButton btn : vistaCRUD.getPanelMenu().getBotones()) {
             btn.setBackground(Estilos.COLOR_BOTON_MENU);
         }
+    }
+
+    // --- GETTERS Y SETTERS ---
+
+    /**
+     * Obtiene el controlador principal.
+     * @return El controlador principal.
+     */
+    public CoPrincipal getControlador() {
+        return controlador;
+    }
+
+    /**
+     * Establece el controlador principal.
+     * @param controlador El nuevo controlador principal.
+     */
+    public void setControlador(CoPrincipal controlador) {
+        this.controlador = controlador;
+    }
+
+    /**
+     * Obtiene la vista CRUD principal.
+     * @return La vista CRUD.
+     */
+    public VistaCRUD getVistaCRUD() {
+        return vistaCRUD;
+    }
+
+    /**
+     * Establece la vista CRUD principal.
+     * @param vistaCRUD La nueva vista CRUD.
+     */
+    public void setVistaCRUD(VistaCRUD vistaCRUD) {
+        this.vistaCRUD = vistaCRUD;
+    }
+
+    /**
+     * Obtiene la vista del formulario de edición.
+     * @return La vista del formulario.
+     */
+    public ViFormulario getViFormulario() {
+        return viFormulario;
+    }
+
+    /**
+     * Establece la vista del formulario de edición.
+     * @param viFormulario La nueva vista del formulario.
+     */
+    public void setViFormulario(ViFormulario viFormulario) {
+        this.viFormulario = viFormulario;
+    }
+
+    /**
+     * Obtiene el modelo de vista.
+     * @return El modelo de vista.
+     */
+    public MoView getModeloVista() {
+        return modeloVista;
+    }
+
+    /**
+     * Establece el modelo de vista.
+     * @param modeloVista El nuevo modelo de vista.
+     */
+    public void setModeloVista(MoView modeloVista) {
+        this.modeloVista = modeloVista;
     }
 }

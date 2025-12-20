@@ -30,10 +30,10 @@ public class OyenteConsultaLogs implements ActionListener {
     }
 
     /**
-     * Identifica quÃ© botÃ³n se pulsÃ³ y solicita al controlador la carga de logs con
+     * Identifica qué botón se pulsó y solicita al controlador la carga de logs con
      * el criterio correspondiente.
      *
-     * @param e Evento de acciÃ³n.
+     * @param e Evento de acción.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -52,5 +52,39 @@ public class OyenteConsultaLogs implements ActionListener {
             String consulta = "results";
             controladorLogs.cargarLogs(consulta);
         }
+    }
+
+    // --- GETTERS Y SETTERS ---
+
+    /**
+     * Obtiene la vista de logs.
+     * @return El objeto VistaLogs.
+     */
+    public VistaLogs getVistaLogs() {
+        return vistaLogs;
+    }
+
+    /**
+     * Establece la vista de logs.
+     * @param vistaLogs La nueva vista de logs.
+     */
+    public void setVistaLogs(VistaLogs vistaLogs) {
+        this.vistaLogs = vistaLogs;
+    }
+
+    /**
+     * Obtiene el controlador de logs asociado.
+     * @return El objeto ControladorLogs.
+     */
+    public ControladorLogs getControladorLogs() {
+        return controladorLogs;
+    }
+
+    /**
+     * Establece el controlador de logs asociado.
+     * @param controladorLogs El nuevo controlador de logs.
+     */
+    public void setControladorLogs(ControladorLogs controladorLogs) {
+        this.controladorLogs = controladorLogs;
     }
 }

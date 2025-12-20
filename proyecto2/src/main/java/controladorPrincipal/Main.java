@@ -3,16 +3,16 @@ package controladorPrincipal;
 import java.io.IOException;
 
 /**
- * Clase principal que inicia la aplicaciÃ³n.
+ * Clase principal que inicia la aplicación.
  * Punto de entrada del programa que crea el controlador principal.
  */
 public class Main {
 
     /**
-     * MÃ©todo de entrada de la aplicaciÃ³n.
+     * Método de entrada de la aplicación.
      * Crea una instancia del controlador principal.
      *
-     * @param args Argumentos de la lÃ­nea de comandos (no utilizados).
+     * @param args Argumentos de la línea de comandos (no utilizados).
      * @throws IOException Si ocurre un error de E/S.
      */
     public static void main(String[] args) throws IOException {

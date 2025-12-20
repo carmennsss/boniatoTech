@@ -4,12 +4,12 @@ import vista.VistaAdmin;
 import vista.VistaRegistroUsuarios;
 
 /**
- * Controlador para la gesti贸n de usuarios.
- * Maneja la navegaci贸n y l贸gica relacionada con el registro y administraci贸n de
+ * Controlador para la gesti髇 de usuarios.
+ * Maneja la navegaci髇 y l骻ica relacionada con el registro y administraci髇 de
  * usuarios.
  */
 public class ControladorUsuarios {
-    /** Vista de administraci贸n. */
+    /** Vista de administraci髇. */
     private VistaAdmin vistaAdmin;
 
     /** Vista de registro de usuarios. */
@@ -17,8 +17,7 @@ public class ControladorUsuarios {
 
     /**
      * Constructor del controlador de usuarios.
-     * 
-     * @param vistaAdmin    Vista de administraci贸n.
+     * * @param vistaAdmin    Vista de administraci髇.
      * @param vistaUsuarios Vista de registro de usuarios.
      */
     public ControladorUsuarios(VistaAdmin vistaAdmin, VistaRegistroUsuarios vistaUsuarios) {
@@ -27,8 +26,8 @@ public class ControladorUsuarios {
     }
 
     /**
-     * Abre la vista de administraci贸n de usuarios.
-     * Oculta la vista de administraci贸n y muestra la vista de usuarios.
+     * Abre la vista de administraci髇 de usuarios.
+     * Oculta la vista de administraci髇 y muestra la vista de usuarios.
      */
     public void abrirAdministrarUsuarios() {
         vistaUsuarios.hacerVisible();
@@ -36,11 +35,45 @@ public class ControladorUsuarios {
     }
 
     /**
-     * Vuelve a la vista de administraci贸n desde la gesti贸n de usuarios.
-     * Oculta la vista de usuarios y muestra la vista de administraci贸n.
+     * Vuelve a la vista de administraci髇 desde la gesti髇 de usuarios.
+     * Oculta la vista de usuarios y muestra la vista de administraci髇.
      */
     public void volverAdminDesdeUsuarios() {
         vistaUsuarios.setVisible(false);
         vistaAdmin.hacerVisible();
+    }
+
+    // --- GETTERS Y SETTERS ---
+
+    /**
+     * Obtiene la vista de administraci髇.
+     * @return El objeto VistaAdmin.
+     */
+    public VistaAdmin getVistaAdmin() {
+        return vistaAdmin;
+    }
+
+    /**
+     * Establece la vista de administraci髇.
+     * @param vistaAdmin La nueva vista de administraci髇.
+     */
+    public void setVistaAdmin(VistaAdmin vistaAdmin) {
+        this.vistaAdmin = vistaAdmin;
+    }
+
+    /**
+     * Obtiene la vista de registro de usuarios.
+     * @return El objeto VistaRegistroUsuarios.
+     */
+    public VistaRegistroUsuarios getVistaUsuarios() {
+        return vistaUsuarios;
+    }
+
+    /**
+     * Establece la vista de registro de usuarios.
+     * @param vistaUsuarios La nueva vista de usuarios.
+     */
+    public void setVistaUsuarios(VistaRegistroUsuarios vistaUsuarios) {
+        this.vistaUsuarios = vistaUsuarios;
     }
 }

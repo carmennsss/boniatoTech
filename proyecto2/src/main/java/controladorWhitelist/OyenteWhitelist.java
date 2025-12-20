@@ -31,9 +31,9 @@ public class OyenteWhitelist implements ActionListener, MouseListener {
     }
 
     /**
-     * Maneja los eventos de acci贸n (clics en botones).
+     * Maneja los eventos de acci髇 (clics en botones).
      *
-     * @param e El evento de acci贸n.
+     * @param e El evento de acci髇.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -49,9 +49,9 @@ public class OyenteWhitelist implements ActionListener, MouseListener {
     }
 
     /**
-     * Maneja los clics del rat贸n en la tabla para seleccionar usuarios.
+     * Maneja los clics del rat髇 en la tabla para seleccionar usuarios.
      *
-     * @param e El evento de rat贸n.
+     * @param e El evento de rat髇.
      */
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -67,38 +67,72 @@ public class OyenteWhitelist implements ActionListener, MouseListener {
     }
 
     /**
-     * M茅todo no implementado de la interfaz MouseListener.
+     * M閠odo no implementado de la interfaz MouseListener.
      *
-     * @param e El evento de rat贸n.
+     * @param e El evento de rat髇.
      */
     @Override
     public void mouseEntered(MouseEvent e) {
     }
 
     /**
-     * M茅todo no implementado de la interfaz MouseListener.
+     * M閠odo no implementado de la interfaz MouseListener.
      *
-     * @param e El evento de rat贸n.
+     * @param e El evento de rat髇.
      */
     @Override
     public void mouseExited(MouseEvent e) {
     }
 
     /**
-     * M茅todo no implementado de la interfaz MouseListener.
+     * M閠odo no implementado de la interfaz MouseListener.
      *
-     * @param e El evento de rat贸n.
+     * @param e El evento de rat髇.
      */
     @Override
     public void mousePressed(MouseEvent e) {
     }
 
     /**
-     * M茅todo no implementado de la interfaz MouseListener.
+     * M閠odo no implementado de la interfaz MouseListener.
      *
-     * @param e El evento de rat贸n.
+     * @param e El evento de rat髇.
      */
     @Override
     public void mouseReleased(MouseEvent e) {
+    }
+
+    // --- GETTERS Y SETTERS ---
+
+    /**
+     * Obtiene la vista de whitelist asociada.
+     * @return El objeto VistaWhitelist.
+     */
+    public VistaWhitelist getVista() {
+        return vista;
+    }
+
+    /**
+     * Establece la vista de whitelist asociada.
+     * @param vista La nueva vista.
+     */
+    public void setVista(VistaWhitelist vista) {
+        this.vista = vista;
+    }
+
+    /**
+     * Obtiene el controlador de whitelist asociado.
+     * @return El objeto ControladorWhitelist.
+     */
+    public ControladorWhitelist getController() {
+        return controller;
+    }
+
+    /**
+     * Establece el controlador de whitelist asociado.
+     * @param controller El nuevo controlador.
+     */
+    public void setController(ControladorWhitelist controller) {
+        this.controller = controller;
     }
 }

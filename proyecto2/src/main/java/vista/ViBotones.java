@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 
 /**
  * Panel personalizado que contiene y organiza una lista horizontal de botones.
+ * Utiliza FlowLayout para alinear los componentes de forma centralizada.
  */
 public class ViBotones extends JPanel {
     /** Lista de botones del panel. */
@@ -23,15 +24,6 @@ public class ViBotones extends JPanel {
      */
     public ViBotones(ArrayList<String> textos) {
         propiedades(textos);
-    }
-
-    /**
-     * Obtiene la lista de botones del panel.
-     * 
-     * @return Lista de botones.
-     */
-    public ArrayList<JButton> getBotones() {
-        return botones;
     }
 
     /**
@@ -69,9 +61,9 @@ public class ViBotones extends JPanel {
     }
 
     /**
-     * Aplica el estilo visual est√°ndar a un bot√≥n.
+     * Aplica el estilo visual est·ndar a un botÛn.
      *
-     * @param btn El bot√≥n a estilar.
+     * @param btn El botÛn a estilar.
      */
     private void estilarBoton(JButton btn) {
         btn.setFont(new Font("SansSerif", Font.BOLD, 11));
@@ -80,5 +72,23 @@ public class ViBotones extends JPanel {
         btn.setFocusPainted(false);
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.setPreferredSize(new java.awt.Dimension(115, 35));
+    }
+
+    // --- GETTERS Y SETTERS ---
+
+    /**
+     * Obtiene la lista de botones del panel.
+     * * @return Lista de botones.
+     */
+    public ArrayList<JButton> getBotones() {
+        return botones;
+    }
+
+    /**
+     * Establece la lista de botones del panel.
+     * * @param botones Nueva lista de botones.
+     */
+    public void setBotones(ArrayList<JButton> botones) {
+        this.botones = botones;
     }
 }

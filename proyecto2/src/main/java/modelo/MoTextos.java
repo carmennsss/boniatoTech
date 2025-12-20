@@ -1,23 +1,24 @@
 package modelo;
 
 /**
- * Clase que almacena todas las cadenas de texto utilizadas en la aplicaciÃ³n.
- * Permite la internacionalizaciÃ³n (i18n) cambiando los valores de las variables
- * estÃ¡ticas segÃºn el idioma seleccionado.
+ * Clase que almacena todas las cadenas de texto utilizadas en la aplicación.
+ * Permite la internacionalización (i18n) cambiando los valores de las variables
+ * estáticas según el idioma seleccionado.
  */
 public class MoTextos {
 
-    /** Idioma actual de la aplicaciÃ³n (0 = inglÃ©s, 1 = espaÃ±ol). */
+    /** Idioma actual de la aplicación (0 = inglés, 1 = español). */
     private static int idiomaActual = 0;
 
+    // --- TÍTULOS Y LOGIN ---
     public static String app_title = "Serwo Manager";
     public static String login_title = "Login";
     public static String menu_title = "Main Menu";
-
     public static String lbl_user = "User:";
     public static String lbl_password = "Password:";
     public static String btn_login = "Log in";
 
+    // --- MENÚ PRINCIPAL ---
     public static String lbl_select_option = "Select an option";
     public static String btn_manage_data = "Manage Data";
     public static String btn_file_manager = "File Manager";
@@ -25,6 +26,7 @@ public class MoTextos {
     public static String btn_administrate = "Administrate";
     public static String btn_logout = "Log Out";
 
+    // --- GESTOR DE ARCHIVOS ---
     public static String file_manager_title = "File Manager";
     public static String file_repo_title = "File Repository";
     public static String file_repo_subtitle = "Manage your server files efficiently";
@@ -39,13 +41,14 @@ public class MoTextos {
     public static String btn_back = "Back";
     public static String btn_main_menu = "Main Menu";
 
+    // --- CRUD Y FORMULARIOS ---
     public static String btn_new = "New";
     public static String lbl_crud_instructions = "Double click on a record to update or delete it.";
+    public static String form_title = "Form";
+    public static String btn_save = "Save";
+    public static String btn_cancel = "Cancel";
 
-    public static String form_title = "Formulario";
-    public static String btn_save = "Guardar";
-    public static String btn_cancel = "Cancelar";
-
+    // --- WHITELIST ---
     public static String whitelist_title = "Whitelist Management";
     public static String btn_add = "Add";
     public static String btn_unassign = "Unassign";
@@ -60,6 +63,7 @@ public class MoTextos {
     public static String btn_dialog_add = "Add";
     public static String btn_dialog_cancel = "Cancel";
 
+    // --- CORREO ---
     public static String mail_title_compose = "Compose new Mail";
     public static String mail_title_check = "Check Mail";
     public static String mail_lbl_for = "For:";
@@ -70,7 +74,14 @@ public class MoTextos {
     public static String btn_mark_unread = "Mark unread";
     public static String btn_export = "Export";
     public static String btn_attach = "Attach";
+    public static String mail_title_inbox = "Inbox";
+    public static String mail_btn_compose = "Compose";
+    public static String mail_btn_refresh = "Refresh";
+    public static String mail_col_subject = "Subject";
+    public static String mail_col_from = "From";
+    public static String mail_col_date = "Date";
 
+    // --- ROLES Y ADMINISTRACIÓN ---
     public static String roles_title_create = "Create Role";
     public static String roles_title_available = "Available Roles";
     public static String roles_btn_create = "Add Role";
@@ -80,11 +91,13 @@ public class MoTextos {
     public static String roles_dialog_title = "Add Role";
     public static String roles_btn_assign = "Assign Role";
     public static String roles_title_assign = "Assign Roles";
-
     public static String admin_title = "Administration Panel";
     public static String btn_manage_users = "Manage Users";
     public static String btn_manage_roles = "Manage Roles";
+    public static String btn_logs = "Logs";
+    public static String btn_whitelist = "Whitelist";
 
+    // --- REGISTRO Y ELIMINACIÓN ---
     public static String reg_title_window = "User Register";
     public static String reg_title_main = "Register User";
     public static String reg_lbl_name = "Name:";
@@ -93,36 +106,44 @@ public class MoTextos {
     public static String reg_lbl_pass = "Password:";
     public static String reg_lbl_conf_pass = "Confirm Password:";
     public static String reg_btn_register = "Register";
+    public static String del_user_title = "Delete User";
+    public static String del_user_col_user = "User";
+    public static String del_user_col_email = "Email";
+    public static String del_btn_delete = "Delete";
+    public static String del_btn_back = "Back";
 
-    public static String mail_title_inbox = "Inbox";
-    public static String mail_btn_compose = "Compose";
-    public static String mail_btn_refresh = "Refresh";
-    public static String mail_col_subject = "Subject";
-    public static String mail_col_from = "From";
-    public static String mail_col_date = "Date";
+    // --- LOGS ---
+    public static String logs_title = "Logs";
+    public static String logs_col_action = "Operation";
+    public static String logs_col_user = "User";
+    public static String logs_col_date = "Date";
+    public static String logs_col_result = "Result";
+    public static String logs_btn_export = "Export CSV";
+    public static String logs_dialog_save_title = "Save logs";
 
+    // --- MENSAJES DE SISTEMA ---
     public static String msg_error_title = "Error";
     public static String msg_success_title = "Success";
+    public static String msg_info_title = "Info";
+    public static String msg_confirm_title = "Confirm";
     public static String msg_connection_error = "Could not connect to the server";
     public static String msg_fill_all_fields = "All fields must be filled";
     public static String msg_unexpected_error_prefix = "An unexpected error occurred: ";
-    public static String msg_confirm_title = "Confirm";
-    public static String dialog_select_action = "Select Action";
-    public static String btn_create_new = "Create New";
-    public static String btn_sys_update = "Update";
-    public static String btn_sys_delete = "Delete";
-    public static String btn_sys_cancel = "Cancel";
-
     public static String msg_not_admin = "You are not an administrator";
     public static String msg_incorrect_creds = "Incorrect credentials";
-    public static String msg_err_mail_init = "Error: Mail view has not been initialized correctly";
-
     public static String msg_pass_mismatch = "Passwords do not match";
     public static String msg_invalid_email = "Invalid email format";
     public static String msg_user_registered = "User registered successfully";
     public static String msg_user_exists = "A user with this name or email already exists";
+    public static String msg_err_pop3 = "[ERROR POP3] - Could not connect to inbox";
+    public static String msg_err_mail_init = "Error: Mail view not initialized correctly";
+    public static String dialog_select_action = "Select action";
+    public static String btn_create_new = "Create new";
+    public static String btn_sys_update = "Update";
+    public static String btn_sys_delete = "Delete";
+    public static String btn_sys_cancel = "Cancel";
 
-    // CRUD Messages
+    // --- CRUD MESSAGES ---
     public static String msg_saved_ok = "Saved successfully";
     public static String msg_save_error = "Error while saving";
     public static String msg_updated_ok = "Updated successfully";
@@ -133,7 +154,7 @@ public class MoTextos {
     public static String gender_male = "Male";
     public static String gender_female = "Female";
 
-    // Roles Messages
+    // --- ROLES MESSAGES ---
     public static String msg_role_name_empty = "The role name cannot be empty";
     public static String msg_role_desc_empty = "The role description cannot be empty";
     public static String col_user = "User";
@@ -144,18 +165,18 @@ public class MoTextos {
     public static String col_role = "Role";
     public static String col_desc = "Description";
 
-    // Whitelist Messages
+    // --- WHITELIST MESSAGES ---
     public static String msg_no_users_selected = "No users selected to remove.";
     public static String title_warning = "Warning";
     public static String msg_confirm_remove_prefix = "Are you sure you want to remove ";
     public static String msg_confirm_remove_suffix = " user(s) from Whitelist?";
     public static String title_confirm_removal = "Confirm Removal";
-
     public static String msg_fill_email_name = "Please fill in the Email and Name fields";
     public static String msg_user_exists_whitelist = "User already exists in Whitelist";
     public static String msg_user_added_whitelist = "User added to Whitelist successfully";
     public static String msg_err_adding_user = "Error adding user";
 
+    // --- FILE MESSAGES ---
     public static String msg_upload_success = "File uploaded successfully";
     public static String msg_upload_error = "Error uploading file";
     public static String msg_download_success = "File downloaded successfully";
@@ -173,47 +194,33 @@ public class MoTextos {
     public static String msg_select_folder_not_file = "You must select a folder, not a file";
     public static String msg_permission_denied_rename = "You do not have permission to rename this file";
 
+    // --- MAIL MESSAGES ---
     public static String mail_msg_recipient_obligatory = "The recipient and the message body are obligatory";
     public static String mail_msg_sent_prefix = "Email successfully sent to ";
     public static String mail_msg_sent_error_recipient = "The message could not be sent; please check the recipient's email address.";
     public static String mail_msg_attached_prefix = "File attached: ";
 
-    public static String logs_title = "Logs";
-    public static String logs_col_action = "Operation";
-    public static String logs_col_user = "User";
-    public static String logs_col_date = "Date";
-    public static String logs_col_result = "Result";
-    public static String logs_btn_export = "Export CSV";
-    public static String logs_dialog_save_title = "Save logs";
-
-    public static String del_user_title = "Delete User";
-    public static String del_user_col_user = "User";
-    public static String del_user_col_email = "Email";
-    public static String del_btn_delete = "Delete";
-    public static String del_btn_back = "Back";
+    // --- DELETE USER MESSAGES ---
     public static String del_msg_select = "Select a user to delete";
     public static String del_msg_confirm = "Are you sure you want to delete this user?";
     public static String del_msg_success = "User deleted successfully";
     public static String del_msg_error = "Error deleting user";
 
-    public static String msg_err_pop3 = "[ERROR POP3] - Could not connect to inbox";
-
-    // FileManager Strings
+    // --- FILEMANAGER STRINGS ---
     public static String msg_confirm_delete_file = "Do you want to delete the selected file?";
     public static String msg_could_not_delete = "Could not be deleted...";
     public static String msg_confirm_delete_folder = "Do you want to delete the selected folder?";
     public static String msg_folder_not_empty = "The folder may not be empty.";
     public static String msg_could_not_create = "Could not be created...";
 
-    // OyenteArchivos Strings
+    // --- OYENTEARCHIVOS STRINGS ---
     public static String title_select_upload = "Select the file to upload";
     public static String title_select_download = "Select where to download the file";
     public static String msg_enter_new_name = "Enter new name for the file:";
     public static String msg_invalid_name = "Invalid name.";
-    public static String msg_info_title = "Info";
     public static String msg_rename_canceled = "Renaming canceled or invalid name.";
 
-    // VistaCRUD Strings
+    // --- VISTACRUD STRINGS ---
     public static String title_crud_animals = "Serwo Management - Animals";
     public static String menu_species = "Species";
     public static String menu_enclosures = "Enclosures";
@@ -223,42 +230,44 @@ public class MoTextos {
     public static String menu_species_enclosures = "Species-Enclosures";
     public static String menu_elements = "Elements";
 
-    // ControladorWhitelist Strings
+    // --- CONTROLADORWHITELIST STRINGS ---
     public static String msg_removed_prefix = "Removed ";
     public static String msg_removed_suffix = " users.";
 
+    // --- GETTERS Y SETTERS ---
+
     /**
-     * Obtiene el idioma actual de la aplicaciÃ³n.
+     * Obtiene el idioma actual de la aplicación.
      *
-     * @return CÃ³digo del idioma (0 = inglÃ©s, 1 = espaÃ±ol).
+     * @return Código del idioma (0 = inglés, 1 = español).
      */
     public static int getIdioma() {
         return idiomaActual;
     }
 
     /**
-     * Establece el idioma actual de la aplicaciÃ³n y actualiza todas las cadenas de
-     * texto.
+     * Establece el idioma actual de la aplicación y actualiza todas las cadenas de texto.
      *
-     * @param idioma CÃ³digo del idioma (e.g., 0 para inglÃ©s, 1 para espaÃ±ol).
+     * @param idioma Código del idioma (e.g., 0 para inglés, 1 para español).
      */
     public static void setIdioma(int idioma) {
         idiomaActual = idioma;
         if (idioma == 1) {
+            // --- ESPAÑOL ---
             app_title = "Gestor de Serwo";
-            login_title = "Iniciar SesiÃ³n";
-            menu_title = "MenÃº Principal";
+            login_title = "Iniciar Sesión";
+            menu_title = "Menú Principal";
 
             lbl_user = "Usuario:";
             lbl_password = "Clave:";
             btn_login = "Entrar";
 
-            lbl_select_option = "Seleccione una opciÃ³n";
-            btn_manage_data = "GestiÃ³n de Datos";
+            lbl_select_option = "Seleccione una opción";
+            btn_manage_data = "Gestión de Datos";
             btn_file_manager = "Gestor de Archivos";
             btn_mail_controller = "Gestor de Correo";
             btn_administrate = "Administrar";
-            btn_logout = "Cerrar SesiÃ³n";
+            btn_logout = "Cerrar Sesión";
 
             file_manager_title = "Gestor de Archivos";
             file_repo_title = "Repositorio de Archivos";
@@ -272,17 +281,17 @@ public class MoTextos {
             lbl_actions = "Acciones";
             lbl_current_path = "Ruta Actual:";
             btn_back = "Volver";
-            btn_main_menu = "MenÃº Principal";
+            btn_main_menu = "Menú Principal";
 
             btn_new = "Nuevo";
-            lbl_crud_instructions = "Doble click en un registro para actualizar o borrar.";
+            lbl_crud_instructions = "Doble clic en un registro para actualizar o borrar.";
 
             form_title = "Formulario";
             btn_save = "Guardar";
             btn_cancel = "Cancelar";
 
-            whitelist_title = "GestiÃ³n de Whitelist";
-            btn_add = "AÃ±adir";
+            whitelist_title = "Gestión de Whitelist";
+            btn_add = "Añadir";
             btn_unassign = "Quitar";
             btn_back_whitelist = "Volver";
             whitelist_dialog_title = "Agregar Usuario";
@@ -301,7 +310,7 @@ public class MoTextos {
             del_btn_delete = "Eliminar";
             del_btn_back = "Volver";
             del_msg_select = "Seleccione un usuario para eliminar";
-            del_msg_confirm = "Â¿EstÃ¡s seguro de que deseas eliminar este usuario?";
+            del_msg_confirm = "¿Está seguro de que desea eliminar este usuario?";
             del_msg_success = "Usuario eliminado correctamente";
             del_msg_error = "Error al eliminar usuario";
 
@@ -312,7 +321,7 @@ public class MoTextos {
             mail_lbl_subject = "Asunto:";
             mail_lbl_message = "Mensaje:";
             btn_send = "Enviar";
-            btn_mark_unread = "Marcar no leÃ­do";
+            btn_mark_unread = "Marcar no leído";
             btn_export = "Exportar";
             btn_attach = "Adjuntar";
 
@@ -320,23 +329,25 @@ public class MoTextos {
             roles_title_available = "Roles disponibles";
             roles_btn_create = "Agregar Rol";
             roles_lbl_name = "Nombre:";
-            roles_lbl_desc = "DescripciÃ³n:";
+            roles_lbl_desc = "Descripción:";
             roles_lbl_role = "Rol:";
             roles_dialog_title = "Agregar Rol";
             roles_btn_assign = "Asignar Rol";
             roles_title_assign = "Asignar Roles";
 
-            admin_title = "Panel de AdministraciÃ³n";
-            btn_manage_users = "GestiÃ³n de Usuarios";
-            btn_manage_roles = "GestiÃ³n de Roles";
+            admin_title = "Panel de Administración";
+            btn_manage_users = "Gestión de Usuarios";
+            btn_manage_roles = "Gestión de Roles";
+            btn_logs = "Logs";
+            btn_whitelist = "Whitelist";
 
             reg_title_window = "Registro de Usuario";
             reg_title_main = "Registrar Usuario";
             reg_lbl_name = "Nombre:";
             reg_lbl_email = "Email:";
             reg_lbl_key = "Clave del Correo:";
-            reg_lbl_pass = "ContraseÃ±a:";
-            reg_lbl_conf_pass = "Confirmar ContraseÃ±a:";
+            reg_lbl_pass = "Contraseña:";
+            reg_lbl_conf_pass = "Confirmar Contraseña:";
             reg_btn_register = "Registrar";
 
             mail_title_inbox = "Bandeja de Entrada";
@@ -349,12 +360,13 @@ public class MoTextos {
             msg_err_pop3 = "[ERROR POP3] - No se pudo conectar a la bandeja de entrada";
 
             msg_error_title = "Error";
-            msg_success_title = "Ã‰xito";
+            msg_success_title = "Éxito";
+            msg_info_title = "Información";
             msg_connection_error = "No se pudo conectar al servidor";
             msg_fill_all_fields = "Todos los campos deben ser rellenados";
-            msg_unexpected_error_prefix = "OcurriÃ³ un error inesperado: ";
+            msg_unexpected_error_prefix = "Ocurrió un error inesperado: ";
             msg_confirm_title = "Confirmar";
-            dialog_select_action = "Seleccionar AcciÃ³n";
+            dialog_select_action = "Seleccionar Acción";
             btn_create_new = "Crear Nuevo";
             btn_sys_update = "Actualizar";
             btn_sys_delete = "Eliminar";
@@ -364,15 +376,15 @@ public class MoTextos {
             msg_incorrect_creds = "Credenciales incorrectas";
             msg_err_mail_init = "Error: La vista de correos no se ha inicializado correctamente";
 
-            msg_pass_mismatch = "Las contraseÃ±as no coinciden";
-            msg_invalid_email = "Formato de correo invÃ¡lido";
+            msg_pass_mismatch = "Las contraseñas no coinciden";
+            msg_invalid_email = "Formato de correo inválido";
             msg_user_registered = "Usuario registrado correctamente";
             msg_user_exists = "Ya existe un usuario con este nombre o correo";
 
             msg_fill_email_name = "Por favor, llena los campos de Email y Nombre";
             msg_user_exists_whitelist = "El usuario ya existe en la Whitelist";
-            msg_user_added_whitelist = "Usuario aÃ±adido correctamente a la Whitelist";
-            msg_err_adding_user = "Error al aÃ±adir usuario";
+            msg_user_added_whitelist = "Usuario añadido correctamente a la Whitelist";
+            msg_err_adding_user = "Error al añadir usuario";
 
             msg_upload_success = "Archivo subido correctamente";
             msg_upload_error = "Error al subir el archivo";
@@ -393,34 +405,30 @@ public class MoTextos {
 
             mail_msg_recipient_obligatory = "El destinatario y el cuerpo del mensaje son obligatorios";
             mail_msg_sent_prefix = "Correo enviado correctamente a ";
-            mail_msg_sent_error_recipient = "El mensaje no pudo ser enviado; verifica la direcciÃ³n del destinatario.";
+            mail_msg_sent_error_recipient = "El mensaje no pudo ser enviado; verifica la dirección del destinatario.";
             mail_msg_attached_prefix = "Archivo adjuntado: ";
 
             logs_title = "Registros";
-            logs_col_action = "OperaciÃ³n";
+            logs_col_action = "Operación";
             logs_col_user = "Usuario";
             logs_col_date = "Fecha";
             logs_col_result = "Resultado";
             logs_btn_export = "Exportar CSV";
             logs_dialog_save_title = "Guardar registros";
 
-            // FileManager Strings (Spanish)
-            msg_confirm_delete_file = "Â¿Quieres borrar el archivo seleccionado?";
+            msg_confirm_delete_file = "¿Quieres borrar el archivo seleccionado?";
             msg_could_not_delete = "No se pudo borrar...";
-            msg_confirm_delete_folder = "Â¿Quieres borrar la carpeta seleccionada?";
-            msg_folder_not_empty = "La carpeta podrÃ­a no estar vacÃ­a.";
+            msg_confirm_delete_folder = "¿Quieres borrar la carpeta seleccionada?";
+            msg_folder_not_empty = "La carpeta podría no estar vacía.";
             msg_could_not_create = "No se pudo crear...";
 
-            // OyenteArchivos Strings (Spanish)
             title_select_upload = "Selecciona el archivo a subir";
-            title_select_download = "Selecciona dÃ³nde descargar el archivo";
+            title_select_download = "Selecciona dónde descargar el archivo";
             msg_enter_new_name = "Ingresa el nuevo nombre para el archivo:";
-            msg_invalid_name = "Nombre invÃ¡lido.";
-            msg_info_title = "InformaciÃ³n";
-            msg_rename_canceled = "Renombrado cancelado o nombre invÃ¡lido.";
+            msg_invalid_name = "Nombre inválido.";
+            msg_rename_canceled = "Renombrado cancelado o nombre inválido.";
 
-            // VistaCRUD Strings (Spanish)
-            title_crud_animals = "GestiÃ³n Serwo - Animales";
+            title_crud_animals = "Gestión Serwo - Animales";
             menu_species = "ESPECIES";
             menu_enclosures = "RECINTOS";
             menu_caretakers = "CUIDADORES";
@@ -429,11 +437,28 @@ public class MoTextos {
             menu_species_enclosures = "ESPECIES_RECINTOS";
             menu_elements = "ELEMENTOS";
 
-            // ControladorWhitelist Strings (Spanish)
             msg_removed_prefix = "Eliminados ";
             msg_removed_suffix = " usuarios.";
 
+            col_user = "Usuario";
+            col_email = "Email";
+            col_roles = "Roles";
+            msg_no_roles = "Sin roles asignados";
+            col_id = "ID";
+            col_role = "Rol";
+            col_desc = "Descripción";
+            msg_saved_ok = "Guardado con éxito";
+            msg_save_error = "Error al guardar";
+            msg_updated_ok = "Actualizado con éxito";
+            msg_update_error = "Error al actualizar";
+            msg_confirm_delete = "¿Está seguro de que desea eliminar este registro?";
+            msg_deleted_ok = "Eliminado con éxito";
+            msg_delete_error = "Error al eliminar";
+            gender_male = "Macho";
+            gender_female = "Hembra";
+
         } else {
+            // --- INGLÉS (DEFAULT) ---
             app_title = "Zoo Manager";
             login_title = "Login";
             menu_title = "Main Menu";
@@ -457,6 +482,7 @@ public class MoTextos {
             btn_delete = "Delete";
             btn_new_folder = "New Folder";
             btn_delete_folder = "Delete Folder";
+            btn_rename = "Rename";
             lbl_actions = "Actions";
             lbl_current_path = "Current Path:";
             btn_back = "Back";
@@ -517,6 +543,8 @@ public class MoTextos {
             admin_title = "Administration Panel";
             btn_manage_users = "Manage Users";
             btn_manage_roles = "Manage Roles";
+            btn_logs = "Logs";
+            btn_whitelist = "Whitelist";
 
             reg_title_window = "User Register";
             reg_title_main = "Register User";
@@ -538,6 +566,7 @@ public class MoTextos {
 
             msg_error_title = "Error";
             msg_success_title = "Success";
+            msg_info_title = "Info";
             msg_connection_error = "Could not connect to the server";
             msg_fill_all_fields = "All fields must be filled";
             msg_unexpected_error_prefix = "An unexpected error occurred: ";
@@ -590,6 +619,30 @@ public class MoTextos {
             logs_col_result = "Result";
             logs_btn_export = "Export CSV";
             logs_dialog_save_title = "Save logs";
+            
+            col_user = "User";
+            col_email = "Email";
+            col_roles = "Roles";
+            msg_no_roles = "No roles assigned";
+            col_id = "ID";
+            col_role = "Role";
+            col_desc = "Description";
+            msg_saved_ok = "Saved successfully";
+            msg_save_error = "Error while saving";
+            msg_updated_ok = "Updated successfully";
+            msg_update_error = "Error while updating";
+            msg_confirm_delete = "Are you sure you want to delete this record?";
+            msg_deleted_ok = "Deleted successfully";
+            msg_delete_error = "Error while deleting";
+            gender_male = "Male";
+            gender_female = "Female";
+            
+            title_crud_animals = "Zoo Management - Animals";
+            menu_species = "Species";
+            menu_enclosures = "Enclosures";
+            menu_caretakers = "Caretakers";
+            menu_animals = "Animals";
+            menu_transfers = "Transfers";
         }
     }
 }

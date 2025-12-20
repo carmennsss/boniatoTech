@@ -17,14 +17,14 @@ import vista.VistaEliminarUsuarios;
 import vista.VistaRegistroUsuarios;
 
 /**
- * Oyente que gestiona los eventos relacionados con el registro y eliminaci贸n de
+ * Oyente que gestiona los eventos relacionados con el registro y eliminaci髇 de
  * usuarios.
  */
 public class OyenteUsuario implements ActionListener {
 	/** Vista de registro de usuarios. */
 	private VistaRegistroUsuarios vistaUsuario;
 
-	/** Vista de eliminaci贸n de usuarios. */
+	/** Vista de eliminaci髇 de usuarios. */
 	private VistaEliminarUsuarios vistaEliminarUsuarios;
 
 	/** Modelo de base de datos para operaciones de persistencia. */
@@ -37,7 +37,7 @@ public class OyenteUsuario implements ActionListener {
 	 * Constructor del oyente de usuario.
 	 *
 	 * @param vistaUsuario          Vista de registro de usuarios.
-	 * @param vistaEliminarUsuarios Vista de eliminaci贸n de usuarios.
+	 * @param vistaEliminarUsuarios Vista de eliminaci髇 de usuarios.
 	 * @param bd                    Modelo de base de datos.
 	 * @param client                Cliente FTP.
 	 */
@@ -50,9 +50,9 @@ public class OyenteUsuario implements ActionListener {
 	}
 
 	/**
-	 * Maneja los eventos de bot贸n para a帽adir o eliminar usuarios.
+	 * Maneja los eventos de bot髇 para a馻dir o eliminar usuarios.
 	 *
-	 * @param e El evento de acci贸n.
+	 * @param e El evento de acci髇.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -105,11 +105,9 @@ public class OyenteUsuario implements ActionListener {
 							modelo.MoTextos.msg_error_title,
 							JOptionPane.ERROR_MESSAGE);
 				}
-
 			}
 
 		} else if (btn == vistaUsuario.getEliminar()) {
-
 			vistaUsuario.setVisible(false);
 			vistaEliminarUsuarios.hacerVisible();
 			rellenarTablaUsuarios();
@@ -154,7 +152,7 @@ public class OyenteUsuario implements ActionListener {
 	}
 
 	/**
-	 * Rellena la tabla de eliminaci贸n de usuarios con los datos actuales de la base
+	 * Rellena la tabla de eliminaci髇 de usuarios con los datos actuales de la base
 	 * de datos.
 	 * Excluye al usuario actual de la lista.
 	 */
@@ -180,7 +178,39 @@ public class OyenteUsuario implements ActionListener {
 			e.printStackTrace();
 		}
 		vistaEliminarUsuarios.getTabla().setModelo(modeloTabla);
-
 	}
 
+	// --- GETTERS Y SETTERS ---
+
+	public VistaRegistroUsuarios getVistaUsuario() {
+		return vistaUsuario;
+	}
+
+	public void setVistaUsuario(VistaRegistroUsuarios vistaUsuario) {
+		this.vistaUsuario = vistaUsuario;
+	}
+
+	public VistaEliminarUsuarios getVistaEliminarUsuarios() {
+		return vistaEliminarUsuarios;
+	}
+
+	public void setVistaEliminarUsuarios(VistaEliminarUsuarios vistaEliminarUsuarios) {
+		this.vistaEliminarUsuarios = vistaEliminarUsuarios;
+	}
+
+	public ModeloBaseDatos getBd() {
+		return bd;
+	}
+
+	public void setBd(ModeloBaseDatos bd) {
+		this.bd = bd;
+	}
+
+	public ModeloClienteFTP getClient() {
+		return client;
+	}
+
+	public void setClient(ModeloClienteFTP client) {
+		this.client = client;
+	}
 }

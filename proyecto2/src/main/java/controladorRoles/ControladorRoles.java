@@ -14,11 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Controlador para la gesti贸n de roles y permisos.
- * Maneja la creaci贸n de roles, asignaci贸n de permisos a roles y asignaci贸n de
- * 
- * 
- * 
+ * Controlador para la gesti髇 de roles y permisos.
+ * Maneja la creaci髇 de roles, asignaci髇 de permisos a roles y asignaci髇 de
  * permisos a usuarios.
  */
 public class ControladorRoles {
@@ -37,13 +34,13 @@ public class ControladorRoles {
     /** Modelo del cliente FTP. */
     private ModeloClienteFTP modeloFTP;
 
-    /** Modelo de vista para gesti贸n de datos. */
+    /** Modelo de vista para gesti髇 de datos. */
     private MoView modeloVista;
 
-    /** Controlador principal de la aplicaci贸n. */
+    /** Controlador principal de la aplicaci髇. */
     private CoPrincipal coPrincipal;
 
-    /** Vista de administraci贸n. */
+    /** Vista de administraci髇. */
     private VistaAdmin vistaAdmin;
 
     /**
@@ -55,7 +52,7 @@ public class ControladorRoles {
      * @param vistaAsignarRol Vista de asignar rol.
      * @param vistaCRUD       Vista CRUD.
      * @param modeloFTP       Modelo del cliente FTP.
-     * @param vistaAdmin      Vista de administraci贸n.
+     * @param vistaAdmin      Vista de administraci髇.
      * @param modeloVista     Modelo de vista.
      */
     public ControladorRoles(CoPrincipal coPrincipal, ModeloBaseDatos bd, ViCrearRol viCrearRol,
@@ -72,7 +69,7 @@ public class ControladorRoles {
     }
 
     /**
-     * Abre la vista de asignaci贸n de roles.
+     * Abre la vista de asignaci髇 de roles.
      * Rellena el combo de roles y la tabla de usuarios, luego muestra la vista.
      */
     public void abrirAsignarRoles() {
@@ -83,8 +80,8 @@ public class ControladorRoles {
     }
 
     /**
-     * Abre la vista de creaci贸n de roles.
-     * Oculta la vista de administraci贸n y muestra la vista de crear rol.
+     * Abre la vista de creaci髇 de roles.
+     * Oculta la vista de administraci髇 y muestra la vista de crear rol.
      */
     public void abrirCrearRol() {
         rellenarVentanaCrearRol();
@@ -93,12 +90,12 @@ public class ControladorRoles {
     }
 
     /**
-     * Actualiza el estado de un permiso para un rol espec铆fico.
+     * Actualiza el estado de un permiso para un rol espec韋ico.
      *
      * @param rolNombre     El nombre del rol.
      * @param permisoNombre El nombre del permiso.
      * @param isChecked     true si el permiso debe ser asignado, false si debe ser
-     *                      revocado.
+     * revocado.
      */
     public void actualizarPermiso(String rolNombre, String permisoNombre, boolean isChecked) {
         String sql;
@@ -118,7 +115,7 @@ public class ControladorRoles {
     }
 
     /**
-     * Agrega un nuevo rol a la base de datos con el nombre y descripci贸n
+     * Agrega un nuevo rol a la base de datos con el nombre y descripci髇
      * proporcionados en la vista.
      */
     public void agregarRol() {
@@ -144,9 +141,8 @@ public class ControladorRoles {
 
     /**
      * Asigna el rol seleccionado a los usuarios marcados.
-     * 
-     * @param correos Lista de correos de usuarios seleccionados.
-     * @param rol     Rol a asignar.
+     * * @param correos Lista de correos de usuarios seleccionados.
+     * @param rol      Rol a asignar.
      */
     public void asignarRolAUsuarios(ArrayList<String> correos, Rol rol) {
         asignarRol(true, correos, rol);
@@ -155,9 +151,8 @@ public class ControladorRoles {
 
     /**
      * Desasigna el rol seleccionado de los usuarios marcados.
-     * 
-     * @param correos Lista de correos de usuarios seleccionados.
-     * @param rol     Rol a desasignar.
+     * * @param correos Lista de correos de usuarios seleccionados.
+     * @param rol      Rol a desasignar.
      */
     public void desasignarRol(ArrayList<String> correos, Rol rol) {
         asignarRol(false, correos, rol);
@@ -165,8 +160,7 @@ public class ControladorRoles {
     }
 
     /**
-     * Limpia la selecci贸n de usuarios y actualiza la tabla de asignaci贸n de r
-     * les.
+     * Limpia la selecci髇 de usuarios y actualiza la tabla de asignaci髇 de roles.
      */
     public void limpiarSeleccionRoles() {
         modeloVista.getCorreoSeleccionados().clear();
@@ -175,7 +169,7 @@ public class ControladorRoles {
     }
 
     /**
-     * Muestra el di谩logo para agregar un nuevo rol y lo procesa.
+     * Muestra el di醠ogo para agregar un nuevo rol y lo procesa.
      */
     public void mostrarDialogoAgregarRol() {
         if (viCrearRol.mostrarAgregarRol() == 0) {
@@ -184,7 +178,7 @@ public class ControladorRoles {
     }
 
     /**
-     * Rellena el combobox de selecci贸n de roles con los roles disponibles en la
+     * Rellena el combobox de selecci髇 de roles con los roles disponibles en la
      * base de datos.
      */
     public void rellenarComboRoles() {
@@ -203,7 +197,7 @@ public class ControladorRoles {
     }
 
     /**
-     * Rellena la tabla de usuarios con su informaci贸n y roles asignados.
+     * Rellena la tabla de usuarios con su informaci髇 y roles asignados.
      */
     public void rellenarTablaUsuarios() {
         DefaultTableModel modeloTabla = new DefaultTableModel() {
@@ -224,11 +218,9 @@ public class ControladorRoles {
                 User usuario = new User(rs.getString("nombre_usuario"), rs.getString("correo"));
                 if (rs.getString("roles") == null || rs.getString("roles").isEmpty()
                         || rs.getString("roles").equalsIgnoreCase("NULL")) {
-                    modeloTabla
-                            .addRow(new Object[] { usuario.getNombre(), usuario.getCorreo(), MoTextos.msg_no_roles });
+                    modeloTabla.addRow(new Object[] { usuario.getNombre(), usuario.getCorreo(), MoTextos.msg_no_roles });
                 } else {
-                    modeloTabla
-                            .addRow(new Object[] { usuario.getNombre(), usuario.getCorreo(), rs.getString("roles") });
+                    modeloTabla.addRow(new Object[] { usuario.getNombre(), usuario.getCorreo(), rs.getString("roles") });
                 }
             }
         } catch (SQLException e) {
@@ -239,9 +231,9 @@ public class ControladorRoles {
     }
 
     /**
-     * Rellena la tabla de creaci贸n de roles con los roles existentes y sus
+     * Rellena la tabla de creaci髇 de roles con los roles existentes y sus
      * permisos.
-     * Configura el modelo de la tabla para permitir la edici贸n de permisos
+     * Configura el modelo de la tabla para permitir la edici髇 de permisos
      * (checkboxes).
      */
     public void rellenarVentanaCrearRol() {
@@ -249,7 +241,6 @@ public class ControladorRoles {
             @Override
             public boolean isCellEditable(int row, int column) {
                 try {
-
                     Object idObj = getValueAt(row, 0);
                     int idRol = -1;
                     if (idObj instanceof Integer) {
@@ -276,7 +267,6 @@ public class ControladorRoles {
         };
 
         ArrayList<String> listaNombresPermisos = new ArrayList<>();
-
         String sqlPermisos = "SELECT * FROM permisos ORDER BY nombre_permisos;";
         ResultSet rsPermisos = bd.getConsulta(sqlPermisos);
 
@@ -295,10 +285,8 @@ public class ControladorRoles {
         }
 
         String sqlDatos = "SELECT r.id_roles, r.nombre_roles, r.descripcion_roles, p.nombre_permisos, " +
-                "(SELECT COUNT(*) FROM roles_permisos rp WHERE rp.roles_id = r.id_roles AND rp.permisos_id = p.id_permisos) AS activo "
-                +
-                "FROM roles r, permisos p " +
-                "ORDER BY r.nombre_roles, p.nombre_permisos;";
+                "(SELECT COUNT(*) FROM roles_permisos rp WHERE rp.roles_id = r.id_roles AND rp.permisos_id = p.id_permisos) AS activo " +
+                "FROM roles r, permisos p ORDER BY r.nombre_roles, p.nombre_permisos;";
 
         ResultSet rsDatos = bd.getConsulta(sqlDatos);
 
@@ -317,7 +305,6 @@ public class ControladorRoles {
                     if (filaActual != null) {
                         modeloTabla.addRow(filaActual);
                     }
-
                     filaActual = new Object[3 + listaNombresPermisos.size()];
                     filaActual[0] = idRol;
                     filaActual[1] = rolLeido;
@@ -326,21 +313,17 @@ public class ControladorRoles {
                     for (int i = 3; i < filaActual.length; i++) {
                         filaActual[i] = false;
                     }
-
                     ultimoRolId = idRol;
                 }
 
                 int indicePermiso = listaNombresPermisos.indexOf(permisoLeido);
-
                 if (indicePermiso != -1) {
                     filaActual[indicePermiso + 3] = estaActivo;
                 }
             }
-
             if (filaActual != null) {
                 modeloTabla.addRow(filaActual);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -349,14 +332,13 @@ public class ControladorRoles {
         modeloTabla.addTableModelListener(oyentePermisos);
 
         viCrearRol.getPanelTabla().getTabla().setModel(modeloTabla);
-
         viCrearRol.getPanelTabla().getTabla().getColumnModel().getColumn(0).setMinWidth(0);
         viCrearRol.getPanelTabla().getTabla().getColumnModel().getColumn(0).setMaxWidth(0);
         viCrearRol.getPanelTabla().getTabla().getColumnModel().getColumn(0).setWidth(0);
     }
 
     /**
-     * Vuelve al panel de administraci贸n desde la gesti贸n de roles.
+     * Vuelve al panel de administraci髇 desde la gesti髇 de roles.
      * Oculta las vistas de crear y asignar roles.
      */
     public void volverAdminDesdeRoles() {
@@ -369,7 +351,7 @@ public class ControladorRoles {
      * Asigna o desasigna un rol a una lista de usuarios seleccionados.
      *
      * @param asignar             true para asignar el rol, false para desasignar.
-     * @param correoSeleccionados Lista de correos electr贸nicos de los usuarios.
+     * @param correoSeleccionados Lista de correos electr髇icos de los usuarios.
      * @param rol                 El rol a asignar o desasignar.
      */
     public void asignarRol(boolean asignar, ArrayList<String> correoSeleccionados, Rol rol) {
