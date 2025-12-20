@@ -28,7 +28,8 @@ import controladorLogs.ControladorLogs;
 import controladorLogs.GestionLogs;
 
 /**
- * Oyente principal que maneja la lógica de navegación y eventos generales de la
+ * Oyente principal que maneja la lógica de navegación y eventos generales de l
+ * 
  * aplicación.
  * Gestiona el inicio de sesión, la navegación entre menús y llamadas a otros
  * controladores.
@@ -358,6 +359,7 @@ public class OyenteFTP implements ActionListener {
 	}
 
 	/**
+	 * <<<<<<< HEAD:proyecto2/src/main/java/controladorNavegacion/OyenteFTP.java
 	 * Vuelve al panel de administración desde la gestión de usuarios.
 	 */
 	private void volverAdminDesdeUsuarios() {
@@ -375,6 +377,9 @@ public class OyenteFTP implements ActionListener {
 
 	/**
 	 * Vuelve al menú principal desde el panel de administración.
+	 * =======
+	 * Vuelve al panel de administración desde la gestión de roles.
+	 * >>>>>>> main:proyecto2/src/main/java/controlador/OyenteFTP.java
 	 */
 	private void volverMenuPrincipal() {
 		vistaAdmin.setVisible(false);

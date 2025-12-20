@@ -1,18 +1,16 @@
 package controladorCorreos;
 
 import java.util.ArrayList;
-
 import javax.swing.SwingUtilities;
-
-import controladorLogs.ControladorLogs;
 import controladorLogs.GestionLogs;
 import modelo.Correo;
 import modelo.Log;
 import vista.VistaGeneralCorreo;
 
 /**
- * Hilo de ejecución en segundo plano para la recepción automática de correos.
- * Comprueba periódicamente si hay nuevos correos y actualiza la vista.
+ * Hilo de ejecución en segundo plano para la recepción automática de
+ * correos. Comprueba periódicamente si hay nuevos correos y actualiza la
+ * vista.
  */
 public class HiloRecepcionCorreos implements Runnable {
 
@@ -66,9 +64,8 @@ public class HiloRecepcionCorreos implements Runnable {
 	}
 
 	/**
-	 * Ejecuta el bucle de recepción de correos en segundo plano.
-	 * Comprueba nuevos correos cada 25 segundos y actualiza la vista si hay
-	 * cambios.
+	 * Ejecuta el bucle de recepción de correos en segundo plano. Comprueba nuevos
+	 * correos cada 25 segundos y actualiza la vista si hay cambios.
 	 */
 	@Override
 	public void run() {

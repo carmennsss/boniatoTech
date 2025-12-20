@@ -2,13 +2,11 @@ package controladorCorreos;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import modelo.ModeloBaseDatos;
 import vista.VistaCorreoBase;
 
 /**
- * Oyente del botón "Enviar" en la vista de correos.
- * Abre la ventana de redacción de un nuevo correo.
+ * Oyente del botón "Enviar" en la vista de correos. Abre la ventana de
+ * redacción de un nuevo correo.
  */
 public class OyenteBotonEnviar implements ActionListener {
 

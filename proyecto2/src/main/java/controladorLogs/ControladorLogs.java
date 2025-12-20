@@ -32,7 +32,6 @@ public class ControladorLogs {
 	 * @param vistaLogs Vista de logs.
 	 */
 	public ControladorLogs(Connection conn, VistaLogs vistaLogs) {
-		this.conn = conn;
 		this.vistaLogs = vistaLogs;
 		this.gestionLogs = new GestionLogs();
 		asignarOyenteBtnExport();
