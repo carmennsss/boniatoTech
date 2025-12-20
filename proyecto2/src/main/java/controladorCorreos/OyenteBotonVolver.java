@@ -11,8 +11,13 @@ import vista.VistaMenuPrincipal;
  */
 public class OyenteBotonVolver implements ActionListener {
 
+    /** Vista general de correos. */
     private VistaGeneralCorreo vistaGeneral;
+
+    /** Vista del menú principal. */
     private VistaMenuPrincipal vistaMenu;
+
+    /** Controlador de correos. */
     private ControladorCorreos controlador;
 
     /**

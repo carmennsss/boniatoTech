@@ -4,8 +4,13 @@ package modelo;
  * Representa un cuidador en el sistema del zoológico.
  */
 public class Cuidador {
+    /** Identificador único del cuidador. */
     private int cuidador_id;
+
+    /** Nombre del cuidador. */
     private String nombre_cuidadores;
+
+    /** Dirección del cuidador. */
     private String direccion_cuidadores;
 
     /**
@@ -31,12 +36,12 @@ public class Cuidador {
     }
 
     /**
-     * Establece el ID del cuidador.
+     * Obtiene la dirección del cuidador.
      *
-     * @param cuidador_id El nuevo ID del cuidador.
+     * @return La dirección del cuidador.
      */
-    public void setCuidador_id(int cuidador_id) {
-        this.cuidador_id = cuidador_id;
+    public String getDireccion_cuidadores() {
+        return direccion_cuidadores;
     }
 
     /**
@@ -49,21 +54,12 @@ public class Cuidador {
     }
 
     /**
-     * Establece el nombre del cuidador.
+     * Establece el ID del cuidador.
      *
-     * @param nombre_cuidadores El nuevo nombre del cuidador.
+     * @param cuidador_id El nuevo ID del cuidador.
      */
-    public void setNombre_cuidadores(String nombre_cuidadores) {
-        this.nombre_cuidadores = nombre_cuidadores;
-    }
-
-    /**
-     * Obtiene la dirección del cuidador.
-     *
-     * @return La dirección del cuidador.
-     */
-    public String getDireccion_cuidadores() {
-        return direccion_cuidadores;
+    public void setCuidador_id(int cuidador_id) {
+        this.cuidador_id = cuidador_id;
     }
 
     /**
@@ -73,6 +69,15 @@ public class Cuidador {
      */
     public void setDireccion_cuidadores(String direccion_cuidadores) {
         this.direccion_cuidadores = direccion_cuidadores;
+    }
+
+    /**
+     * Establece el nombre del cuidador.
+     *
+     * @param nombre_cuidadores El nuevo nombre del cuidador.
+     */
+    public void setNombre_cuidadores(String nombre_cuidadores) {
+        this.nombre_cuidadores = nombre_cuidadores;
     }
 
     @Override

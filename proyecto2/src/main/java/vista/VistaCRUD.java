@@ -16,9 +16,16 @@ import modelo.MoTextos;
  * Provee un menú superior para navegar entre entidades y una tabla central.
  */
 public class VistaCRUD extends JFrame {
+    /** Panel de botones del menú superior de navegación. */
     private ViBotones panelMenu;
+
+    /** Panel que contiene la tabla de datos. */
     private ViTabla panelTabla;
+
+    /** Panel de botones de acciones inferiores. */
     private ViBotones panelAcciones;
+
+    /** Panel de fondo de la ventana. */
     private JPanel panelFondo;
 
     public VistaCRUD() {

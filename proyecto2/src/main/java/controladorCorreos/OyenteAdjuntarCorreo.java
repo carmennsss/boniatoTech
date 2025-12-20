@@ -15,6 +15,7 @@ import vista.VistaCorreoBase;
  */
 public class OyenteAdjuntarCorreo implements ActionListener {
 
+	/** Vista de redacción de correo. */
 	private VistaCorreoBase v;
 
 	/**

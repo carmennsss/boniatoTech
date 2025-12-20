@@ -8,9 +8,16 @@ import java.util.ArrayList;
  * Gestiona selecciones de tablas, filas y listas de correos seleccionados.
  */
 public class MoView {
+    /** Nombre de la tabla actualmente activa en la vista CRUD. */
     private String tablaActual;
+
+    /** Índice de la fila seleccionada en una tabla. */
     private int filaSeleccionada;
+
+    /** Lista de correos seleccionados en la bandeja de entrada. */
     private ArrayList<String> correoSeleccionados;
+
+    /** Lista de correos seleccionados para la whitelist (borrado/gestión). */
     private ArrayList<String> correosWhitelist;
 
     /**
@@ -57,6 +64,15 @@ public class MoView {
     }
 
     /**
+     * Obtiene la lista de correos seleccionados en la bandeja de entrada.
+     *
+     * @return Lista de correos seleccionados.
+     */
+    public ArrayList<String> getCorreoSeleccionados() {
+        return correoSeleccionados;
+    }
+
+    /**
      * Obtiene la lista de correos seleccionados para la whitelist
      * (borrado/gestión).
      *
@@ -64,33 +80,6 @@ public class MoView {
      */
     public ArrayList<String> getCorreosWhitelist() {
         return correosWhitelist;
-    }
-
-    /**
-     * Establece la lista de correos de la whitelist seleccionados.
-     *
-     * @param correosWhitelist Nueva lista de correos.
-     */
-    public void setCorreosWhitelist(ArrayList<String> correosWhitelist) {
-        this.correosWhitelist = correosWhitelist;
-    }
-
-    /**
-     * Obtiene el nombre de la tabla actualmente activa en la vista CRUD.
-     *
-     * @return Nombre de la tabla.
-     */
-    public String getTablaActual() {
-        return tablaActual;
-    }
-
-    /**
-     * Establece la tabla actual.
-     *
-     * @param tablaActual El nombre de la nueva tabla.
-     */
-    public void setTablaActual(String tablaActual) {
-        this.tablaActual = tablaActual;
     }
 
     /**
@@ -103,21 +92,12 @@ public class MoView {
     }
 
     /**
-     * Establece el índice de la fila seleccionada.
+     * Obtiene el nombre de la tabla actualmente activa en la vista CRUD.
      *
-     * @param filaSeleccionada El nuevo índice.
+     * @return Nombre de la tabla.
      */
-    public void setFilaSeleccionada(int filaSeleccionada) {
-        this.filaSeleccionada = filaSeleccionada;
-    }
-
-    /**
-     * Obtiene la lista de correos seleccionados en la bandeja de entrada.
-     *
-     * @return Lista de correos seleccionados.
-     */
-    public ArrayList<String> getCorreoSeleccionados() {
-        return correoSeleccionados;
+    public String getTablaActual() {
+        return tablaActual;
     }
 
     /**
@@ -127,5 +107,32 @@ public class MoView {
      */
     public void setCorreoSeleccionados(ArrayList<String> correoSeleccionados) {
         this.correoSeleccionados = correoSeleccionados;
+    }
+
+    /**
+     * Establece la lista de correos de la whitelist seleccionados.
+     *
+     * @param correosWhitelist Nueva lista de correos.
+     */
+    public void setCorreosWhitelist(ArrayList<String> correosWhitelist) {
+        this.correosWhitelist = correosWhitelist;
+    }
+
+    /**
+     * Establece el índice de la fila seleccionada.
+     *
+     * @param filaSeleccionada El nuevo índice.
+     */
+    public void setFilaSeleccionada(int filaSeleccionada) {
+        this.filaSeleccionada = filaSeleccionada;
+    }
+
+    /**
+     * Establece la tabla actual.
+     *
+     * @param tablaActual El nombre de la nueva tabla.
+     */
+    public void setTablaActual(String tablaActual) {
+        this.tablaActual = tablaActual;
     }
 }

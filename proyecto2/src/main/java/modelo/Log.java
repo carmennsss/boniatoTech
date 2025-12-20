@@ -5,10 +5,19 @@ package modelo;
  */
 public class Log {
 
+	/** Identificador único del log. */
 	private int id;
+
+	/** Acción realizada. */
 	private String action;
+
+	/** Fecha en la que se realizó la acción. */
 	private String date;
+
+	/** Correo del usuario que realizó la acción. */
 	private String correo;
+
+	/** Resultado de la acción (e.g., "success", "error"). */
 	private String result;
 
 	/**
@@ -44,75 +53,12 @@ public class Log {
 	}
 
 	/**
-	 * Obtiene el ID del log.
-	 *
-	 * @return El ID del log.
-	 */
-	public int getId() {
-		return id;
-	}
-
-	/**
-	 * Establece el ID del log.
-	 *
-	 * @param id El nuevo ID del log.
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	/**
 	 * Obtiene la acción registrada.
 	 *
 	 * @return La acción.
 	 */
 	public String getAction() {
 		return action;
-	}
-
-	/**
-	 * Establece la acción del log.
-	 *
-	 * @param action La nueva acción.
-	 */
-	public void setAction(String action) {
-		this.action = action;
-	}
-
-	/**
-	 * Obtiene la fecha del log.
-	 *
-	 * @return La fecha.
-	 */
-	public String getDate() {
-		return date;
-	}
-
-	/**
-	 * Establece la fecha del log.
-	 *
-	 * @param date La nueva fecha.
-	 */
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	/**
-	 * Obtiene el resultado de la acción.
-	 *
-	 * @return El resultado.
-	 */
-	public String getResult() {
-		return result;
-	}
-
-	/**
-	 * Establece el resultado de la acción.
-	 *
-	 * @param result El nuevo resultado.
-	 */
-	public void setResult(String result) {
-		this.result = result;
 	}
 
 	/**
@@ -125,12 +71,75 @@ public class Log {
 	}
 
 	/**
+	 * Obtiene la fecha del log.
+	 *
+	 * @return La fecha.
+	 */
+	public String getDate() {
+		return date;
+	}
+
+	/**
+	 * Obtiene el ID del log.
+	 *
+	 * @return El ID del log.
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * Obtiene el resultado de la acción.
+	 *
+	 * @return El resultado.
+	 */
+	public String getResult() {
+		return result;
+	}
+
+	/**
+	 * Establece la acción del log.
+	 *
+	 * @param action La nueva acción.
+	 */
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	/**
 	 * Establece el correo asociado al log.
 	 *
 	 * @param correo El nuevo correo.
 	 */
 	public void setCorreo(String correo) {
 		this.correo = correo;
+	}
+
+	/**
+	 * Establece la fecha del log.
+	 *
+	 * @param date La nueva fecha.
+	 */
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	/**
+	 * Establece el ID del log.
+	 *
+	 * @param id El nuevo ID del log.
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * Establece el resultado de la acción.
+	 *
+	 * @param result El nuevo resultado.
+	 */
+	public void setResult(String result) {
+		this.result = result;
 	}
 
 	@Override

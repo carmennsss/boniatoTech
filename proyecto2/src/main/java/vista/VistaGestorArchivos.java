@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.border.EmptyBorder;
 import java.net.URL;
 
-import controlador.OyenteArchivos;
+import controladorArchivos.OyenteArchivos;
 import modelo.MoTextos;
 
 /**
@@ -16,16 +16,34 @@ import modelo.MoTextos;
  */
 public class VistaGestorArchivos extends JFrame {
 
+	/** Modelo de lista para los archivos FTP. */
 	private DefaultListModel<FTPFile> listaModel;
+
+	/** Lista visual de archivos y carpetas. */
 	private JList<FTPFile> listaArchivos;
 
+	/** Botón para subir archivos al servidor. */
 	private JButton botonSubida;
+
+	/** Botón para descargar archivos del servidor. */
 	private JButton botonDescarga;
+
+	/** Botón para eliminar archivos. */
 	private JButton botonEliminar;
+
+	/** Botón para crear una nueva carpeta. */
 	private JButton botonCrearCarpeta;
+
+	/** Botón para borrar una carpeta. */
 	private JButton botonBorrarCarpeta;
+
+	/** Botón para renombrar archivos o carpetas. */
 	private JButton botonRenombrar;
+
+	/** Botón para volver al directorio anterior. */
 	private JButton botonVolver;
+
+	/** Botón para volver al menú principal. */
 	private JButton botonVolverMenuPrincipal;
 
 	public VistaGestorArchivos() {

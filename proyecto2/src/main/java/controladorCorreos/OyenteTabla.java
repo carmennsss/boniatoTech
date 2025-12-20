@@ -15,9 +15,16 @@ import vista.VistaCorreoBase;
  */
 public class OyenteTabla extends MouseAdapter {
 
+    /** Tabla de correos. */
     private JTable tabla;
+
+    /** Lista de correos. */
     private ArrayList<Correo> correos;
+
+    /** Controlador de correos. */
     private ControladorCorreos controlador;
+
+    /** Dirección de correo del usuario. */
     private String miCorreo;
 
     /**

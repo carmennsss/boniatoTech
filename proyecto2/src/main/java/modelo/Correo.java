@@ -7,11 +7,22 @@ import java.util.Date;
  */
 public class Correo {
 
+    /** El remitente del correo. */
     private String remitente;
+
+    /** El asunto del correo. */
     private String asunto;
+
+    /** La fecha de recepción del correo. */
     private Date fecha;
+
+    /** El contenido del correo. */
     private String cuerpo;
+
+    /** El ID único del mensaje. */
     private String messageId;
+
+    /** Indica si el correo ha sido leído. */
     private boolean leido;
 
     /**
@@ -49,21 +60,21 @@ public class Correo {
     }
 
     /**
-     * Obtiene el remitente del correo.
-     *
-     * @return El remitente.
-     */
-    public String getRemitente() {
-        return remitente;
-    }
-
-    /**
      * Obtiene el asunto del correo.
      *
      * @return El asunto.
      */
     public String getAsunto() {
         return asunto;
+    }
+
+    /**
+     * Obtiene el cuerpo del mensaje.
+     *
+     * @return El cuerpo del mensaje.
+     */
+    public String getCuerpo() {
+        return cuerpo;
     }
 
     /**
@@ -76,12 +87,21 @@ public class Correo {
     }
 
     /**
-     * Obtiene el cuerpo del mensaje.
+     * Obtiene el Message-ID del correo.
      *
-     * @return El cuerpo del mensaje.
+     * @return El Message-ID.
      */
-    public String getCuerpo() {
-        return cuerpo;
+    public String getMessageId() {
+        return messageId;
+    }
+
+    /**
+     * Obtiene el remitente del correo.
+     *
+     * @return El remitente.
+     */
+    public String getRemitente() {
+        return remitente;
     }
 
     /**
@@ -100,15 +120,6 @@ public class Correo {
      */
     public void setLeido(boolean leido) {
         this.leido = leido;
-    }
-
-    /**
-     * Obtiene el Message-ID del correo.
-     *
-     * @return El Message-ID.
-     */
-    public String getMessageId() {
-        return messageId;
     }
 
     /**

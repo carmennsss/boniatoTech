@@ -13,18 +13,41 @@ import javax.swing.border.EmptyBorder;
  * Panel personalizado que contiene y organiza una lista horizontal de botones.
  */
 public class ViBotones extends JPanel {
+    /** Lista de botones del panel. */
     private ArrayList<JButton> botones;
 
+    /**
+     * Constructor que crea el panel con los botones especificados.
+     *
+     * @param textos Lista de etiquetas para los botones.
+     */
     public ViBotones(ArrayList<String> textos) {
         propiedades(textos);
     }
 
+    /**
+     * Obtiene la lista de botones del panel.
+     * 
+     * @return Lista de botones.
+     */
+    public ArrayList<JButton> getBotones() {
+        return botones;
+    }
+
+    /**
+     * Configura el panel con los botones especificados.
+     *
+     * @param textos Lista de etiquetas para los botones.
+     */
     private void propiedades(ArrayList<String> textos) {
         this.botones = new ArrayList<>();
         configurarPanel();
         crearBotones(textos);
     }
 
+    /**
+     * Configura las propiedades visuales del panel.
+     */
     private void configurarPanel() {
         setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         setBackground(Estilos.COLOR_MENU_FONDO);
@@ -57,14 +80,5 @@ public class ViBotones extends JPanel {
         btn.setFocusPainted(false);
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.setPreferredSize(new java.awt.Dimension(115, 35));
-    }
-
-    /**
-     * Obtiene la lista de botones del panel.
-     * 
-     * @return Lista de botones.
-     */
-    public ArrayList<JButton> getBotones() {
-        return botones;
     }
 }

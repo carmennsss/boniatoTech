@@ -17,43 +17,32 @@ import java.security.MessageDigest;
  * gestión de usuarios mediante manipulación del archivo de configuración XML.
  */
 public class ModeloClienteFTP {
+    /** Cliente FTP para las operaciones de conexión. */
     private FTPClient cliente;
+
+    /** Dirección del servidor FTP. */
     private String servidor = "13.62.51.110";
+
+    /** Puerto del servidor FTP. */
     private int puerto = 21;
+
+    /** Nombre de usuario para la conexión FTP. */
     private String user = "";
+
+    /** Contraseña para la conexión FTP. */
     private String pass = "";
 
-    /**
-     * Obtiene el nombre de usuario de la conexión FTP.
-     *
-     * @return El nombre de usuario.
-     */
-    public String getUser() {
-        return user;
-    }
-
+    /** Ruta remota a la carpeta compartida de FileZilla. */
     private static final String RUTA_REMOTA = "\\\\13.62.51.110\\FileZillaFTP";
+
+    /** Ruta al archivo de configuración XML de FileZilla. */
     private static final String RUTA_XML = RUTA_REMOTA + "\\FileZilla Server.xml";
 
+    /** Usuario de Windows para acceder a la máquina virtual. */
     private static final String USUARIO_WINDOWS_VM = "Administrator";
+
+    /** Contraseña de Windows para acceder a la máquina virtual. */
     private static final String PASS_WINDOWS_VM = "-riMth%@$GAW2NmZVsjKG@px.gxfflrx";
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getPass() {
-        return pass;
-    }
-
-    /**
-     * Establece la contraseña de la conexión FTP.
-     *
-     * @param pass La nueva contraseña.
-     */
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
 
     /**
      * Constructor que inicializa el cliente FTP.
@@ -63,90 +52,90 @@ public class ModeloClienteFTP {
     }
 
     /**
-     * Establece la conexión con el servidor FTP.
-     * Si no está conectado, entra en modo pasivo y conecta.
+     * Añade un nuevo usuario al servidor FTP con configuraciones predeterminadas.
+     * Genera un hash MD5 de la contraseña encriptándola.
      *
-     * @throws IOException Si ocurre un error de conexión.
+     * @param nombre   El nombre de usuario.
+     * @param password La contraseña del usuario.
      */
-    public void establecerConexion() throws IOException {
-        if (!cliente.isConnected()) {
-            cliente.enterLocalPassiveMode();
-            cliente.connect(servidor, puerto);
-        }
-    }
+    public void aniadirUsuario(String nombre, String password) {
 
-    /**
-     * Cierra la sesión y desconecta del servidor FTP.
-     * Captura cualquier excepción silenciosamente.
-     */
-    public void desconectar() {
-        try {
-            if (cliente.isConnected()) {
-                cliente.logout();
-                cliente.disconnect();
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    /**
-     * Crea un nuevo rol (grupo) en el servidor FTP editando el archivo de
-     * configuración XML.
-     * Configura opciones por defecto para el grupo.
-     *
-     * @param nombreRol El nombre del nuevo rol.
-     */
-    public void crearRol(String nombreRol) {
         conectarCarpetaCompartida();
+
         try {
+
             File xmlFile = new File(RUTA_XML);
-            if (!xmlFile.exists())
+
+            if (!xmlFile.exists()) {
+                System.err.println("ERROR: No encuentro el archivo en: " + RUTA_XML);
                 return;
+            }
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(xmlFile);
             doc.getDocumentElement().normalize();
 
-            NodeList groupsList = doc.getElementsByTagName("Groups");
-            Node groupsNode;
-            if (groupsList.getLength() > 0) {
-                groupsNode = groupsList.item(0);
-            } else {
-                groupsNode = doc.createElement("Groups");
-                doc.getDocumentElement().appendChild(groupsNode);
-            }
+            NodeList usersList = doc.getElementsByTagName("Users");
+            Node usersNode = usersList.item(0);
 
-            Element newGroup = doc.createElement("Group");
-            newGroup.setAttribute("Name", nombreRol);
+            Element newUser = doc.createElement("User");
+            newUser.setAttribute("Name", nombre);
 
-            agregarOpcion(doc, newGroup, "Bypass server userlimit", "0");
-            agregarOpcion(doc, newGroup, "User Limit", "0");
-            agregarOpcion(doc, newGroup, "IP Limit", "0");
-            agregarOpcion(doc, newGroup, "Enabled", "1");
-            agregarOpcion(doc, newGroup, "Comments", "");
-            agregarOpcion(doc, newGroup, "ForceSsl", "0");
+            Element passOption = doc.createElement("Option");
+            passOption.setAttribute("Name", "Pass");
+            passOption.setTextContent(encriptarContrasenia(password));
+            newUser.appendChild(passOption);
+
+            agregarOpcion(doc, newUser, "Group", "");
+            agregarOpcion(doc, newUser, "Bypass server userlimit", "0");
+            agregarOpcion(doc, newUser, "User Limit", "0");
+            agregarOpcion(doc, newUser, "IP Limit", "0");
+            agregarOpcion(doc, newUser, "Enabled", "1");
+            agregarOpcion(doc, newUser, "Comments", "Creado sin unidad Z");
+            agregarOpcion(doc, newUser, "ForceSsl", "0");
+
+            Element ipFilter = doc.createElement("IpFilter");
+            ipFilter.appendChild(doc.createElement("Disallowed"));
+            ipFilter.appendChild(doc.createElement("Allowed"));
+            newUser.appendChild(ipFilter);
+
+            String carpetaHome = "C:\\Users\\Administrator\\Documents\\serwo";
 
             Element permissions = doc.createElement("Permissions");
-            newGroup.appendChild(permissions);
-            groupsNode.appendChild(newGroup);
+            Element permission = doc.createElement("Permission");
+            permission.setAttribute("Dir", carpetaHome);
+
+            agregarOpcion(doc, permission, "FileRead", "1");
+            agregarOpcion(doc, permission, "FileWrite", "1");
+            agregarOpcion(doc, permission, "FileDelete", "1");
+            agregarOpcion(doc, permission, "FileAppend", "1");
+            agregarOpcion(doc, permission, "DirCreate", "1");
+            agregarOpcion(doc, permission, "DirDelete", "1");
+            agregarOpcion(doc, permission, "DirList", "1");
+            agregarOpcion(doc, permission, "DirSubdirs", "1");
+            agregarOpcion(doc, permission, "IsHome", "1");
+            agregarOpcion(doc, permission, "AutoCreate", "1");
+
+            permissions.appendChild(permission);
+            newUser.appendChild(permissions);
+
+            Element speedLimits = doc.createElement("SpeedLimits");
+            speedLimits.setAttribute("DlLimit", "10");
+            speedLimits.setAttribute("DlType", "0");
+            speedLimits.setAttribute("ServerDlLimitBypass", "0");
+            speedLimits.setAttribute("ServerUlLimitBypass", "0");
+            speedLimits.setAttribute("UlLimit", "10");
+            speedLimits.setAttribute("UlType", "0");
+            speedLimits.appendChild(doc.createElement("Download"));
+            speedLimits.appendChild(doc.createElement("Upload"));
+            newUser.appendChild(speedLimits);
+            usersNode.appendChild(newUser);
 
             guardarXML(doc, xmlFile);
-            System.out.println("Rol creado: " + nombreRol);
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    private void conectarCarpetaCompartida() {
-        try {
-            String comando = "net use \"" + RUTA_REMOTA + "\" /user:" + USUARIO_WINDOWS_VM + " " + PASS_WINDOWS_VM;
-            Process p = Runtime.getRuntime().exec(comando);
-            p.waitFor();
-            System.out.println("ConexiÃ³n a carpeta compartida establecida.");
-        } catch (Exception e) {
-            System.err.println("No se pudo conectar a la carpeta de red: " + e.getMessage());
         }
     }
 
@@ -223,104 +212,67 @@ public class ModeloClienteFTP {
         }
     }
 
-    private void actualizarOpcion(Document doc, Element parent, String name, String value) {
-        NodeList options = parent.getElementsByTagName("Option");
-        for (int i = 0; i < options.getLength(); i++) {
-            Element opt = (Element) options.item(i);
-            if (opt.getAttribute("Name").equals(name)) {
-                opt.setTextContent(value);
-                return;
-            }
-        }
-
-        agregarOpcion(doc, parent, name, value);
-    }
-
     /**
-     * Añade un nuevo usuario al servidor FTP con configuraciones predeterminadas.
-     * Genera un hash MD5 de la contraseña.
+     * Crea un nuevo rol (grupo) en el servidor FTP editando el archivo de
+     * configuración XML.
+     * Configura opciones por defecto para el grupo.
      *
-     * @param nombre   El nombre de usuario.
-     * @param password La contraseña del usuario.
+     * @param nombreRol El nombre del nuevo rol.
      */
-    public void aniadirUsuario(String nombre, String password) {
-
+    public void crearRol(String nombreRol) {
         conectarCarpetaCompartida();
-
         try {
-
             File xmlFile = new File(RUTA_XML);
-
-            if (!xmlFile.exists()) {
-                System.err.println("ERROR: No encuentro el archivo en: " + RUTA_XML);
+            if (!xmlFile.exists())
                 return;
-            }
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(xmlFile);
             doc.getDocumentElement().normalize();
 
-            NodeList usersList = doc.getElementsByTagName("Users");
-            Node usersNode = usersList.item(0);
+            NodeList groupsList = doc.getElementsByTagName("Groups");
+            Node groupsNode;
+            if (groupsList.getLength() > 0) {
+                groupsNode = groupsList.item(0);
+            } else {
+                groupsNode = doc.createElement("Groups");
+                doc.getDocumentElement().appendChild(groupsNode);
+            }
 
-            Element newUser = doc.createElement("User");
-            newUser.setAttribute("Name", nombre);
+            Element newGroup = doc.createElement("Group");
+            newGroup.setAttribute("Name", nombreRol);
 
-            Element passOption = doc.createElement("Option");
-            passOption.setAttribute("Name", "Pass");
-            passOption.setTextContent(md5(password));
-            newUser.appendChild(passOption);
-
-            agregarOpcion(doc, newUser, "Group", "");
-            agregarOpcion(doc, newUser, "Bypass server userlimit", "0");
-            agregarOpcion(doc, newUser, "User Limit", "0");
-            agregarOpcion(doc, newUser, "IP Limit", "0");
-            agregarOpcion(doc, newUser, "Enabled", "1");
-            agregarOpcion(doc, newUser, "Comments", "Creado sin unidad Z");
-            agregarOpcion(doc, newUser, "ForceSsl", "0");
-
-            Element ipFilter = doc.createElement("IpFilter");
-            ipFilter.appendChild(doc.createElement("Disallowed"));
-            ipFilter.appendChild(doc.createElement("Allowed"));
-            newUser.appendChild(ipFilter);
-
-            String carpetaHome = "C:\\Users\\Administrator\\Documents\\serwo";
+            agregarOpcion(doc, newGroup, "Bypass server userlimit", "0");
+            agregarOpcion(doc, newGroup, "User Limit", "0");
+            agregarOpcion(doc, newGroup, "IP Limit", "0");
+            agregarOpcion(doc, newGroup, "Enabled", "1");
+            agregarOpcion(doc, newGroup, "Comments", "");
+            agregarOpcion(doc, newGroup, "ForceSsl", "0");
 
             Element permissions = doc.createElement("Permissions");
-            Element permission = doc.createElement("Permission");
-            permission.setAttribute("Dir", carpetaHome);
-
-            agregarOpcion(doc, permission, "FileRead", "1");
-            agregarOpcion(doc, permission, "FileWrite", "1");
-            agregarOpcion(doc, permission, "FileDelete", "1");
-            agregarOpcion(doc, permission, "FileAppend", "1");
-            agregarOpcion(doc, permission, "DirCreate", "1");
-            agregarOpcion(doc, permission, "DirDelete", "1");
-            agregarOpcion(doc, permission, "DirList", "1");
-            agregarOpcion(doc, permission, "DirSubdirs", "1");
-            agregarOpcion(doc, permission, "IsHome", "1");
-            agregarOpcion(doc, permission, "AutoCreate", "1");
-
-            permissions.appendChild(permission);
-            newUser.appendChild(permissions);
-
-            Element speedLimits = doc.createElement("SpeedLimits");
-            speedLimits.setAttribute("DlLimit", "10");
-            speedLimits.setAttribute("DlType", "0");
-            speedLimits.setAttribute("ServerDlLimitBypass", "0");
-            speedLimits.setAttribute("ServerUlLimitBypass", "0");
-            speedLimits.setAttribute("UlLimit", "10");
-            speedLimits.setAttribute("UlType", "0");
-            speedLimits.appendChild(doc.createElement("Download"));
-            speedLimits.appendChild(doc.createElement("Upload"));
-            newUser.appendChild(speedLimits);
-            usersNode.appendChild(newUser);
+            newGroup.appendChild(permissions);
+            groupsNode.appendChild(newGroup);
 
             guardarXML(doc, xmlFile);
+            System.out.println("Rol creado: " + nombreRol);
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Cierra la sesión y desconecta del servidor FTP.
+     * Captura cualquier excepción silenciosamente.
+     */
+    public void desconectar() {
+        try {
+            if (cliente.isConnected()) {
+                cliente.logout();
+                cliente.disconnect();
+            }
+        } catch (Exception e) {
         }
     }
 
@@ -366,21 +318,93 @@ public class ModeloClienteFTP {
         }
     }
 
-    private void guardarXML(Document doc, File xmlFile) throws Exception {
-
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt%7Dindent-amount", "4");
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-
-        DOMSource source = new DOMSource(doc);
-        StreamResult result = new StreamResult(xmlFile);
-        transformer.transform(source, result);
+    /**
+     * Establece la conexión con el servidor FTP.
+     * Si no está conectado, entra en modo pasivo y conecta.
+     *
+     * @throws IOException Si ocurre un error de conexión.
+     */
+    public void establecerConexion() throws IOException {
+        if (!cliente.isConnected()) {
+            cliente.enterLocalPassiveMode();
+            cliente.connect(servidor, puerto);
+        }
     }
 
+    /**
+     * Obtiene el cliente FTP subyacente.
+     *
+     * @return El objeto FTPClient.
+     */
+    public FTPClient getCliente() {
+        return cliente;
+    }
+
+    /**
+     * Obtiene la contraseña de la conexión FTP.
+     *
+     * @return La contraseña.
+     */
+    public String getPass() {
+        return pass;
+    }
+
+    /**
+     * Obtiene el nombre de usuario de la conexión FTP.
+     *
+     * @return El nombre de usuario.
+     */
+    public String getUser() {
+        return user;
+    }
+
+    /**
+     * Establece la contraseña de la conexión FTP.
+     *
+     * @param pass La nueva contraseña.
+     */
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    /**
+     * Establece el nombre de usuario de la conexión FTP.
+     *
+     * @param user El nuevo nombre de usuario.
+     */
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    /**
+     * Actualiza una opción existente o la crea si no existe.
+     *
+     * @param doc    Documento XML.
+     * @param parent Elemento padre.
+     * @param name   Nombre de la opción.
+     * @param value  Valor de la opción.
+     */
+    private void actualizarOpcion(Document doc, Element parent, String name, String value) {
+        NodeList options = parent.getElementsByTagName("Option");
+        for (int i = 0; i < options.getLength(); i++) {
+            Element opt = (Element) options.item(i);
+            if (opt.getAttribute("Name").equals(name)) {
+                opt.setTextContent(value);
+                return;
+            }
+        }
+
+        agregarOpcion(doc, parent, name, value);
+    }
+
+    /**
+     * Agrega una nueva opción al elemento padre.
+     *
+     * @param doc    Documento XML.
+     * @param parent Elemento padre.
+     * @param name   Nombre de la opción.
+     * @param value  Valor de la opción.
+     */
     private void agregarOpcion(Document doc, Element parent, String name, String value) {
         Element opt = doc.createElement("Option");
         opt.setAttribute("Name", name);
@@ -388,7 +412,27 @@ public class ModeloClienteFTP {
         parent.appendChild(opt);
     }
 
-    private String md5(String input) {
+    /**
+     * Conecta a la carpeta compartida de FileZilla en la máquina virtual.
+     */
+    private void conectarCarpetaCompartida() {
+        try {
+            String comando = "net use \"" + RUTA_REMOTA + "\" /user:" + USUARIO_WINDOWS_VM + " " + PASS_WINDOWS_VM;
+            Process p = Runtime.getRuntime().exec(comando);
+            p.waitFor();
+            System.out.println("Conexión a carpeta compartida establecida.");
+        } catch (Exception e) {
+            System.err.println("No se pudo conectar a la carpeta de red: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Encripta una contraseña usando MD5.
+     *
+     * @param input La contraseña a encriptar.
+     * @return El hash MD5 de la contraseña.
+     */
+    private String encriptarContrasenia(String input) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] messageDigest = md.digest(input.getBytes());
@@ -403,11 +447,25 @@ public class ModeloClienteFTP {
     }
 
     /**
-     * Obtiene el cliente FTP subyacente.
+     * Guarda el documento XML en el archivo especificado.
      *
-     * @return El objeto FTPClient.
+     * @param doc     Documento XML a guardar.
+     * @param xmlFile Archivo destino.
+     * @throws Exception Si ocurre un error al guardar.
      */
-    public FTPClient getCliente() {
-        return cliente;
+    private void guardarXML(Document doc, File xmlFile) throws Exception {
+
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+
+        DOMSource source = new DOMSource(doc);
+        StreamResult result = new StreamResult(xmlFile);
+        transformer.transform(source, result);
     }
+
 }

@@ -17,8 +17,13 @@ import vista.VistaCorreoBase;
  */
 public class OyenteEnviarCorreo implements ActionListener {
 
+	/** Contraseña de aplicación. */
 	private String passwordAplicacion;
+
+	/** Vista de redacción de correo. */
 	private VistaCorreoBase v;
+
+	/** Controlador de correos. */
 	private ControladorCorreos controlador;
 
 	/**
@@ -86,7 +91,7 @@ public class OyenteEnviarCorreo implements ActionListener {
 			return false;
 		}
 
-		Log log = new Log("MAIL_SEND", controlador.getCORREO(), true);
+		Log log = new Log("MAIL_SEND", controlador.getCORREO(), false);
 		GestionLogs.writeLog(log);
 		return true;
 	}

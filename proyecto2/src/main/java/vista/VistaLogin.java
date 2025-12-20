@@ -15,15 +15,31 @@ import modelo.MoTextos;
  */
 public class VistaLogin extends JFrame {
 
+	/** Lista de etiquetas de texto de la interfaz. */
 	private ArrayList<JLabel> textos;
+
+	/** Lista de campos de texto de la interfaz. */
 	private ArrayList<JTextField> cajas;
+
+	/** Lista de botones de la interfaz. */
 	private ArrayList<JButton> botones;
+
+	/** Imagen de fondo de la ventana. */
 	private Image imagenFondo;
+
+	/** URL del logo de la aplicación. */
 	private URL logoUrl;
 
+	/** Etiqueta del título de la aplicación. */
 	private JLabel titulo;
+
+	/** Etiqueta del campo de usuario. */
 	private JLabel lblUser;
+
+	/** Etiqueta del campo de contraseña. */
 	private JLabel lblPass;
+
+	/** Botón de inicio de sesión. */
 	private JButton btnLogin;
 
 	public VistaLogin() {
@@ -133,6 +149,7 @@ public class VistaLogin extends JFrame {
 		});
 	}
 
+	/** Panel central que contiene el formulario de login. */
 	private JPanel panelCentral;
 
 	private void configurarPanelCentral(JLayeredPane layeredPane) {
@@ -255,6 +272,7 @@ public class VistaLogin extends JFrame {
 		layeredPane.add(comboIdiomas, JLayeredPane.PALETTE_LAYER);
 	}
 
+	/** ComboBox para seleccionar el idioma de la aplicación. */
 	private JComboBox<ImageIcon> comboIdiomas;
 
 	public JComboBox<ImageIcon> getComboIdiomas() {

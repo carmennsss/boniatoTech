@@ -28,14 +28,31 @@ import javax.swing.border.EmptyBorder;
  */
 public class VistaAdmin extends JFrame {
 
+	/** Vista del menú principal asociada. */
 	VistaMenuPrincipal menu;
+
+	/** Botón para crear nuevos usuarios. */
 	JButton botonCrearUsuario;
+
+	/** Botón para crear nuevos roles. */
 	JButton botonCrearRoles;
+
+	/** Botón para asignar roles a usuarios. */
 	JButton botonAsignarRoles;
+
+	/** Botón para gestionar la whitelist. */
 	JButton botonWhitelist;
+
+	/** Botón para acceder a los logs del sistema. */
 	JButton botonLogs;
+
+	/** Botón para volver al menú principal. */
 	JButton botonVolver;
+
+	/** Imagen de fondo de la ventana. */
 	private Image imagenFondo;
+
+	/** Etiqueta del título de la ventana. */
 	private JLabel titulo;
 
 	public VistaAdmin(VistaMenuPrincipal menu) {

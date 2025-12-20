@@ -6,9 +6,16 @@ package modelo;
  */
 public class User {
 
+	/** Nombre de usuario. */
 	String nombre;
+
+	/** Dirección de correo electrónico. */
 	String correo;
+
+	/** Clave específica para servicios de correo (ej. contraseña de aplicación). */
 	String claveCorreo;
+
+	/** Contraseña de acceso al sistema. */
 	String contrasena;
 
 	/**
@@ -39,75 +46,12 @@ public class User {
 	}
 
 	/**
-	 * Obtiene el nombre de usuario.
-	 *
-	 * @return El nombre de usuario.
-	 */
-	public String getNombre() {
-		return nombre;
-	}
-
-	/**
-	 * Establece el nombre de usuario.
-	 *
-	 * @param nombre El nuevo nombre de usuario.
-	 */
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	/**
-	 * Obtiene el correo electrónico.
-	 *
-	 * @return El correo.
-	 */
-	public String getCorreo() {
-		return correo;
-	}
-
-	/**
-	 * Establece el correo electrónico.
-	 *
-	 * @param correo El nuevo correo.
-	 */
-	public void setCorreo(String correo) {
-		this.correo = correo;
-	}
-
-	/**
-	 * Obtiene la contraseña de acceso.
-	 *
-	 * @return La contraseña.
-	 */
-	public String getPassword() {
-		return contrasena;
-	}
-
-	/**
-	 * Establece la contraseña de acceso.
-	 *
-	 * @param contrasena La nueva contraseña.
-	 */
-	public void setPassword(String contrasena) {
-		this.contrasena = contrasena;
-	}
-
-	/**
 	 * Obtiene la clave específica para el correo.
 	 *
 	 * @return La clave del correo.
 	 */
 	public String getClaveCorreo() {
 		return claveCorreo;
-	}
-
-	/**
-	 * Establece la clave específica para el correo.
-	 *
-	 * @param claveCorreo La nueva clave del correo.
-	 */
-	public void setClaveCorreo(String claveCorreo) {
-		this.claveCorreo = claveCorreo;
 	}
 
 	/**
@@ -120,11 +64,74 @@ public class User {
 	}
 
 	/**
+	 * Obtiene el correo electrónico.
+	 *
+	 * @return El correo.
+	 */
+	public String getCorreo() {
+		return correo;
+	}
+
+	/**
+	 * Obtiene el nombre de usuario.
+	 *
+	 * @return El nombre de usuario.
+	 */
+	public String getNombre() {
+		return nombre;
+	}
+
+	/**
+	 * Obtiene la contraseña de acceso.
+	 *
+	 * @return La contraseña.
+	 */
+	public String getPassword() {
+		return contrasena;
+	}
+
+	/**
+	 * Establece la clave específica para el correo.
+	 *
+	 * @param claveCorreo La nueva clave del correo.
+	 */
+	public void setClaveCorreo(String claveCorreo) {
+		this.claveCorreo = claveCorreo;
+	}
+
+	/**
 	 * Establece la contraseña de acceso (alias de setPassword).
 	 *
 	 * @param contrasena La nueva contraseña.
 	 */
 	public void setContrasena(String contrasena) {
+		this.contrasena = contrasena;
+	}
+
+	/**
+	 * Establece el correo electrónico.
+	 *
+	 * @param correo El nuevo correo.
+	 */
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+
+	/**
+	 * Establece el nombre de usuario.
+	 *
+	 * @param nombre El nuevo nombre de usuario.
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	/**
+	 * Establece la contraseña de acceso.
+	 *
+	 * @param contrasena La nueva contraseña.
+	 */
+	public void setPassword(String contrasena) {
 		this.contrasena = contrasena;
 	}
 

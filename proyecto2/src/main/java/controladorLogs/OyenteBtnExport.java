@@ -11,7 +11,10 @@ import vista.VistaLogs;
  */
 public class OyenteBtnExport implements ActionListener {
 
+    /** Gestor de logs para operaciones de exportación. */
     private GestionLogs gestionLogs;
+
+    /** Vista de logs. */
     private VistaLogs vistaLogs;
 
     /**

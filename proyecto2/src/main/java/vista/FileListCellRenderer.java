@@ -16,8 +16,20 @@ import org.kordamp.ikonli.swing.FontIcon;
  */
 public class FileListCellRenderer extends DefaultListCellRenderer {
 
+    /** Identificador de versión para serialización. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Renderiza cada celda de la lista con el icono apropiado según el tipo de
+     * archivo.
+     *
+     * @param list         Lista que contiene los elementos.
+     * @param value        Valor del elemento actual.
+     * @param index        Índice del elemento.
+     * @param isSelected   Indica si el elemento está seleccionado.
+     * @param cellHasFocus Indica si la celda tiene el foco.
+     * @return Componente renderizado para la celda.
+     */
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index,
             boolean isSelected, boolean cellHasFocus) {

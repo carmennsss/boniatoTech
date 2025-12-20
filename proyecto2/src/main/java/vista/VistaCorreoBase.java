@@ -21,25 +21,52 @@ import modelo.MoTextos;
  */
 public class VistaCorreoBase extends JFrame {
 
+    /** Panel principal de la ventana. */
     private JPanel panelPrincipal;
+
+    /** Campo de texto para el destinatario o remitente. */
     private JTextField textoPara;
+
+    /** Campo de texto para el asunto del correo. */
     private JTextField textoAsunto;
+
+    /** Área de texto para el cuerpo del mensaje. */
     private JTextArea textoCuerpo;
+
+    /** Botón para enviar el correo. */
     private JButton botonEnviar;
+
+    /** Botón para eliminar el correo. */
     private JButton botonEliminar;
+
+    /** Botón para exportar el correo. */
     private JButton botonExportar;
+
+    /** Botón para marcar como no leído. */
     private JButton botonNoLeido;
+
+    /** Botón para adjuntar archivos. */
     private JButton botonAdjuntar;
+
+    /** Dirección de correo del remitente. */
     private String remitente;
+
+    /** Lista de archivos adjuntos. */
     private List<File> adjuntos = new ArrayList<>();
+
+    /** Etiqueta para el campo Para/De. */
     private JLabel lblPara;
+
+    /** Etiqueta para el campo Asunto. */
     private JLabel lblAsunto;
+
+    /** Etiqueta para el campo Mensaje. */
     private JLabel lblMessage;
 
     /**
      * Constructor para el modo de redacción de nuevo correo.
      *
-     * @param remitente Dirección de correo del usuarios que envía el mensaje.
+     * @param remitente Dirección de correo del usuario que envía el mensaje.
      */
     public VistaCorreoBase(String remitente) {
         this.remitente = remitente;

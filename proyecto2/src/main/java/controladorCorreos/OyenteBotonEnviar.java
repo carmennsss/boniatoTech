@@ -12,9 +12,16 @@ import vista.VistaCorreoBase;
  */
 public class OyenteBotonEnviar implements ActionListener {
 
+	/** Vista de redacción de correo. */
 	private VistaCorreoBase v;
+
+	/** Correo electrónico del remitente. */
 	private String correo;
+
+	/** Contraseña de aplicación. */
 	private String passwordAplicacion;
+
+	/** Controlador de correos. */
 	private ControladorCorreos controlador;
 
 	/**

@@ -32,13 +32,28 @@ import modelo.MoTextos;
  */
 public class VistaGeneralCorreo extends JFrame {
 
+	/** Panel principal de la ventana. */
 	private JPanel panel;
+
+	/** Dirección de correo electrónico del usuario. */
 	private String correo;
+
+	/** Botón para redactar un nuevo correo. */
 	private JButton botonEnviarCorreo;
+
+	/** Modelo de datos de la tabla de correos. */
 	private DefaultTableModel tablaModelo;
+
+	/** Tabla que muestra la lista de correos. */
 	private JTable emailTabla;
+
+	/** Botón para volver al menú principal. */
 	private JButton btnVolver;
+
+	/** Botón para refrescar la lista de correos. */
 	private JButton btnRefrescar;
+
+	/** Etiqueta que muestra el correo del usuario. */
 	private JLabel etiquetaCorreo;
 
 	public VistaGeneralCorreo(String correo) {
@@ -215,6 +230,7 @@ public class VistaGeneralCorreo extends JFrame {
 		return btn;
 	}
 
+	/** Lista de correos actualmente mostrados en la tabla. */
 	private ArrayList<Correo> correosActuales = new ArrayList<>();
 
 	/**

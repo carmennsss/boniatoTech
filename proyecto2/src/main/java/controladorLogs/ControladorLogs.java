@@ -16,25 +16,27 @@ import vista.VistaLogs;
  */
 public class ControladorLogs {
 
+	/** Conexión a la base de datos. */
 	private Connection conn;
+
+	/** Vista de logs. */
 	private VistaLogs vistaLogs;
 
+	/** Gestor de logs para operaciones de base de datos. */
 	private GestionLogs gestionLogs;
 
+	/**
+	 * Constructor del controlador de logs.
+	 *
+	 * @param conn      Conexión a la base de datos.
+	 * @param vistaLogs Vista de logs.
+	 */
 	public ControladorLogs(Connection conn, VistaLogs vistaLogs) {
 		this.conn = conn;
 		this.vistaLogs = vistaLogs;
 		this.gestionLogs = new GestionLogs();
 		asignarOyenteBtnExport();
 		asignarOyenteConsultaLogs();
-	}
-
-	/**
-	 * Muestra la ventana de logs y carga todos los registros por defecto.
-	 */
-	public void mostrar() {
-		cargarLogs("all");
-		vistaLogs.hacerVisible();
 	}
 
 	/**
@@ -65,15 +67,29 @@ public class ControladorLogs {
 
 	}
 
-	private void asignarOyenteBtnExport() {
-		vistaLogs.getBtnExport().addActionListener(new OyenteBtnExport(gestionLogs, vistaLogs));
-
-		vistaLogs.getBtnVolver().addActionListener(new OyenteBotonVolverLogs(vistaLogs));
+	/**
+	 * Muestra la ventana de logs y carga todos los registros por defecto.
+	 */
+	public void mostrar() {
+		cargarLogs("all");
+		vistaLogs.hacerVisible();
 	}
 
+	/**
+	 * Asigna los oyentes a los botones de consulta de logs.
+	 */
 	private void asignarOyenteConsultaLogs() {
 		for (JButton boton : vistaLogs.getBotonesConsultas()) {
 			boton.addActionListener(new OyenteConsultaLogs(vistaLogs, this));
 		}
+	}
+
+	/**
+	 * Asigna los oyentes a los botones de exportación y volver.
+	 */
+	private void asignarOyenteBtnExport() {
+		vistaLogs.getBtnExport().addActionListener(new OyenteBtnExport(gestionLogs, vistaLogs));
+
+		vistaLogs.getBtnVolver().addActionListener(new OyenteBotonVolverLogs(vistaLogs));
 	}
 }

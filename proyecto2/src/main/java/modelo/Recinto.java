@@ -4,10 +4,19 @@ package modelo;
  * Representa un recinto dentro del zoológico.
  */
 public class Recinto {
+    /** Identificador único del recinto. */
     private int recinto_id;
+
+    /** Nombre del recinto. */
     private String nombre_recintos;
+
+    /** Ubicación o dirección del recinto. */
     private String direccion_recintos;
+
+    /** Capacidad o cantidad relacionada al origen (uso específico del dominio). */
     private int cantidad_origen;
+
+    /** Capacidad o cantidad relacionada al destino (uso específico del dominio). */
     private int cantidad_destino;
 
     /**
@@ -31,57 +40,12 @@ public class Recinto {
     }
 
     /**
-     * Obtiene el ID del recinto.
+     * Obtiene la cantidad destino.
      *
-     * @return El ID del recinto.
+     * @return La cantidad destino.
      */
-    public int getRecinto_id() {
-        return recinto_id;
-    }
-
-    /**
-     * Establece el ID del recinto.
-     *
-     * @param recinto_id El nuevo ID del recinto.
-     */
-    public void setRecinto_id(int recinto_id) {
-        this.recinto_id = recinto_id;
-    }
-
-    /**
-     * Obtiene el nombre del recinto.
-     *
-     * @return El nombre del recinto.
-     */
-    public String getNombre_recintos() {
-        return nombre_recintos;
-    }
-
-    /**
-     * Establece el nombre del recinto.
-     *
-     * @param nombre_recintos El nuevo nombre del recinto.
-     */
-    public void setNombre_recintos(String nombre_recintos) {
-        this.nombre_recintos = nombre_recintos;
-    }
-
-    /**
-     * Obtiene la dirección del recinto.
-     *
-     * @return La dirección del recinto.
-     */
-    public String getDireccion_recintos() {
-        return direccion_recintos;
-    }
-
-    /**
-     * Establece la dirección del recinto.
-     *
-     * @param direccion_recintos La nueva dirección del recinto.
-     */
-    public void setDireccion_recintos(String direccion_recintos) {
-        this.direccion_recintos = direccion_recintos;
+    public int getCantidad_destino() {
+        return cantidad_destino;
     }
 
     /**
@@ -94,21 +58,30 @@ public class Recinto {
     }
 
     /**
-     * Establece la cantidad origen.
+     * Obtiene la dirección del recinto.
      *
-     * @param cantidad_origen La nueva cantidad origen.
+     * @return La dirección del recinto.
      */
-    public void setCantidad_origen(int cantidad_origen) {
-        this.cantidad_origen = cantidad_origen;
+    public String getDireccion_recintos() {
+        return direccion_recintos;
     }
 
     /**
-     * Obtiene la cantidad destino.
+     * Obtiene el nombre del recinto.
      *
-     * @return La cantidad destino.
+     * @return El nombre del recinto.
      */
-    public int getCantidad_destino() {
-        return cantidad_destino;
+    public String getNombre_recintos() {
+        return nombre_recintos;
+    }
+
+    /**
+     * Obtiene el ID del recinto.
+     *
+     * @return El ID del recinto.
+     */
+    public int getRecinto_id() {
+        return recinto_id;
     }
 
     /**
@@ -118,6 +91,42 @@ public class Recinto {
      */
     public void setCantidad_destino(int cantidad_destino) {
         this.cantidad_destino = cantidad_destino;
+    }
+
+    /**
+     * Establece la cantidad origen.
+     *
+     * @param cantidad_origen La nueva cantidad origen.
+     */
+    public void setCantidad_origen(int cantidad_origen) {
+        this.cantidad_origen = cantidad_origen;
+    }
+
+    /**
+     * Establece la dirección del recinto.
+     *
+     * @param direccion_recintos La nueva dirección del recinto.
+     */
+    public void setDireccion_recintos(String direccion_recintos) {
+        this.direccion_recintos = direccion_recintos;
+    }
+
+    /**
+     * Establece el nombre del recinto.
+     *
+     * @param nombre_recintos El nuevo nombre del recinto.
+     */
+    public void setNombre_recintos(String nombre_recintos) {
+        this.nombre_recintos = nombre_recintos;
+    }
+
+    /**
+     * Establece el ID del recinto.
+     *
+     * @param recinto_id El nuevo ID del recinto.
+     */
+    public void setRecinto_id(int recinto_id) {
+        this.recinto_id = recinto_id;
     }
 
     @Override

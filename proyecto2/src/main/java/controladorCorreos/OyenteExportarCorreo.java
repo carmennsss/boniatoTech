@@ -14,8 +14,13 @@ import vista.VistaCorreoBase;
  */
 public class OyenteExportarCorreo implements ActionListener {
 
+	/** Correo a exportar. */
 	private Correo correo;
+
+	/** Vista de lectura del correo. */
 	private VistaCorreoBase vista;
+
+	/** Dirección de correo del usuario. */
 	private String correoUsuario;
 
 	/**

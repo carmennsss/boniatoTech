@@ -3,10 +3,12 @@ package modelo;
 /**
  * Clase que almacena todas las cadenas de texto utilizadas en la aplicación.
  * Permite la internacionalización (i18n) cambiando los valores de las variables
- * estáticas
- * según el idioma seleccionado.
+ * estáticas según el idioma seleccionado.
  */
 public class MoTextos {
+
+    /** Idioma actual de la aplicación (0 = inglés, 1 = español). */
+    private static int idiomaActual = 0;
 
     public static String app_title = "Serwo Manager";
     public static String login_title = "Login";
@@ -39,12 +41,6 @@ public class MoTextos {
 
     public static String btn_new = "New";
     public static String lbl_crud_instructions = "Double click on a record to update or delete it.";
-
-    public static int getIdioma() {
-        return idiomaActual;
-    }
-
-    private static int idiomaActual = 0;
 
     public static String form_title = "Formulario";
     public static String btn_save = "Guardar";
@@ -126,6 +122,35 @@ public class MoTextos {
     public static String msg_user_registered = "User registered successfully";
     public static String msg_user_exists = "A user with this name or email already exists";
 
+    // CRUD Messages
+    public static String msg_saved_ok = "Saved successfully";
+    public static String msg_save_error = "Error while saving";
+    public static String msg_updated_ok = "Updated successfully";
+    public static String msg_update_error = "Error while updating";
+    public static String msg_confirm_delete = "Are you sure you want to delete this record?";
+    public static String msg_deleted_ok = "Deleted successfully";
+    public static String msg_delete_error = "Error while deleting";
+    public static String gender_male = "Male";
+    public static String gender_female = "Female";
+
+    // Roles Messages
+    public static String msg_role_name_empty = "The role name cannot be empty";
+    public static String msg_role_desc_empty = "The role description cannot be empty";
+    public static String col_user = "User";
+    public static String col_email = "Email";
+    public static String col_roles = "Roles";
+    public static String msg_no_roles = "No roles assigned";
+    public static String col_id = "ID";
+    public static String col_role = "Role";
+    public static String col_desc = "Description";
+
+    // Whitelist Messages
+    public static String msg_no_users_selected = "No users selected to remove.";
+    public static String title_warning = "Warning";
+    public static String msg_confirm_remove_prefix = "Are you sure you want to remove ";
+    public static String msg_confirm_remove_suffix = " user(s) from Whitelist?";
+    public static String title_confirm_removal = "Confirm Removal";
+
     public static String msg_fill_email_name = "Please fill in the Email and Name fields";
     public static String msg_user_exists_whitelist = "User already exists in Whitelist";
     public static String msg_user_added_whitelist = "User added to Whitelist successfully";
@@ -202,7 +227,14 @@ public class MoTextos {
     public static String msg_removed_prefix = "Removed ";
     public static String msg_removed_suffix = " users.";
 
-    // VistaAdmin Strings (if any missing)
+    /**
+     * Obtiene el idioma actual de la aplicación.
+     *
+     * @return Código del idioma (0 = inglés, 1 = español).
+     */
+    public static int getIdioma() {
+        return idiomaActual;
+    }
 
     /**
      * Establece el idioma actual de la aplicación y actualiza todas las cadenas de
@@ -364,12 +396,6 @@ public class MoTextos {
             mail_msg_sent_error_recipient = "El mensaje no pudo ser enviado; verifica la dirección del destinatario.";
             mail_msg_attached_prefix = "Archivo adjuntado: ";
 
-            logs_title = "Registros";
-            logs_col_action = "Operación";
-            logs_col_user = "Usuario";
-            logs_col_date = "Fecha";
-            logs_col_result = "Resultado";
-            logs_btn_export = "Exportar CSV";
             logs_title = "Registros";
             logs_col_action = "Operación";
             logs_col_user = "Usuario";

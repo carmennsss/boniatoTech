@@ -28,27 +28,40 @@ import modelo.ModeloClienteFTP;
 import modelo.MoTextos;
 
 /**
- * Vista del menú principal de la apicación.
+ * Vista del menú principal de la aplicación.
  * Ofrece acceso rápido a los diferentes módulos del sistema (CRUD, Archivos,
  * Correo, Admin).
  */
 public class VistaMenuPrincipal extends JFrame {
+	/** Modelo del cliente FTP. */
 	ModeloClienteFTP client;
-	JButton botonCRUD;
-	JButton botonFileManager;
-	JButton botonCerrarSesion;
-	JButton botonAdmin;
-	JButton botonCorreo;
-	ViMain vista;
 
+	/** Botón para acceder al módulo CRUD. */
+	JButton botonCRUD;
+
+	/** Botón para acceder al gestor de archivos. */
+	JButton botonFileManager;
+
+	/** Botón para cerrar la sesión. */
+	JButton botonCerrarSesion;
+
+	/** Botón para acceder al panel de administración. */
+	JButton botonAdmin;
+
+	/** Botón para acceder al módulo de correo. */
+	JButton botonCorreo;
+
+	/** ComboBox para seleccionar el idioma. */
 	private JComboBox<ImageIcon> comboIdiomas;
 
+	/** Etiqueta del título principal. */
 	JLabel text;
+
+	/** Etiqueta del subtítulo. */
 	JLabel subtext;
 
-	public VistaMenuPrincipal(ModeloClienteFTP client, ViMain vista) {
+	public VistaMenuPrincipal(ModeloClienteFTP client) {
 		this.client = client;
-		this.vista = vista;
 		propiedades();
 	}
 

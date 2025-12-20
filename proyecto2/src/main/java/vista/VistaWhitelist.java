@@ -32,14 +32,31 @@ import modelo.MoTextos;
  * Permite añadir nuevos correos de confianza o eliminar existentes.
  */
 public class VistaWhitelist extends JFrame {
+    /** Lista de botones de la interfaz. */
     private ArrayList<JButton> botones;
+
+    /** Panel que contiene la tabla de whitelist. */
     private ViTabla tabla;
+
+    /** Campo de texto para el email. */
     private JTextField txtEmail;
+
+    /** Campo de texto para el nombre. */
     private JTextField txtNombre;
+
+    /** Imagen de fondo de la ventana. */
     private Image imagenFondo;
+
+    /** Botón para añadir a la whitelist. */
     private JButton btnAnadir;
+
+    /** Botón para quitar de la whitelist. */
     private JButton btnDesasignar;
+
+    /** Botón para volver a la vista anterior. */
     private JButton btnVolver;
+
+    /** Etiqueta del título de la ventana. */
     private JLabel titulo;
 
     /**

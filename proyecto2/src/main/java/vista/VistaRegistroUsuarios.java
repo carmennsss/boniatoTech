@@ -33,25 +33,61 @@ import modelo.ModeloClienteFTP;
  */
 public class VistaRegistroUsuarios extends JFrame {
 
+	/** Modelo del cliente FTP. */
 	ModeloClienteFTP client;
+
+	/** Modelo de base de datos. */
 	ModeloBaseDatos db;
+
+	/** Vista de administración asociada. */
 	VistaAdmin vistaAdmin;
+
+	/** Etiqueta del campo nombre. */
 	JLabel nombre;
+
+	/** Campo de texto para el nombre. */
 	JTextField textNombre;
+
+	/** Etiqueta del campo correo. */
 	JLabel correo;
+
+	/** Campo de texto para el correo. */
 	JTextField textCorreo;
+
+	/** Etiqueta del campo clave de correo. */
 	JLabel claveCorreo;
+
+	/** Campo de texto para la clave de correo. */
 	JTextField textClaveCorreo;
+
+	/** Etiqueta del campo contraseña. */
 	JLabel contrasena;
+
+	/** Campo de texto para la contraseña. */
 	JPasswordField textContrasena;
+
+	/** Etiqueta del campo confirmación de contraseña. */
 	JLabel confContrasena;
+
+	/** Campo de texto para confirmar la contraseña. */
 	JPasswordField textConfContrasena;
+
+	/** Botón para añadir un nuevo usuario. */
 	JButton aniadir;
+
+	/** Botón para eliminar usuarios. */
 	JButton eliminar;
+
+	/** Botón para volver a la vista anterior. */
 	JButton volver;
 
+	/** Imagen de fondo de la ventana. */
 	private Image imagenFondo;
+
+	/** Etiqueta del título de la ventana. */
 	private JLabel titulo;
+
+	/** Panel central que contiene el formulario. */
 	private JPanel panelCentral;
 
 	public VistaRegistroUsuarios(VistaAdmin vistaAdmin, ModeloClienteFTP client, ModeloBaseDatos db) {

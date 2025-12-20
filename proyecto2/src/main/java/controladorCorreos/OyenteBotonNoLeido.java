@@ -11,7 +11,10 @@ import modelo.Correo;
  */
 public class OyenteBotonNoLeido implements ActionListener {
 
+	/** Correo a marcar como no leído. */
 	private Correo correo;
+
+	/** Controlador de correos. */
 	private ControladorCorreos controladorCorreos;
 
 	/**

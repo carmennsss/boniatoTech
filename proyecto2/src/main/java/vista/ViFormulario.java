@@ -17,10 +17,19 @@ import modelo.MoTextos;
  * Genera campos de texto o comboboxes según la configuración proporcionada.
  */
 public class ViFormulario extends JFrame {
+    /** Lista de etiquetas de los campos del formulario. */
     private ArrayList<JLabel> etiquetas;
+
+    /** Lista de componentes de entrada (campos de texto o comboboxes). */
     private ArrayList<JComponent> campos;
+
+    /** Lista de botones del formulario. */
     private ArrayList<JButton> botones;
+
+    /** Panel central que contiene los campos del formulario. */
     private JPanel panelCentral;
+
+    /** Imagen de fondo de la ventana. */
     private Image imagenFondo;
 
     public ViFormulario() {

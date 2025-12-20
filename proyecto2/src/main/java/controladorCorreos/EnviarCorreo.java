@@ -46,7 +46,7 @@ public class EnviarCorreo {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(
                         miCorreo,
-                        passwordAplicacion // Contrasenna de aplicacion correcta
+                        passwordAplicacion // Contraseña de aplicación correcta
                 );
             }
         });

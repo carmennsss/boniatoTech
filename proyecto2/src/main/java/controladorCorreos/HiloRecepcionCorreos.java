@@ -16,11 +16,31 @@ import vista.VistaGeneralCorreo;
  */
 public class HiloRecepcionCorreos implements Runnable {
 
+	/** Gestor de operaciones POP3. */
 	private GestionCorreos gestionPop3;
-	private String host, hostImap, correo, PASSWORD_APLICACION;
+
+	/** Host del servidor POP3. */
+	private String host;
+
+	/** Host del servidor IMAP. */
+	private String hostImap;
+
+	/** Correo electrónico del usuario. */
+	private String correo;
+
+	/** Contraseña de aplicación de Gmail. */
+	private String PASSWORD_APLICACION;
+
+	/** Vista general de correos. */
 	private VistaGeneralCorreo vistaGeneral;
+
+	/** Último número de correos recibidos. */
 	private int ultimoNumeroCorreos = -1;
+
+	/** Controlador de correos. */
 	private ControladorCorreos controlador;
+
+	/** Gestor de logs de correo. */
 	private GestionLogs logCorreo;
 
 	/**

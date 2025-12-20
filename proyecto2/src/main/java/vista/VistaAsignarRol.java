@@ -28,13 +28,25 @@ import modelo.MoTextos;
  * Vista para la asignación y desasignación de roles a los usuarios existentes.
  */
 public class VistaAsignarRol extends JFrame {
+    /** Lista de etiquetas de texto de la interfaz. */
     private ArrayList<JLabel> textos;
+
+    /** Lista de botones de la interfaz. */
     private ArrayList<JButton> botones;
+
+    /** Panel que contiene la tabla de usuarios. */
     private ViTabla tabla;
+
+    /** ComboBox para seleccionar el rol a asignar. */
     private JComboBox<Rol> comboRoles = new JComboBox<>();
+
+    /** Imagen de fondo de la ventana. */
     private Image imagenFondo;
 
+    /** Etiqueta para el selector de rol. */
     private JLabel lblRol;
+
+    /** Etiqueta del título de la ventana. */
     private JLabel titulo;
 
     public VistaAsignarRol() {

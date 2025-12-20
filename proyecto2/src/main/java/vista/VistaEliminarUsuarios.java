@@ -27,14 +27,31 @@ import modelo.ModeloClienteFTP;
  * Vista para la eliminación de usuarios del sistema.
  */
 public class VistaEliminarUsuarios extends JFrame {
+    /** Vista de registro de usuarios. */
     VistaRegistroUsuarios vistaUsuarios;
+
+    /** Modelo del cliente FTP. */
     ModeloClienteFTP modeloFTP;
+
+    /** Modelo de base de datos. */
     ModeloBaseDatos bd;
+
+    /** Lista de etiquetas de texto de la interfaz. */
     private ArrayList<JLabel> textos;
+
+    /** Lista de botones de la interfaz. */
     private ArrayList<JButton> botones;
+
+    /** Botón para eliminar usuarios. */
     JButton btnEliminar;
+
+    /** Botón para volver a la vista anterior. */
     JButton btnVolver;
+
+    /** Panel que contiene la tabla de usuarios. */
     private ViTabla tabla;
+
+    /** Imagen de fondo de la ventana. */
     private Image imagenFondo;
 
     public VistaEliminarUsuarios(VistaRegistroUsuarios vistaUsuarios, ModeloClienteFTP modeloFTP, ModeloBaseDatos bd) {

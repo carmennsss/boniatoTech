@@ -23,19 +23,50 @@ import vista.VistaMenuPrincipal;
  */
 public class ControladorCorreos {
 
+	/** Correo electrónico del usuario actual. */
 	private String CORREO;
+
+	/** Contraseña de aplicación de Gmail. */
 	private String PASSWORD_APLICACION;
+
+	/** Host del servidor POP3. */
 	private static final String HOST = "pop.gmail.com";
+
+	/** Host del servidor IMAP. */
 	private static final String HOSTIMAP = "imap.gmail.com";
+
+	/** Lista de correos descargados. */
 	private ArrayList<Correo> correos = new ArrayList<>();
+
+	/** Vista general de correos. */
 	private VistaGeneralCorreo vistaGeneral;
+
+	/** Gestor de operaciones de correo. */
 	private static GestionCorreos gestion;
+
+	/** Hilo de recepción automática de correos. */
 	private Thread hiloRecepcion;
+
+	/** Conexión a la base de datos. */
 	private ModeloBaseDatos db;
+
+	/** Vista del menú principal. */
 	private VistaMenuPrincipal vistaMenuPrincipal;
+
+	/** Lista de correos descargada en la última actualización. */
 	private ArrayList<Correo> listaDescargada;
+
+	/** Lista de correos descargada en la actualización anterior. */
 	private ArrayList<Correo> listaDescargadaAnterior;
 
+	/**
+	 * Constructor del controlador de correos.
+	 *
+	 * @param CORREO       Correo electrónico del usuario.
+	 * @param vistaGeneral Vista general de correos.
+	 * @param bd           Conexión a la base de datos.
+	 * @param vistaMenu    Vista del menú principal.
+	 */
 	public ControladorCorreos(String CORREO, VistaGeneralCorreo vistaGeneral, ModeloBaseDatos bd,
 			VistaMenuPrincipal vistaMenu) {
 		this.vistaGeneral = vistaGeneral;
@@ -49,31 +80,18 @@ public class ControladorCorreos {
 	}
 
 	/**
-	 * Obtiene la contraseña de aplicación de Gmail almacenada en la base de datos
-	 * para un usuario.
+	 * Actualiza la lista de correos local con nuevos correos recibidos desde el
+	 * hilo de recepción.
 	 *
-	 * @param correo El correo del usuario.
-	 * @return La clave de aplicación o null si no se encuentra.
+	 * @param nuevosCorreos Lista de nuevos correos.
 	 */
-	private String obtenerClaveCorreoPorUsuario(String correo) {
-		String contrasenaAplicacion = null;
-		try {
-			String sql = "SELECT clave_correo FROM usuarios WHERE email = ?";
-			Connection conexion = db.getConexion();
+	public synchronized void actualizarListaDesdeHilo(ArrayList<Correo> nuevosCorreos) {
+		this.correos.clear();
+		this.correos.addAll(nuevosCorreos);
 
-			PreparedStatement ps = conexion.prepareStatement(sql);
+		vistaGeneral.cargarCorreos(this.correos);
 
-			ps.setString(1, correo);
-
-			ResultSet rs = ps.executeQuery();
-
-			while (rs.next()) {
-				contrasenaAplicacion = rs.getString(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return contrasenaAplicacion;
+		System.out.println("Lista de correos sincronizada. Total: " + this.correos.size());
 	}
 
 	/**
@@ -120,36 +138,44 @@ public class ControladorCorreos {
 	}
 
 	/**
+	 * Comprueba si un receptor está en la lista blanca o es un usuario registrado.
+	 *
+	 * @param receptor Email del receptor.
+	 * @return true si es válido, false en caso contrario.
+	 */
+	public boolean comprobarReceptorWhiteList(String receptor) {
+		ArrayList<String> whitelist = new ArrayList<>();
+		try {
+			Connection conexion = db.getConexion();
+
+			Statement sentencia = conexion.createStatement();
+
+			String sql = "SELECT email AS correo FROM usuarios UNION SELECT correo FROM whitelist";
+
+			ResultSet rs = sentencia.executeQuery(sql);
+
+			while (rs.next()) {
+				whitelist.add(rs.getString(1));
+			}
+
+			if (whitelist.contains(receptor)) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
 	 * Detiene el hilo de recepción de correos si está en ejecución.
 	 */
 	public void detenerHiloRecepcion() {
 		if (hiloRecepcion != null && hiloRecepcion.isAlive()) {
 			hiloRecepcion.interrupt();
 		}
-	}
-
-	/**
-	 * Obtiene la lista de correos del servidor mediante POP3.
-	 *
-	 * @return Lista de correos recibidos.
-	 */
-	public ArrayList<Correo> obtenerCorreos() {
-		ArrayList<Correo> listaCorreos = gestion.recibirCorreosPOP3(HOST, HOSTIMAP, "recent:" + CORREO,
-				PASSWORD_APLICACION);
-
-		return listaCorreos;
-	}
-
-	/**
-	 * Configura los escuchadores de los botones y la tabla en la vista general.
-	 */
-	private void configurarVistaGeneral() {
-		vistaGeneral.getBotonEnviarCorreo()
-				.addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo(), PASSWORD_APLICACION, this));
-		vistaGeneral.getEmailTabla()
-				.addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this, CORREO));
-		vistaGeneral.getBtnRefrescar().addActionListener(new OyenteRefrescarCorreo(this));
-		vistaGeneral.getBtnVolver().addActionListener(new OyenteBotonVolver(vistaGeneral, vistaMenuPrincipal, this));
 	}
 
 	/**
@@ -169,6 +195,33 @@ public class ControladorCorreos {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Obtiene el correo electrónico del usuario actual.
+	 * 
+	 * @return Dirección de correo.
+	 */
+	public String getCORREO() {
+		return CORREO;
+	}
+
+	/**
+	 * Devuelve la lista actual de correos almacenados localmente.
+	 * 
+	 * @return Lista de correos.
+	 */
+	public ArrayList<Correo> getListaCorreosActual() {
+		return this.correos;
+	}
+
+	/**
+	 * Obtiene la contraseña de aplicación utilizada para la autenticación.
+	 * 
+	 * @return Contraseña de aplicación.
+	 */
+	public String getPasswordAplicacion() {
+		return PASSWORD_APLICACION;
 	}
 
 	/**
@@ -214,77 +267,15 @@ public class ControladorCorreos {
 	}
 
 	/**
-	 * Actualiza la lista de correos local con nuevos correos recibidos desde el
-	 * hilo de recepción.
+	 * Obtiene la lista de correos del servidor mediante POP3.
 	 *
-	 * @param nuevosCorreos Lista de nuevos correos.
+	 * @return Lista de correos recibidos.
 	 */
-	public synchronized void actualizarListaDesdeHilo(ArrayList<Correo> nuevosCorreos) {
-		this.correos.clear();
-		this.correos.addAll(nuevosCorreos);
+	public ArrayList<Correo> obtenerCorreos() {
+		ArrayList<Correo> listaCorreos = gestion.recibirCorreosPOP3(HOST, HOSTIMAP, "recent:" + CORREO,
+				PASSWORD_APLICACION);
 
-		vistaGeneral.cargarCorreos(this.correos);
-
-		System.out.println("Lista de correos sincronizada. Total: " + this.correos.size());
-	}
-
-	/**
-	 * Devuelve la lista actual de correos almacenados localmente.
-	 * 
-	 * @return Lista de correos.
-	 */
-	public ArrayList<Correo> getListaCorreosActual() {
-		return this.correos;
-	}
-
-	/**
-	 * Obtiene la contraseña de aplicación utilizada para la autenticación.
-	 * 
-	 * @return Contraseña de aplicación.
-	 */
-	public String getPasswordAplicacion() {
-		return PASSWORD_APLICACION;
-	}
-
-	/**
-	 * Comprueba si un receptor está en la lista blanca o es un usuario registrado.
-	 *
-	 * @param receptor Email del receptor.
-	 * @return true si es válido, false en caso contrario.
-	 */
-	public boolean comprobarReceptorWhiteList(String receptor) {
-		ArrayList<String> whitelist = new ArrayList<>();
-		try {
-			Connection conexion = db.getConexion();
-
-			Statement sentencia = conexion.createStatement();
-
-			String sql = "SELECT email AS correo FROM usuarios UNION SELECT correo FROM whitelist";
-
-			ResultSet rs = sentencia.executeQuery(sql);
-
-			while (rs.next()) {
-				whitelist.add(rs.getString(1));
-			}
-
-			if (whitelist.contains(receptor)) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	/**
-	 * Obtiene el correo electrónico del usuario actual.
-	 * 
-	 * @return Dirección de correo.
-	 */
-	public String getCORREO() {
-		return CORREO;
+		return listaCorreos;
 	}
 
 	/**
@@ -294,6 +285,46 @@ public class ControladorCorreos {
 	 */
 	public void setCORREO(String cORREO) {
 		CORREO = cORREO;
+	}
+
+	/**
+	 * Configura los escuchadores de los botones y la tabla en la vista general.
+	 */
+	private void configurarVistaGeneral() {
+		vistaGeneral.getBotonEnviarCorreo()
+				.addActionListener(new OyenteBotonEnviar(vistaGeneral.getCorreo(), PASSWORD_APLICACION, this));
+		vistaGeneral.getEmailTabla()
+				.addMouseListener(new OyenteTabla(vistaGeneral.getEmailTabla(), correos, this, CORREO));
+		vistaGeneral.getBtnRefrescar().addActionListener(new OyenteRefrescarCorreo(this));
+		vistaGeneral.getBtnVolver().addActionListener(new OyenteBotonVolver(vistaGeneral, vistaMenuPrincipal, this));
+	}
+
+	/**
+	 * Obtiene la contraseña de aplicación de Gmail almacenada en la base de datos
+	 * para un usuario.
+	 *
+	 * @param correo El correo del usuario.
+	 * @return La clave de aplicación o null si no se encuentra.
+	 */
+	private String obtenerClaveCorreoPorUsuario(String correo) {
+		String contrasenaAplicacion = null;
+		try {
+			String sql = "SELECT clave_correo FROM usuarios WHERE email = ?";
+			Connection conexion = db.getConexion();
+
+			PreparedStatement ps = conexion.prepareStatement(sql);
+
+			ps.setString(1, correo);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				contrasenaAplicacion = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return contrasenaAplicacion;
 	}
 
 }

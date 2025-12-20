@@ -4,7 +4,10 @@ package modelo;
  * Representa una especie animal en el sistema.
  */
 public class Especie {
+    /** Identificador único de la especie. */
     private int especie_id;
+
+    /** Nombre de la especie. */
     private String nombre_especies;
 
     /**
@@ -28,21 +31,21 @@ public class Especie {
     }
 
     /**
-     * Establece el ID de la especie.
-     *
-     * @param especie_id El nuevo ID de la especie.
-     */
-    public void setEspecie_id(int especie_id) {
-        this.especie_id = especie_id;
-    }
-
-    /**
      * Obtiene el nombre de la especie.
      *
      * @return El nombre de la especie.
      */
     public String getNombre_especies() {
         return nombre_especies;
+    }
+
+    /**
+     * Establece el ID de la especie.
+     *
+     * @param especie_id El nuevo ID de la especie.
+     */
+    public void setEspecie_id(int especie_id) {
+        this.especie_id = especie_id;
     }
 
     /**

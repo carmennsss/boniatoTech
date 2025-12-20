@@ -6,10 +6,19 @@ package modelo;
  * especie y cuidador.
  */
 public class Animal {
+    /** Identificador único del animal. */
     private int animal_id;
+
+    /** Nombre del animal. */
     private String nombre_animales;
+
+    /** Tipo de animal. */
     private String tipo;
+
+    /** Identificador de la especie a la que pertenece. */
     private int especie_id;
+
+    /** Identificador del cuidador asignado. */
     private int cuidador_id;
 
     /**
@@ -39,48 +48,12 @@ public class Animal {
     }
 
     /**
-     * Establece el ID del animal.
+     * Obtiene el ID del cuidador del animal.
      *
-     * @param animal_id El nuevo ID del animal.
+     * @return El ID del cuidador.
      */
-    public void setAnimal_id(int animal_id) {
-        this.animal_id = animal_id;
-    }
-
-    /**
-     * Obtiene el nombre del animal.
-     *
-     * @return El nombre del animal.
-     */
-    public String getNombre_animales() {
-        return nombre_animales;
-    }
-
-    /**
-     * Establece el nombre del animal.
-     *
-     * @param nombre_animales El nuevo nombre del animal.
-     */
-    public void setNombre_animales(String nombre_animales) {
-        this.nombre_animales = nombre_animales;
-    }
-
-    /**
-     * Obtiene el tipo de animal.
-     *
-     * @return El tipo de animal.
-     */
-    public String getTipo() {
-        return tipo;
-    }
-
-    /**
-     * Establece el tipo de animal.
-     *
-     * @param tipo El nuevo tipo de animal.
-     */
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public int getCuidador_id() {
+        return cuidador_id;
     }
 
     /**
@@ -93,21 +66,30 @@ public class Animal {
     }
 
     /**
-     * Establece el ID de la especie del animal.
+     * Obtiene el nombre del animal.
      *
-     * @param especie_id El nuevo ID de la especie.
+     * @return El nombre del animal.
      */
-    public void setEspecie_id(int especie_id) {
-        this.especie_id = especie_id;
+    public String getNombre_animales() {
+        return nombre_animales;
     }
 
     /**
-     * Obtiene el ID del cuidador del animal.
+     * Obtiene el tipo de animal.
      *
-     * @return El ID del cuidador.
+     * @return El tipo de animal.
      */
-    public int getCuidador_id() {
-        return cuidador_id;
+    public String getTipo() {
+        return tipo;
+    }
+
+    /**
+     * Establece el ID del animal.
+     *
+     * @param animal_id El nuevo ID del animal.
+     */
+    public void setAnimal_id(int animal_id) {
+        this.animal_id = animal_id;
     }
 
     /**
@@ -117,5 +99,32 @@ public class Animal {
      */
     public void setCuidador_id(int cuidador_id) {
         this.cuidador_id = cuidador_id;
+    }
+
+    /**
+     * Establece el ID de la especie del animal.
+     *
+     * @param especie_id El nuevo ID de la especie.
+     */
+    public void setEspecie_id(int especie_id) {
+        this.especie_id = especie_id;
+    }
+
+    /**
+     * Establece el nombre del animal.
+     *
+     * @param nombre_animales El nuevo nombre del animal.
+     */
+    public void setNombre_animales(String nombre_animales) {
+        this.nombre_animales = nombre_animales;
+    }
+
+    /**
+     * Establece el tipo de animal.
+     *
+     * @param tipo El nuevo tipo de animal.
+     */
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 }

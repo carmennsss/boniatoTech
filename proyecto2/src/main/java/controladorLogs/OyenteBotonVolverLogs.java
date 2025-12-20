@@ -9,12 +9,9 @@ import vista.VistaLogs;
  * Oyente para el botón "Volver" en la vista de logs.
  * Cierra la ventana actual y reabre el menú de administrador.
  */
-/**
- * Oyente para el botón "Volver" en la vista de logs.
- * Cierra la ventana actual y reabre el menú de administrador.
- */
 public class OyenteBotonVolverLogs implements ActionListener {
 
+	/** Vista de logs. */
 	private VistaLogs vistaLogs;
 
 	/**

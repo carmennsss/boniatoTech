@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
  */
 public class OyenteRefrescarCorreo implements ActionListener {
 
+	/** Controlador de correos. */
 	private ControladorCorreos controlador;
 
 	/**

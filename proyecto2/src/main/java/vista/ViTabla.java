@@ -13,8 +13,13 @@ import java.util.ArrayList;
  * Permite manejar selecciones múltiples y coloreado de filas.
  */
 public class ViTabla extends JPanel {
+    /** Tabla de datos. */
     private JTable tabla;
+
+    /** Panel de desplazamiento que contiene la tabla. */
     private JScrollPane scrollPane;
+
+    /** Lista de índices de filas seleccionadas. */
     private ArrayList<Integer> filasSeleccionadas;
 
     public ViTabla() {

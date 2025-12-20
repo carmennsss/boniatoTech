@@ -29,17 +29,30 @@ import modelo.Log;
 import modelo.MoTextos;
 
 /**
- * Vista para la consulta historica de logs del sistema.
+ * Vista para la consulta histórica de logs del sistema.
  * Muestra qué usuarios hicieron qué acciones y cuándo.
  */
 public class VistaLogs extends JFrame {
 
+    /** Panel que contiene la tabla de logs. */
     private ViTabla tabla;
+
+    /** Botón para exportar los logs a archivo. */
     private JButton btnExport;
+
+    /** Botón para volver a la vista anterior. */
     private JButton btnVolver;
+
+    /** Lista de botones para consultas de logs. */
     private ArrayList<JButton> botonesConsultas;
+
+    /** Imagen de fondo de la ventana. */
     private Image imagenFondo;
+
+    /** Etiqueta del título de la ventana. */
     private JLabel titulo;
+
+    /** Vista de administración asociada. */
     private VistaAdmin vistaAdmin;
 
     public VistaLogs(VistaAdmin vistaAdmin) {

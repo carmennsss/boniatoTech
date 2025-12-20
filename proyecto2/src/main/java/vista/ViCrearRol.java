@@ -9,14 +9,23 @@ import modelo.MoTextos;
 
 /**
  * Vista para la creación de nuevos roles en el sistema.
- * Muestra una tabla con los roles existentes y permtie añadir uno nuevo
+ * Muestra una tabla con los roles existentes y permite añadir uno nuevo
  * mediante un diálogo.
  */
 public class ViCrearRol extends JFrame {
+    /** Lista de etiquetas de texto de la interfaz. */
     private ArrayList<JLabel> textos;
+
+    /** Campo de texto para el nombre del rol. */
     private JTextField txtNombre;
+
+    /** Campo de texto para la descripción del rol. */
     private JTextField txtDescripcion;
+
+    /** Lista de botones de la interfaz. */
     private ArrayList<JButton> botones;
+
+    /** Panel que contiene la tabla de roles. */
     private ViTabla panelTabla;
 
     public ViCrearRol() {

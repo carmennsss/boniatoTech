@@ -12,8 +12,13 @@ import vista.VistaCorreoBase;
  */
 public class OyenteBotonEliminar implements ActionListener {
 
+	/** Correo a eliminar. */
 	private Correo correo;
+
+	/** Controlador de correos. */
 	private ControladorCorreos controladorCorreos;
+
+	/** Vista de lectura del correo. */
 	private VistaCorreoBase vistaLectura;
 
 	/**

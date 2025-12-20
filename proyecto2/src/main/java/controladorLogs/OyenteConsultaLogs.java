@@ -12,7 +12,10 @@ import vista.VistaLogs;
  * Permite filtrar/ordenar los logs por acciones, usuarios, fechas o resultados.
  */
 public class OyenteConsultaLogs implements ActionListener {
+    /** Vista de logs. */
     private VistaLogs vistaLogs;
+
+    /** Controlador de logs. */
     private ControladorLogs controladorLogs;
 
     /**
