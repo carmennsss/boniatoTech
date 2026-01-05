@@ -8,8 +8,8 @@ import modelo.Log;
 import vista.VistaGeneralCorreo;
 
 /**
- * Hilo de ejecución en segundo plano para la recepción automática de
- * correos. Comprueba periódicamente si hay nuevos correos y actualiza la
+ * Hilo de ejecuciï¿½n en segundo plano para la recepciï¿½n automï¿½tica de
+ * correos. Comprueba periï¿½dicamente si hay nuevos correos y actualiza la
  * vista.
  */
 public class HiloRecepcionCorreos implements Runnable {
@@ -23,16 +23,16 @@ public class HiloRecepcionCorreos implements Runnable {
 	/** Host del servidor IMAP. */
 	private String hostImap;
 
-	/** Correo electrónico del usuario. */
+	/** Correo electrï¿½nico del usuario. */
 	private String correo;
 
-	/** Contraseña de aplicación de Gmail. */
+	/** Contraseï¿½a de aplicaciï¿½n de Gmail. */
 	private String PASSWORD_APLICACION;
 
 	/** Vista general de correos. */
 	private VistaGeneralCorreo vistaGeneral;
 
-	/** Último número de correos recibidos. */
+	/** ï¿½ltimo nï¿½mero de correos recibidos. */
 	private int ultimoNumeroCorreos = -1;
 
 	/** Controlador de correos. */
@@ -42,12 +42,12 @@ public class HiloRecepcionCorreos implements Runnable {
 	private GestionLogs logCorreo;
 
 	/**
-	 * Constructor del hilo de recepción de correos.
+	 * Constructor del hilo de recepciï¿½n de correos.
 	 *
 	 * @param gestionPop3         Gestor de correos POP3.
 	 * @param host                Host del servidor de correo.
-	 * @param correo              Dirección de correo del usuario.
-	 * @param PASSWORD_APLICACION Contraseña de aplicación.
+	 * @param correo              Direcciï¿½n de correo del usuario.
+	 * @param PASSWORD_APLICACION Contraseï¿½a de aplicaciï¿½n.
 	 * @param vistaGeneral        Vista general de correos.
 	 * @param controlador         Controlador de correos.
 	 */
@@ -64,7 +64,7 @@ public class HiloRecepcionCorreos implements Runnable {
 	}
 
 	/**
-	 * Ejecuta el bucle de recepción de correos en segundo plano. Comprueba nuevos
+	 * Ejecuta el bucle de recepciï¿½n de correos en segundo plano. Comprueba nuevos
 	 * correos cada 25 segundos y actualiza la vista si hay cambios.
 	 */
 	@Override
@@ -124,7 +124,7 @@ public class HiloRecepcionCorreos implements Runnable {
 	}
 
 	/**
-	 * Obtiene el correo electrónico configurado.
+	 * Obtiene el correo electrï¿½nico configurado.
 	 * @return El correo del usuario.
 	 */
 	public String getCorreo() {
@@ -132,15 +132,15 @@ public class HiloRecepcionCorreos implements Runnable {
 	}
 
 	/**
-	 * Obtiene el último número de correos detectado.
-	 * @return Cantidad de correos en la última revisión.
+	 * Obtiene el ï¿½ltimo nï¿½mero de correos detectado.
+	 * @return Cantidad de correos en la ï¿½ltima revisiï¿½n.
 	 */
 	public int getUltimoNumeroCorreos() {
 		return ultimoNumeroCorreos;
 	}
 
 	/**
-	 * Establece manualmente el último número de correos detectado.
+	 * Establece manualmente el ï¿½ltimo nï¿½mero de correos detectado.
 	 * @param ultimoNumeroCorreos La nueva cantidad.
 	 */
 	public void setUltimoNumeroCorreos(int ultimoNumeroCorreos) {

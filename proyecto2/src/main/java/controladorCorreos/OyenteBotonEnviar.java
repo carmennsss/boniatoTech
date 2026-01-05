@@ -5,18 +5,18 @@ import java.awt.event.ActionListener;
 import vista.VistaCorreoBase;
 
 /**
- * Oyente del botón "Enviar" en la vista de correos. Abre la ventana de
- * redacción de un nuevo correo.
+ * Oyente del botï¿½n "Enviar" en la vista de correos. Abre la ventana de
+ * redacciï¿½n de un nuevo correo.
  */
 public class OyenteBotonEnviar implements ActionListener {
 
-	/** Vista de redacción de correo. */
+	/** Vista de redacciï¿½n de correo. */
 	private VistaCorreoBase v;
 
-	/** Correo electrónico del remitente. */
+	/** Correo electrï¿½nico del remitente. */
 	private String correo;
 
-	/** Contraseña de aplicación. */
+	/** Contraseï¿½a de aplicaciï¿½n. */
 	private String passwordAplicacion;
 
 	/** Controlador de correos. */
@@ -25,8 +25,8 @@ public class OyenteBotonEnviar implements ActionListener {
 	/**
 	 * Constructor del oyente.
 	 *
-	 * @param correo             Dirección de correo del remitente.
-	 * @param passwordAplicacion Contraseña de aplicación.
+	 * @param correo             Direcciï¿½n de correo del remitente.
+	 * @param passwordAplicacion Contraseï¿½a de aplicaciï¿½n.
 	 * @param controladorCorreos Controlador de correos.
 	 */
 	public OyenteBotonEnviar(String correo, String passwordAplicacion, ControladorCorreos controladorCorreos) {
@@ -36,9 +36,9 @@ public class OyenteBotonEnviar implements ActionListener {
 	}
 
 	/**
-	 * Abre la ventana de redacción de nuevo correo.
+	 * Abre la ventana de redacciï¿½n de nuevo correo.
 	 *
-	 * @param e Evento de acción.
+	 * @param e Evento de acciï¿½n.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -51,7 +51,7 @@ public class OyenteBotonEnviar implements ActionListener {
 	// --- GETTERS Y SETTERS ---
 
 	/**
-	 * Obtiene la vista de redacción de correo.
+	 * Obtiene la vista de redacciï¿½n de correo.
 	 * @return La vista de correo base.
 	 */
 	public VistaCorreoBase getV() {
@@ -59,7 +59,7 @@ public class OyenteBotonEnviar implements ActionListener {
 	}
 
 	/**
-	 * Establece la vista de redacción de correo.
+	 * Establece la vista de redacciï¿½n de correo.
 	 * @param v La nueva vista.
 	 */
 	public void setV(VistaCorreoBase v) {
@@ -68,7 +68,7 @@ public class OyenteBotonEnviar implements ActionListener {
 
 	/**
 	 * Obtiene el correo del remitente.
-	 * @return El correo electrónico.
+	 * @return El correo electrï¿½nico.
 	 */
 	public String getCorreo() {
 		return correo;
@@ -76,23 +76,23 @@ public class OyenteBotonEnviar implements ActionListener {
 
 	/**
 	 * Establece el correo del remitente.
-	 * @param correo El nuevo correo electrónico.
+	 * @param correo El nuevo correo electrï¿½nico.
 	 */
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
 
 	/**
-	 * Obtiene la contraseña de aplicación.
-	 * @return La contraseña de aplicación.
+	 * Obtiene la contraseï¿½a de aplicaciï¿½n.
+	 * @return La contraseï¿½a de aplicaciï¿½n.
 	 */
 	public String getPasswordAplicacion() {
 		return passwordAplicacion;
 	}
 
 	/**
-	 * Establece la contraseña de aplicación.
-	 * @param passwordAplicacion La nueva contraseña.
+	 * Establece la contraseï¿½a de aplicaciï¿½n.
+	 * @param passwordAplicacion La nueva contraseï¿½a.
 	 */
 	public void setPasswordAplicacion(String passwordAplicacion) {
 		this.passwordAplicacion = passwordAplicacion;

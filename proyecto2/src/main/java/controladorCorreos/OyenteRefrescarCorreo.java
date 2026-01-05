@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Oyente del botón "Refrescar" en la vista de correos.
+ * Oyente del botï¿½n "Refrescar" en la vista de correos.
  * Recarga manualmente la lista de correos desde el servidor.
  */
 public class OyenteRefrescarCorreo implements ActionListener {
@@ -24,7 +24,7 @@ public class OyenteRefrescarCorreo implements ActionListener {
 	/**
 	 * Fuerza una recarga manual de la lista de correos.
 	 *
-	 * @param e Evento de acción.
+	 * @param e Evento de acciï¿½n.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {

@@ -7,7 +7,7 @@ import modelo.Correo;
 import vista.VistaCorreoBase;
 
 /**
- * Oyente del botón "Exportar" en la vista de lectura de correos.
+ * Oyente del botï¿½n "Exportar" en la vista de lectura de correos.
  * Exporta el correo seleccionado a formato .eml.
  */
 public class OyenteExportarCorreo implements ActionListener {
@@ -18,7 +18,7 @@ public class OyenteExportarCorreo implements ActionListener {
 	/** Vista de lectura del correo. */
 	private VistaCorreoBase vista;
 
-	/** Dirección de correo del usuario. */
+	/** Direcciï¿½n de correo del usuario. */
 	private String correoUsuario;
 
 	/**
@@ -26,7 +26,7 @@ public class OyenteExportarCorreo implements ActionListener {
 	 *
 	 * @param correo        Correo a exportar.
 	 * @param vistaLectura  Vista de lectura del correo.
-	 * @param correoUsuario Dirección de correo del usuario.
+	 * @param correoUsuario Direcciï¿½n de correo del usuario.
 	 */
 	public OyenteExportarCorreo(Correo correo, VistaCorreoBase vistaLectura, String correoUsuario) {
 		this.correo = correo;
@@ -35,10 +35,10 @@ public class OyenteExportarCorreo implements ActionListener {
 	}
 
 	/**
-	 * Exporta el correo seleccionado a un archivo .eml en la ubicación elegida por
+	 * Exporta el correo seleccionado a un archivo .eml en la ubicaciï¿½n elegida por
 	 * el usuario.
 	 *
-	 * @param e Evento de acción.
+	 * @param e Evento de acciï¿½n.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -107,7 +107,7 @@ public class OyenteExportarCorreo implements ActionListener {
 	}
 
 	/**
-	 * Obtiene la dirección de correo del usuario.
+	 * Obtiene la direcciï¿½n de correo del usuario.
 	 * @return El correo del usuario.
 	 */
 	public String getCorreoUsuario() {
@@ -115,7 +115,7 @@ public class OyenteExportarCorreo implements ActionListener {
 	}
 
 	/**
-	 * Establece la dirección de correo del usuario.
+	 * Establece la direcciï¿½n de correo del usuario.
 	 * @param correoUsuario El nuevo correo.
 	 */
 	public void setCorreoUsuario(String correoUsuario) {

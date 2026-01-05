@@ -17,16 +17,16 @@ import vista.VistaGeneralCorreo;
 import vista.VistaMenuPrincipal;
 
 /**
- * Controlador principal para la gestión de correos electrónicos.
- * Maneja la recepción (POP3/IMAP), envío, eliminación y visualización de
+ * Controlador principal para la gestiï¿½n de correos electrï¿½nicos.
+ * Maneja la recepciï¿½n (POP3/IMAP), envï¿½o, eliminaciï¿½n y visualizaciï¿½n de
  * correos.
  */
 public class ControladorCorreos {
 
-	/** Correo electrónico del usuario actual. */
+	/** Correo electrï¿½nico del usuario actual. */
 	private String CORREO;
 
-	/** Contraseña de aplicación de Gmail. */
+	/** Contraseï¿½a de aplicaciï¿½n de Gmail. */
 	private String PASSWORD_APLICACION;
 
 	/** Host del servidor POP3. */
@@ -44,28 +44,28 @@ public class ControladorCorreos {
 	/** Gestor de operaciones de correo. */
 	private static GestionCorreos gestion;
 
-	/** Hilo de recepción automática de correos. */
+	/** Hilo de recepciï¿½n automï¿½tica de correos. */
 	private Thread hiloRecepcion;
 
-	/** Conexión a la base de datos. */
+	/** Conexiï¿½n a la base de datos. */
 	private ModeloBaseDatos db;
 
-	/** Vista del menú principal. */
+	/** Vista del menï¿½ principal. */
 	private VistaMenuPrincipal vistaMenuPrincipal;
 
-	/** Lista de correos descargada en la última actualización. */
+	/** Lista de correos descargada en la ï¿½ltima actualizaciï¿½n. */
 	private ArrayList<Correo> listaDescargada;
 
-	/** Lista de correos descargada en la actualización anterior. */
+	/** Lista de correos descargada en la actualizaciï¿½n anterior. */
 	private ArrayList<Correo> listaDescargadaAnterior;
 
 	/**
 	 * Constructor del controlador de correos.
 	 *
-	 * @param CORREO       Correo electrónico del usuario.
+	 * @param CORREO       Correo electrï¿½nico del usuario.
 	 * @param vistaGeneral Vista general de correos.
-	 * @param bd           Conexión a la base de datos.
-	 * @param vistaMenu    Vista del menú principal.
+	 * @param bd           Conexiï¿½n a la base de datos.
+	 * @param vistaMenu    Vista del menï¿½ principal.
 	 */
 	public ControladorCorreos(String CORREO, VistaGeneralCorreo vistaGeneral, ModeloBaseDatos bd,
 			VistaMenuPrincipal vistaMenu) {
@@ -80,7 +80,7 @@ public class ControladorCorreos {
 
 	/**
 	 * Actualiza la lista de correos local con nuevos correos recibidos desde el
-	 * hilo de recepción.
+	 * hilo de recepciï¿½n.
 	 *
 	 * @param nuevosCorreos Lista de nuevos correos.
 	 */
@@ -95,7 +95,7 @@ public class ControladorCorreos {
 
 	/**
 	 * Inicia el proceso de carga de correos en un hilo secundario.
-	 * Actualiza la interfaz gráfica una vez descargados los mensajes.
+	 * Actualiza la interfaz grï¿½fica una vez descargados los mensajes.
 	 */
 	public void cargarCorreos() {
 		vistaGeneral.getBtnRefrescar().setEnabled(false);
@@ -133,10 +133,10 @@ public class ControladorCorreos {
 	}
 
 	/**
-	 * Comprueba si un receptor está en la lista blanca o es un usuario registrado.
+	 * Comprueba si un receptor estï¿½ en la lista blanca o es un usuario registrado.
 	 *
 	 * @param receptor Email del receptor.
-	 * @return true si es válido, false en caso contrario.
+	 * @return true si es vï¿½lido, false en caso contrario.
 	 */
 	public boolean comprobarReceptorWhiteList(String receptor) {
 		ArrayList<String> whitelist = new ArrayList<>();
@@ -158,7 +158,7 @@ public class ControladorCorreos {
 	}
 
 	/**
-	 * Detiene el hilo de recepción de correos si está en ejecución.
+	 * Detiene el hilo de recepciï¿½n de correos si estï¿½ en ejecuciï¿½n.
 	 */
 	public void detenerHiloRecepcion() {
 		if (hiloRecepcion != null && hiloRecepcion.isAlive()) {
@@ -183,9 +183,9 @@ public class ControladorCorreos {
 	}
 
 	/**
-	 * Marca un correo como leído en el servidor IMAP y actualiza la vista.
+	 * Marca un correo como leï¿½do en el servidor IMAP y actualiza la vista.
 	 *
-	 * @param correo El correo a marcar como leído.
+	 * @param correo El correo a marcar como leï¿½do.
 	 */
 	public synchronized void marcarCorreoLeido(Correo correo) {
 		try {
@@ -201,9 +201,9 @@ public class ControladorCorreos {
 	}
 
 	/**
-	 * Marca un correo como no leído en el servidor IMAP y actualiza la vista.
+	 * Marca un correo como no leï¿½do en el servidor IMAP y actualiza la vista.
 	 *
-	 * @param correo El correo a marcar como no leído.
+	 * @param correo El correo a marcar como no leï¿½do.
 	 */
 	public synchronized void marcarCorreoNoLeido(Correo correo) {
 		try {
@@ -240,11 +240,11 @@ public class ControladorCorreos {
 	}
 
 	/**
-	 * Obtiene la contraseña de aplicación de Gmail almacenada en la base de datos
+	 * Obtiene la contraseï¿½a de aplicaciï¿½n de Gmail almacenada en la base de datos
 	 * para un usuario.
 	 *
 	 * @param correo El correo del usuario.
-	 * @return La clave de aplicación o null si no se encuentra.
+	 * @return La clave de aplicaciï¿½n o null si no se encuentra.
 	 */
 	private String obtenerClaveCorreoPorUsuario(String correo) {
 		String contrasenaAplicacion = null;
@@ -267,16 +267,16 @@ public class ControladorCorreos {
 	// --- GETTERS Y SETTERS ---
 
 	/**
-	 * Obtiene el correo electrónico del usuario actual.
-	 * * @return Dirección de correo.
+	 * Obtiene el correo electrï¿½nico del usuario actual.
+	 * * @return Direcciï¿½n de correo.
 	 */
 	public String getCORREO() {
 		return CORREO;
 	}
 
 	/**
-	 * Establece el correo electrónico del usuario.
-	 * * @param cORREO Dirección de correo.
+	 * Establece el correo electrï¿½nico del usuario.
+	 * * @param cORREO Direcciï¿½n de correo.
 	 */
 	public void setCORREO(String cORREO) {
 		CORREO = cORREO;
@@ -291,16 +291,16 @@ public class ControladorCorreos {
 	}
 
 	/**
-	 * Obtiene la contraseña de aplicación utilizada para la autenticación.
-	 * * @return Contraseña de aplicación.
+	 * Obtiene la contraseï¿½a de aplicaciï¿½n utilizada para la autenticaciï¿½n.
+	 * * @return Contraseï¿½a de aplicaciï¿½n.
 	 */
 	public String getPasswordAplicacion() {
 		return PASSWORD_APLICACION;
 	}
 
 	/**
-	 * Establece la contraseña de aplicación utilizada para la autenticación.
-	 * * @param passwordAplicacion La nueva contraseña de aplicación.
+	 * Establece la contraseï¿½a de aplicaciï¿½n utilizada para la autenticaciï¿½n.
+	 * * @param passwordAplicacion La nueva contraseï¿½a de aplicaciï¿½n.
 	 */
 	public void setPasswordAplicacion(String passwordAplicacion) {
 		this.PASSWORD_APLICACION = passwordAplicacion;
@@ -331,7 +331,7 @@ public class ControladorCorreos {
 	}
 
 	/**
-	 * Obtiene el hilo de recepción de correos.
+	 * Obtiene el hilo de recepciï¿½n de correos.
 	 * * @return El hilo actual.
 	 */
 	public Thread getHiloRecepcion() {
