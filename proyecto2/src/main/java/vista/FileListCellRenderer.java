@@ -16,8 +16,17 @@ import org.kordamp.ikonli.swing.FontIcon;
  */
 public class FileListCellRenderer extends DefaultListCellRenderer {
 
-    private static final long serialVersionUID = 1L;
-
+    /**
+     * Renderiza cada celda de la lista con el icono apropiado según el tipo de
+     * archivo.
+     *
+     * @param list         Lista que contiene los elementos.
+     * @param value        Valor del elemento actual.
+     * @param index        Índice del elemento.
+     * @param isSelected   Indica si el elemento está seleccionado.
+     * @param cellHasFocus Indica si la celda tiene el foco.
+     * @return Componente renderizado para la celda.
+     */
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index,
             boolean isSelected, boolean cellHasFocus) {
@@ -28,7 +37,7 @@ public class FileListCellRenderer extends DefaultListCellRenderer {
             FTPFile file = (FTPFile) value;
             label.setText(file.getName());
 
-            // Configurar el icono segÃºn el tipo
+            // Configurar el icono según el tipo
             if (file.isDirectory()) {
                 // Icono de carpeta
                 FontIcon folderIcon = FontIcon.of(MaterialDesign.MDI_FOLDER, 16);

@@ -17,5 +17,4 @@ import org.junit.runners.Suite.SuiteClasses;
         PruebasArchivos.class
 })
 public class TodasLasPruebas {
-    // Clase Suite vacía, las anotaciones hacen el trabajo.
 }

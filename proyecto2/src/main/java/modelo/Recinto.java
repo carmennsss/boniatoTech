@@ -1,25 +1,34 @@
 package modelo;
 
 /**
- * Representa un recinto dentro del zool贸gico.
+ * Representa un recinto o h醔itat dentro del sistema de gesti髇 del zool骻ico.
+ * Esta clase almacena informaci髇 sobre la ubicaci髇 del recinto y m閠ricas 
+ * espec韋icas de capacidad para el control de traslados de animales.
  */
 public class Recinto {
+    /** Identificador 鷑ico del recinto en la base de datos. */
     private int recinto_id;
+
+    /** Nombre descriptivo del recinto (ej. Aviario, Sabana). */
     private String nombre_recintos;
+
+    /** Ubicaci髇 geogr醘ica o direcci髇 interna del recinto en el zoo. */
     private String direccion_recintos;
+
+    /** Capacidad o cantidad actual relacionada al origen para procesos de log韘tica. */
     private int cantidad_origen;
+
+    /** Capacidad o cantidad relacionada al destino para la gesti髇 de traslados. */
     private int cantidad_destino;
 
     /**
-     * Constructor de la clase Recinto.
+     * Constructor para instanciar un objeto Recinto con todos sus atributos.
      *
-     * @param recinto_id         Identificador 煤nico del recinto.
-     * @param nombre_recintos    Nombre del recinto.
-     * @param direccion_recintos Ubicaci贸n o direcci贸n del recinto.
-     * @param cantidad_origen    Capacidad o cantidad relacionada al origen (uso
-     *                           espec铆fico del dominio).
-     * @param cantidad_destino   Capacidad o cantidad relacionada al destino (uso
-     *                           espec铆fico del dominio).
+     * @param recinto_id         Identificador 鷑ico del recinto.
+     * @param nombre_recintos    Nombre asignado al h醔itat.
+     * @param direccion_recintos Ubicaci髇 f韘ica del recinto.
+     * @param cantidad_origen    Valor m閠rico de origen (capacidad/poblaci髇).
+     * @param cantidad_destino   Valor m閠rico de destino (capacidad/poblaci髇).
      */
     public Recinto(int recinto_id, String nombre_recintos, String direccion_recintos, int cantidad_origen,
             int cantidad_destino) {
@@ -31,18 +40,28 @@ public class Recinto {
     }
 
     /**
-     * Obtiene el ID del recinto.
+     * Devuelve la representaci髇 textual del recinto.
      *
-     * @return El ID del recinto.
+     * @return El nombre del recinto, ideal para su visualizaci髇 en componentes de lista.
+     */
+    @Override
+    public String toString() {
+        return nombre_recintos;
+    }
+
+    // --- GETTERS Y SETTERS AL FINAL ---
+
+    /**
+     * Obtiene el identificador 鷑ico del recinto.
+     * @return El ID num閞ico.
      */
     public int getRecinto_id() {
         return recinto_id;
     }
 
     /**
-     * Establece el ID del recinto.
-     *
-     * @param recinto_id El nuevo ID del recinto.
+     * Establece el identificador 鷑ico del recinto.
+     * @param recinto_id El nuevo ID a asignar.
      */
     public void setRecinto_id(int recinto_id) {
         this.recinto_id = recinto_id;
@@ -50,8 +69,7 @@ public class Recinto {
 
     /**
      * Obtiene el nombre del recinto.
-     *
-     * @return El nombre del recinto.
+     * @return Cadena con el nombre.
      */
     public String getNombre_recintos() {
         return nombre_recintos;
@@ -59,69 +77,57 @@ public class Recinto {
 
     /**
      * Establece el nombre del recinto.
-     *
-     * @param nombre_recintos El nuevo nombre del recinto.
+     * @param nombre_recintos El nuevo nombre descriptivo.
      */
     public void setNombre_recintos(String nombre_recintos) {
         this.nombre_recintos = nombre_recintos;
     }
 
     /**
-     * Obtiene la direcci贸n del recinto.
-     *
-     * @return La direcci贸n del recinto.
+     * Obtiene la direcci髇 o ubicaci髇 del recinto.
+     * @return Cadena con la direcci髇.
      */
     public String getDireccion_recintos() {
         return direccion_recintos;
     }
 
     /**
-     * Establece la direcci贸n del recinto.
-     *
-     * @param direccion_recintos La nueva direcci贸n del recinto.
+     * Establece la direcci髇 o ubicaci髇 del recinto.
+     * @param direccion_recintos La nueva ubicaci髇 f韘ica.
      */
     public void setDireccion_recintos(String direccion_recintos) {
         this.direccion_recintos = direccion_recintos;
     }
 
     /**
-     * Obtiene la cantidad origen.
-     *
-     * @return La cantidad origen.
+     * Obtiene la cantidad o capacidad de origen.
+     * @return Valor entero de origen.
      */
     public int getCantidad_origen() {
         return cantidad_origen;
     }
 
     /**
-     * Establece la cantidad origen.
-     *
-     * @param cantidad_origen La nueva cantidad origen.
+     * Establece la cantidad o capacidad de origen.
+     * @param cantidad_origen El nuevo valor de origen.
      */
     public void setCantidad_origen(int cantidad_origen) {
         this.cantidad_origen = cantidad_origen;
     }
 
     /**
-     * Obtiene la cantidad destino.
-     *
-     * @return La cantidad destino.
+     * Obtiene la cantidad o capacidad de destino.
+     * @return Valor entero de destino.
      */
     public int getCantidad_destino() {
         return cantidad_destino;
     }
 
     /**
-     * Establece la cantidad destino.
-     *
-     * @param cantidad_destino La nueva cantidad destino.
+     * Establece la cantidad o capacidad de destino.
+     * @param cantidad_destino El nuevo valor de destino.
      */
     public void setCantidad_destino(int cantidad_destino) {
         this.cantidad_destino = cantidad_destino;
-    }
-
-    @Override
-    public String toString() {
-        return nombre_recintos;
     }
 }

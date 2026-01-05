@@ -1,5 +1,6 @@
 package vista;
 
+import java.awt.image.BufferedImage;
 import java.awt.*;
 
 import java.util.ArrayList;
@@ -10,45 +11,84 @@ import java.net.URL;
 import modelo.MoTextos;
 
 /**
- * Vista de inicio de sesión de la aplicación.
- * Permite al usuario entrar con su nombre y contraseña.
+ * Vista de inicio de sesi�n de la aplicaci�n.
+ * Proporciona una interfaz gr�fica con soporte multiidioma para que el u
+ * uario
+ * se autentique mediante su nombre de usuario y contrase�a.
  */
 public class VistaLogin extends JFrame {
 
+	/** Lista de etiquetas de texto de la interfaz para gesti�n de idiomas. */
 	private ArrayList<JLabel> textos;
+
+	/** Lista de campos de entrada (usuario y contrase�a). */
 	private ArrayList<JTextField> cajas;
+
+	/** Lista de botones de la interfaz. */
 	private ArrayList<JButton> botones;
+
+	/** Imagen de fondo de la ventana (Panda background). */
 	private Image imagenFondo;
+
+	/** URL del recurso del logo de la aplicaci�n. */
 	private URL logoUrl;
 
+	/** Etiqueta que muestra el t�tulo de la aplicaci�n en el panel central. */
 	private JLabel titulo;
+
+	/** Etiqueta para el campo de identificaci�n de usuario. */
 	private JLabel lblUser;
+
+	/** Etiqueta para el campo de clave de acceso. */
 	private JLabel lblPass;
+
+	/** Bot�n que dispara la acci�n de validaci�n de credenciales. */
 	private JButton btnLogin;
 
+	/** Selector de idioma con representaci�n visual mediante banderas. */
+	private JComboBox<ImageIcon> comboIdiomas;
+
+	/** Panel central que contiene el formulario de acceso. */
+	private JPanel panelCentral;
+
+	/**
+	 * Constructor de la vista. Inicializa la ventana y sus componentes.
+	 */
 	public VistaLogin() {
 		super(MoTextos.login_title);
 		propiedades();
 	}
 
+	/**
+	 * Orquesta la configuraci�n de listas, ventana y paneles.
+	 */
 	private void propiedades() {
 		inicializarListas();
 		configurarVentana();
 		configurarPaneles();
 	}
 
+	/**
+	 * Crea las instancias de las listas para el almacenamiento de componentes.
+	 */
 	private void inicializarListas() {
 		textos = new ArrayList<>();
 		cajas = new ArrayList<>();
 		botones = new ArrayList<>();
 	}
 
+	/**
+	 * Establece los par�metros b�sicos del JFrame.
+	 */
 	private void configurarVentana() {
 		setSize(900, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
 
+	/**
+	 * Configura el panel de contenido con imagen de fondo reactiva y capas.
+	 */
 	private void configurarPaneles() {
 
 		URL url = getClass().getResource("/panditas.png");
@@ -62,6 +102,11 @@ public class VistaLogin extends JFrame {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				if (imagenFondo != null) {
+					Graphics2D g2d = (Graphics2D) g;
+					g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+					g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
 					int imgW = imagenFondo.getWidth(this);
 					int imgH = imagenFondo.getHeight(this);
 					if (imgW > 0 && imgH > 0) {
@@ -133,8 +178,11 @@ public class VistaLogin extends JFrame {
 		});
 	}
 
-	private JPanel panelCentral;
-
+	/**
+	 * Configura el dise�o y los componentes internos del formulario de acceso.
+	 * 
+	 * @param layeredPane Capa donde se a�adir� el panel.
+	 */
 	private void configurarPanelCentral(JLayeredPane layeredPane) {
 		Color colorFondoPanel = new Color(255, 255, 255, 245);
 		Color colorBoton = new Color(74, 88, 89);
@@ -221,6 +269,11 @@ public class VistaLogin extends JFrame {
 		layeredPane.add(panelCentral, JLayeredPane.DEFAULT_LAYER);
 	}
 
+	/**
+	 * Configura el selector de idioma en la parte superior derecha de la ventana.
+	 * 
+	 * @param layeredPane Capa donde se a�adir� el componente.
+	 */
 	private void configurarIdioma(JLayeredPane layeredPane) {
 
 		ImageIcon iconEng = null;
@@ -255,26 +308,46 @@ public class VistaLogin extends JFrame {
 		layeredPane.add(comboIdiomas, JLayeredPane.PALETTE_LAYER);
 	}
 
-	private JComboBox<ImageIcon> comboIdiomas;
+	// --- GETTERS Y SETTERS ---
 
+	/**
+	 * Obtiene el selector de idioma configurado en la ventana.
+	 * 
+	 * @return Selector de idioma.
+	 */
 	public JComboBox<ImageIcon> getComboIdiomas() {
 		return comboIdiomas;
 	}
 
+	/**
+	 * Obtiene la lista de etiquetas de texto de la interfaz.
+	 * 
+	 * @return Lista de etiquetas de texto.
+	 */
 	public ArrayList<JLabel> getTextos() {
 		return textos;
 	}
 
+	/**
+	 * Obtiene la lista de campos de texto de la interfaz.
+	 * 
+	 * @return Lista de campos de texto.
+	 */
 	public ArrayList<JTextField> getCajas() {
 		return cajas;
 	}
 
+	/**
+	 * Obtiene la lista de botones de la interfaz.
+	 * 
+	 * @return Lista de botones.
+	 */
 	public ArrayList<JButton> getBotones() {
 		return botones;
 	}
 
 	/**
-	 * Actualiza los textos de la interfaz según el idioma seleccionado.
+	 * Actualiza los textos de la interfaz en base al idioma seleccionado.
 	 */
 	public void actualizarTextos() {
 		if (comboIdiomas != null) {

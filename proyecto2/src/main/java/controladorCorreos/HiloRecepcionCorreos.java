@@ -8,25 +8,46 @@ import modelo.Log;
 import vista.VistaGeneralCorreo;
 
 /**
- * Hilo de ejecuci贸n en segundo plano para la recepci贸n autom谩tica de
- * correos. Comprueba peri贸dicamente si hay nuevos correos y actualiza la
+ * Hilo de ejecuci髇 en segundo plano para la recepci髇 autom醫ica de
+ * correos. Comprueba peri骴icamente si hay nuevos correos y actualiza la
  * vista.
  */
 public class HiloRecepcionCorreos implements Runnable {
 
+	/** Gestor de operaciones POP3. */
 	private GestionCorreos gestionPop3;
-	private String host, hostImap, correo, PASSWORD_APLICACION;
+
+	/** Host del servidor POP3. */
+	private String host;
+
+	/** Host del servidor IMAP. */
+	private String hostImap;
+
+	/** Correo electr髇ico del usuario. */
+	private String correo;
+
+	/** Contrase馻 de aplicaci髇 de Gmail. */
+	private String PASSWORD_APLICACION;
+
+	/** Vista general de correos. */
 	private VistaGeneralCorreo vistaGeneral;
+
+	/** 趌timo n鷐ero de correos recibidos. */
 	private int ultimoNumeroCorreos = -1;
+
+	/** Controlador de correos. */
 	private ControladorCorreos controlador;
 
+	/** Gestor de logs de correo. */
+	private GestionLogs logCorreo;
+
 	/**
-	 * Constructor del hilo de recepci贸n de correos.
+	 * Constructor del hilo de recepci髇 de correos.
 	 *
 	 * @param gestionPop3         Gestor de correos POP3.
 	 * @param host                Host del servidor de correo.
-	 * @param correo              Direcci贸n de correo del usuario.
-	 * @param PASSWORD_APLICACION Contrase帽a de aplicaci贸n.
+	 * @param correo              Direcci髇 de correo del usuario.
+	 * @param PASSWORD_APLICACION Contrase馻 de aplicaci髇.
 	 * @param vistaGeneral        Vista general de correos.
 	 * @param controlador         Controlador de correos.
 	 */
@@ -43,7 +64,7 @@ public class HiloRecepcionCorreos implements Runnable {
 	}
 
 	/**
-	 * Ejecuta el bucle de recepci贸n de correos en segundo plano. Comprueba nuevos
+	 * Ejecuta el bucle de recepci髇 de correos en segundo plano. Comprueba nuevos
 	 * correos cada 25 segundos y actualiza la vista si hay cambios.
 	 */
 	@Override
@@ -75,7 +96,6 @@ public class HiloRecepcionCorreos implements Runnable {
 					}
 
 					if (cantidadActual > ultimoNumeroCorreos) {
-
 						GestionLogs.writeLog(new Log("MAIL_RECEIVED", correo.replaceFirst("^recent:", ""), true));
 					}
 
@@ -93,4 +113,37 @@ public class HiloRecepcionCorreos implements Runnable {
 		}
 	}
 
+	// --- GETTERS Y SETTERS ---
+
+	/**
+	 * Obtiene el gestor de correos POP3.
+	 * @return El objeto GestionCorreos.
+	 */
+	public GestionCorreos getGestionPop3() {
+		return gestionPop3;
+	}
+
+	/**
+	 * Obtiene el correo electr髇ico configurado.
+	 * @return El correo del usuario.
+	 */
+	public String getCorreo() {
+		return correo;
+	}
+
+	/**
+	 * Obtiene el 鷏timo n鷐ero de correos detectado.
+	 * @return Cantidad de correos en la 鷏tima revisi髇.
+	 */
+	public int getUltimoNumeroCorreos() {
+		return ultimoNumeroCorreos;
+	}
+
+	/**
+	 * Establece manualmente el 鷏timo n鷐ero de correos detectado.
+	 * @param ultimoNumeroCorreos La nueva cantidad.
+	 */
+	public void setUltimoNumeroCorreos(int ultimoNumeroCorreos) {
+		this.ultimoNumeroCorreos = ultimoNumeroCorreos;
+	}
 }

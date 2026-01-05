@@ -14,120 +14,155 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Gestor de lÃ³gica de negocio para el correo electrÃ³nico.
- * Maneja la recepciÃ³n (POP3/IMAP), eliminaciÃ³n y marcado de correos.
+ * Gestor de lógica de negocio para el correo electrónico.
+ * Maneja la recepción (POP3/IMAP), eliminación y marcado de correos.
  */
 public class GestionCorreos {
 
+	/** Mapa de estados locales de lectura de correos. */
 	private Map<String, Boolean> estadosLocales = new HashMap<>();
 
 	/**
-	 * Recibe correos mediante POP3 y sincroniza el estado de lectura mediante IMAP
-	 * (si estÃ¡ disponible).
+	 * Elimina un correo específico del servidor utilizando POP3.
+	 * Marca el mensaje con el Message-ID coincidente para borrado.
 	 *
-	 * @param pop3Host Host del servidor POP3.
-	 * @param imapHost Host del servidor IMAP (para sincronizaciÃ³n de estados).
-	 * @param user     Usuario de correo.
-	 * @param password ContraseÃ±a o contraseÃ±a de aplicaciÃ³n.
-	 * @return Lista de objetos Correo recibidos.
+	 * @param pop3Host      Host POP3.
+	 * @param user          Usuario.
+	 * @param password      Contraseña.
+	 * @param correoABorrar Objeto Correo a eliminar.
+	 * @throws Exception Si ocurre un error durante la conexión o eliminación.
 	 */
-	public ArrayList<Correo> recibirCorreosPOP3(String pop3Host, String imapHost, String user, String password) {
+	public void eliminarCorreoPOP3(String pop3Host, String user, String password, Correo correoABorrar)
+			throws Exception {
 
-		ArrayList<Correo> listaCorreos = new ArrayList<>();
+		Properties props = new Properties();
+		props.put("mail.pop3.host", pop3Host);
+		props.put("mail.pop3.port", "995");
+		props.put("mail.pop3.ssl.enable", "true");
 
-		try {
-			Properties props = new Properties();
-			props.put("mail.pop3.host", pop3Host);
-			props.put("mail.pop3.port", "995");
-			props.put("mail.pop3.ssl.enable", "true");
+		Session session = Session.getInstance(props);
+		Store store = session.getStore("pop3s");
+		store.connect(pop3Host, user, password);
 
-			Session session = Session.getInstance(props);
-			Store store = session.getStore("pop3s");
-			store.connect(pop3Host, user, password);
+		Folder inbox = store.getFolder("INBOX");
+		inbox.open(Folder.READ_WRITE);
 
-			System.out.println("[POP3] Conexion establecida");
+		Message[] mensajes = inbox.getMessages();
+		boolean encontrado = false;
 
-			Folder inbox = store.getFolder("INBOX");
-			inbox.open(Folder.READ_ONLY);
-
-			Message[] messages = inbox.getMessages();
-			System.out.println("[POP3] Total mensajes: " + messages.length);
-
-			String usuarioIMAP = user.startsWith("recent:") ? user.substring(7) : user;
-
-			Map<String, Boolean> estadosIMAP = obtenerEstadosIMAP(imapHost, usuarioIMAP, password);
-
-			for (int i = messages.length - 1; i >= 0; i--) {
-				Message message = messages[i];
-
-				Address[] from = message.getFrom();
-				String remitenteLimpio = "";
-
-				if (from != null && from.length > 0) {
-					if (from[0] instanceof InternetAddress) {
-						// extrae solo la direcciÃ³n (ej: juan@gmail.com)
-						remitenteLimpio = ((InternetAddress) from[0]).getAddress();
-					} else {
-						// fallback por si no es InternetAddress
-						remitenteLimpio = from[0].toString();
-					}
+		for (int i = 0; i < mensajes.length; i++) {
+			String[] headers = mensajes[i].getHeader("Message-ID");
+			if (headers != null && headers.length > 0) {
+				if (headers[0].equals(correoABorrar.getMessageId())) {
+					mensajes[i].setFlag(Flags.Flag.DELETED, true);
+					encontrado = true;
+					System.out.println("[POP3] Mensaje identificado y marcado para borrar.");
+					break;
 				}
-
-				String emailLimpio = user.replace("recent:", "");
-				if (remitenteLimpio.toLowerCase().contains(emailLimpio.toLowerCase()))
-					continue;
-				String asunto = message.getSubject();
-				java.util.Date fecha = message.getSentDate();
-				String cuerpo = getTextFromMessage(message);
-
-				String messageId = "";
-				String[] headers = message.getHeader("Message-ID");
-				if (headers != null && headers.length > 0 && headers[0] != null) {
-					messageId = headers[0];
-				}
-
-				Correo correo = new Correo(remitenteLimpio, asunto, fecha, cuerpo, messageId);
-
-				Boolean estadoIMAP = estadosIMAP.get(messageId);
-
-				if (estadoIMAP != null) {
-					correo.setLeido(estadoIMAP);
-					estadosLocales.put(messageId, estadoIMAP);
-
-				} else {
-					Boolean estadoLocal = estadosLocales.get(messageId);
-					if (estadoLocal != null) {
-						correo.setLeido(estadoLocal);
-
-					} else {
-
-					}
-				}
-
-				listaCorreos.add(correo);
 			}
-
-			inbox.close(false);
-			store.close();
-
-			System.out.println("[POP3] Correos cargados correctamente");
-
-		} catch (Exception e) {
-			System.err.println("[ERROR POP3]: " + e.getMessage());
 		}
 
-		return listaCorreos;
+		if (!encontrado) {
+			System.out.println("[POP3] No se encontró el mensaje en el servidor para borrar.");
+		}
+
+		inbox.close(true);
+		store.close();
+
+		System.out.println("[POP3] Correo eliminado");
 	}
 
 	/**
-	 * Obtiene un mapa con el estado de lectura (leÃ­do/no leÃ­do) de los mensajes
+	 * Marca un correo como LEÍDO en el servidor IMAP.
+	 *
+	 * @param imapHost  Host IMAP.
+	 * @param user      Usuario.
+	 * @param password  Contraseña.
+	 * @param messageId ID del mensaje a marcar.
+	 */
+	public void marcarLeidoIMAP(String imapHost, String user, String password, String messageId) {
+
+		System.out.println("[IMAP] Marcar LEIDO -> " + messageId);
+
+		try {
+			Properties props = new Properties();
+			props.put("mail.store.protocol", "imaps");
+			props.put("mail.imaps.host", imapHost);
+			props.put("mail.imaps.port", "993");
+			props.put("mail.imaps.ssl.enable", "true");
+
+			Session session = Session.getInstance(props);
+			Store store = session.getStore("imaps");
+			store.connect(imapHost, user, password);
+
+			Folder inbox = store.getFolder("INBOX");
+			inbox.open(Folder.READ_WRITE);
+
+			Message[] encontrados = inbox.search(new HeaderTerm("Message-ID", messageId));
+			if (encontrados.length > 0) {
+				encontrados[0].setFlag(Flags.Flag.SEEN, true);
+				estadosLocales.put(messageId, true);
+			}
+
+			inbox.close(true);
+			store.close();
+
+		} catch (Exception e) {
+			System.err.println("[ERROR MARCAR LEIDO]");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Marca un correo como NO LEÍDO en el servidor IMAP.
+	 *
+	 * @param imapHost  Host IMAP.
+	 * @param user      Usuario.
+	 * @param password  Contraseña.
+	 * @param messageId ID del mensaje a marcar.
+	 */
+	public void marcarNoLeidoIMAP(String imapHost, String user, String password, String messageId) {
+
+		System.out.println("[IMAP] Marcar NO LEIDO -> " + messageId);
+
+		try {
+			Properties props = new Properties();
+			props.put("mail.store.protocol", "imaps");
+			props.put("mail.imaps.host", imapHost);
+			props.put("mail.imaps.port", "993");
+			props.put("mail.imaps.ssl.enable", "true");
+
+			Session session = Session.getInstance(props);
+			Store store = session.getStore("imaps");
+			store.connect(imapHost, user, password);
+
+			Folder inbox = store.getFolder("INBOX");
+			inbox.open(Folder.READ_WRITE);
+
+			Message[] encontrados = inbox.search(new HeaderTerm("Message-ID", messageId));
+			if (encontrados.length > 0) {
+				inbox.setFlags(encontrados, new Flags(Flags.Flag.SEEN), false);
+				estadosLocales.put(messageId, false);
+			}
+
+			inbox.close(true);
+			store.close();
+
+		} catch (Exception e) {
+			System.err.println("[ERROR MARCAR NO LEIDO]");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Obtiene un mapa con el estado de lectura (leído/no leído) de los mensajes
 	 * mediante IMAP.
 	 *
 	 * @param imapHost Host del servidor IMAP.
 	 * @param user     Usuario de correo.
-	 * @param password ContraseÃ±a.
-	 * @return Mapa donde la clave es el Message-ID y el valor es true si estÃ¡
-	 *         leÃ­do.
+	 * @param password Contraseña.
+	 * @return Mapa donde la clave es el Message-ID y el valor es true si está
+	 * leído.
 	 */
 	public Map<String, Boolean> obtenerEstadosIMAP(String imapHost, String user, String password) {
 
@@ -176,135 +211,96 @@ public class GestionCorreos {
 	}
 
 	/**
-	 * Elimina un correo especÃ­fico del servidor utilizando POP3.
-	 * Marca el mensaje con el Message-ID coincidente para borrado.
+	 * Recibe correos mediante POP3 y sincroniza el estado de lectura mediante IMAP
+	 * (si está disponible).
 	 *
-	 * @param pop3Host      Host POP3.
-	 * @param user          Usuario.
-	 * @param password      ContraseÃ±a.
-	 * @param correoABorrar Objeto Correo a eliminar.
-	 * @throws Exception Si ocurre un error durante la conexiÃ³n o eliminaciÃ³n.
+	 * @param pop3Host Host del servidor POP3.
+	 * @param imapHost Host del servidor IMAP (para sincronización de estados).
+	 * @param user     Usuario de correo.
+	 * @param password Contraseña o contraseña de aplicación.
+	 * @return Lista de objetos Correo recibidos.
 	 */
-	public void eliminarCorreoPOP3(String pop3Host, String user, String password, Correo correoABorrar)
-			throws Exception {
+	public ArrayList<Correo> recibirCorreosPOP3(String pop3Host, String imapHost, String user, String password) {
 
-		Properties props = new Properties();
-		props.put("mail.pop3.host", pop3Host);
-		props.put("mail.pop3.port", "995");
-		props.put("mail.pop3.ssl.enable", "true");
+		ArrayList<Correo> listaCorreos = new ArrayList<>();
 
-		Session session = Session.getInstance(props);
-		Store store = session.getStore("pop3s");
-		store.connect(pop3Host, user, password);
+		try {
+			Properties props = new Properties();
+			props.put("mail.pop3.host", pop3Host);
+			props.put("mail.pop3.port", "995");
+			props.put("mail.pop3.ssl.enable", "true");
 
-		Folder inbox = store.getFolder("INBOX");
-		inbox.open(Folder.READ_WRITE);
+			Session session = Session.getInstance(props);
+			Store store = session.getStore("pop3s");
+			store.connect(pop3Host, user, password);
 
-		Message[] mensajes = inbox.getMessages();
-		boolean encontrado = false;
+			System.out.println("[POP3] Conexion establecida");
 
-		for (int i = 0; i < mensajes.length; i++) {
-			String[] headers = mensajes[i].getHeader("Message-ID");
-			if (headers != null && headers.length > 0) {
-				if (headers[0].equals(correoABorrar.getMessageId())) {
-					mensajes[i].setFlag(Flags.Flag.DELETED, true);
-					encontrado = true;
-					System.out.println("[POP3] Mensaje identificado y marcado para borrar.");
-					break;
+			Folder inbox = store.getFolder("INBOX");
+			inbox.open(Folder.READ_ONLY);
+
+			Message[] messages = inbox.getMessages();
+			System.out.println("[POP3] Total mensajes: " + messages.length);
+
+			String usuarioIMAP = user.startsWith("recent:") ? user.substring(7) : user;
+
+			Map<String, Boolean> estadosIMAP = obtenerEstadosIMAP(imapHost, usuarioIMAP, password);
+
+			for (int i = messages.length - 1; i >= 0; i--) {
+				Message message = messages[i];
+
+				Address[] from = message.getFrom();
+				String remitenteLimpio = "";
+
+				if (from != null && from.length > 0) {
+					if (from[0] instanceof InternetAddress) {
+						remitenteLimpio = ((InternetAddress) from[0]).getAddress();
+					} else {
+						remitenteLimpio = from[0].toString();
+					}
 				}
-			}
-		}
 
-		if (!encontrado) {
-			System.out.println("[POP3] No se encontrÃ³ el mensaje en el servidor para borrar.");
-		}
+				String emailLimpio = user.replace("recent:", "");
+				if (remitenteLimpio.toLowerCase().contains(emailLimpio.toLowerCase()))
+					continue;
+				String asunto = message.getSubject();
+				java.util.Date fecha = message.getSentDate();
+				String cuerpo = getTextFromMessage(message);
 
-		inbox.close(true);
-		store.close();
+				String messageId = "";
+				String[] headers = message.getHeader("Message-ID");
+				if (headers != null && headers.length > 0 && headers[0] != null) {
+					messageId = headers[0];
+				}
 
-		System.out.println("[POP3] Correo eliminado");
-	}
+				Correo correo = new Correo(remitenteLimpio, asunto, fecha, cuerpo, messageId);
 
-	/**
-	 * Marca un correo como LEÃDO en el servidor IMAP.
-	 *
-	 * @param imapHost  Host IMAP.
-	 * @param user      Usuario.
-	 * @param password  ContraseÃ±a.
-	 * @param messageId ID del mensaje a marcar.
-	 */
-	public void marcarLeidoIMAP(String imapHost, String user, String password, String messageId) {
+				Boolean estadoIMAP = estadosIMAP.get(messageId);
 
-		System.out.println("[IMAP] Marcar LEIDO -> " + messageId);
+				if (estadoIMAP != null) {
+					correo.setLeido(estadoIMAP);
+					estadosLocales.put(messageId, estadoIMAP);
 
-		try {
-			Properties props = new Properties();
-			props.put("mail.store.protocol", "imaps");
-			props.put("mail.imaps.host", imapHost);
-			props.put("mail.imaps.port", "993");
-			props.put("mail.imaps.ssl.enable", "true");
+				} else {
+					Boolean estadoLocal = estadosLocales.get(messageId);
+					if (estadoLocal != null) {
+						correo.setLeido(estadoLocal);
+					}
+				}
 
-			Session session = Session.getInstance(props);
-			Store store = session.getStore("imaps");
-			store.connect(imapHost, user, password);
-
-			Folder inbox = store.getFolder("INBOX");
-			inbox.open(Folder.READ_WRITE);
-
-			Message[] encontrados = inbox.search(new HeaderTerm("Message-ID", messageId));
-			if (encontrados.length > 0) {
-				encontrados[0].setFlag(Flags.Flag.SEEN, true);
-				estadosLocales.put(messageId, true);
+				listaCorreos.add(correo);
 			}
 
-			inbox.close(true);
+			inbox.close(false);
 			store.close();
 
-		} catch (Exception e) {
-			System.err.println("[ERROR MARCAR LEIDO]");
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Marca un correo como NO LEÃDO en el servidor IMAP.
-	 *
-	 * @param imapHost  Host IMAP.
-	 * @param user      Usuario.
-	 * @param password  ContraseÃ±a.
-	 * @param messageId ID del mensaje a marcar.
-	 */
-	public void marcarNoLeidoIMAP(String imapHost, String user, String password, String messageId) {
-
-		System.out.println("[IMAP] Marcar NO LEIDO -> " + messageId);
-
-		try {
-			Properties props = new Properties();
-			props.put("mail.store.protocol", "imaps");
-			props.put("mail.imaps.host", imapHost);
-			props.put("mail.imaps.port", "993");
-			props.put("mail.imaps.ssl.enable", "true");
-
-			Session session = Session.getInstance(props);
-			Store store = session.getStore("imaps");
-			store.connect(imapHost, user, password);
-
-			Folder inbox = store.getFolder("INBOX");
-			inbox.open(Folder.READ_WRITE);
-
-			Message[] encontrados = inbox.search(new HeaderTerm("Message-ID", messageId));
-			if (encontrados.length > 0) {
-				inbox.setFlags(encontrados, new Flags(Flags.Flag.SEEN), false);
-				estadosLocales.put(messageId, false);
-			}
-
-			inbox.close(true);
-			store.close();
+			System.out.println("[POP3] Correos cargados correctamente");
 
 		} catch (Exception e) {
-			System.err.println("[ERROR MARCAR NO LEIDO]");
-			e.printStackTrace();
+			System.err.println("[ERROR POP3]: " + e.getMessage());
 		}
+
+		return listaCorreos;
 	}
 
 	/**
@@ -312,7 +308,7 @@ public class GestionCorreos {
 	 *
 	 * @param message Mensaje a procesar.
 	 * @return Contenido del mensaje como String.
-	 * @throws MessagingException Error de mensajerÃ­a.
+	 * @throws MessagingException Error de mensajería.
 	 * @throws IOException        Error de entrada/salida.
 	 */
 	private String getTextFromMessage(Message message) throws MessagingException, IOException {
@@ -329,11 +325,11 @@ public class GestionCorreos {
 	}
 
 	/**
-	 * MÃ©todo auxiliar recursivo para extraer texto de contenido Multipart.
+	 * Método auxiliar recursivo para extraer texto de contenido Multipart.
 	 *
 	 * @param mimeMultipart Contenido Multipart.
-	 * @return Texto extraÃ­do.
-	 * @throws MessagingException Error de mensajerÃ­a.
+	 * @return Texto extraído.
+	 * @throws MessagingException Error de mensajería.
 	 * @throws IOException        Error de entrada/salida.
 	 */
 	private String getTextFromMimeMultipart(MimeMultipart mimeMultipart) throws MessagingException, IOException {
@@ -358,5 +354,23 @@ public class GestionCorreos {
 		}
 
 		return result.toString();
+	}
+
+	// --- GETTERS Y SETTERS ---
+
+	/**
+	 * Obtiene el mapa de estados locales de los correos (Leído/No leído).
+	 * * @return El mapa con Message-ID como clave y estado booleano como valor.
+	 */
+	public Map<String, Boolean> getEstadosLocales() {
+		return estadosLocales;
+	}
+
+	/**
+	 * Establece el mapa de estados locales de los correos.
+	 * * @param estadosLocales El nuevo mapa de estados.
+	 */
+	public void setEstadosLocales(Map<String, Boolean> estadosLocales) {
+		this.estadosLocales = estadosLocales;
 	}
 }

@@ -1,3 +1,7 @@
+/*
+* @author Carmen - BoniatoTech
+* @version 1.0
+*/
 package controladorLogs;
 
 import java.awt.event.ActionEvent;
@@ -12,7 +16,10 @@ import vista.VistaLogs;
  * Permite filtrar/ordenar los logs por acciones, usuarios, fechas o resultados.
  */
 public class OyenteConsultaLogs implements ActionListener {
+    /** Vista de logs. */
     private VistaLogs vistaLogs;
+
+    /** Controlador de logs. */
     private ControladorLogs controladorLogs;
 
     /**
@@ -27,10 +34,10 @@ public class OyenteConsultaLogs implements ActionListener {
     }
 
     /**
-     * Identifica qué botón se pulsó y solicita al controlador la carga de logs con
+     * Identifica qu� bot�n se puls� y solicita al controlador la carga de logs con
      * el criterio correspondiente.
      *
-     * @param e Evento de acción.
+     * @param e Evento de acci�n.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -49,5 +56,43 @@ public class OyenteConsultaLogs implements ActionListener {
             String consulta = "results";
             controladorLogs.cargarLogs(consulta);
         }
+    }
+
+    // --- GETTERS Y SETTERS ---
+
+    /**
+     * Obtiene la vista de logs.
+     * 
+     * @return El objeto VistaLogs.
+     */
+    public VistaLogs getVistaLogs() {
+        return vistaLogs;
+    }
+
+    /**
+     * Establece la vista de logs.
+     * 
+     * @param vistaLogs La nueva vista de logs.
+     */
+    public void setVistaLogs(VistaLogs vistaLogs) {
+        this.vistaLogs = vistaLogs;
+    }
+
+    /**
+     * Obtiene el controlador de logs asociado.
+     * 
+     * @return El objeto ControladorLogs.
+     */
+    public ControladorLogs getControladorLogs() {
+        return controladorLogs;
+    }
+
+    /**
+     * Establece el controlador de logs asociado.
+     * 
+     * @param controladorLogs El nuevo controlador de logs.
+     */
+    public void setControladorLogs(ControladorLogs controladorLogs) {
+        this.controladorLogs = controladorLogs;
     }
 }

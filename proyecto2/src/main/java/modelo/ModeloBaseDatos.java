@@ -10,160 +10,131 @@ import java.util.ArrayList;
 import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
 /**
- * Clase encargada de la gesti√≥n de la base de datos. Maneja la conexi√≥n,
- * consultas y actualizaciones en la base de datos MySQL.
+ * Clase encargada de la gestiÛn de la base de datos.
+ * Maneja la conexiÛn, consultas y actualizaciones en la base de datos MySQL.
  */
 public class ModeloBaseDatos {
-	private final static String url = "jdbc:mysql://13.62.51.110:3306/serwo?useSSL=false&serverTimezone=UTC";
-	private final static String usuario = "appuser";
-	private final static String password = "mariaenmiami";
-	public static Connection conexion;
+    /** URL de conexiÛn a la base de datos MySQL. */
+    private final static String url = "jdbc:mysql://13.62.51.110:3306/serwo?useSSL=false&serverTimezone=UTC";
 
-	/**
-	 * Cierra la conexi√≥n actual con la base de datos si est√° abierta.
-	 */
-	public void cerrarConexion() {
-		try {
-			if (conexion != null && !conexion.isClosed()) {
-				conexion.close();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+    /** Usuario de la base de datos. */
+    private final static String usuario = "appuser";
 
-	/**
-	 * Obtiene la instancia √∫nica de la conexi√≥n a la base de datos (Singleton).
-	 * Si no existe o est√° cerrada, crea una nueva.
-	 *
-	 * @return Objeto Connection activo.
-	 */
-	public static Connection getConexion() {
-		try {
-			if (conexion == null || conexion.isClosed()) {
-				conexion = DriverManager.getConnection(url, usuario, password);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return conexion;
-	}
+    /** ContraseÒa de la base de datos. */
+    private final static String password = "mariaenmiami";
 
-	/**
-	 * Ejecuta una consulta SQL de selecci√≥n (SELECT).
-	 *
-	 * @param consulta La sentencia SQL a ejecutar.
-	 * @return ResultSet con los resultados de la consulta, o null si ocurre un
-	 *         error.
-	 */
-	public ResultSet getConsulta(String consulta) {
-		try {
-			return getConexion().createStatement().executeQuery(consulta);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	/**
-	 * Ejecuta una actualizaci√≥n en la base de datos (INSERT, UPDATE, DELETE) con
-	 * par√°metros preparados.
-	 *
-	 * @param consulta   La sentencia SQL preparada (con ?).
-	 * @param parametros Lista de par√°metros (Strings) para sustituir en la
-	 *                   consulta.
-	 * @return El n√∫mero de filas afectadas, o -1 si ocurre un error.
-	 */
-	public int ejecutarActualizacion(String consulta, ArrayList<String> parametros) {
-		try {
-			PreparedStatement pstmt = getConexion().prepareStatement(consulta);
-			for (int i = 0; i < parametros.size(); i++) {
-				pstmt.setString(i + 1, parametros.get(i));
-			}
-			return pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return -1;
-		}
-	}
-
-	/**
-	 * Obtiene todos los registros de una tabla espec√≠fica.
-	 *
-	 * @param tabla Nombre de la tabla.
-	 * @return ResultSet con todos los registros.
-	 */
-	public ResultSet getTabla(String tabla) {
-		return getConsulta("SELECT * FROM " + tabla);
-	}
+    /** ConexiÛn activa a la base de datos (Singleton). */
+    public static Connection conexion;
 
     /**
-     * Obtiene todas las especies registradas en la base de datos.
-     *
-     * @return Lista de objetos Especie con todos los registros de la tabla
-     *         especies.
+     * Cierra la conexiÛn actual con la base de datos si est· abierta.
      */
-    public ArrayList<Especie> getEspecies() {
-        ArrayList<Especie> lista = new ArrayList<>();
+    public void cerrarConexion() {
         try {
-            ResultSet rs = getConsulta("SELECT * FROM especies");
-            while (rs.next()) {
-                lista.add(new Especie(rs.getInt("especie_id"), rs.getString("nombre_especies")));
+            if (conexion != null && !conexion.isClosed()) {
+                conexion.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return lista;
     }
 
     /**
-     * Obtiene todos los cuidadores registrados en la base de datos.
+     * Verifica si un campo es una clave for·nea (Foreign Key).
      *
-     * @return Lista de objetos Cuidador con todos los registros de la tabla
-     *         cuidadores.
+     * @param nombreCampo Nombre del campo a verificar.
+     * @return true si el campo es una clave for·nea, false en caso contrario.
      */
-    public ArrayList<Cuidador> getCuidadores() {
-        ArrayList<Cuidador> lista = new ArrayList<>();
-        try {
-            ResultSet rs = getConsulta("SELECT * FROM cuidadores");
-            while (rs.next()) {
-                lista.add(new Cuidador(rs.getInt("cuidador_id"), rs.getString("nombre_cuidadores"),
-                        rs.getString("direccion_cuidadores")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return lista;
+    public boolean esCampoFK(String nombreCampo) {
+        return nombreCampo.endsWith("_id") && !nombreCampo.equals("animal_id")
+                && !nombreCampo.equals("especie_id") && !nombreCampo.equals("recinto_id")
+                && !nombreCampo.equals("cuidador_id");
     }
 
     /**
-     * Obtiene todos los recintos registrados en la base de datos.
+     * Ejecuta una actualizaciÛn en la base de datos (INSERT, UPDATE, DELETE) con
+     * par·metros preparados.
      *
-     * @return Lista de objetos Recinto con todos los registros de la tabla
-     *         recintos.
+     * @param consulta   La sentencia SQL preparada (con ?).
+     * @param parametros Lista de par·metros (Strings) para sustituir en la
+     * consulta.
+     * @return El n˙mero de filas afectadas, o -1 si ocurre un error.
      */
-    public ArrayList<Recinto> getRecintos() {
-        ArrayList<Recinto> lista = new ArrayList<>();
+    public int ejecutarActualizacion(String consulta, ArrayList<String> parametros) {
         try {
-            ResultSet rs = getConsulta("SELECT * FROM recintos");
-            if (rs != null) {
-                while (rs.next()) {
-                    lista.add(new Recinto(rs.getInt("recinto_id"), rs.getString("nombre_recintos"),
-                            rs.getString("direccion_recintos"), rs.getInt("cantidad_origen"),
-                            rs.getInt("cantidad_destino")));
-                }
+            PreparedStatement pstmt = getConexion().prepareStatement(consulta);
+            for (int i = 0; i < parametros.size(); i++) {
+                pstmt.setString(i + 1, parametros.get(i));
+            }
+            return pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    /**
+     * Elimina un registro de archivo de la base de datos.
+     *
+     * @param nombreArchivo Nombre del archivo a eliminar.
+     * @param ruta          Ruta donde se encuentra el archivo.
+     */
+    public void eliminarArchivo(String nombreArchivo, String ruta) {
+        String sql = "DELETE FROM archivos WHERE nombre_archivo = ? AND directorio = ?";
+        try (PreparedStatement pstmt = getConexion().prepareStatement(sql)) {
+            pstmt.setString(1, nombreArchivo);
+            pstmt.setString(2, ruta);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Elimina un usuario de la base de datos mediante su email.
+     *
+     * @param email Email del usuario a eliminar.
+     * @return true si la eliminaciÛn fue exitosa, false en caso contrario.
+     */
+    public boolean eliminarUsuario(String email) {
+        String sql = "DELETE FROM usuarios WHERE email = ?";
+        try (PreparedStatement ps = getConexion().prepareStatement(sql)) {
+            ps.setString(1, email);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Verifica si existe al menos un registro que cumpla con la consulta SQL
+     * proporcionada.
+     *
+     * @param sql        Consulta SQL preparada (con ?).
+     * @param parametros Lista de par·metros para la consulta.
+     * @return true si existe al menos un registro, false en caso contrario.
+     */
+    public boolean existeRegistro(String sql, ArrayList<String> parametros) {
+        try {
+            PreparedStatement pstmt = getConexion().prepareStatement(sql);
+            for (int i = 0; i < parametros.size(); i++) {
+                pstmt.setString(i + 1, parametros.get(i));
+            }
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return lista;
+        return false;
     }
 
     /**
      * Obtiene todos los animales registrados en la base de datos.
      *
-     * @return Lista de objetos Animal con todos los registros de la tabla
-     *         animales.
+     * @return Lista de objetos Animal con todos los registros de la tabla animales.
      */
     public ArrayList<Animal> getAnimales() {
         ArrayList<Animal> lista = new ArrayList<>();
@@ -182,7 +153,77 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Obtiene los nombres de todas las columnas de una tabla espec√≠fica.
+     * Obtiene la instancia ˙nica de la conexiÛn a la base de datos (Singleton).
+     * Si no existe o est· cerrada, crea una nueva.
+     *
+     * @return Objeto Connection activo.
+     */
+    public static Connection getConexion() {
+        try {
+            if (conexion == null || conexion.isClosed()) {
+                conexion = DriverManager.getConnection(url, usuario, password);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return conexion;
+    }
+
+    /**
+     * Ejecuta una consulta SQL de selecciÛn (SELECT).
+     *
+     * @param consulta La sentencia SQL a ejecutar.
+     * @return ResultSet con los resultados de la consulta, o null si ocurre un
+     * error.
+     */
+    public ResultSet getConsulta(String consulta) {
+        try {
+            return getConexion().createStatement().executeQuery(consulta);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Obtiene todos los cuidadores registrados en la base de datos.
+     *
+     * @return Lista de objetos Cuidador con todos los registros de la tabla cuidadores.
+     */
+    public ArrayList<Cuidador> getCuidadores() {
+        ArrayList<Cuidador> lista = new ArrayList<>();
+        try {
+            ResultSet rs = getConsulta("SELECT * FROM cuidadores");
+            while (rs.next()) {
+                lista.add(new Cuidador(rs.getInt("cuidador_id"), rs.getString("nombre_cuidadores"),
+                        rs.getString("direccion_cuidadores")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    /**
+     * Obtiene todas las especies registradas en la base de datos.
+     *
+     * @return Lista de objetos Especie con todos los registros de la tabla especies.
+     */
+    public ArrayList<Especie> getEspecies() {
+        ArrayList<Especie> lista = new ArrayList<>();
+        try {
+            ResultSet rs = getConsulta("SELECT * FROM especies");
+            while (rs.next()) {
+                lista.add(new Especie(rs.getInt("especie_id"), rs.getString("nombre_especies")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    /**
+     * Obtiene los nombres de todas las columnas de una tabla especÌfica.
      *
      * @param tabla Nombre de la tabla de la cual obtener las columnas.
      * @return Lista con los nombres de todas las columnas de la tabla.
@@ -205,99 +246,47 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Verifica si un campo es una clave for√°nea (Foreign Key).
+     * Obtiene todos los recintos registrados en la base de datos.
      *
-     * @param nombreCampo Nombre del campo a verificar.
-     * @return true si el campo es una clave for√°nea, false en caso contrario.
+     * @return Lista de objetos Recinto con todos los registros de la tabla recintos.
      */
-    public boolean esCampoFK(String nombreCampo) {
-        return nombreCampo.endsWith("_id") && !nombreCampo.equals("animal_id")
-                && !nombreCampo.equals("especie_id") && !nombreCampo.equals("recinto_id")
-                && !nombreCampo.equals("cuidador_id");
-    }
-
-    /**
-     * Valida las credenciales de un usuario.
-     *
-     * @param correo   Correo electr√≥nico del usuario.
-     * @param password Contrase√±a del usuario.
-     * @return true si las credenciales son v√°lidas, false en caso contrario.
-     */
-    public boolean validarUsuario(String correo, String password) {
-        boolean valido = false;
+    public ArrayList<Recinto> getRecintos() {
+        ArrayList<Recinto> lista = new ArrayList<>();
         try {
-            PreparedStatement pstmt = getConexion().prepareStatement(
-                    "SELECT * FROM usuarios WHERE email = ? AND contrasena = ?");
-            pstmt.setString(1, correo);
-            pstmt.setString(2, password);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                valido = true;
+            ResultSet rs = getConsulta("SELECT * FROM recintos");
+            if (rs != null) {
+                while (rs.next()) {
+                    lista.add(new Recinto(rs.getInt("recinto_id"), rs.getString("nombre_recintos"),
+                            rs.getString("direccion_recintos"), rs.getInt("cantidad_origen"),
+                            rs.getInt("cantidad_destino")));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return valido;
+        return lista;
     }
 
     /**
-     * Verifica si existe al menos un registro que cumpla con la consulta SQL
-     * proporcionada.
+     * Obtiene todos los registros de una tabla especÌfica.
      *
-     * @param sql        Consulta SQL preparada (con ?).
-     * @param parametros Lista de par√°metros para la consulta.
-     * @return true si existe al menos un registro, false en caso contrario.
+     * @param tabla Nombre de la tabla.
+     * @return ResultSet con todos los registros.
      */
-    public boolean existeRegistro(String sql, ArrayList<String> parametros) {
-        try {
-            PreparedStatement pstmt = getConexion().prepareStatement(sql);
-            for (int i = 0; i < parametros.size(); i++) {
-                pstmt.setString(i + 1, parametros.get(i));
-            }
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public ResultSet getTabla(String tabla) {
+        return getConsulta("SELECT * FROM " + tabla);
     }
 
     /**
-     * Registra un nuevo usuario en la base de datos.
-     *
-     * @param correo      Correo electr√≥nico del usuario.
-     * @param nombre      Nombre del usuario.
-     * @param password    Contrase√±a del usuario.
-     * @param claveCorreo Clave de correo del usuario.
-     * @return true si el registro fue exitoso, false en caso contrario.
-     */
-    public boolean registrarUsuario(String correo, String nombre, String password, String claveCorreo) {
-        String sql = "INSERT INTO usuarios (email, nombre_usuario, contrasena, clave_correo) VALUES (?, ?, ?, ?)";
-        try {
-            PreparedStatement pstmt = getConexion().prepareStatement(sql);
-            pstmt.setString(1, correo);
-            pstmt.setString(2, nombre);
-            pstmt.setString(3, password);
-            pstmt.setString(4, claveCorreo);
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
-     * Inserta un nuevo archivo o carpeta en la base de datos.
+     * Inserta un nuevo archivo o carpeta en el registro de la base de datos.
      *
      * @param nombre        Nombre del archivo o carpeta.
      * @param directorio    Ruta completa del directorio.
-     * @param extension     Extensi√≥n del archivo (vac√≠o para carpetas).
+     * @param extension     ExtensiÛn del archivo (vacÌo para carpetas).
      * @param tipo          Tipo de elemento ("File" o "Folder").
-     * @param id_padre      ID del directorio padre (null si est√° en ra√≠z).
+     * @param id_padre      ID del directorio padre (null si est· en raÌz).
      * @param email_usuario Email del usuario propietario.
-     * @return true si la inserci√≥n fue exitosa, false en caso contrario.
+     * @return true si la inserciÛn fue exitosa, false en caso contrario.
      */
     public boolean insertarArchivo(String nombre, String directorio, String extension, String tipo, Integer id_padre,
             String email_usuario) {
@@ -322,10 +311,32 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Obtiene el ID del directorio padre bas√°ndose en la ruta actual.
+     * Obtiene el email de un usuario bas·ndose en su nombre de usuario.
+     *
+     * @param nombreUsuario Nombre del usuario.
+     * @return Email del usuario, o null si no se encuentra.
+     */
+    public String obtenerEmailPorUsuario(String nombreUsuario) {
+        String email = null;
+        String sql = "SELECT email FROM usuarios WHERE nombre_usuario = ?";
+        try (PreparedStatement pstmt = getConexion().prepareStatement(sql)) {
+            pstmt.setString(1, nombreUsuario);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                email = rs.getString("email");
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return email;
+    }
+
+    /**
+     * Obtiene el ID del directorio padre bas·ndose en la ruta actual.
      *
      * @param rutaActual Ruta del directorio actual.
-     * @return ID del archivo padre, o null si est√° en la ra√≠z.
+     * @return ID del archivo padre, o null si est· en la raÌz.
      */
     public Integer obtenerIdPadre(String rutaActual) {
         if (rutaActual.equals("/")) {
@@ -352,38 +363,23 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Obtiene el email de un usuario bas√°ndose en su nombre de usuario.
+     * Registra un nuevo usuario en la base de datos.
      *
-     * @param nombreUsuario Nombre del usuario.
-     * @return Email del usuario, o null si no se encuentra.
+     * @param correo      Correo electrÛnico del usuario.
+     * @param nombre      Nombre del usuario.
+     * @param password    ContraseÒa del usuario.
+     * @param claveCorreo Clave de correo del usuario.
+     * @return true si el registro fue exitoso, false en caso contrario.
      */
-    public String obtenerEmailPorUsuario(String nombreUsuario) {
-        String email = null;
-        String sql = "SELECT email FROM usuarios WHERE nombre_usuario = ?";
-        try (PreparedStatement pstmt = getConexion().prepareStatement(sql)) {
-            pstmt.setString(1, nombreUsuario);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                email = rs.getString("email");
-            }
-            rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return email;
-    }
-
-    /**
-     * Elimina un usuario de la base de datos.
-     *
-     * @param email Email del usuario a eliminar.
-     * @return true si la eliminaci√≥n fue exitosa, false en caso contrario.
-     */
-    public boolean eliminarUsuario(String email) {
-        String sql = "DELETE FROM usuarios WHERE email = ?";
-        try (PreparedStatement ps = getConexion().prepareStatement(sql)) {
-            ps.setString(1, email);
-            return ps.executeUpdate() > 0;
+    public boolean registrarUsuario(String correo, String nombre, String password, String claveCorreo) {
+        String sql = "INSERT INTO usuarios (email, nombre_usuario, contrasena, clave_correo) VALUES (?, ?, ?, ?)";
+        try {
+            PreparedStatement pstmt = getConexion().prepareStatement(sql);
+            pstmt.setString(1, correo);
+            pstmt.setString(2, nombre);
+            pstmt.setString(3, password);
+            pstmt.setString(4, claveCorreo);
+            return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -391,50 +387,12 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Elimina un archivo de la base de datos.
+     * Renombra un archivo en la base de datos actualizando nombre y extensiÛn.
      *
-     * @param nombreArchivo Nombre del archivo a eliminar.
+     * @param nombreActual Nombre actual del archivo.
+     * @param nuevoNombre  Nuevo nombre para el archivo.
      * @param ruta          Ruta donde se encuentra el archivo.
-     */
-    public void eliminarArchivo(String nombreArchivo, String ruta) {
-        String sql = "DELETE FROM archivos WHERE nombre_archivo = ? AND directorio = ?";
-        try (PreparedStatement pstmt = getConexion().prepareStatement(sql)) {
-            pstmt.setString(1, nombreArchivo);
-            pstmt.setString(2, ruta);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Renombra un archivo en la base de datos (solo actualiza el nombre).
-     *
-     * @param nombreActual Nombre actual del archivo.
-     * @param nuevoNombre  Nuevo nombre para el archivo.
-     * @param ruta         Ruta donde se encuentra el archivo.
-     * @return true si el renombrado fue exitoso, false en caso contrario.
-     */
-    public boolean renombrarArchivoSQL(String nombreActual, String nuevoNombre, String ruta) {
-        String sql = "UPDATE archivos SET nombre_archivo = ? WHERE nombre_archivo = ? AND directorio = ?";
-        try (PreparedStatement ps = getConexion().prepareStatement(sql)) {
-            ps.setString(1, nuevoNombre);
-            ps.setString(2, nombreActual);
-            ps.setString(3, ruta);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
-     * Renombra un archivo en la base de datos actualizando nombre y extensi√≥n.
-     *
-     * @param nombreActual Nombre actual del archivo.
-     * @param nuevoNombre  Nuevo nombre para el archivo.
-     * @param ruta         Ruta donde se encuentra el archivo.
-     * @param extension    Nueva extensi√≥n del archivo.
+     * @param extension     Nueva extensiÛn del archivo.
      * @return true si el renombrado fue exitoso, false en caso contrario.
      */
     public boolean renombrarArchivo(String nombreActual, String nuevoNombre, String ruta, String extension) {
@@ -452,20 +410,38 @@ public class ModeloBaseDatos {
     }
 
     /**
-     * Renombra una carpeta y actualiza recursivamente todas las rutas de archivos
-     * y subcarpetas contenidos.
-     * 
-     * @param nombreActual El nombre actual de la carpeta.
+     * Renombra un archivo en la base de datos (solo actualiza el nombre).
+     *
+     * @param nombreActual Nombre actual del archivo.
+     * @param nuevoNombre  Nuevo nombre para el archivo.
+     * @param ruta          Ruta donde se encuentra el archivo.
+     * @return true si el renombrado fue exitoso, false en caso contrario.
+     */
+    public boolean renombrarArchivoSQL(String nombreActual, String nuevoNombre, String ruta) {
+        String sql = "UPDATE archivos SET nombre_archivo = ? WHERE nombre_archivo = ? AND directorio = ?";
+        try (PreparedStatement ps = getConexion().prepareStatement(sql)) {
+            ps.setString(1, nuevoNombre);
+            ps.setString(2, nombreActual);
+            ps.setString(3, ruta);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Renombra una carpeta y actualiza recursivamente todas las rutas de archivos y
+     * subcarpetas contenidos.
+     * * @param nombreActual El nombre actual de la carpeta.
      * @param nuevoNombre  El nuevo nombre para la carpeta.
-     * @param rutaPadre    La ruta del directorio padre donde se encuentra la
-     *                     carpeta.
+     * @param rutaPadre    La ruta del directorio padre donde se encuentra la carpeta.
      * @return true si el renombrado fue exitoso, false en caso contrario.
      */
     public boolean renombrarCarpeta(String nombreActual, String nuevoNombre, String rutaPadre) {
         try {
             String rutaAntigua = rutaPadre.equals("/") ? "/" + nombreActual : rutaPadre + "/" + nombreActual;
             String rutaNueva = rutaPadre.equals("/") ? "/" + nuevoNombre : rutaPadre + "/" + nuevoNombre;
-
             getConexion().setAutoCommit(false);
 
             String sqlCarpeta = "UPDATE archivos SET nombre_archivo = ?, directorio = ? WHERE nombre_archivo = ? AND directorio = ?";
@@ -477,12 +453,22 @@ public class ModeloBaseDatos {
                 psCarpeta.executeUpdate();
             }
 
-            String sqlHijos = "UPDATE archivos SET directorio = REPLACE(directorio, ?, ?) WHERE directorio LIKE ?";
+            String sqlHijos = "SELECT * FROM archivos WHERE directorio LIKE ?";
             try (PreparedStatement psHijos = getConexion().prepareStatement(sqlHijos)) {
-                psHijos.setString(1, rutaAntigua + "/");
-                psHijos.setString(2, rutaNueva + "/");
-                psHijos.setString(3, rutaAntigua + "/%");
-                psHijos.executeUpdate();
+                psHijos.setString(1, "/" + rutaAntigua + "/%");
+                ResultSet rs = psHijos.executeQuery();
+                while (rs.next()) {
+                    String nombre = rs.getString("nombre_archivo");
+                    String directorio = rs.getString("directorio");
+                    String nuevoDirectorio = directorio.replace(rutaAntigua, rutaNueva);
+                    String sqlUpdate = "UPDATE archivos SET directorio = ? WHERE nombre_archivo = ? AND directorio = ?";
+                    try (PreparedStatement psUpdate = getConexion().prepareStatement(sqlUpdate)) {
+                        psUpdate.setString(1, nuevoDirectorio);
+                        psUpdate.setString(2, nombre);
+                        psUpdate.setString(3, directorio);
+                        psUpdate.executeUpdate();
+                    }
+                }
             }
 
             getConexion().commit();
@@ -500,4 +486,27 @@ public class ModeloBaseDatos {
         }
     }
 
+    /**
+     * Valida las credenciales de un usuario.
+     *
+     * @param correo   Correo electrÛnico del usuario.
+     * @param password ContraseÒa del usuario.
+     * @return true si las credenciales son v·lidas, false en caso contrario.
+     */
+    public boolean validarUsuario(String correo, String password) {
+        boolean valido = false;
+        try {
+            PreparedStatement pstmt = getConexion().prepareStatement(
+                    "SELECT * FROM usuarios WHERE email = ? AND contrasena = ?");
+            pstmt.setString(1, correo);
+            pstmt.setString(2, password);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                valido = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return valido;
+    }
 }

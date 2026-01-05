@@ -6,12 +6,15 @@ import java.io.File;
 import vista.VistaLogs;
 
 /**
- * Oyente para el bot贸n de exportaci贸n de logs.
- * Gestiona la selecci贸n del archivo destino y la ejecuci贸n de la exportaci贸n.
+ * Oyente para el bot髇 de exportaci髇 de logs.
+ * Gestiona la selecci髇 del archivo destino y la ejecuci髇 de la exportaci髇.
  */
 public class OyenteBtnExport implements ActionListener {
 
+    /** Gestor de logs para operaciones de exportaci髇. */
     private GestionLogs gestionLogs;
+
+    /** Vista de logs. */
     private VistaLogs vistaLogs;
 
     /**
@@ -27,10 +30,10 @@ public class OyenteBtnExport implements ActionListener {
 
     /**
      * Abre el selector de archivos y exporta los logs a formato CSV si se
-     * selecciona un destino v谩lido.
-     * Muestra mensajes de 茅xito o error seg煤n el resultado.
+     * selecciona un destino v醠ido.
+     * Muestra mensajes de 閤ito o error seg鷑 el resultado.
      *
-     * @param e Evento de acci贸n.
+     * @param e Evento de acci髇.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -44,8 +47,42 @@ public class OyenteBtnExport implements ActionListener {
             if (exito) {
                 vistaLogs.mostrarMensaje("Logs exported successfully at:\n" + archivoDestino.getAbsolutePath());
             } else {
-                vistaLogs.mostrarError("Ocurred an error.");
+                vistaLogs.mostrarError("An error occurred during export.");
             }
         }
+    }
+
+    // --- GETTERS Y SETTERS ---
+
+    /**
+     * Obtiene el gestor de logs.
+     * @return El objeto GestionLogs.
+     */
+    public GestionLogs getGestionLogs() {
+        return gestionLogs;
+    }
+
+    /**
+     * Establece el gestor de logs.
+     * @param gestionLogs El nuevo gestor de logs.
+     */
+    public void setGestionLogs(GestionLogs gestionLogs) {
+        this.gestionLogs = gestionLogs;
+    }
+
+    /**
+     * Obtiene la vista de logs.
+     * @return El objeto VistaLogs.
+     */
+    public VistaLogs getVistaLogs() {
+        return vistaLogs;
+    }
+
+    /**
+     * Establece la vista de logs.
+     * @param vistaLogs La nueva vista de logs.
+     */
+    public void setVistaLogs(VistaLogs vistaLogs) {
+        this.vistaLogs = vistaLogs;
     }
 }
