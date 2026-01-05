@@ -1,0 +1,12 @@
+{
+  "name": "firebase-strings-inserter",
+  "version": "1.0.0",
+  "description": "Script para insertar strings en Firebase Firestore",
+  "main": "firebase_insert_strings.js",
+  "scripts": {
+    "insert": "node firebase_insert_strings.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}

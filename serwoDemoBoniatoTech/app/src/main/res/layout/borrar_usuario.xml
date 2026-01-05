@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/BorrarUsuario"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:background="@drawable/fondo8">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tituloDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/green"
+            android:textSize="35dp"
+            android:textStyle="bold"
+            android:background="@drawable/rounded_layout_background"
+            android:alpha="0.8"
+            android:layout_margin="20dp"/>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:shrinkColumns="*"
+            android:background="@android:color/white"
+            android:layout_marginBottom="130dp"
+            android:layout_marginTop="20dp">
+            <TableRow
+                android:background="#2E5635"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/userHeader"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/emailHeader"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
+
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:id="@+id/row1User"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                    />
+
+                <TextView
+                    android:id="@+id/row1Email"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_width="20dp"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                    />
+
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:id="@+id/row2User"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                    />
+
+                <TextView
+                    android:id="@+id/row2Email"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_width="20dp"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                    />
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:id="@+id/row3User"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                    />
+
+                <TextView
+                    android:id="@+id/row3Email"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_width="20dp"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                    />
+            </TableRow>
+        </TableLayout>
+        <ImageButton
+            android:id="@+id/botonInfo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="end"
+            android:layout_margin="20dp"
+            android:background="@drawable/round_button_background"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            app:tint="@color/purple"
+            app:srcCompat="@android:drawable/ic_dialog_info" />
+
+        <LinearLayout
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/botonDelete"
+                android:layout_margin="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/green"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:cornerRadius="1dp" />
+
+
+            <Button
+                android:id="@+id/botonVueltaMenu"
+                android:layout_margin="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/red"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:cornerRadius="1dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

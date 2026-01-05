@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Inbox"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:background="@drawable/fondo6">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@color/lightGray"
+        android:alpha="0.88">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/green">
+            <TextView
+                android:id="@+id/tituloInbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:shrinkColumns="*"
+            android:background="@android:color/white"
+            android:layout_marginBottom="130dp"
+            android:layout_marginTop="20dp">
+            <TableRow
+                android:background="@color/mediumGreen"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/subjectHeader"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/fromHeader"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/dateHeader"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
+
+            </TableRow>
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/row1Subject"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                    />
+
+                <TextView
+                    android:id="@+id/row1From"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                    />
+
+                <TextView
+                    android:id="@+id/row1Date"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                     />
+
+
+            </TableRow>
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/row2Subject"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                    />
+
+                <TextView
+                    android:id="@+id/row2From"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                    />
+
+                <TextView
+                    android:id="@+id/row2Date"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                     />
+
+            </TableRow>
+
+        </TableLayout>
+        <ImageButton
+            android:id="@+id/botonInfo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="end"
+            android:layout_margin="50dp"
+            android:background="@drawable/round_button_background"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            app:tint="@color/purple"
+            app:srcCompat="@android:drawable/ic_dialog_info" />
+
+        <LinearLayout
+            android:layout_marginTop="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/botonInicio"
+                android:layout_margin="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/green"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:cornerRadius="1dp" />
+
+            <Button
+                android:id="@+id/botonRefresh"
+                android:layout_margin="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/green"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:cornerRadius="1dp" />
+
+            <Button
+                android:id="@+id/botonCompose"
+                android:layout_margin="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/green"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:cornerRadius="1dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
