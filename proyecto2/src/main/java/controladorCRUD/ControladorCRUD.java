@@ -21,8 +21,8 @@ import java.util.Arrays;
 
 /**
  * Controlador para las operaciones CRUD (Crear, Leer, Actualizar, Borrar) en la
- * base de datos.
- * Maneja la interacci�n entre las tablas de la vista y el modelo de datos.
+ * base de datos. Maneja la interacci�n entre las tablas de la vista y el
+ * modelo de datos.
  */
 public class ControladorCRUD {
     /** Modelo de base de datos para acceder a la informaci�n. */
@@ -61,9 +61,12 @@ public class ControladorCRUD {
         this.modeloVista = modeloVista;
     }
 
+    public ControladorCRUD() {
+    }
+
     /**
-     * Rellena la tabla de la vista con los datos de la base de datos.
-     * Configura el modelo de la tabla para que no sea editable directamente.
+     * Rellena la tabla de la vista con los datos de la base de datos. Configura el
+     * modelo de la tabla para que no sea editable directamente.
      *
      * @param tabla Nombre de la tabla en la base de datos.
      */
@@ -105,8 +108,8 @@ public class ControladorCRUD {
     }
 
     /**
-     * Prepara y muestra el formulario para insertar un nuevo registro.
-     * Configura los campos y listeners necesarios.
+     * Prepara y muestra el formulario para insertar un nuevo registro. Configura
+     * los campos y listeners necesarios.
      */
     public void mostrarFormularioNuevo() {
         coPrincipal.setEditando(false);
@@ -122,12 +125,10 @@ public class ControladorCRUD {
         configurarCombos(tabla);
 
         if (this.oyente != null) {
-            for (ActionListener al : viFormulario.getBotones().get(0)
-                    .getActionListeners()) {
+            for (ActionListener al : viFormulario.getBotones().get(0).getActionListeners()) {
                 viFormulario.getBotones().get(0).removeActionListener(al);
             }
-            for (ActionListener al : viFormulario.getBotones().get(1)
-                    .getActionListeners()) {
+            for (ActionListener al : viFormulario.getBotones().get(1).getActionListeners()) {
                 viFormulario.getBotones().get(1).removeActionListener(al);
             }
 
@@ -177,12 +178,10 @@ public class ControladorCRUD {
         viFormulario.rellenarDatos(valores);
 
         if (this.oyente != null) {
-            for (ActionListener al : viFormulario.getBotones().get(0)
-                    .getActionListeners()) {
+            for (ActionListener al : viFormulario.getBotones().get(0).getActionListeners()) {
                 viFormulario.getBotones().get(0).removeActionListener(al);
             }
-            for (ActionListener al : viFormulario.getBotones().get(1)
-                    .getActionListeners()) {
+            for (ActionListener al : viFormulario.getBotones().get(1).getActionListeners()) {
                 viFormulario.getBotones().get(1).removeActionListener(al);
             }
 
@@ -203,7 +202,33 @@ public class ControladorCRUD {
         columnas.remove(0);
 
         String[] valores = viFormulario.obtenerValores();
+        if (comprobarValores(valores)) {
+            int filas = crearRegistroInserccion(tabla, columnas, valores);
+            if (filas > 0) {
+                JOptionPane.showMessageDialog(vistaCRUD, modelo.MoTextos.msg_saved_ok);
+                viFormulario.setVisible(false);
+                rellenarTabla(tabla);
+            } else {
+                JOptionPane.showMessageDialog(vistaCRUD, modelo.MoTextos.msg_save_error,
+                        modelo.MoTextos.msg_error_title,
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(vistaCRUD, modelo.MoTextos.msg_save_error, modelo.MoTextos.msg_error_title,
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
+    public boolean comprobarValores(String[] valores) {
+        for (String valor : valores) {
+            if (valor.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int crearRegistroInserccion(String tabla, ArrayList<String> columnas, String[] valores) {
         String consulta = "INSERT INTO " + tabla + " (";
         String clausulaValores = "VALUES (";
 
@@ -218,15 +243,8 @@ public class ControladorCRUD {
         consulta += ") " + clausulaValores + ")";
 
         ArrayList<String> parametros = new ArrayList<>(Arrays.asList(valores));
-
-        if (bd.ejecutarActualizacion(consulta, parametros) > 0) {
-            JOptionPane.showMessageDialog(vistaCRUD, modelo.MoTextos.msg_saved_ok);
-            viFormulario.setVisible(false);
-            rellenarTabla(tabla);
-        } else {
-            JOptionPane.showMessageDialog(vistaCRUD, modelo.MoTextos.msg_save_error, modelo.MoTextos.msg_error_title,
-                    JOptionPane.ERROR_MESSAGE);
-        }
+        int filas = bd.ejecutarActualizacion(consulta, parametros);
+        return filas;
     }
 
     /**
@@ -245,6 +263,19 @@ public class ControladorCRUD {
         }
 
         String[] valores = viFormulario.obtenerValores();
+        int filas = crearRegistroActualizacion(fila, tabla, id, idCol, columnas, valores);
+        if (filas > 0) {
+            JOptionPane.showMessageDialog(vistaCRUD, modelo.MoTextos.msg_updated_ok);
+            viFormulario.setVisible(false);
+            rellenarTabla(tabla);
+        } else {
+            JOptionPane.showMessageDialog(vistaCRUD, modelo.MoTextos.msg_update_error, modelo.MoTextos.msg_error_title,
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private int crearRegistroActualizacion(int fila, String tabla, Object id, String idCol,
+            ArrayList<String> columnas, String[] valores) {
 
         String consulta = "UPDATE " + tabla + " SET ";
         for (int i = 0; i < columnas.size(); i++) {
@@ -268,19 +299,41 @@ public class ControladorCRUD {
             parametros.add(id2.toString());
         }
 
-        if (bd.ejecutarActualizacion(consulta, parametros) > 0) {
-            JOptionPane.showMessageDialog(vistaCRUD, modelo.MoTextos.msg_updated_ok);
-            viFormulario.setVisible(false);
-            rellenarTabla(tabla);
-        } else {
-            JOptionPane.showMessageDialog(vistaCRUD, modelo.MoTextos.msg_update_error, modelo.MoTextos.msg_error_title,
-                    JOptionPane.ERROR_MESSAGE);
-        }
+        int filas = bd.ejecutarActualizacion(consulta, parametros);
+        return filas;
     }
 
     /**
-     * Elimina el registro seleccionado de la tabla y de la base de datos.
-     * Pide confirmaci�n al usuario antes de proceder.
+     * Crea un registro de actualizaci�n con valores proporcionados.
+     * 
+     * @param tabla    Nombre de la tabla
+     * @param id       ID del registro
+     * @param idCol    Nombre de la columna ID
+     * @param columnas Lista de columnas
+     * @param valores  Valores a actualizar
+     * @return N�mero de filas afectadas
+     */
+    public int crearRegistroActualizacion(String tabla, Object id, String idCol,
+            ArrayList<String> columnas, String[] valores) {
+        String consulta = "UPDATE " + tabla + " SET ";
+        for (int i = 0; i < columnas.size(); i++) {
+            consulta += columnas.get(i) + " = ?";
+            if (i < columnas.size() - 1)
+                consulta += ", ";
+        }
+
+        consulta += " WHERE " + idCol + " = ?";
+
+        ArrayList<String> parametros = new ArrayList<>(Arrays.asList(valores));
+        parametros.add(id.toString());
+
+        int filas = bd.ejecutarActualizacion(consulta, parametros);
+        return filas;
+    }
+
+    /**
+     * Elimina el registro seleccionado de la tabla y de la base de datos. Pide
+     * confirmaci�n al usuario antes de proceder.
      */
     public void eliminarRegistro() {
         int fila = vistaCRUD.getPanelTabla().getTabla().getSelectedRow();
@@ -292,34 +345,38 @@ public class ControladorCRUD {
             String tabla = modeloVista.getTablaActual();
             String idCol = vistaCRUD.getPanelTabla().getTabla().getColumnName(0);
 
-            String consulta = "DELETE FROM " + tabla + " WHERE " + idCol + " = ?";
-
-            if (tabla.equals("especies_recintos")) {
-                String idCol2 = vistaCRUD.getPanelTabla().getTabla().getColumnName(1);
-                consulta += " AND " + idCol2 + " = ?";
-            }
-
-            ArrayList<String> parametros = new ArrayList<>();
-            parametros.add(vistaCRUD.getPanelTabla().getTabla().getValueAt(fila, 0).toString());
-
-            if (tabla.equals("especies_recintos")) {
-                parametros.add(vistaCRUD.getPanelTabla().getTabla().getValueAt(fila, 1).toString());
-            }
-
-            if (bd.ejecutarActualizacion(consulta, parametros) > 0) {
+            int filas = crearRegistroEliminacion(fila, tabla, idCol);
+            if (filas > 0) {
                 JOptionPane.showMessageDialog(vistaCRUD, modelo.MoTextos.msg_deleted_ok);
                 rellenarTabla(tabla);
             } else {
                 JOptionPane.showMessageDialog(vistaCRUD, modelo.MoTextos.msg_delete_error,
-                        modelo.MoTextos.msg_error_title,
-                        JOptionPane.ERROR_MESSAGE);
+                        modelo.MoTextos.msg_error_title, JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
+    private int crearRegistroEliminacion(int fila, String tabla, String idCol) {
+        String consulta = "DELETE FROM " + tabla + " WHERE " + idCol + " = ?";
+
+        if (tabla.equals("especies_recintos")) {
+            String idCol2 = vistaCRUD.getPanelTabla().getTabla().getColumnName(1);
+            consulta += " AND " + idCol2 + " = ?";
+        }
+
+        ArrayList<String> parametros = new ArrayList<>();
+        parametros.add(vistaCRUD.getPanelTabla().getTabla().getValueAt(fila, 0).toString());
+
+        if (tabla.equals("especies_recintos")) {
+            parametros.add(vistaCRUD.getPanelTabla().getTabla().getValueAt(fila, 1).toString());
+        }
+        int filas = bd.ejecutarActualizacion(consulta, parametros);
+        return filas;
+    }
+
     /**
-     * Agrega combos dependiendo la tabla actual.
-     * * @param tabla Nombre de la tabla en la base de datos.
+     * Agrega combos dependiendo la tabla actual. * @param tabla Nombre de la tabla
+     * en la base de datos.
      */
     private void configurarCombos(String tabla) {
         if (tabla.equals("animales")) {
