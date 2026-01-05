@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pantallaPrincipal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:background="@drawable/fondo1">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_marginTop="110dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/tituloMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/green"
+                android:textSize="35dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/subtituloMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="6dp"
+                android:textColor="@color/green"
+                android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/gestionDatos"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:backgroundTint="@color/sand"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:cornerRadius="1dp" />
+
+
+            <Button
+                android:id="@+id/botonGestionArchivos"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/sand"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:cornerRadius="1dp"
+                android:layout_marginTop="10dp"/>
+
+            <Button
+                android:id="@+id/botonCorreo"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/sand"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:cornerRadius="1dp"
+                android:layout_marginTop="10dp" />
+
+            <Button
+                android:id="@+id/administracion"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/sand"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:cornerRadius="1dp"
+                android:layout_marginTop="10dp" />
+
+            <Button
+                android:id="@+id/botonLogout"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="60dp"
+                android:backgroundTint="@color/lightRed"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:cornerRadius="1dp"
+                />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/botonInfo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="end"
+            android:layout_margin="50dp"
+            android:background="@drawable/round_button_background"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            app:tint="@color/purple"
+            app:srcCompat="@android:drawable/ic_dialog_info" />
+    </LinearLayout>
+</ScrollView>

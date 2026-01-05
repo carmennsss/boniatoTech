@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/PantallaAdministracion"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:background="@drawable/fondo5">
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_layout_background"
+        android:alpha="0.9">
+
+        <TextView
+            android:id="@+id/tituloAdministracion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/lunarGreen"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:layout_margin="25dp" />
+
+        <Button
+            android:id="@+id/botonAdminUsuario"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/mediumGreen"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:cornerRadius="1dp" />
+        <Button
+            android:id="@+id/botonGestionRoles"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/mediumGreen"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:cornerRadius="1dp" />
+        <Button
+            android:id="@+id/AsignarRol"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/mediumGreen"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/botonLogs"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/mediumGreen"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/botonAdministrarWhiteList"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/mediumGreen"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:cornerRadius="1dp" />
+
+        <Button
+            android:id="@+id/botonInicio"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:backgroundTint="@color/lightRed"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:cornerRadius="1dp" />
+
+        <ImageButton
+            android:id="@+id/botonInfo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="end"
+            android:layout_margin="20dp"
+            android:background="@drawable/round_button_background"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            app:tint="@color/purple"
+            app:srcCompat="@android:drawable/ic_dialog_info" />
+    </LinearLayout>
+</ScrollView>
