@@ -72,14 +72,6 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
 
     /**
      * Detecta cambios en la tabla, espec�ficamente para la edici�n de permisos de
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
      * roles.
      *
      * @param eventoModelo El evento de cambio en el modelo de la tabla.

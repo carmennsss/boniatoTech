@@ -16,7 +16,7 @@ import controladorCorreos.ControladorCorreos;
 import controladorLogs.ControladorLogs;
 
 /**
- * Controlador Principal de la aplicaci�n (Main Controller).
+ * Controlador Principal de la aplicaci�n.
  * Coordina la inicializaci�n de vistas, modelos y otros controladores
  * espec�ficos.
  * Act�a como punto central para la gesti�n de eventos y la navegaci�n entre

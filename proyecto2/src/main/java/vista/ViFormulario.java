@@ -13,9 +13,9 @@ import modelo.Animal;
 import modelo.MoTextos;
 
 /**
- * Ventana de formulario dinámica utilizada para crear o editar entidades.
- * Genera campos de texto o comboboxes según la configuración proporcionada,
- * adaptándose a las distintas tablas del sistema.
+ * Ventana de formulario dinï¿½mica utilizada para crear o editar entidades.
+ * Genera campos de texto o comboboxes segï¿½n la configuraciï¿½n proporcionada,
+ * adaptï¿½ndose a las distintas tablas del sistema.
  */
 public class ViFormulario extends JFrame {
     /** Lista de etiquetas de los campos del formulario. */
@@ -34,7 +34,8 @@ public class ViFormulario extends JFrame {
     private Image imagenFondo;
 
     /**
-     * Constructor que inicializa las listas y la configuración básica de la ventana.
+     * Constructor que inicializa las listas y la configuraciï¿½n bï¿½sica de la
+     * ventana.
      */
     public ViFormulario() {
         super(MoTextos.form_title);
@@ -51,7 +52,8 @@ public class ViFormulario extends JFrame {
     }
 
     /**
-     * Establece las propiedades visuales y de comportamiento básicas de la ventana.
+     * Establece las propiedades visuales y de comportamiento bï¿½sicas de la v
+     * ntana.
      */
     private void propiedades() {
         setSize(450, 600);
@@ -60,7 +62,7 @@ public class ViFormulario extends JFrame {
     }
 
     /**
-     * Construye y muestra los campos del formulario basándose en una lista de
+     * Construye y muestra los campos del formulario basï¿½ndose en una lista de
      * nombres de etiquetas.
      *
      * @param nombresCampos Lista de nombres para las etiquetas de los campos.
@@ -152,8 +154,8 @@ public class ViFormulario extends JFrame {
     /**
      * Aplica el estilo visual estandarizado a los botones del formulario.
      *
-     * @param btn     El botón a estilar.
-     * @param bgColor Color de fondo para el botón.
+     * @param btn     El botï¿½n a estilar.
+     * @param bgColor Color de fondo para el botï¿½n.
      */
     private void estilarBoton(JButton btn, Color bgColor) {
         btn.setFont(Estilos.FONT_BOTON);
@@ -167,7 +169,7 @@ public class ViFormulario extends JFrame {
     /**
      * Reemplaza un campo de texto por un JComboBox de recintos.
      *
-     * @param nombre   Nombre del campo a reemplazar.
+     * @param nombre    Nombre del campo a reemplazar.
      * @param elementos Lista de recintos para el combo.
      */
     public void agregarComboRecintos(String nombre, ArrayList<Recinto> elementos) {
@@ -203,7 +205,7 @@ public class ViFormulario extends JFrame {
     /**
      * Reemplaza un campo de texto por un JComboBox de especies.
      *
-     * @param nombre   Nombre del campo a reemplazar.
+     * @param nombre    Nombre del campo a reemplazar.
      * @param elementos Lista de especies para el combo.
      */
     public void agregarComboEspecies(String nombre, ArrayList<Especie> elementos) {
@@ -239,7 +241,7 @@ public class ViFormulario extends JFrame {
     /**
      * Reemplaza un campo de texto por un JComboBox de cuidadores.
      *
-     * @param nombre   Nombre del campo a reemplazar.
+     * @param nombre    Nombre del campo a reemplazar.
      * @param elementos Lista de cuidadores para el combo.
      */
     public void agregarComboCuidadores(String nombre, ArrayList<Cuidador> elementos) {
@@ -275,7 +277,7 @@ public class ViFormulario extends JFrame {
     /**
      * Reemplaza un campo de texto por un JComboBox de tipos (strings).
      *
-     * @param nombre   Nombre del campo a reemplazar.
+     * @param nombre    Nombre del campo a reemplazar.
      * @param elementos Lista de strings para el combo.
      */
     public void agregarComboTipos(String nombre, java.util.List<String> elementos) {
@@ -311,7 +313,7 @@ public class ViFormulario extends JFrame {
     /**
      * Reemplaza un campo de texto por un JComboBox de animales.
      *
-     * @param nombre   Nombre del campo a reemplazar.
+     * @param nombre    Nombre del campo a reemplazar.
      * @param elementos Lista de animales para el combo.
      */
     public void agregarComboAnimales(String nombre, ArrayList<Animal> elementos) {
@@ -345,8 +347,9 @@ public class ViFormulario extends JFrame {
     }
 
     /**
-     * Rellena los campos del formulario con valores existentes (para edición).
-     * Maneja tanto JTextFields como JComboBoxes, seleccionando el item correcto por ID.
+     * Rellena los campos del formulario con valores existentes (para ediciï¿½n).
+     * Maneja tanto JTextFields como JComboBoxes, seleccionando el item correcto por
+     * ID.
      *
      * @param valores Array de strings con los valores a pre-cargar.
      */
@@ -364,17 +367,21 @@ public class ViFormulario extends JFrame {
                     for (int j = 0; j < combo.getItemCount(); j++) {
                         Object item = combo.getItemAt(j);
 
-                        boolean match = false;
-                        if (item instanceof Especie && ((Especie) item).getEspecie_id() == id)
-                            match = true;
-                        else if (item instanceof Cuidador && ((Cuidador) item).getCuidador_id() == id)
-                            match = true;
-                        else if (item instanceof Recinto && ((Recinto) item).getRecinto_id() == id)
-                            match = true;
-                        else if (item instanceof Animal && ((Animal) item).getAnimal_id() == id)
-                            match = true;
-
-                        if (match) {
+                        boolean idCoincide = false;
+                        if (item instanceof Especie) {
+                            Especie especie = (Especie) item;
+                            idCoincide = especie.getEspecie_id() == id;
+                        } else if (item instanceof Cuidador) {
+                            Cuidador cuidador = (Cuidador) item;
+                            idCoincide = cuidador.getCuidador_id() == id;
+                        } else if (item instanceof Recinto) {
+                            Recinto recinto = (Recinto) item;
+                            idCoincide = recinto.getRecinto_id() == id;
+                        } else if (item instanceof Animal) {
+                            Animal animal = (Animal) item;
+                            idCoincide = animal.getAnimal_id() == id;
+                        }
+                        if (idCoincide) {
                             combo.setSelectedIndex(j);
                             break;
                         }
@@ -403,13 +410,17 @@ public class ViFormulario extends JFrame {
                 Object selected = combo.getSelectedItem();
 
                 if (selected instanceof Especie) {
-                    valores[i] = String.valueOf(((Especie) selected).getEspecie_id());
+                    Especie especie = (Especie) selected;
+                    valores[i] = String.valueOf(especie.getEspecie_id());
                 } else if (selected instanceof Cuidador) {
-                    valores[i] = String.valueOf(((Cuidador) selected).getCuidador_id());
+                    Cuidador cuidador = (Cuidador) selected;
+                    valores[i] = String.valueOf(cuidador.getCuidador_id());
                 } else if (selected instanceof Recinto) {
-                    valores[i] = String.valueOf(((Recinto) selected).getRecinto_id());
+                    Recinto recinto = (Recinto) selected;
+                    valores[i] = String.valueOf(recinto.getRecinto_id());
                 } else if (selected instanceof Animal) {
-                    valores[i] = String.valueOf(((Animal) selected).getAnimal_id());
+                    Animal animal = (Animal) selected;
+                    valores[i] = String.valueOf(animal.getAnimal_id());
                 } else {
                     valores[i] = selected != null ? selected.toString() : "";
                 }
@@ -419,7 +430,7 @@ public class ViFormulario extends JFrame {
     }
 
     /**
-     * Actualiza los textos del formulario según el idioma seleccionado.
+     * Actualiza los textos del formulario segï¿½n el idioma seleccionado.
      */
     public void actualizarTextos() {
         this.setTitle(MoTextos.form_title);
@@ -458,9 +469,9 @@ public class ViFormulario extends JFrame {
     }
 
     /**
-     * Obtiene el botón de guardar.
+     * Obtiene el botï¿½n de guardar.
      *
-     * @return Botón de guardar o null si no existe.
+     * @return Botï¿½n de guardar o null si no existe.
      */
     public JButton getBtnGuardar() {
         if (botones.size() > 0)
@@ -469,9 +480,9 @@ public class ViFormulario extends JFrame {
     }
 
     /**
-     * Obtiene el botón de cancelar.
+     * Obtiene el botï¿½n de cancelar.
      *
-     * @return Botón de cancelar o null si no existe.
+     * @return Botï¿½n de cancelar o null si no existe.
      */
     public JButton getBtnCancelar() {
         if (botones.size() > 1)

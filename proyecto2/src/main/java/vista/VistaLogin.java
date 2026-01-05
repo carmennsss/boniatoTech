@@ -307,6 +307,21 @@ public class VistaLogin extends JFrame {
 
 		layeredPane.add(comboIdiomas, JLayeredPane.PALETTE_LAYER);
 	}
+	
+	/**
+	 * Actualiza los textos de la interfaz en base al idioma seleccionado.
+	 */
+	public void actualizarTextos() {
+		if (comboIdiomas != null) {
+			comboIdiomas.setSelectedIndex(MoTextos.getIdioma());
+		}
+		setTitle(MoTextos.login_title);
+		titulo.setText(MoTextos.app_title);
+		lblUser.setText(MoTextos.lbl_user);
+		lblPass.setText(MoTextos.lbl_password);
+		btnLogin.setText(MoTextos.btn_login);
+		repaint();
+	}
 
 	// --- GETTERS Y SETTERS ---
 
@@ -344,20 +359,5 @@ public class VistaLogin extends JFrame {
 	 */
 	public ArrayList<JButton> getBotones() {
 		return botones;
-	}
-
-	/**
-	 * Actualiza los textos de la interfaz en base al idioma seleccionado.
-	 */
-	public void actualizarTextos() {
-		if (comboIdiomas != null) {
-			comboIdiomas.setSelectedIndex(MoTextos.getIdioma());
-		}
-		setTitle(MoTextos.login_title);
-		titulo.setText(MoTextos.app_title);
-		lblUser.setText(MoTextos.lbl_user);
-		lblPass.setText(MoTextos.lbl_password);
-		btnLogin.setText(MoTextos.btn_login);
-		repaint();
 	}
 }
