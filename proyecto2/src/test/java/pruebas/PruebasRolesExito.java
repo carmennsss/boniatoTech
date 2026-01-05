@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import controladorRoles.ControladorRoles;
 import modelo.ModeloBaseDatos;
 import modelo.Rol;
 
@@ -25,21 +26,22 @@ import modelo.Rol;
 public class PruebasRolesExito {
 
     private static ModeloBaseDatos modeloDB;
+    private static ControladorRoles controladorRoles;
 
     private String correo;
-    private Rol rol;
+    private int idRol;
     private String accion;
 
     /**
      * Constructor para la prueba parametrizada.
      * 
      * @param correo Correo del usuario
-     * @param rol    Rol a asignar o desasignar
+     * @param idRol  ID del Rol a asignar o desasignar
      * @param accion Accion a realizar (ASIGNAR o DESASIGNAR)
      */
-    public PruebasRolesExito(String correo, Rol rol, String accion) {
+    public PruebasRolesExito(String correo, int idRol, String accion) {
         this.correo = correo;
-        this.rol = rol;
+        this.idRol = idRol;
         this.accion = accion;
     }
 
@@ -49,6 +51,7 @@ public class PruebasRolesExito {
     @BeforeClass
     public static void setUpBeforeClass() {
         modeloDB = new ModeloBaseDatos();
+        controladorRoles = new ControladorRoles(null, modeloDB, null, null, null, null, null, null);
     }
 
     /**
@@ -70,10 +73,10 @@ public class PruebasRolesExito {
     @Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
-                { "admin@admin", new Rol(1, "Admin", "Administrador del sistema"), "ASIGNAR" },
-                { "pablo.pruebas.mail@gmail.com", new Rol(2, "Usuario", "Usuario normal"), "ASIGNAR" },
-                { "admin@admin", new Rol(1, "Admin", "Administrador del sistema"), "DESASIGNAR" },
-                { "pablo.pruebas.mail@gmail.com", new Rol(2, "Usuario", "Usuario normal"), "DESASIGNAR" }
+                { "admin@admin", 1, "ASIGNAR" },
+                { "pablo.pruebas.mail@gmail.com", 2, "ASIGNAR" },
+                { "admin@admin", 1, "DESASIGNAR" },
+                { "pablo.pruebas.mail@gmail.com", 2, "DESASIGNAR" }
         });
     }
 
@@ -83,37 +86,25 @@ public class PruebasRolesExito {
      */
     @Test
     public void testOperacionRolExitosa() {
-        System.out.println("Ejecutando " + accion + " rol " + rol.getNombre_roles() + " para " + correo);
+        System.out.println("Ejecutando " + accion + " rol " + idRol + " para " + correo);
 
         try {
-            String sqlComprobarAntes = "SELECT * FROM usuarios_roles WHERE email_usuario = ? AND roles_id = ?;";
-            boolean existeAntes = modeloDB.existeRegistro(sqlComprobarAntes,
-                    new ArrayList<>(Arrays.asList(correo, String.valueOf(rol.getId_roles()))));
+            Rol rol = new Rol(idRol, "Rol Test", "Descripcion Test");
+            ArrayList<String> correos = new ArrayList<>(Arrays.asList(correo));
+            boolean asigna = accion.equals("ASIGNAR");
+
+            controladorRoles.asignarRol(asigna, correos, rol);
+
+            String sqlComprobar = "SELECT * FROM usuarios_roles WHERE email_usuario = ? AND roles_id = ?;";
+            boolean existe = modeloDB.existeRegistro(sqlComprobar,
+                    new ArrayList<>(Arrays.asList(correo, String.valueOf(idRol))));
 
             if (accion.equals("ASIGNAR")) {
-                if (!existeAntes) {
-                    String sqlAsignar = "INSERT INTO usuarios_roles (email_usuario, roles_id) VALUES (?, ?);";
-                    int filas = modeloDB.ejecutarActualizacion(sqlAsignar,
-                            new ArrayList<>(Arrays.asList(correo, String.valueOf(rol.getId_roles()))));
-                    assertTrue("La asignacion deberia ejecutarse correctamente", filas > 0);
-                }
-
-                boolean existeDespues = modeloDB.existeRegistro(sqlComprobarAntes,
-                        new ArrayList<>(Arrays.asList(correo, String.valueOf(rol.getId_roles()))));
-                assertTrue("El rol deberia estar asignado al usuario", existeDespues);
-
-            } else if (accion.equals("DESASIGNAR")) {
-                if (existeAntes) {
-                    String sqlDesasignar = "DELETE FROM usuarios_roles WHERE email_usuario = ? AND roles_id = ?;";
-                    int filas = modeloDB.ejecutarActualizacion(sqlDesasignar,
-                            new ArrayList<>(Arrays.asList(correo, String.valueOf(rol.getId_roles()))));
-                    assertTrue("La desasignacion deberia ejecutarse correctamente", filas > 0);
-                }
-
-                boolean existeDespues = modeloDB.existeRegistro(sqlComprobarAntes,
-                        new ArrayList<>(Arrays.asList(correo, String.valueOf(rol.getId_roles()))));
-                assertTrue("El rol deberia estar desasignado del usuario", !existeDespues);
+                assertTrue("El rol deberia estar asignado al usuario", existe);
+            } else {
+                assertTrue("El rol deberia estar desasignado del usuario", !existe);
             }
+
         } catch (Exception e) {
             assertTrue("No deberia lanzar excepcion: " + e.getMessage(), false);
         }
