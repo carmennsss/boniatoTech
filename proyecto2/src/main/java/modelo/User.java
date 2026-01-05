@@ -1,24 +1,31 @@
 package modelo;
 
 /**
- * Representa un usuario del sistema (no confundir con un cuidador o empleado
- * del zoo, sino un usuario de la aplicaci贸n).
+ * Representa un usuario autenticado en el sistema.
+ * Almacena las credenciales de acceso a la aplicaci髇 y los par醡etros
+ * necesarios para la integraci髇 con servicios de correo electr髇ico.
  */
 public class User {
 
-	String nombre;
-	String correo;
-	String claveCorreo;
-	String contrasena;
+	/** Nombre de usuario para la identificaci髇 en el sistema. */
+	private String nombre;
+
+	/** Direcci髇 de correo electr髇ico asociada a la cuenta. */
+	private String correo;
+
+	/** Clave espec韋ica de aplicaci髇 para servicios de correo (ej. SMTP/POP3). */
+	private String claveCorreo;
+
+	/** Contrase馻 principal para el acceso a la aplicaci髇. */
+	private String contrasena;
 
 	/**
-	 * Constructor completo de la clase User.
+	 * Constructor completo para la creaci髇 de un nuevo usuario con todos sus par醡etros.
 	 *
-	 * @param nombre      Nombre de usuario.
-	 * @param correo      Direcci贸n de correo electr贸nico.
-	 * @param claveCorreo Clave espec铆fica para servicios de correo (ej. contrase帽a
-	 *                    de aplicaci贸n).
-	 * @param contrasena  Contrase帽a de acceso al sistema.
+	 * @param nombre      Nombre de usuario 鷑ico.
+	 * @param correo      Direcci髇 de correo electr髇ico.
+	 * @param claveCorreo Clave espec韋ica para el servidor de correo.
+	 * @param contrasena  Contrase馻 de acceso al sistema.
 	 */
 	public User(String nombre, String correo, String claveCorreo, String contrasena) {
 		this.nombre = nombre;
@@ -28,13 +35,69 @@ public class User {
 	}
 
 	/**
-	 * Constructor simplificado para User (solo nombre y correo).
+	 * Constructor simplificado para la representaci髇 b醩ica de un usuario.
 	 *
 	 * @param nombre Nombre de usuario.
-	 * @param correo Direcci贸n de correo electr贸nico.
+	 * @param correo Direcci髇 de correo electr髇ico.
 	 */
 	public User(String nombre, String correo) {
 		this.nombre = nombre;
+		this.correo = correo;
+	}
+
+	// --- GETTERS Y SETTERS AL FINAL ---
+
+	/**
+	 * Obtiene la clave espec韋ica para los servicios de correo.
+	 *
+	 * @return La clave del correo en formato cadena.
+	 */
+	public String getClaveCorreo() {
+		return claveCorreo;
+	}
+
+	/**
+	 * Establece la clave espec韋ica para los servicios de correo.
+	 *
+	 * @param claveCorreo La nueva clave de aplicaci髇 para el correo.
+	 */
+	public void setClaveCorreo(String claveCorreo) {
+		this.claveCorreo = claveCorreo;
+	}
+
+	/**
+	 * Obtiene la contrase馻 de acceso al sistema (alias de getPassword).
+	 *
+	 * @return La contrase馻 del usuario.
+	 */
+	public String getContrasena() {
+		return contrasena;
+	}
+
+	/**
+	 * Establece la contrase馻 de acceso al sistema (alias de setPassword).
+	 *
+	 * @param contrasena La nueva contrase馻 a asignar.
+	 */
+	public void setContrasena(String contrasena) {
+		this.contrasena = contrasena;
+	}
+
+	/**
+	 * Obtiene la direcci髇 de correo electr髇ico del usuario.
+	 *
+	 * @return El correo electr髇ico.
+	 */
+	public String getCorreo() {
+		return correo;
+	}
+
+	/**
+	 * Establece la direcci髇 de correo electr髇ico del usuario.
+	 *
+	 * @param correo El nuevo correo electr髇ico.
+	 */
+	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
 
@@ -50,82 +113,27 @@ public class User {
 	/**
 	 * Establece el nombre de usuario.
 	 *
-	 * @param nombre El nuevo nombre de usuario.
+	 * @param nombre El nuevo nombre de identificaci髇.
 	 */
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
 	/**
-	 * Obtiene el correo electr贸nico.
+	 * Obtiene la contrase馻 de acceso.
 	 *
-	 * @return El correo.
-	 */
-	public String getCorreo() {
-		return correo;
-	}
-
-	/**
-	 * Establece el correo electr贸nico.
-	 *
-	 * @param correo El nuevo correo.
-	 */
-	public void setCorreo(String correo) {
-		this.correo = correo;
-	}
-
-	/**
-	 * Obtiene la contrase帽a de acceso.
-	 *
-	 * @return La contrase帽a.
+	 * @return La contrase馻 actual.
 	 */
 	public String getPassword() {
 		return contrasena;
 	}
 
 	/**
-	 * Establece la contrase帽a de acceso.
+	 * Establece la contrase馻 de acceso.
 	 *
-	 * @param contrasena La nueva contrase帽a.
+	 * @param contrasena La nueva contrase馻 de acceso.
 	 */
 	public void setPassword(String contrasena) {
 		this.contrasena = contrasena;
 	}
-
-	/**
-	 * Obtiene la clave espec铆fica para el correo.
-	 *
-	 * @return La clave del correo.
-	 */
-	public String getClaveCorreo() {
-		return claveCorreo;
-	}
-
-	/**
-	 * Establece la clave espec铆fica para el correo.
-	 *
-	 * @param claveCorreo La nueva clave del correo.
-	 */
-	public void setClaveCorreo(String claveCorreo) {
-		this.claveCorreo = claveCorreo;
-	}
-
-	/**
-	 * Obtiene la contrase帽a de acceso (alias de getPassword).
-	 *
-	 * @return La contrase帽a.
-	 */
-	public String getContrasena() {
-		return contrasena;
-	}
-
-	/**
-	 * Establece la contrase帽a de acceso (alias de setPassword).
-	 *
-	 * @param contrasena La nueva contrase帽a.
-	 */
-	public void setContrasena(String contrasena) {
-		this.contrasena = contrasena;
-	}
-
 }

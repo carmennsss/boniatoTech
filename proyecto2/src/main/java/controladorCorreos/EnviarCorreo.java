@@ -35,12 +35,14 @@ public class EnviarCorreo {
     public static void enviarCorreo(String miCorreo, String asunto, String mensaje, String receptor,
             String passwordAplicacion, List<File> archivos) throws Exception {
 
+        // Configuración de las propiedades del servidor SMTP
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
 
+        // Creación de la sesión con autenticación
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -51,18 +53,21 @@ public class EnviarCorreo {
             }
         });
 
-        // Crear mensaje
+        // Crear el objeto del mensaje
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress(miCorreo));
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receptor));
         msg.setSubject(asunto);
 
+        // Crear el contenedor de las partes del correo (texto + adjuntos)
         Multipart multipart = new MimeMultipart();
 
+        // Parte del texto del mensaje
         MimeBodyPart textoParte = new MimeBodyPart();
         textoParte.setText(mensaje);
         multipart.addBodyPart(textoParte);
 
+        // Parte de los archivos adjuntos
         if (archivos != null) {
             for (File archivo : archivos) {
                 MimeBodyPart adjuntoParte = new MimeBodyPart();
@@ -71,8 +76,8 @@ public class EnviarCorreo {
             }
         }
 
+        // Asignar el contenido completo al mensaje y enviar
         msg.setContent(multipart);
         Transport.send(msg);
-
     }
 }

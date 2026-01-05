@@ -29,25 +29,46 @@ import modelo.Log;
 import modelo.MoTextos;
 
 /**
- * Vista para la consulta historica de logs del sistema.
- * Muestra quÃ© usuarios hicieron quÃ© acciones y cuÃ¡ndo.
+ * Vista para la consulta histórica de logs del sistema.
+ * Muestra un registro detallado de las acciones realizadas por los usuarios,
+ * incluyendo fechas, resultados y descripciones, permitiendo su exportación.
  */
 public class VistaLogs extends JFrame {
 
+    /** Panel personalizado que contiene la tabla de visualización de logs. */
     private ViTabla tabla;
+
+    /** Botón para exportar los registros mostrados a un archivo CSV. */
     private JButton btnExport;
+
+    /** Botón para regresar al panel de administración. */
     private JButton btnVolver;
+
+    /** Lista de botones superiores para filtrar o realizar consultas específicas. */
     private ArrayList<JButton> botonesConsultas;
+
+    /** Imagen de fondo para la personalización estética de la ventana. */
     private Image imagenFondo;
+
+    /** Etiqueta que muestra el título principal de la vista. */
     private JLabel titulo;
+
+    /** Referencia a la vista de administración para la navegación de retorno. */
     private VistaAdmin vistaAdmin;
 
+    /**
+     * Constructor que inicializa la vista de logs y sus componentes.
+     * @param vistaAdmin Referencia de la vista administrativa padre.
+     */
     public VistaLogs(VistaAdmin vistaAdmin) {
         this.vistaAdmin = vistaAdmin;
         this.botonesConsultas = new ArrayList<>();
         propiedades();
     }
 
+    /**
+     * Configura la ventana y orquesta la creación de la interfaz de usuario.
+     */
     private void propiedades() {
         configurarVentana();
         configurarFondo();
@@ -57,6 +78,9 @@ public class VistaLogs extends JFrame {
         inicializarModeloTabla();
     }
 
+    /**
+     * Establece los parámetros básicos del JFrame.
+     */
     private void configurarVentana() {
         this.setTitle(MoTextos.logs_title);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -64,6 +88,9 @@ public class VistaLogs extends JFrame {
         this.setLocationRelativeTo(null);
     }
 
+    /**
+     * Carga la imagen de fondo y configura el panel principal con diseño BorderLayout.
+     */
     private void configurarFondo() {
         URL url = getClass().getResource("/fondo_abstracto_1.png");
         if (url != null) {
@@ -87,8 +114,10 @@ public class VistaLogs extends JFrame {
         setContentPane(panelFondo);
     }
 
+    /**
+     * Configura la sección superior con el título dinámico y decorado.
+     */
     private void configurarTitulo() {
-
         titulo = new JLabel(MoTextos.logs_title);
         titulo.setFont(Estilos.FONT_TITULO);
         titulo.setForeground(Estilos.DARK_SPRUCE);
@@ -111,6 +140,9 @@ public class VistaLogs extends JFrame {
         getContentPane().add(panelTitulo, BorderLayout.NORTH);
     }
 
+    /**
+     * Inicializa el contenedor central con la tabla personalizada para los registros.
+     */
     private void configurarTabla() {
         tabla = new ViTabla();
 
@@ -131,8 +163,10 @@ public class VistaLogs extends JFrame {
         getContentPane().add(panelTablaContenedor, BorderLayout.CENTER);
     }
 
+    /**
+     * Define y posiciona los botones de consulta (filtros) y de acción (exportar/volver).
+     */
     private void configurarBotones() {
-
         JPanel panelBotonesConsultas = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panelBotonesConsultas.setOpaque(false);
         botonesConsultas.add(new JButton(MoTextos.logs_col_action));
@@ -160,10 +194,9 @@ public class VistaLogs extends JFrame {
         getContentPane().add(panelBotones, BorderLayout.SOUTH);
     }
 
-    public void setTituloTexto(String t) {
-        titulo.setText(t);
-    }
-
+    /**
+     * Inicializa el modelo de la tabla definiendo sus columnas e impidiendo la edición manual.
+     */
     private void inicializarModeloTabla() {
         String[] nombresColumnas = { MoTextos.logs_col_action, MoTextos.logs_col_user, MoTextos.logs_col_date,
                 MoTextos.logs_col_result };
@@ -176,6 +209,11 @@ public class VistaLogs extends JFrame {
         tabla.setModelo(tablaModelo);
     }
 
+    /**
+     * Aplica el esquema de diseño visual a un botón específico.
+     * @param btn Botón a estilar.
+     * @param bgColor Color de fondo.
+     */
     private void aniadirEstiloBoton(JButton btn, Color bgColor) {
         btn.setFont(Estilos.FONT_BOTON);
         btn.setBackground(bgColor);
@@ -187,8 +225,7 @@ public class VistaLogs extends JFrame {
     }
 
     /**
-     * Carga y muestra una lista de logs en la tabla.
-     *
+     * Carga y muestra una lista de logs en la tabla visual.
      * @param logs Lista de objetos Log a visualizar.
      */
     public void cargarLogs(ArrayList<Log> logs) {
@@ -205,10 +242,8 @@ public class VistaLogs extends JFrame {
     }
 
     /**
-     * Abre un diÃ¡logo para seleccionar dÃ³nde guardar el archivo CSV de logs
-     * exportados.
-     *
-     * @return El objeto File donde se guardarÃ¡ el CSV, o null si se cancela.
+     * Abre un diálogo para seleccionar dónde guardar el archivo CSV de logs exportados.
+     * @return El objeto File donde se guardará el CSV, o null si se cancela.
      */
     public File seleccionarArchivoGuardar() {
         JFileChooser fileChooser = new JFileChooser();
@@ -227,7 +262,7 @@ public class VistaLogs extends JFrame {
     }
 
     /**
-     * Actualiza los textos de la interfaz segÃºn el idioma seleccionado.
+     * Actualiza los textos de la interfaz según el idioma seleccionado.
      */
     public void actualizarTextos() {
         this.setTitle(MoTextos.logs_title);
@@ -241,29 +276,15 @@ public class VistaLogs extends JFrame {
         model.setColumnIdentifiers(header);
     }
 
-    public JButton getBtnExport() {
-        return btnExport;
-    }
-
-    public ArrayList<JButton> getBotonesConsultas() {
-        return botonesConsultas;
-    }
-
-    public JButton getBtnVolver() {
-        return btnVolver;
-    }
-
-    public VistaAdmin getVistaAdmin() {
-        return vistaAdmin;
-    }
-
+    /**
+     * Muestra la ventana en pantalla.
+     */
     public void hacerVisible() {
         setVisible(true);
     }
 
     /**
-     * Muestra un mensaje de error en un diÃ¡logo emergente.
-     *
+     * Muestra un mensaje de error en un diálogo emergente.
      * @param mensaje Texto del error.
      */
     public void mostrarError(String mensaje) {
@@ -271,11 +292,52 @@ public class VistaLogs extends JFrame {
     }
 
     /**
-     * Muestra un mensaje informativo en un diÃ¡logo emergente.
-     *
+     * Muestra un mensaje informativo en un diálogo emergente.
      * @param mensaje Texto del mensaje.
      */
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
+    }
+
+    // --- GETTERS Y SETTERS ---
+
+    /**
+     * Obtiene el botón de exportación de registros.
+     * @return El objeto JButton correspondiente.
+     */
+    public JButton getBtnExport() {
+        return btnExport;
+    }
+
+    /**
+     * Obtiene la lista de botones utilizados para realizar consultas de filtrado.
+     * @return ArrayList de botones de consulta.
+     */
+    public ArrayList<JButton> getBotonesConsultas() {
+        return botonesConsultas;
+    }
+
+    /**
+     * Obtiene el botón de retorno.
+     * @return El objeto JButton para volver.
+     */
+    public JButton getBtnVolver() {
+        return btnVolver;
+    }
+
+    /**
+     * Obtiene la referencia a la vista de administración asociada.
+     * @return El objeto VistaAdmin.
+     */
+    public VistaAdmin getVistaAdmin() {
+        return vistaAdmin;
+    }
+
+    /**
+     * Establece o actualiza el texto del título principal.
+     * @param t El nuevo título a mostrar.
+     */
+    public void setTituloTexto(String t) {
+        titulo.setText(t);
     }
 }

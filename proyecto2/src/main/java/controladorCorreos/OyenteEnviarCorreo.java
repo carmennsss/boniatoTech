@@ -12,20 +12,25 @@ import modelo.MoTextos;
 import vista.VistaCorreoBase;
 
 /**
- * Oyente del botón "Enviar" en la vista de redacción de correos.
- * Valida los datos del formulario y envía el correo electrónico.
+ * Oyente del botï¿½n "Enviar" en la vista de redacciï¿½n de correos.
+ * Valida los datos del formulario y envï¿½a el correo electrï¿½nico.
  */
 public class OyenteEnviarCorreo implements ActionListener {
 
+	/** Contraseï¿½a de aplicaciï¿½n. */
 	private String passwordAplicacion;
+
+	/** Vista de redacciï¿½n de correo. */
 	private VistaCorreoBase v;
+
+	/** Controlador de correos. */
 	private ControladorCorreos controlador;
 
 	/**
 	 * Constructor del oyente.
 	 *
-	 * @param v                  Vista de redacción de correo.
-	 * @param passwordAplicacion Contraseña de aplicación.
+	 * @param v                  Vista de redacciï¿½n de correo.
+	 * @param passwordAplicacion Contraseï¿½a de aplicaciï¿½n.
 	 * @param controlador        Controlador de correos.
 	 */
 	public OyenteEnviarCorreo(VistaCorreoBase v, String passwordAplicacion, ControladorCorreos controlador) {
@@ -35,11 +40,11 @@ public class OyenteEnviarCorreo implements ActionListener {
 	}
 
 	/**
-	 * Recopila los datos del formulario (destinatario, asunto, cuerpo) y envía el
+	 * Recopila los datos del formulario (destinatario, asunto, cuerpo) y envï¿½a el
 	 * correo.
-	 * Valida que los campos no estén vacíos y que el destinatario esté permitido.
+	 * Valida que los campos no estï¿½n vacï¿½os y que el destinatario estï¿½ permitido.
 	 *
-	 * @param e Evento de acción.
+	 * @param e Evento de acciï¿½n.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -69,11 +74,11 @@ public class OyenteEnviarCorreo implements ActionListener {
 	}
 
 	/**
-	 * Verifica si el destinatario está en la lista blanca (whitelist) o es un
+	 * Verifica si el destinatario estï¿½ en la lista blanca (whitelist) o es un
 	 * usuario registrado.
 	 *
-	 * @param receptor Dirección de correo del destinatario.
-	 * @return true si el destinatario es válido, false en caso contrario.
+	 * @param receptor Direcciï¿½n de correo del destinatario.
+	 * @return true si el destinatario es vï¿½lido, false en caso contrario.
 	 */
 	private boolean comprobarReceptorWhiteList(String receptor) {
 		boolean estaEnWhiteList;
@@ -86,9 +91,58 @@ public class OyenteEnviarCorreo implements ActionListener {
 			return false;
 		}
 
-		Log log = new Log("MAIL_SEND", controlador.getCORREO(), true);
+		Log log = new Log("MAIL_SEND", controlador.getCORREO(), false);
 		GestionLogs.writeLog(log);
 		return true;
 	}
 
+	// --- GETTERS Y SETTERS ---
+
+	/**
+	 * Obtiene la contraseï¿½a de aplicaciï¿½n.
+	 * @return La contraseï¿½a configurada.
+	 */
+	public String getPasswordAplicacion() {
+		return passwordAplicacion;
+	}
+
+	/**
+	 * Establece la contraseï¿½a de aplicaciï¿½n.
+	 * @param passwordAplicacion La nueva contraseï¿½a.
+	 */
+	public void setPasswordAplicacion(String passwordAplicacion) {
+		this.passwordAplicacion = passwordAplicacion;
+	}
+
+	/**
+	 * Obtiene la vista de redacciï¿½n asociada.
+	 * @return La vista de correo base.
+	 */
+	public VistaCorreoBase getV() {
+		return v;
+	}
+
+	/**
+	 * Establece la vista de redacciï¿½n.
+	 * @param v La nueva vista.
+	 */
+	public void setV(VistaCorreoBase v) {
+		this.v = v;
+	}
+
+	/**
+	 * Obtiene el controlador de correos asociado.
+	 * @return El controlador.
+	 */
+	public ControladorCorreos getControlador() {
+		return controlador;
+	}
+
+	/**
+	 * Establece el controlador de correos.
+	 * @param controlador El nuevo controlador.
+	 */
+	public void setControlador(ControladorCorreos controlador) {
+		this.controlador = controlador;
+	}
 }

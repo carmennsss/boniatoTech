@@ -5,21 +5,28 @@ import java.awt.event.ActionListener;
 import vista.VistaCorreoBase;
 
 /**
- * Oyente del botón "Enviar" en la vista de correos. Abre la ventana de
- * redacción de un nuevo correo.
+ * Oyente del botï¿½n "Enviar" en la vista de correos. Abre la ventana de
+ * redacciï¿½n de un nuevo correo.
  */
 public class OyenteBotonEnviar implements ActionListener {
 
+	/** Vista de redacciï¿½n de correo. */
 	private VistaCorreoBase v;
+
+	/** Correo electrï¿½nico del remitente. */
 	private String correo;
+
+	/** Contraseï¿½a de aplicaciï¿½n. */
 	private String passwordAplicacion;
+
+	/** Controlador de correos. */
 	private ControladorCorreos controlador;
 
 	/**
 	 * Constructor del oyente.
 	 *
-	 * @param correo              Dirección de correo del remitente.
-	 * @param passwordAplicacion Contraseña de aplicación.
+	 * @param correo             Direcciï¿½n de correo del remitente.
+	 * @param passwordAplicacion Contraseï¿½a de aplicaciï¿½n.
 	 * @param controladorCorreos Controlador de correos.
 	 */
 	public OyenteBotonEnviar(String correo, String passwordAplicacion, ControladorCorreos controladorCorreos) {
@@ -29,9 +36,9 @@ public class OyenteBotonEnviar implements ActionListener {
 	}
 
 	/**
-	 * Abre la ventana de redacción de nuevo correo.
+	 * Abre la ventana de redacciï¿½n de nuevo correo.
 	 *
-	 * @param e Evento de acción.
+	 * @param e Evento de acciï¿½n.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -41,4 +48,69 @@ public class OyenteBotonEnviar implements ActionListener {
 		v.setVisible(true);
 	}
 
+	// --- GETTERS Y SETTERS ---
+
+	/**
+	 * Obtiene la vista de redacciï¿½n de correo.
+	 * @return La vista de correo base.
+	 */
+	public VistaCorreoBase getV() {
+		return v;
+	}
+
+	/**
+	 * Establece la vista de redacciï¿½n de correo.
+	 * @param v La nueva vista.
+	 */
+	public void setV(VistaCorreoBase v) {
+		this.v = v;
+	}
+
+	/**
+	 * Obtiene el correo del remitente.
+	 * @return El correo electrï¿½nico.
+	 */
+	public String getCorreo() {
+		return correo;
+	}
+
+	/**
+	 * Establece el correo del remitente.
+	 * @param correo El nuevo correo electrï¿½nico.
+	 */
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+
+	/**
+	 * Obtiene la contraseï¿½a de aplicaciï¿½n.
+	 * @return La contraseï¿½a de aplicaciï¿½n.
+	 */
+	public String getPasswordAplicacion() {
+		return passwordAplicacion;
+	}
+
+	/**
+	 * Establece la contraseï¿½a de aplicaciï¿½n.
+	 * @param passwordAplicacion La nueva contraseï¿½a.
+	 */
+	public void setPasswordAplicacion(String passwordAplicacion) {
+		this.passwordAplicacion = passwordAplicacion;
+	}
+
+	/**
+	 * Obtiene el controlador de correos.
+	 * @return El controlador.
+	 */
+	public ControladorCorreos getControlador() {
+		return controlador;
+	}
+
+	/**
+	 * Establece el controlador de correos.
+	 * @param controlador El nuevo controlador.
+	 */
+	public void setControlador(ControladorCorreos controlador) {
+		this.controlador = controlador;
+	}
 }

@@ -1,157 +1,174 @@
 package modelo;
 
 /**
- * Representa un registro de log (actividad) en el sistema.
+ * Representa un registro de actividad (log) dentro del sistema.
+ * Esta clase se utiliza para auditar las acciones realizadas por los usuarios,
+ * almacenando detalles como la fecha, el autor y el resultado de la operación.
  */
 public class Log {
 
-	private int id;
-	private String action;
-	private String date;
-	private String correo;
-	private String result;
+    /** Identificador único del registro en la base de datos. */
+    private int id;
 
-	/**
-	 * Constructor para crear un nuevo Log (sin ID, normalmente para inserciÃ³n).
-	 *
-	 * @param action AcciÃ³n realizada.
-	 * @param correo Correo del usuario que realizÃ³ la acciÃ³n.
-	 * @param exito  Indica si la acciÃ³n fue exitosa (true) o fallida (false).
-	 */
-	public Log(String action, String correo, boolean exito) {
-		String resultado = exito ? "success" : "error";
+    /** Descripción de la acción realizada (ej: LOGIN, UPLOAD, DELETE). */
+    private String action;
 
-		this.action = action;
-		this.correo = correo;
-		this.setResult(resultado);
-	}
+    /** Marca de tiempo en la que se registró la actividad. */
+    private String date;
 
-	/**
-	 * Constructor para instanciar un Log recuperado de la base de datos.
-	 *
-	 * @param id     Identificador Ãºnico del log.
-	 * @param action AcciÃ³n realizada.
-	 * @param correo Correo del usuario que realizÃ³ la acciÃ³n.
-	 * @param date   Fecha en la que se realizÃ³ la acciÃ³n.
-	 * @param result Resultado de la acciÃ³n (e.g., "success", "error").
-	 */
-	public Log(int id, String action, String correo, String date, String result) {
-		this.id = id;
-		this.action = action;
-		this.correo = correo;
-		this.date = date;
-		this.result = result;
-	}
+    /** Correo electrónico del usuario responsable de la acción. */
+    private String correo;
 
-	/**
-	 * Obtiene el ID del log.
-	 *
-	 * @return El ID del log.
-	 */
-	public int getId() {
-		return id;
-	}
+    /** Resultado final de la acción (normalmente "success" o "error"). */
+    private String result;
 
-	/**
-	 * Establece el ID del log.
-	 *
-	 * @param id El nuevo ID del log.
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+    /**
+     * Constructor para crear un nuevo objeto Log destinado a ser insertado.
+     * La fecha no se incluye aquí ya que suele ser generada por la base de datos.
+     *
+     * @param action La operación o evento que se desea registrar.
+     * @param correo Dirección de correo del usuario actuante.
+     * @param exito  Estado de la operación: true para éxito, false para error.
+     */
+    public Log(String action, String correo, boolean exito) {
+        String resultado = exito ? "success" : "error";
+        this.action = action;
+        this.correo = correo;
+        this.setResult(resultado);
+    }
 
-	/**
-	 * Obtiene la acciÃ³n registrada.
-	 *
-	 * @return La acciÃ³n.
-	 */
-	public String getAction() {
-		return action;
-	}
+    /**
+     * Constructor completo para instanciar un Log recuperado desde la base de datos.
+     *
+     * @param id     Identificador único incremental del log.
+     * @param action Descripción de la actividad registrada.
+     * @param correo Email del usuario que ejecutó la acción.
+     * @param date   Fecha y hora del registro en formato cadena.
+     * @param result Estado de finalización de la actividad.
+     */
+    public Log(int id, String action, String correo, String date, String result) {
+        this.id = id;
+        this.action = action;
+        this.correo = correo;
+        this.date = date;
+        this.result = result;
+    }
 
-	/**
-	 * Establece la acciÃ³n del log.
-	 *
-	 * @param action La nueva acciÃ³n.
-	 */
-	public void setAction(String action) {
-		this.action = action;
-	}
+    /**
+     * Obtiene la descripción de la acción del log.
+     *
+     * @return Cadena de texto con la acción.
+     */
+    public String getAction() {
+        return action;
+    }
 
-	/**
-	 * Obtiene la fecha del log.
-	 *
-	 * @return La fecha.
-	 */
-	public String getDate() {
-		return date;
-	}
+    /**
+     * Obtiene el correo electrónico del usuario asociado.
+     *
+     * @return El correo del usuario.
+     */
+    public String getCorreo() {
+        return correo;
+    }
 
-	/**
-	 * Establece la fecha del log.
-	 *
-	 * @param date La nueva fecha.
-	 */
-	public void setDate(String date) {
-		this.date = date;
-	}
+    /**
+     * Obtiene la fecha de creación del registro.
+     *
+     * @return La fecha como cadena de texto.
+     */
+    public String getDate() {
+        return date;
+    }
 
-	/**
-	 * Obtiene el resultado de la acciÃ³n.
-	 *
-	 * @return El resultado.
-	 */
-	public String getResult() {
-		return result;
-	}
+    /**
+     * Obtiene el identificador numérico del log.
+     *
+     * @return El ID del registro.
+     */
+    public int getId() {
+        return id;
+    }
 
-	/**
-	 * Establece el resultado de la acciÃ³n.
-	 *
-	 * @param result El nuevo resultado.
-	 */
-	public void setResult(String result) {
-		this.result = result;
-	}
+    /**
+     * Obtiene el resultado (estado) de la acción registrada.
+     *
+     * @return El resultado ("success" o "error").
+     */
+    public String getResult() {
+        return result;
+    }
 
-	/**
-	 * Obtiene el correo asociado al log.
-	 *
-	 * @return El correo.
-	 */
-	public String getCorreo() {
-		return correo;
-	}
+    /**
+     * Establece o modifica la acción del registro.
+     *
+     * @param action Nueva descripción de la acción.
+     */
+    public void setAction(String action) {
+        this.action = action;
+    }
 
-	/**
-	 * Establece el correo asociado al log.
-	 *
-	 * @param correo El nuevo correo.
-	 */
-	public void setCorreo(String correo) {
-		this.correo = correo;
-	}
+    /**
+     * Establece el correo electrónico del usuario.
+     *
+     * @param correo Nuevo correo electrónico a asociar.
+     */
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
 
-	@Override
-	public String toString() {
-		return csv(date) + "," +
-				csv(correo) + "," +
-				csv(action) + "," +
-				csv(result);
-	}
+    /**
+     * Establece la fecha del registro de actividad.
+     *
+     * @param date Nueva fecha en formato cadena.
+     */
+    public void setDate(String date) {
+        this.date = date;
+    }
 
-	/**
-	 * Formatea un valor para formato CSV, escapando comillas dobles.
-	 *
-	 * @param value El valor a formatear.
-	 * @return El valor formateado como string CSV.
-	 */
-	private String csv(Object value) {
-		if (value == null)
-			return "";
-		String text = value.toString().replace("\"", "\"\"");
-		return "\"" + text + "\"";
-	}
+    /**
+     * Establece el identificador único del log.
+     *
+     * @param id Nuevo ID para el registro.
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Establece el resultado final de la acción registrada.
+     *
+     * @param result El estado de la acción (ej: "success").
+     */
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    /**
+     * Devuelve una representación del log formateada para archivos CSV.
+     * Los campos se separan por comas y los valores se escapan automáticamente.
+     * * @return Línea de texto compatible con formato CSV.
+     */
+    @Override
+    public String toString() {
+        return csv(date) + "," +
+                csv(correo) + "," +
+                csv(action) + "," +
+                csv(result);
+    }
+
+    /**
+     * Formatea un valor para su correcta inclusión en un archivo CSV.
+     * Escapa las comillas dobles y encierra el valor entre comillas.
+     *
+     * @param value Objeto a formatear.
+     * @return Cadena de texto escapada para CSV.
+     */
+    private String csv(Object value) {
+        if (value == null)
+            return "";
+        String text = value.toString().replace("\"", "\"\"");
+        return "\"" + text + "\"";
+    }
 
 }

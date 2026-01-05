@@ -11,8 +11,13 @@ import vista.VistaMenuPrincipal;
  */
 public class OyenteBotonVolver implements ActionListener {
 
+    /** Vista general de correos. */
     private VistaGeneralCorreo vistaGeneral;
+
+    /** Vista del menú principal. */
     private VistaMenuPrincipal vistaMenu;
+
+    /** Controlador de correos. */
     private ControladorCorreos controlador;
 
     /**
@@ -39,5 +44,55 @@ public class OyenteBotonVolver implements ActionListener {
         vistaGeneral.setVisible(false);
         controlador.detenerHiloRecepcion();
         vistaMenu.hacerVisible();
+    }
+
+    // --- GETTERS Y SETTERS ---
+
+    /**
+     * Obtiene la vista general de correos asociada.
+     * @return La vista general.
+     */
+    public VistaGeneralCorreo getVistaGeneral() {
+        return vistaGeneral;
+    }
+
+    /**
+     * Establece la vista general de correos.
+     * @param vistaGeneral La nueva vista general.
+     */
+    public void setVistaGeneral(VistaGeneralCorreo vistaGeneral) {
+        this.vistaGeneral = vistaGeneral;
+    }
+
+    /**
+     * Obtiene la vista del menú principal asociada.
+     * @return La vista del menú principal.
+     */
+    public VistaMenuPrincipal getVistaMenu() {
+        return vistaMenu;
+    }
+
+    /**
+     * Establece la vista del menú principal.
+     * @param vistaMenu La nueva vista del menú.
+     */
+    public void setVistaMenu(VistaMenuPrincipal vistaMenu) {
+        this.vistaMenu = vistaMenu;
+    }
+
+    /**
+     * Obtiene el controlador de correos asociado.
+     * @return El controlador.
+     */
+    public ControladorCorreos getControlador() {
+        return controlador;
+    }
+
+    /**
+     * Establece el controlador de correos.
+     * @param controlador El nuevo controlador.
+     */
+    public void setControlador(ControladorCorreos controlador) {
+        this.controlador = controlador;
     }
 }

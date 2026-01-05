@@ -22,33 +22,71 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 /**
- * Vista del panel de administraciÃ³n.
- * Proporciona acceso a las funciones administrativas como gestiÃ³n de usuarios,
- * roles, logs y whitelist.
+ * Vista del panel de administración. Proporciona una interfaz centralizada para
+ * acceder a las funciones administrativas como gestión de usuarios, roles,
+ * visualización de logs y mantenimiento de la whitelist.
  */
 public class VistaAdmin extends JFrame {
 
-	VistaMenuPrincipal menu;
-	JButton botonCrearUsuario;
-	JButton botonCrearRoles;
-	JButton botonAsignarRoles;
-	JButton botonWhitelist;
-	JButton botonLogs;
-	JButton botonVolver;
+	/** Vista del menú principal asociada para la navegación. */
+	private VistaMenuPrincipal menu;
+
+	/** Botón para acceder a la creación y gestión de nuevos usuarios. */
+	private JButton botonCrearUsuario;
+
+	/** Botón para definir y crear nuevos roles en el sistema. */
+	private JButton botonCrearRoles;
+
+	/** Botón para asignar roles existentes a los usuarios registrados. */
+	private JButton botonAsignarRoles;
+
+	/** Botón para gestionar la lista blanca (whitelist) de correos permitidos. */
+	private JButton botonWhitelist;
+
+	/** Botón para acceder a la visualización y exportación de logs del sistema. */
+	private JButton botonLogs;
+
+	/** Botón para cerrar la vista actual y regresar al menú principal. */
+	private JButton botonVolver;
+
+	/** Imagen de fondo personalizada para la ventana. */
 	private Image imagenFondo;
+
+	/** Etiqueta que muestra el título principal de la sección administrativa. */
 	private JLabel titulo;
 
+	/**
+	 * Constructor que inicializa la ventana de administración. * @param menu
+	 * Referencia a la vista del menú principal.
+	 */
 	public VistaAdmin(VistaMenuPrincipal menu) {
 		this.menu = menu;
 		propiedades();
 	}
 
+	/**
+	 * Configura las propiedades generales, el fondo y el contenido de la ventana.
+	 */
 	private void propiedades() {
 		configurarVentana();
 		configurarFondo();
 		configurarContenido();
 	}
 
+	/**
+	 * Establece los parámetros básicos del JFrame (tamaño, posición y cierre).
+	 */
+	private void configurarVentana() {
+		this.setTitle(modelo.MoTextos.admin_title);
+		this.setSize(900, 600);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	/**
+	 * Configura el panel de fondo cargando una imagen escalada o un color sólido de
+	 * respaldo.
+	 */
 	private void configurarFondo() {
 		URL url = getClass().getResource("/fondo_zoo_2.png");
 		if (url != null) {
@@ -60,9 +98,9 @@ public class VistaAdmin extends JFrame {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				if (imagenFondo != null) {
-					int width = getWidth();
-					int height = getHeight();
-					g.drawImage(imagenFondo, 0, 0, width, height, this);
+					Graphics2D g2d = (Graphics2D) g;
+					g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+					g2d.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
 				} else {
 					g.setColor(new Color(40, 44, 52));
 					g.fillRect(0, 0, getWidth(), getHeight());
@@ -73,6 +111,10 @@ public class VistaAdmin extends JFrame {
 		setContentPane(panelFondo);
 	}
 
+	/**
+	 * Diseña y organiza los componentes visuales (títulos y botones) dentro del
+	 * panel central.
+	 */
 	private void configurarContenido() {
 		JPanel panelCentral = new JPanel(new GridBagLayout()) {
 			@Override
@@ -135,31 +177,12 @@ public class VistaAdmin extends JFrame {
 		getContentPane().add(panelCentral);
 	}
 
-	private void configurarVentana() {
-		this.setTitle(modelo.MoTextos.admin_title);
-		this.setSize(900, 600);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
-
 	/**
-	 * Obtiene el botÃ³n para acceder a la gestiÃ³n de logs.
+	 * Aplica un estilo visual estandarizado a los botones de la interfaz. * @param
+	 * btn El botón al que se le aplicará el estilo.
 	 * 
-	 * @return BotÃ³n de logs.
+	 * @param color El color de fondo para el botón.
 	 */
-	public JButton getBotonLogs() {
-		return botonLogs;
-	}
-
-	/**
-	 * Establece el botÃ³n para acceder a la gestiÃ³n de logs.
-	 * 
-	 * @param botonLogs BotÃ³n de logs.
-	 */
-	public void setBotonLogs(JButton botonLogs) {
-		this.botonLogs = botonLogs;
-	}
-
 	private void aniadirEstiloBoton(JButton btn, Color color) {
 		btn.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		btn.setBackground(color);
@@ -171,104 +194,15 @@ public class VistaAdmin extends JFrame {
 	}
 
 	/**
-	 * Obtiene el botÃ³n para crear nuevos usuarios.
-	 * 
-	 * @return BotÃ³n de crear usuario.
-	 */
-	public JButton getBotonCrearUsuario() {
-		return botonCrearUsuario;
-	}
-
-	/**
-	 * Establece el botÃ³n para crear nuevos usuarios.
-	 * 
-	 * @param botonCrearUsuario BotÃ³n de crear usuario.
-	 */
-	public void setBotonCrearUsuario(JButton botonCrearUsuario) {
-		this.botonCrearUsuario = botonCrearUsuario;
-	}
-
-	/**
-	 * Obtiene el botÃ³n para gestionar roles.
-	 * 
-	 * @return BotÃ³n de gestionar roles.
-	 */
-	public JButton getBotonCrearRoles() {
-		return botonCrearRoles;
-	}
-
-	/**
-	 * Establece el botÃ³n para gestionar roles.
-	 * 
-	 * @param botonCrearRoles BotÃ³n de gestionar roles.
-	 */
-	public void setBotonCrearRoles(JButton botonCrearRoles) {
-		this.botonCrearRoles = botonCrearRoles;
-	}
-
-	/**
-	 * Obtiene el botÃ³n para asignar roles a usuarios.
-	 * 
-	 * @return BotÃ³n de asignar roles.
-	 */
-	public JButton getBotonAsignarRoles() {
-		return botonAsignarRoles;
-	}
-
-	/**
-	 * Establece el botÃ³n para asignar roles a usuarios.
-	 * 
-	 * @param botonAsignarRoles BotÃ³n de asignar roles.
-	 */
-	public void setBotonAsignarRoles(JButton botonAsignarRoles) {
-		this.botonAsignarRoles = botonAsignarRoles;
-	}
-
-	/**
-	 * Obtiene el botÃ³n para volver al menÃº principal.
-	 * 
-	 * @return BotÃ³n de volver.
-	 */
-	public JButton getBotonVolver() {
-		return botonVolver;
-	}
-
-	/**
-	 * Establece el botÃ³n para volver al menÃº principal.
-	 * 
-	 * @param botonVolver BotÃ³n de volver.
-	 */
-	public void setBotonVolver(JButton botonVolver) {
-		this.botonVolver = botonVolver;
-	}
-
-	/**
-	 * Obtiene el botÃ³n para acceder a la gestiÃ³n de whitelist.
-	 * 
-	 * @return BotÃ³n de whitelist.
-	 */
-	public JButton getBotonWhitelist() {
-		return botonWhitelist;
-	}
-
-	/**
-	 * Establece el botÃ³n para acceder a la gestiÃ³n de whitelist.
-	 * 
-	 * @param botonWhitelist BotÃ³n de whitelist.
-	 */
-	public void setBotonWhitelist(JButton botonWhitelist) {
-		this.botonWhitelist = botonWhitelist;
-	}
-
-	/**
-	 * Hace visible la ventana de administraciÃ³n.
+	 * Hace visible la ventana de administración en pantalla.
 	 */
 	public void hacerVisible() {
 		this.setVisible(true);
 	}
 
 	/**
-	 * Actualiza los textos de la interfaz segÃºn el idioma seleccionado.
+	 * Actualiza todos los textos de la interfaz según el idioma seleccionado en
+	 * MoTextos.
 	 */
 	public void actualizarTextos() {
 		this.setTitle(modelo.MoTextos.admin_title);
@@ -279,5 +213,115 @@ public class VistaAdmin extends JFrame {
 		botonWhitelist.setText(modelo.MoTextos.whitelist_title);
 		botonVolver.setText(modelo.MoTextos.btn_main_menu);
 		repaint();
+	}
+
+	// --- GETTERS Y SETTERS ---
+
+	/**
+	 * Obtiene el botón para acceder a la gestión de logs.
+	 * 
+	 * @return El objeto JButton de logs.
+	 */
+	public JButton getBotonLogs() {
+		return botonLogs;
+	}
+
+	/**
+	 * Establece el botón para acceder a la gestión de logs.
+	 * 
+	 * @param botonLogs El nuevo botón de logs.
+	 */
+	public void setBotonLogs(JButton botonLogs) {
+		this.botonLogs = botonLogs;
+	}
+
+	/**
+	 * Obtiene el botón para crear nuevos usuarios.
+	 * 
+	 * @return El objeto JButton de creación de usuarios.
+	 */
+	public JButton getBotonCrearUsuario() {
+		return botonCrearUsuario;
+	}
+
+	/**
+	 * Establece el botón para crear nuevos usuarios.
+	 * 
+	 * @param botonCrearUsuario El nuevo botón de gestión de usuarios.
+	 */
+	public void setBotonCrearUsuario(JButton botonCrearUsuario) {
+		this.botonCrearUsuario = botonCrearUsuario;
+	}
+
+	/**
+	 * Obtiene el botón para gestionar roles.
+	 * 
+	 * @return El objeto JButton de gestión de roles.
+	 */
+	public JButton getBotonCrearRoles() {
+		return botonCrearRoles;
+	}
+
+	/**
+	 * Establece el botón para gestionar roles.
+	 * 
+	 * @param botonCrearRoles El nuevo botón de creación de roles.
+	 */
+	public void setBotonCrearRoles(JButton botonCrearRoles) {
+		this.botonCrearRoles = botonCrearRoles;
+	}
+
+	/**
+	 * Obtiene el botón para asignar roles a usuarios.
+	 * 
+	 * @return El objeto JButton de asignación de roles.
+	 */
+	public JButton getBotonAsignarRoles() {
+		return botonAsignarRoles;
+	}
+
+	/**
+	 * Establece el botón para asignar roles a usuarios.
+	 * 
+	 * @param botonAsignarRoles El nuevo botón de asignación.
+	 */
+	public void setBotonAsignarRoles(JButton botonAsignarRoles) {
+		this.botonAsignarRoles = botonAsignarRoles;
+	}
+
+	/**
+	 * Obtiene el botón para volver al menú principal.
+	 * 
+	 * @return El objeto JButton de retorno.
+	 */
+	public JButton getBotonVolver() {
+		return botonVolver;
+	}
+
+	/**
+	 * Establece el botón para volver al menú principal.
+	 * 
+	 * @param botonVolver El nuevo botón de volver.
+	 */
+	public void setBotonVolver(JButton botonVolver) {
+		this.botonVolver = botonVolver;
+	}
+
+	/**
+	 * Obtiene el botón para acceder a la gestión de whitelist.
+	 * 
+	 * @return El objeto JButton de whitelist.
+	 */
+	public JButton getBotonWhitelist() {
+		return botonWhitelist;
+	}
+
+	/**
+	 * Establece el botón para acceder a la gestión de whitelist.
+	 * 
+	 * @param botonWhitelist El nuevo botón de whitelist.
+	 */
+	public void setBotonWhitelist(JButton botonWhitelist) {
+		this.botonWhitelist = botonWhitelist;
 	}
 }

@@ -1,28 +1,60 @@
 package vista;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Dimension;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import modelo.MoTextos;
 
 /**
- * Vista para la creaciÃ³n de nuevos roles en el sistema.
- * Muestra una tabla con los roles existentes y permtie aÃ±adir uno nuevo
- * mediante un diÃ¡logo.
+ * Vista para la creación de nuevos roles en el sistema.
+ * Esta ventana muestra una tabla con los roles disponibles y permite abrir un
+ * diálogo modal para registrar nuevas categorías de acceso.
  */
 public class ViCrearRol extends JFrame {
+    /** Lista de etiquetas de texto de la interfaz para la gestión dinámica de idiomas. */
     private ArrayList<JLabel> textos;
+
+    /** Campo de entrada para el nombre del nuevo rol en el diálogo modal. */
     private JTextField txtNombre;
+
+    /** Campo de entrada para la descripción de funciones del nuevo rol. */
     private JTextField txtDescripcion;
+
+    /** Lista de botones de control de la ventana (Añadir, Volver). */
     private ArrayList<JButton> botones;
+
+    /** Componente de tabla personalizado para visualizar los roles existentes. */
     private ViTabla panelTabla;
 
+    /**
+     * Constructor de la vista. Inicializa todos los componentes gráficos.
+     */
     public ViCrearRol() {
         propiedades();
     }
 
+    /**
+     * Orquesta la configuración de la ventana invocando los métodos de diseño.
+     */
     private void propiedades() {
         configurarVentana();
         configurarFondo();
@@ -31,6 +63,9 @@ public class ViCrearRol extends JFrame {
         configurarBotones();
     }
 
+    /**
+     * Establece los parámetros básicos del marco (título, tamaño y posición).
+     */
     private void configurarVentana() {
         this.setTitle(MoTextos.roles_title_create);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,12 +74,13 @@ public class ViCrearRol extends JFrame {
         this.setResizable(false);
     }
 
+    /**
+     * Configura el panel principal con una imagen de fondo escalada o un color sólido.
+     */
     private void configurarFondo() {
-
         JPanel panelFondo = new JPanel() {
             private java.awt.Image imagen;
             {
-
                 java.net.URL url = getClass().getResource("/fondo_zoo_1.png");
                 if (url != null) {
                     imagen = new javax.swing.ImageIcon(url).getImage();
@@ -55,9 +91,9 @@ public class ViCrearRol extends JFrame {
             protected void paintComponent(java.awt.Graphics g) {
                 super.paintComponent(g);
                 if (imagen != null) {
-                    int width = getWidth();
-                    int height = getHeight();
-                    g.drawImage(imagen, 0, 0, width, height, this);
+                    Graphics2D g2d = (Graphics2D) g;
+                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                    g2d.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
                 } else {
                     g.setColor(Estilos.FONDO_PRINCIPAL);
                     g.fillRect(0, 0, getWidth(), getHeight());
@@ -68,6 +104,9 @@ public class ViCrearRol extends JFrame {
         this.setContentPane(panelFondo);
     }
 
+    /**
+     * Configura la cabecera de la ventana con un título estilizado y redondeado.
+     */
     private void configurarTitulo() {
         this.textos = new ArrayList<>();
         JLabel titulo = new JLabel(MoTextos.roles_title_available, SwingConstants.CENTER);
@@ -98,6 +137,9 @@ public class ViCrearRol extends JFrame {
         getContentPane().add(northContainer, BorderLayout.NORTH);
     }
 
+    /**
+     * Inicializa el panel de la tabla de datos y lo posiciona en el centro.
+     */
     private void configurarTabla() {
         panelTabla = new ViTabla();
         panelTabla.setOpaque(false);
@@ -110,6 +152,9 @@ public class ViCrearRol extends JFrame {
         getContentPane().add(centerContainer, BorderLayout.CENTER);
     }
 
+    /**
+     * Define y posiciona los botones de acción en la parte inferior.
+     */
     private void configurarBotones() {
         this.botones = new ArrayList<>();
         this.botones.add(new JButton(MoTextos.roles_btn_create));
@@ -120,7 +165,6 @@ public class ViCrearRol extends JFrame {
 
         aniadirEstiloBoton(this.botones.get(0));
         aniadirEstiloBoton(this.botones.get(1));
-
         this.botones.get(1).setBackground(new java.awt.Color(200, 100, 100));
 
         panelBotones.add(this.botones.get(0));
@@ -129,6 +173,10 @@ public class ViCrearRol extends JFrame {
         getContentPane().add(panelBotones, BorderLayout.SOUTH);
     }
 
+    /**
+     * Aplica el esquema de colores y fuentes de la aplicación a un botón.
+     * @param btn El botón al que se le aplicará el estilo.
+     */
     private void aniadirEstiloBoton(JButton btn) {
         btn.setFont(Estilos.FONT_BOTON);
         btn.setBackground(Estilos.COLOR_BOTON_MENU);
@@ -140,76 +188,47 @@ public class ViCrearRol extends JFrame {
     }
 
     /**
-     * Muestra un diÃ¡logo modal para ingresar el nombre y descripciÃ³n del nuevo rol.
-     *
-     * @return 0 si se crea el rol, 1 si se cancela.
+     * Despliega un diálogo modal para la captura de datos del nuevo rol.
+     * @return 0 si el usuario pulsó "Añadir", 1 si pulsó "Cancelar".
      */
     public int mostrarAgregarRol() {
-        final JDialog dialog = new javax.swing.JDialog(
-                this,
-                MoTextos.roles_dialog_title,
-                true);
-
+        final JDialog dialog = new JDialog(this, MoTextos.roles_dialog_title, true);
         dialog.setUndecorated(true);
-        dialog.setLayout(new java.awt.BorderLayout());
+        dialog.setLayout(new BorderLayout());
 
-        javax.swing.JPanel panel = new javax.swing.JPanel();
+        JPanel panel = new JPanel();
         panel.setBackground(Estilos.BEIGE_CANVAS);
-        panel.setBorder(javax.swing.BorderFactory.createLineBorder(Estilos.DARK_SPRUCE, 2));
+        panel.setBorder(BorderFactory.createLineBorder(Estilos.DARK_SPRUCE, 2));
         panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.Y_AXIS));
         panel.setBorder(new javax.swing.border.EmptyBorder(20, 20, 20, 20));
 
-        javax.swing.JLabel lblTitulo = new javax.swing.JLabel(MoTextos.roles_dialog_title);
+        JLabel lblTitulo = new JLabel(MoTextos.roles_dialog_title);
         lblTitulo.setFont(Estilos.FONT_TITULO);
-        lblTitulo.setForeground(Estilos.COLOR_TITULO_APP);
         lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(lblTitulo);
         panel.add(javax.swing.Box.createVerticalStrut(20));
 
-        JLabel lblNombre = new JLabel(MoTextos.roles_lbl_name);
-        lblNombre.setFont(Estilos.FONT_BOTON);
-        lblNombre.setForeground(Estilos.COLOR_LABEL);
-
         txtNombre = new JTextField();
         aniadirEstiloInput(txtNombre);
-
-        panel.add(lblNombre);
+        panel.add(new JLabel(MoTextos.roles_lbl_name));
         panel.add(txtNombre);
         panel.add(javax.swing.Box.createVerticalStrut(20));
 
-        JLabel lblDescripcion = new JLabel(MoTextos.roles_lbl_desc);
-        lblDescripcion.setFont(Estilos.FONT_BOTON);
-        lblDescripcion.setForeground(Estilos.COLOR_LABEL);
-
         txtDescripcion = new JTextField();
         aniadirEstiloInput(txtDescripcion);
-
-        panel.add(lblDescripcion);
+        panel.add(new JLabel(MoTextos.roles_lbl_desc));
         panel.add(txtDescripcion);
         panel.add(javax.swing.Box.createVerticalStrut(20));
 
         final int[] result = { -1 };
-
         JButton btnNew = crearBotonDialogo(MoTextos.btn_dialog_add, Estilos.COLOR_BOTON_MENU);
         JButton btnCancel = crearBotonDialogo(MoTextos.btn_dialog_cancel, new java.awt.Color(200, 100, 100));
 
+        btnNew.addActionListener(e -> { result[0] = 0; dialog.dispose(); });
+        btnCancel.addActionListener(e -> { result[0] = 1; dialog.dispose(); });
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
-
-        btnNew.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                result[0] = 0;
-                dialog.dispose();
-            }
-        });
-
-        btnCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                result[0] = 1;
-                dialog.dispose();
-            }
-        });
-
         buttonPanel.add(btnNew);
         buttonPanel.add(btnCancel);
         panel.add(buttonPanel);
@@ -222,100 +241,96 @@ public class ViCrearRol extends JFrame {
         return result[0];
     }
 
+    /**
+     * Estiliza los campos de texto del diálogo de creación.
+     * @param input El componente de entrada a estilar.
+     */
     private void aniadirEstiloInput(javax.swing.JComponent input) {
         input.setFont(Estilos.FONT_TEXTO);
         input.setBackground(Estilos.COLOR_INPUT_BG);
-        input.setForeground(Estilos.COLOR_INPUT_TEXT);
-        input.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-                javax.swing.BorderFactory.createLineBorder(Estilos.BLUE_SLATE, 1),
-                javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        input.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Estilos.BLUE_SLATE, 1),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         input.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
     }
 
-    private javax.swing.JButton crearBotonDialogo(String texto, Color color) {
-        javax.swing.JButton btn = new javax.swing.JButton(texto);
-        btn.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+    /**
+     * Crea un botón específico para ventanas de diálogo.
+     * @param texto El texto del botón.
+     * @param color El color de fondo.
+     * @return El objeto JButton configurado.
+     */
+    private JButton crearBotonDialogo(String texto, Color color) {
+        JButton btn = new JButton(texto);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btn.setBackground(color);
         btn.setForeground(Color.WHITE);
         btn.setFocusPainted(false);
-        btn.setBorderPainted(false);
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
         btn.setMaximumSize(new Dimension(200, 40));
         return btn;
     }
 
     /**
-     * Muestra la ventana.
-     */
-    public void mostrar() {
-        setVisible(true);
-    }
-
-    /**
-     * Hace visible la ventana.
+     * Hace visible la ventana principal.
      */
     public void hacerVisible() {
         setVisible(true);
     }
 
     /**
-     * Obtiene la lista de botones.
-     * 
-     * @return Lista de botones.
+     * Actualiza dinámicamente las etiquetas y títulos según el idioma configurado.
      */
-    public ArrayList<JButton> getBotones() {
-        return botones;
+    public void actualizarTextos() {
+        this.setTitle(MoTextos.roles_title_create);
+        if (!textos.isEmpty()) textos.get(0).setText(MoTextos.roles_title_available);
+        if (botones.size() >= 2) {
+            botones.get(0).setText(MoTextos.roles_btn_create);
+            botones.get(1).setText(MoTextos.btn_back_whitelist);
+        }
+        repaint();
+    }
+
+    // --- GETTERS ---
+
+    /**
+     * Obtiene la lista de botones de acción de la ventana.
+     * @return ArrayList de JButtons.
+     */
+    public ArrayList<JButton> getBotones() { 
+        return botones; 
     }
 
     /**
-     * Obtiene el campo de texto del nombre del rol.
-     * 
-     * @return Campo de texto del nombre.
+     * Obtiene el campo de texto donde se introduce el nombre del rol.
+     * @return JTextField para el nombre.
      */
-    public JTextField getTextFieldNombre() {
-        return txtNombre;
+    public JTextField getTextFieldNombre() { 
+        return txtNombre; 
     }
 
     /**
-     * Obtiene el campo de texto de la descripciÃ³n del rol.
-     * 
-     * @return Campo de texto de la descripciÃ³n.
+     * Obtiene el campo de texto donde se introduce la descripción del rol.
+     * @return JTextField para la descripción.
      */
-    public JTextField getTextFieldDescripcion() {
-        return txtDescripcion;
+    public JTextField getTextFieldDescripcion() { 
+        return txtDescripcion; 
     }
 
     /**
-     * Obtiene un botÃ³n especÃ­fico por Ã­ndice.
-     * 
-     * @param i Ãndice del botÃ³n.
-     * @return El botÃ³n en la posiciÃ³n indicada.
+     * Obtiene un botón específico de la lista mediante su índice.
+     * @param i Índice del botón deseado.
+     * @return El objeto JButton correspondiente.
      */
     public JButton getBoton(int i) {
         return botones.get(i);
     }
 
     /**
-     * Obtiene el panel que contiene la tabla de roles.
-     * 
-     * @return Panel de la tabla.
+     * Obtiene el panel que contiene la tabla de visualización de datos.
+     * @return El componente ViTabla.
      */
-    public ViTabla getPanelTabla() {
-        return panelTabla;
-    }
-
-    /**
-     * Actualiza los textos de la interfaz segÃºn el idioma seleccionado.
-     */
-    public void actualizarTextos() {
-        this.setTitle(MoTextos.roles_title_create);
-        if (!textos.isEmpty()) {
-            textos.get(0).setText(MoTextos.roles_title_available);
-        }
-        if (botones.size() >= 2) {
-            botones.get(0).setText(MoTextos.roles_btn_create);
-            botones.get(1).setText(MoTextos.btn_back_whitelist);
-        }
-        repaint();
+    public ViTabla getPanelTabla() { 
+        return panelTabla; 
     }
 }

@@ -12,15 +12,27 @@ import vista.VistaLogs;
 
 /**
  * Controlador de la vista de Logs.
- * Gestiona la visualizaciÃ³n, filtros y exportaciÃ³n de logs del sistema.
+ * Gestiona la visualización, filtros y exportación de logs del sistema.
  */
 public class ControladorLogs {
 
+	/** Conexión a la base de datos. */
+	private Connection conn;
+
+	/** Vista de logs. */
 	private VistaLogs vistaLogs;
 
+	/** Gestor de logs para operaciones de base de datos. */
 	private GestionLogs gestionLogs;
 
+	/**
+	 * Constructor del controlador de logs.
+	 *
+	 * @param conn      Conexión a la base de datos.
+	 * @param vistaLogs Vista de logs.
+	 */
 	public ControladorLogs(Connection conn, VistaLogs vistaLogs) {
+		this.conn = conn;
 		this.vistaLogs = vistaLogs;
 		this.gestionLogs = new GestionLogs();
 		asignarOyenteBtnExport();
@@ -28,19 +40,11 @@ public class ControladorLogs {
 	}
 
 	/**
-	 * Muestra la ventana de logs y carga todos los registros por defecto.
-	 */
-	public void mostrar() {
-		cargarLogs("all");
-		vistaLogs.hacerVisible();
-	}
-
-	/**
-	 * Carga y filtra los logs en la vista segÃºn el tipo de consulta.
-	 * Actualiza el tÃ­tulo de la vista segÃºn el filtro aplicado.
+	 * Carga y filtra los logs en la vista según el tipo de consulta.
+	 * Actualiza el título de la vista según el filtro aplicado.
 	 *
 	 * @param consulta Tipo de filtro ("actions", "users", "dates", "results", o
-	 *                 "all").
+	 * "all").
 	 */
 	public void cargarLogs(String consulta) {
 		ArrayList<Log> logs = new ArrayList<>();
@@ -60,18 +64,72 @@ public class ControladorLogs {
 		logs = GestionLogs.consultLogs(consulta);
 
 		vistaLogs.cargarLogs(logs);
-
 	}
 
-	private void asignarOyenteBtnExport() {
-		vistaLogs.getBtnExport().addActionListener(new OyenteBtnExport(gestionLogs, vistaLogs));
-
-		vistaLogs.getBtnVolver().addActionListener(new OyenteBotonVolverLogs(vistaLogs));
+	/**
+	 * Muestra la ventana de logs y carga todos los registros por defecto.
+	 */
+	public void mostrar() {
+		cargarLogs("all");
+		vistaLogs.hacerVisible();
 	}
 
+	/**
+	 * Asigna los oyentes a los botones de consulta de logs.
+	 */
 	private void asignarOyenteConsultaLogs() {
 		for (JButton boton : vistaLogs.getBotonesConsultas()) {
 			boton.addActionListener(new OyenteConsultaLogs(vistaLogs, this));
 		}
+	}
+
+	/**
+	 * Asigna los oyentes a los botones de exportación y volver.
+	 */
+	private void asignarOyenteBtnExport() {
+		vistaLogs.getBtnExport().addActionListener(new OyenteBtnExport(gestionLogs, vistaLogs));
+		vistaLogs.getBtnVolver().addActionListener(new OyenteBotonVolverLogs(vistaLogs));
+	}
+
+	// --- GETTERS Y SETTERS ---
+
+	/**
+	 * Obtiene la conexión a la base de datos.
+	 * @return La conexión actual.
+	 */
+	public Connection getConn() {
+		return conn;
+	}
+
+	/**
+	 * Establece la conexión a la base de datos.
+	 * @param conn La nueva conexión.
+	 */
+	public void setConn(Connection conn) {
+		this.conn = conn;
+	}
+
+	/**
+	 * Obtiene la vista de logs.
+	 * @return El objeto VistaLogs.
+	 */
+	public VistaLogs getVistaLogs() {
+		return vistaLogs;
+	}
+
+	/**
+	 * Establece la vista de logs.
+	 * @param vistaLogs La nueva vista.
+	 */
+	public void setVistaLogs(VistaLogs vistaLogs) {
+		this.vistaLogs = vistaLogs;
+	}
+
+	/**
+	 * Obtiene el gestor de logs.
+	 * @return El objeto GestionLogs.
+	 */
+	public GestionLogs getGestionLogs() {
+		return gestionLogs;
 	}
 }

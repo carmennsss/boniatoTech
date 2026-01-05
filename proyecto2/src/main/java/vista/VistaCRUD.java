@@ -1,8 +1,13 @@
 package vista;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
 import java.awt.BorderLayout;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -12,25 +17,41 @@ import javax.swing.JPanel;
 import modelo.MoTextos;
 
 /**
- * Ventana principal de gestiÃ³n CRUD (Create, Read, Update, Delete).
- * Provee un menÃº superior para navegar entre entidades y una tabla central.
+ * Ventana principal de gestión CRUD (Create, Read, Update, Delete).
+ * Provee un menú superior para navegar entre entidades y una tabla central.
  */
 public class VistaCRUD extends JFrame {
+    /** Panel de botones del menú superior de navegación. */
     private ViBotones panelMenu;
+
+    /** Panel que contiene la tabla de datos. */
     private ViTabla panelTabla;
+
+    /** Panel de botones de acciones inferiores. */
     private ViBotones panelAcciones;
+
+    /** Panel de fondo de la ventana. */
     private JPanel panelFondo;
+
+    /** Etiqueta de instrucciones en la parte inferior. */
+    private javax.swing.JLabel lblInstrucciones;
 
     public VistaCRUD() {
         propiedades();
     }
 
+    /**
+     * Configura las propiedades generales de la ventana.
+     */
     private void propiedades() {
         configurarVentana();
         configurarFondo();
         configurarComponentes();
     }
 
+    /**
+     * Configura el tamaño, operación de cierre y ubicación de la ventana.
+     */
     private void configurarVentana() {
         this.setTitle(MoTextos.title_crud_animals);
         setSize(900, 600);
@@ -38,6 +59,9 @@ public class VistaCRUD extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Configura el panel de fondo con su imagen respectiva.
+     */
     private void configurarFondo() {
         panelFondo = new JPanel() {
             private Image imagen;
@@ -67,7 +91,10 @@ public class VistaCRUD extends JFrame {
                         int x = (panelW - newW) / 2;
                         int y = (panelH - newH) / 2;
 
-                        g.drawImage(imagen, x, y, newW, newH, this);
+                        Graphics2D g2d = (Graphics2D) g;
+                        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                        g2d.drawImage(imagen, x, y, newW, newH, this);
                     }
                 }
             }
@@ -76,6 +103,9 @@ public class VistaCRUD extends JFrame {
         setContentPane(panelFondo);
     }
 
+    /**
+     * Inicializa y organiza los componentes visuales en la ventana.
+     */
     private void configurarComponentes() {
         ArrayList<String> textosMenu = new ArrayList<>(Arrays.asList(
                 MoTextos.menu_species, MoTextos.menu_enclosures, MoTextos.menu_caretakers,
@@ -83,7 +113,6 @@ public class VistaCRUD extends JFrame {
                 MoTextos.menu_elements));
         panelMenu = new ViBotones(textosMenu);
 
-        // Assign logic names to buttons
         ArrayList<String> logicNames = new ArrayList<>(Arrays.asList(
                 "especies", "recintos", "cuidadores", "animales", "traslados", "especies_recintos", "elementos"));
         for (int i = 0; i < panelMenu.getBotones().size(); i++) {
@@ -113,12 +142,43 @@ public class VistaCRUD extends JFrame {
         panelFondo.add(panelSur, BorderLayout.SOUTH);
     }
 
-    private javax.swing.JLabel lblInstrucciones;
+    /**
+     * Hace visible la ventana de gestión CRUD.
+     */
+    public void hacerVisible() {
+        setVisible(true);
+    }
 
     /**
-     * Obtiene el panel de botones del menÃº superior.
+     * Actualiza los textos de la interfaz según el idioma seleccionado.
+     */
+    public void actualizarTextos() {
+        lblInstrucciones.setText(MoTextos.lbl_crud_instructions);
+        if (panelAcciones.getBotones().size() > 0)
+            panelAcciones.getBotones().get(0).setText(MoTextos.btn_new);
+        if (panelAcciones.getBotones().size() > 1)
+            panelAcciones.getBotones().get(1).setText(MoTextos.btn_main_menu);
+
+        ArrayList<String> nuevosTextosMenu = new ArrayList<>(Arrays.asList(
+                MoTextos.menu_species, MoTextos.menu_enclosures, MoTextos.menu_caretakers,
+                MoTextos.menu_animals, MoTextos.menu_transfers, MoTextos.menu_species_enclosures,
+                MoTextos.menu_elements));
+
+        for (int i = 0; i < panelMenu.getBotones().size(); i++) {
+            if (i < nuevosTextosMenu.size()) {
+                panelMenu.getBotones().get(i).setText(nuevosTextosMenu.get(i));
+            }
+        }
+
+        repaint();
+    }
+
+    // --- GETTERS Y SETTERS ---
+
+    /**
+     * Obtiene el panel de botones del menú superior.
      * 
-     * @return Panel de botones del menÃº.
+     * @return Panel de botones del menú.
      */
     public ViBotones getPanelMenu() {
         return panelMenu;
@@ -142,35 +202,4 @@ public class VistaCRUD extends JFrame {
         return panelAcciones;
     }
 
-    /**
-     * Hace visible la ventana de gestiÃ³n CRUD.
-     */
-    public void hacerVisible() {
-        setVisible(true);
-    }
-
-    /**
-     * Actualiza los textos de la interfaz segÃºn el idioma seleccionado.
-     */
-    public void actualizarTextos() {
-        lblInstrucciones.setText(MoTextos.lbl_crud_instructions);
-        if (panelAcciones.getBotones().size() > 0)
-            panelAcciones.getBotones().get(0).setText(MoTextos.btn_new);
-        if (panelAcciones.getBotones().size() > 1)
-            panelAcciones.getBotones().get(1).setText(MoTextos.btn_main_menu);
-
-        // Update menu buttons
-        ArrayList<String> nuevosTextosMenu = new ArrayList<>(Arrays.asList(
-                MoTextos.menu_species, MoTextos.menu_enclosures, MoTextos.menu_caretakers,
-                MoTextos.menu_animals, MoTextos.menu_transfers, MoTextos.menu_species_enclosures,
-                MoTextos.menu_elements));
-
-        for (int i = 0; i < panelMenu.getBotones().size(); i++) {
-            if (i < nuevosTextosMenu.size()) {
-                panelMenu.getBotones().get(i).setText(nuevosTextosMenu.get(i));
-            }
-        }
-
-        repaint();
-    }
 }

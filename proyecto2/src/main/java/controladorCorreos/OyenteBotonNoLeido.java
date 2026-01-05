@@ -6,18 +6,21 @@ import java.awt.event.ActionListener;
 import modelo.Correo;
 
 /**
- * Oyente del botón "Marcar como no leído" en la vista de correos.
+ * Oyente del botï¿½n "Marcar como no leï¿½do" en la vista de correos.
  * Cambia el estado de lectura del correo seleccionado.
  */
 public class OyenteBotonNoLeido implements ActionListener {
 
+	/** Correo a marcar como no leï¿½do. */
 	private Correo correo;
+
+	/** Controlador de correos. */
 	private ControladorCorreos controladorCorreos;
 
 	/**
 	 * Constructor del oyente.
 	 *
-	 * @param correo              Correo a marcar como no leído.
+	 * @param correo             Correo a marcar como no leï¿½do.
 	 * @param controladorCorreos Controlador de correos.
 	 */
 	public OyenteBotonNoLeido(Correo correo, ControladorCorreos controladorCorreos) {
@@ -26,9 +29,9 @@ public class OyenteBotonNoLeido implements ActionListener {
 	}
 
 	/**
-	 * Marca el correo seleccionado como no leído.
+	 * Marca el correo seleccionado como no leï¿½do.
 	 *
-	 * @param e Evento de acción.
+	 * @param e Evento de acciï¿½n.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -37,7 +40,39 @@ public class OyenteBotonNoLeido implements ActionListener {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-
 	}
 
+	// --- GETTERS Y SETTERS ---
+
+	/**
+	 * Obtiene el correo asociado a este oyente.
+	 * @return El objeto Correo.
+	 */
+	public Correo getCorreo() {
+		return correo;
+	}
+
+	/**
+	 * Establece el correo a modificar.
+	 * @param correo El nuevo objeto Correo.
+	 */
+	public void setCorreo(Correo correo) {
+		this.correo = correo;
+	}
+
+	/**
+	 * Obtiene el controlador de correos asociado.
+	 * @return El controlador de correos.
+	 */
+	public ControladorCorreos getControladorCorreos() {
+		return controladorCorreos;
+	}
+
+	/**
+	 * Establece el controlador de correos asociado.
+	 * @param controladorCorreos El nuevo controlador.
+	 */
+	public void setControladorCorreos(ControladorCorreos controladorCorreos) {
+		this.controladorCorreos = controladorCorreos;
+	}
 }

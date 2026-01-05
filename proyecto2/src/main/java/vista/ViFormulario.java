@@ -13,16 +13,30 @@ import modelo.Animal;
 import modelo.MoTextos;
 
 /**
- * Ventana de formulario dinámica utilizada para crear o editar entidades.
- * Genera campos de texto o comboboxes según la configuración proporcionada.
+ * Ventana de formulario din�mica utilizada para crear o editar entidades.
+ * Genera campos de texto o comboboxes seg�n la configuraci�n proporcionada,
+ * adapt�ndose a las distintas tablas del sistema.
  */
 public class ViFormulario extends JFrame {
+    /** Lista de etiquetas de los campos del formulario. */
     private ArrayList<JLabel> etiquetas;
+
+    /** Lista de componentes de entrada (campos de texto o comboboxes). */
     private ArrayList<JComponent> campos;
+
+    /** Lista de botones del formulario. */
     private ArrayList<JButton> botones;
+
+    /** Panel central que contiene los campos del formulario. */
     private JPanel panelCentral;
+
+    /** Imagen de fondo de la ventana. */
     private Image imagenFondo;
 
+    /**
+     * Constructor que inicializa las listas y la configuraci�n b�sica de la
+     * ventana.
+     */
     public ViFormulario() {
         super(MoTextos.form_title);
         etiquetas = new ArrayList<>();
@@ -37,6 +51,10 @@ public class ViFormulario extends JFrame {
         propiedades();
     }
 
+    /**
+     * Establece las propiedades visuales y de comportamiento b�sicas de la v
+     * ntana.
+     */
     private void propiedades() {
         setSize(450, 600);
         setLocationRelativeTo(null);
@@ -44,7 +62,7 @@ public class ViFormulario extends JFrame {
     }
 
     /**
-     * Construye y muestra los campos del formulario basándose en una lista de
+     * Construye y muestra los campos del formulario bas�ndose en una lista de
      * nombres de etiquetas.
      *
      * @param nombresCampos Lista de nombres para las etiquetas de los campos.
@@ -58,12 +76,12 @@ public class ViFormulario extends JFrame {
         panelCentral = new JPanel(new GridBagLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
-
                 g.setColor(getBackground());
                 g.fillRect(0, 0, getWidth(), getHeight());
 
                 if (imagenFondo != null) {
                     Graphics2D g2 = (Graphics2D) g.create();
+                    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
                     g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f));
                     g2.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
                     g2.dispose();
@@ -133,6 +151,12 @@ public class ViFormulario extends JFrame {
         repaint();
     }
 
+    /**
+     * Aplica el estilo visual estandarizado a los botones del formulario.
+     *
+     * @param btn     El bot�n a estilar.
+     * @param bgColor Color de fondo para el bot�n.
+     */
     private void estilarBoton(JButton btn, Color bgColor) {
         btn.setFont(Estilos.FONT_BOTON);
         btn.setBackground(bgColor);
@@ -287,106 +311,6 @@ public class ViFormulario extends JFrame {
     }
 
     /**
-     * Rellena los campos del formulario con valores existentes (para edición).
-     * Maneja tanto JTextFields como JComboBoxes, seleccionando el item correcto por
-     * ID.
-     *
-     * @param valores Array de strings con los valores a pre-cargar.
-     */
-    public void rellenarDatos(String[] valores) {
-        for (int i = 0; i < valores.length && i < campos.size(); i++) {
-            JComponent campo = campos.get(i);
-            String valor = valores[i];
-
-            if (campo instanceof JTextField) {
-                ((JTextField) campo).setText(valor != null ? valor : "");
-            } else if (campo instanceof JComboBox) {
-                JComboBox combo = (JComboBox) campo;
-                try {
-                    int id = Integer.parseInt(valor);
-                    for (int j = 0; j < combo.getItemCount(); j++) {
-                        Object item = combo.getItemAt(j);
-
-                        boolean match = false;
-                        if (item instanceof Especie && ((Especie) item).getEspecie_id() == id)
-                            match = true;
-                        else if (item instanceof Cuidador && ((Cuidador) item).getCuidador_id() == id)
-                            match = true;
-                        else if (item instanceof Recinto && ((Recinto) item).getRecinto_id() == id)
-                            match = true;
-                        else if (item instanceof Animal && ((Animal) item).getAnimal_id() == id)
-                            match = true;
-
-                        if (match) {
-                            combo.setSelectedIndex(j);
-                            break;
-                        }
-                    }
-                } catch (NumberFormatException e) {
-                    combo.setSelectedItem(valor);
-                }
-            }
-        }
-    }
-
-    /**
-     * Obtiene los valores introducidos por el usuario en todos los campos.
-     * Para JComboBox, obtiene el ID de la entidad seleccionada.
-     *
-     * @return Array de strings con los valores de los campos.
-     */
-    public String[] obtenerValores() {
-        String[] valores = new String[campos.size()];
-        for (int i = 0; i < campos.size(); i++) {
-            JComponent campo = campos.get(i);
-            if (campo instanceof JTextField) {
-                valores[i] = ((JTextField) campo).getText();
-            } else if (campo instanceof JComboBox) {
-                JComboBox combo = (JComboBox) campo;
-                Object selected = combo.getSelectedItem();
-
-                if (selected instanceof Especie) {
-                    valores[i] = String.valueOf(((Especie) selected).getEspecie_id());
-                } else if (selected instanceof Cuidador) {
-                    valores[i] = String.valueOf(((Cuidador) selected).getCuidador_id());
-                } else if (selected instanceof Recinto) {
-                    valores[i] = String.valueOf(((Recinto) selected).getRecinto_id());
-                } else if (selected instanceof Animal) {
-                    valores[i] = String.valueOf(((Animal) selected).getAnimal_id());
-                } else {
-                    valores[i] = selected != null ? selected.toString() : "";
-                }
-            }
-        }
-        return valores;
-    }
-
-    /**
-     * Hace visible el formulario.
-     */
-    public void hacerVisible() {
-        setVisible(true);
-    }
-
-    /**
-     * Obtiene la lista de botones del formulario.
-     * 
-     * @return Lista de botones.
-     */
-    public ArrayList<JButton> getBotones() {
-        return botones;
-    }
-
-    /**
-     * Obtiene la lista de campos del formulario.
-     * 
-     * @return Lista de componentes (campos).
-     */
-    public ArrayList<JComponent> getCampos() {
-        return campos;
-    }
-
-    /**
      * Reemplaza un campo de texto por un JComboBox de animales.
      *
      * @param nombre    Nombre del campo a reemplazar.
@@ -423,29 +347,90 @@ public class ViFormulario extends JFrame {
     }
 
     /**
-     * Obtiene el botón de guardar.
-     * 
-     * @return Botón de guardar o null si no existe.
+     * Rellena los campos del formulario con valores existentes (para edici�n).
+     * Maneja tanto JTextFields como JComboBoxes, seleccionando el item correcto por
+     * ID.
+     *
+     * @param valores Array de strings con los valores a pre-cargar.
      */
-    public JButton getBtnGuardar() {
-        if (botones.size() > 0)
-            return botones.get(0);
-        return null;
+    public void rellenarDatos(String[] valores) {
+        for (int i = 0; i < valores.length && i < campos.size(); i++) {
+            JComponent campo = campos.get(i);
+            String valor = valores[i];
+
+            if (campo instanceof JTextField) {
+                ((JTextField) campo).setText(valor != null ? valor : "");
+            } else if (campo instanceof JComboBox) {
+                JComboBox combo = (JComboBox) campo;
+                try {
+                    int id = Integer.parseInt(valor);
+                    for (int j = 0; j < combo.getItemCount(); j++) {
+                        Object item = combo.getItemAt(j);
+
+                        boolean idCoincide = false;
+                        if (item instanceof Especie) {
+                            Especie especie = (Especie) item;
+                            idCoincide = especie.getEspecie_id() == id;
+                        } else if (item instanceof Cuidador) {
+                            Cuidador cuidador = (Cuidador) item;
+                            idCoincide = cuidador.getCuidador_id() == id;
+                        } else if (item instanceof Recinto) {
+                            Recinto recinto = (Recinto) item;
+                            idCoincide = recinto.getRecinto_id() == id;
+                        } else if (item instanceof Animal) {
+                            Animal animal = (Animal) item;
+                            idCoincide = animal.getAnimal_id() == id;
+                        }
+                        if (idCoincide) {
+                            combo.setSelectedIndex(j);
+                            break;
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    combo.setSelectedItem(valor);
+                }
+            }
+        }
     }
 
     /**
-     * Obtiene el botón de cancelar.
-     * 
-     * @return Botón de cancelar o null si no existe.
+     * Obtiene los valores introducidos por el usuario en todos los campos.
+     * Para JComboBox, obtiene el ID de la entidad seleccionada.
+     *
+     * @return Array de strings con los valores de los campos.
      */
-    public JButton getBtnCancelar() {
-        if (botones.size() > 1)
-            return botones.get(1);
-        return null;
+    public String[] obtenerValores() {
+        String[] valores = new String[campos.size()];
+        for (int i = 0; i < campos.size(); i++) {
+            JComponent campo = campos.get(i);
+            if (campo instanceof JTextField) {
+                valores[i] = ((JTextField) campo).getText();
+            } else if (campo instanceof JComboBox) {
+                JComboBox combo = (JComboBox) campo;
+                Object selected = combo.getSelectedItem();
+
+                if (selected instanceof Especie) {
+                    Especie especie = (Especie) selected;
+                    valores[i] = String.valueOf(especie.getEspecie_id());
+                } else if (selected instanceof Cuidador) {
+                    Cuidador cuidador = (Cuidador) selected;
+                    valores[i] = String.valueOf(cuidador.getCuidador_id());
+                } else if (selected instanceof Recinto) {
+                    Recinto recinto = (Recinto) selected;
+                    valores[i] = String.valueOf(recinto.getRecinto_id());
+                } else if (selected instanceof Animal) {
+                    Animal animal = (Animal) selected;
+                    valores[i] = String.valueOf(animal.getAnimal_id());
+                } else {
+                    valores[i] = selected != null ? selected.toString() : "";
+                }
+            }
+        }
+        return valores;
     }
 
     /**
-     * Actualiza los textos del formulario según el idioma seleccionado.
+     * Actualiza los textos del formulario seg�n el idioma seleccionado.
      */
     public void actualizarTextos() {
         this.setTitle(MoTextos.form_title);
@@ -454,5 +439,54 @@ public class ViFormulario extends JFrame {
         if (botones.size() > 1)
             botones.get(1).setText(MoTextos.btn_cancel);
         repaint();
+    }
+
+    // --- GETTERS Y SETTERS ---
+
+    /**
+     * Hace visible el formulario.
+     */
+    public void hacerVisible() {
+        setVisible(true);
+    }
+
+    /**
+     * Obtiene la lista de botones del formulario.
+     *
+     * @return Lista de botones.
+     */
+    public ArrayList<JButton> getBotones() {
+        return botones;
+    }
+
+    /**
+     * Obtiene la lista de campos del formulario.
+     *
+     * @return Lista de componentes (campos).
+     */
+    public ArrayList<JComponent> getCampos() {
+        return campos;
+    }
+
+    /**
+     * Obtiene el bot�n de guardar.
+     *
+     * @return Bot�n de guardar o null si no existe.
+     */
+    public JButton getBtnGuardar() {
+        if (botones.size() > 0)
+            return botones.get(0);
+        return null;
+    }
+
+    /**
+     * Obtiene el bot�n de cancelar.
+     *
+     * @return Bot�n de cancelar o null si no existe.
+     */
+    public JButton getBtnCancelar() {
+        if (botones.size() > 1)
+            return botones.get(1);
+        return null;
     }
 }
