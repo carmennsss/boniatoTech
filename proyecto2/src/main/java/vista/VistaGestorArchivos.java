@@ -10,9 +10,9 @@ import controladorArchivos.OyenteArchivos;
 import modelo.MoTextos;
 
 /**
- * Vista para la gestión de archivos mediante el protocolo FTP. Permite
+ * Vista para la gestiï¿½n de archivos mediante el protocolo FTP. Permite
  * visualizar el repositorio remoto y realizar operaciones de subida, descarga,
- * borrado, creación de carpetas y renombrado.
+ * borrado, creaciï¿½n de carpetas y renombrado.
  */
 public class VistaGestorArchivos extends JFrame {
 
@@ -22,48 +22,48 @@ public class VistaGestorArchivos extends JFrame {
 	/** Componente visual de lista para mostrar archivos y carpetas. */
 	private JList<FTPFile> listaArchivos;
 
-	/** Botón para cargar archivos desde el sistema local al servidor. */
+	/** Botï¿½n para cargar archivos desde el sistema local al servidor. */
 	private JButton botonSubida;
 
-	/** Botón para bajar archivos del servidor al sistema local. */
+	/** Botï¿½n para bajar archivos del servidor al sistema local. */
 	private JButton botonDescarga;
 
-	/** Botón para eliminar archivos seleccionados del servidor. */
+	/** Botï¿½n para eliminar archivos seleccionados del servidor. */
 	private JButton botonEliminar;
 
-	/** Botón para crear un nuevo directorio en la ruta actual del servidor. */
+	/** Botï¿½n para crear un nuevo directorio en la ruta actual del servidor. */
 	private JButton botonCrearCarpeta;
 
-	/** Botón para eliminar un directorio seleccionado (debe estar vacío). */
+	/** Botï¿½n para eliminar un directorio seleccionado (debe estar vacï¿½o). */
 	private JButton botonBorrarCarpeta;
 
-	/** Botón para cambiar el nombre de un archivo o carpeta. */
+	/** Botï¿½n para cambiar el nombre de un archivo o carpeta. */
 	private JButton botonRenombrar;
 
-	/** Botón para navegar al directorio superior (padre). */
+	/** Botï¿½n para navegar al directorio superior (padre). */
 	private JButton botonVolver;
 
-	/** Botón para cerrar la vista y regresar al menú principal. */
+	/** Botï¿½n para cerrar la vista y regresar al menï¿½ principal. */
 	private JButton botonVolverMenuPrincipal;
 
-	/** Etiqueta que muestra el título principal. */
+	/** Etiqueta que muestra el tï¿½tulo principal. */
 	private JLabel title;
 
-	/** Etiqueta que muestra una breve descripción de la vista. */
+	/** Etiqueta que muestra una breve descripciï¿½n de la vista. */
 	private JLabel subtitle;
 
 	/** Etiqueta que indica la ruta actual en el servidor FTP. */
 	private JLabel pathLabel;
 
-	/** Etiqueta para la sección de acciones de la barra lateral. */
+	/** Etiqueta para la secciï¿½n de acciones de la barra lateral. */
 	private JLabel lblActions;
 
 	/** Referencia al controlador encargado de procesar los eventos. */
 	private OyenteArchivos controlador;
 
 	/**
-	 * Constructor que inicializa la ventana de gestión de archivos y configura el
-	 * diseño.
+	 * Constructor que inicializa la ventana de gestiï¿½n de archivos y configura el
+	 * diseï¿½o.
 	 */
 	public VistaGestorArchivos() {
 		this.setTitle(MoTextos.file_manager_title);
@@ -122,7 +122,7 @@ public class VistaGestorArchivos extends JFrame {
 		gbc.weighty = 1.0;
 		mainPanel.add(contentPanel, gbc);
 
-		// Configuración de la cabecera
+		// Configuraciï¿½n de la cabecera
 		JPanel header = new JPanel();
 		header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
 		header.setBackground(colorFondo);
@@ -166,7 +166,7 @@ public class VistaGestorArchivos extends JFrame {
 		centerContainer.setBackground(colorFondo);
 		centerContainer.add(scrollPane, BorderLayout.CENTER);
 
-		// Panel de botones de acción lateral
+		// Panel de botones de acciï¿½n lateral
 		JPanel botonesPanel = new JPanel();
 		botonesPanel.setLayout(new BoxLayout(botonesPanel, BoxLayout.Y_AXIS));
 		botonesPanel.setBackground(colorFondo);
@@ -204,7 +204,7 @@ public class VistaGestorArchivos extends JFrame {
 		centerContainer.add(botonesPanel, BorderLayout.EAST);
 		contentPanel.add(centerContainer, BorderLayout.CENTER);
 
-		// Pie de página con botones de navegación
+		// Pie de pï¿½gina con botones de navegaciï¿½n
 		JPanel footer = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		footer.setBackground(colorFondo);
 
@@ -221,7 +221,7 @@ public class VistaGestorArchivos extends JFrame {
 	}
 
 	/**
-	 * Aplica estilos visuales a un botón de la interfaz.
+	 * Aplica estilos visuales a un botï¿½n de la interfaz.
 	 */
 	private void estilarBoton(JButton btn, Color bg, Color fg) {
 		btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
@@ -268,7 +268,7 @@ public class VistaGestorArchivos extends JFrame {
 	}
 
 	/**
-	 * Actualiza los textos de la interfaz según el idioma seleccionado.
+	 * Actualiza los textos de la interfaz segï¿½n el idioma seleccionado.
 	 */
 	public void actualizarTextos() {
 		setTitle(MoTextos.file_manager_title);
@@ -291,7 +291,7 @@ public class VistaGestorArchivos extends JFrame {
 	}
 
 	/**
-	 * Actualiza la etiqueta visual que muestra la ubicación actual en el servidor.
+	 * Actualiza la etiqueta visual que muestra la ubicaciï¿½n actual en el servidor.
 	 * 
 	 * @param ruta La cadena de texto con la ruta del directorio.
 	 */
@@ -299,7 +299,7 @@ public class VistaGestorArchivos extends JFrame {
 		pathLabel.setText(MoTextos.lbl_current_path + " " + ruta);
 	}
 
-	// --- GETTERS Y SETTERS CON JAVADOC ---
+	// --- GETTERS Y SETTERS ---
 
 	/**
 	 * Obtiene el modelo de la lista de archivos.
@@ -320,7 +320,7 @@ public class VistaGestorArchivos extends JFrame {
 	}
 
 	/**
-	 * Obtiene el botón de subida de archivos.
+	 * Obtiene el botï¿½n de subida de archivos.
 	 * 
 	 * @return El objeto JButton correspondiente.
 	 */
@@ -329,7 +329,7 @@ public class VistaGestorArchivos extends JFrame {
 	}
 
 	/**
-	 * Obtiene el botón de descarga de archivos.
+	 * Obtiene el botï¿½n de descarga de archivos.
 	 * 
 	 * @return El objeto JButton correspondiente.
 	 */
@@ -338,7 +338,7 @@ public class VistaGestorArchivos extends JFrame {
 	}
 
 	/**
-	 * Obtiene el botón de eliminación de archivos.
+	 * Obtiene el botï¿½n de eliminaciï¿½n de archivos.
 	 * 
 	 * @return El objeto JButton correspondiente.
 	 */
@@ -347,7 +347,7 @@ public class VistaGestorArchivos extends JFrame {
 	}
 
 	/**
-	 * Obtiene el botón para crear nuevas carpetas.
+	 * Obtiene el botï¿½n para crear nuevas carpetas.
 	 * 
 	 * @return El objeto JButton correspondiente.
 	 */
@@ -356,7 +356,7 @@ public class VistaGestorArchivos extends JFrame {
 	}
 
 	/**
-	 * Obtiene el botón para borrar carpetas.
+	 * Obtiene el botï¿½n para borrar carpetas.
 	 * 
 	 * @return El objeto JButton correspondiente.
 	 */
@@ -365,7 +365,7 @@ public class VistaGestorArchivos extends JFrame {
 	}
 
 	/**
-	 * Obtiene el botón de renombrado.
+	 * Obtiene el botï¿½n de renombrado.
 	 * 
 	 * @return El objeto JButton correspondiente.
 	 */
@@ -374,7 +374,7 @@ public class VistaGestorArchivos extends JFrame {
 	}
 
 	/**
-	 * Obtiene el botón para volver al directorio padre.
+	 * Obtiene el botï¿½n para volver al directorio padre.
 	 * 
 	 * @return El objeto JButton correspondiente.
 	 */
@@ -383,7 +383,7 @@ public class VistaGestorArchivos extends JFrame {
 	}
 
 	/**
-	 * Obtiene el botón para regresar al menú principal.
+	 * Obtiene el botï¿½n para regresar al menï¿½ principal.
 	 * 
 	 * @return El objeto JButton correspondiente.
 	 */

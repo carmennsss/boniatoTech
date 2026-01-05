@@ -1,3 +1,7 @@
+/*
+* @author Carmen - BoniatoTech
+* @version 1.0
+*/
 package controladorPrincipal;
 
 import java.awt.event.ActionEvent;
@@ -6,47 +10,47 @@ import javax.swing.JComboBox;
 import modelo.MoTextos;
 
 /**
- * Oyente para el cambio de idioma a través del ComboBox en la interfaz.
+ * Oyente para el cambio de idioma a travï¿½s del ComboBox en la interfaz.
  * Detecta cuando el usuario selecciona un nuevo idioma y actualiza todas las
  * vistas.
  */
 public class OyenteIdioma implements ActionListener {
 
-	/** Controlador principal de la aplicación. */
+	/** Controlador principal de la aplicaciï¿½n. */
 	private CoPrincipal coPrincipal;
 
 	/**
 	 * Constructor del oyente de idioma.
 	 *
-	 * @param coPrincipal Controlador principal de la aplicación.
+	 * @param coPrincipal Controlador principal de la aplicaciï¿½n.
 	 */
 	public OyenteIdioma(CoPrincipal coPrincipal) {
 		this.coPrincipal = coPrincipal;
 	}
 
 	/**
-	 * Detecta la selección de un nuevo idioma y actualiza la configuración global.
+	 * Detecta la selecciï¿½n de un nuevo idioma y actualiza la configuraciï¿½n glo
+	 * al.
 	 *
-	 * @param e El evento de acción.
+	 * @param e El evento de acciï¿½n.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JComboBox<?> combo = (JComboBox<?>) e.getSource();
+		JComboBox<String> combo = (JComboBox<String>) e.getSource();
 		int index = combo.getSelectedIndex();
 
-		// Actualiza el índice del idioma en el modelo de textos
+		// Actualiza el ï¿½ndice del idioma en el modelo de textos
 		MoTextos.setIdioma(index);
 
 		// Notifica al controlador principal para refrescar todas las vistas
 		coPrincipal.actualizarIdiomaGlobal();
-
-		System.out.println("Language switched to: " + (index == 0 ? "English" : "Spanish"));
 	}
 
 	// --- GETTERS Y SETTERS ---
 
 	/**
 	 * Obtiene el controlador principal asociado.
+	 * 
 	 * @return El objeto CoPrincipal.
 	 */
 	public CoPrincipal getCoPrincipal() {
@@ -55,6 +59,7 @@ public class OyenteIdioma implements ActionListener {
 
 	/**
 	 * Establece el controlador principal asociado.
+	 * 
 	 * @param coPrincipal El nuevo controlador principal.
 	 */
 	public void setCoPrincipal(CoPrincipal coPrincipal) {

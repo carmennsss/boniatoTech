@@ -17,14 +17,14 @@ import vista.VistaEliminarUsuarios;
 import vista.VistaRegistroUsuarios;
 
 /**
- * Oyente que gestiona los eventos relacionados con el registro y eliminación de
+ * Oyente que gestiona los eventos relacionados con el registro y eliminaciï¿½n de
  * usuarios.
  */
 public class OyenteUsuario implements ActionListener {
 	/** Vista de registro de usuarios. */
 	private VistaRegistroUsuarios vistaUsuario;
 
-	/** Vista de eliminación de usuarios. */
+	/** Vista de eliminaciï¿½n de usuarios. */
 	private VistaEliminarUsuarios vistaEliminarUsuarios;
 
 	/** Modelo de base de datos para operaciones de persistencia. */
@@ -37,7 +37,7 @@ public class OyenteUsuario implements ActionListener {
 	 * Constructor del oyente de usuario.
 	 *
 	 * @param vistaUsuario          Vista de registro de usuarios.
-	 * @param vistaEliminarUsuarios Vista de eliminación de usuarios.
+	 * @param vistaEliminarUsuarios Vista de eliminaciï¿½n de usuarios.
 	 * @param bd                    Modelo de base de datos.
 	 * @param client                Cliente FTP.
 	 */
@@ -50,9 +50,9 @@ public class OyenteUsuario implements ActionListener {
 	}
 
 	/**
-	 * Maneja los eventos de botón para añadir o eliminar usuarios.
+	 * Maneja los eventos de botï¿½n para aï¿½adir o eliminar usuarios.
 	 *
-	 * @param e El evento de acción.
+	 * @param e El evento de acciï¿½n.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -79,7 +79,7 @@ public class OyenteUsuario implements ActionListener {
 						JOptionPane.ERROR_MESSAGE);
 			} else if (!vistaUsuario.getTextClaveCorreo().getText().matches("^[a-z]{4}( [a-z]{4}){3}$")) {
 				JOptionPane.showMessageDialog(vistaUsuario,
-						"Invalid format for Address Key, it must be: xxxx xxxx xxxx xxxx (all in lowercase)",
+						modelo.MoTextos.msg_invalid_address_key,
 						modelo.MoTextos.msg_error_title,
 						JOptionPane.ERROR_MESSAGE);
 			} else if (!vistaUsuario.getTextCorreo().getText().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
@@ -152,7 +152,7 @@ public class OyenteUsuario implements ActionListener {
 	}
 
 	/**
-	 * Rellena la tabla de eliminación de usuarios con los datos actuales de la base
+	 * Rellena la tabla de eliminaciï¿½n de usuarios con los datos actuales de la base
 	 * de datos.
 	 * Excluye al usuario actual de la lista.
 	 */

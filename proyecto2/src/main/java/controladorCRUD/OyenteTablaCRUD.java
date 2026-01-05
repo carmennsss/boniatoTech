@@ -1,3 +1,7 @@
+/*
+* @author Carmen - BoniatoTech
+* @version 1.0
+*/
 package controladorCRUD;
 
 import controladorPrincipal.CoPrincipal;
@@ -11,27 +15,31 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 /**
  * Oyente para manejar eventos en la tabla CRUD general y la tabla de roles.
- * Maneja doble clic para menú de opciones y cambios en celdas (checkboxes de
+ * Maneja doble clic para menï¿½ de opciones y cambios en celdas (checkboxes de
  * permisos).
  */
 public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener {
-    /** Controlador principal de la aplicación. */
+    /** Controlador principal de la aplicaciï¿½n. */
     private CoPrincipal controlador;
 
     /** Vista CRUD principal. */
     private VistaCRUD vistaCRUD;
 
-    /** Modelo de vista para gestión de datos. */
+    /** Modelo de vista para gestiï¿½n de datos. */
     private MoView modeloVista;
 
     /** Lista de nombres de permisos para la tabla de roles. */
-    private java.util.ArrayList<String> listaNombresPermisos;
+    private ArrayList<String> listaNombresPermisos;
 
     /**
      * Constructor del oyente de tabla CRUD.
@@ -49,7 +57,7 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
     /**
      * Maneja el doble clic para mostrar las opciones (Nuevo, Actualizar, Borrar).
      *
-     * @param e El evento de ratón.
+     * @param e El evento de ratï¿½n.
      */
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -63,19 +71,27 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
     }
 
     /**
-     * Detecta cambios en la tabla, específicamente para la edición de permisos de
+     * Detecta cambios en la tabla, especï¿½ficamente para la ediciï¿½n de permisos de
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
      * roles.
      *
      * @param eventoModelo El evento de cambio en el modelo de la tabla.
      */
     @Override
-    public void tableChanged(javax.swing.event.TableModelEvent eventoModelo) {
-        if (eventoModelo.getType() == javax.swing.event.TableModelEvent.UPDATE) {
+    public void tableChanged(TableModelEvent eventoModelo) {
+        if (eventoModelo.getType() == TableModelEvent.UPDATE) {
             int filaModificada = eventoModelo.getFirstRow();
             int columnaModificada = eventoModelo.getColumn();
 
             if (filaModificada >= 0 && columnaModificada >= 3 && listaNombresPermisos != null) {
-                javax.swing.table.TableModel modeloTabla = (javax.swing.table.TableModel) eventoModelo.getSource();
+                TableModel modeloTabla = (TableModel) eventoModelo.getSource();
 
                 Object idObj = modeloTabla.getValueAt(filaModificada, 0);
                 int idRol = -1;
@@ -97,11 +113,11 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
     }
 
     /**
-     * Crea un botón para el diálogo de opciones.
+     * Crea un botï¿½n para el diï¿½logo de opciones.
      *
-     * @param texto Texto del botón.
-     * @param color Color de fondo del botón.
-     * @return Botón configurado.
+     * @param texto Texto del botï¿½n.
+     * @param color Color de fondo del botï¿½n.
+     * @return Botï¿½n configurado.
      */
     private JButton crearBotonDialogo(String texto, Color color) {
         JButton btn = new JButton(texto);
@@ -117,7 +133,7 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
     }
 
     /**
-     * Muestra un diálogo personalizado para seleccionar una acción sobre una fila.
+     * Muestra un diï¿½logo personalizado para seleccionar una acciï¿½n sobre una fila.
      * Ofrece opciones para Crear Nuevo, Actualizar, Borrar o Cancelar.
      *
      * @return 0 para Nuevo, 1 para Actualizar, 2 para Borrar, 3 para Cancelar.
@@ -144,6 +160,8 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
         panel.add(lblTitulo);
         panel.add(Box.createVerticalStrut(20));
 
+        // Se hace con array para que se pueda modificar el valor desde el
+        // ActionListener
         final int[] result = { -1 };
 
         Color colorBtn = new Color(110, 137, 115);
@@ -199,7 +217,7 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
     }
 
     /**
-     * Muestra el diálogo de opciones y ejecuta la acción seleccionada.
+     * Muestra el diï¿½logo de opciones y ejecuta la acciï¿½n seleccionada.
      */
     private void mostrarOpciones() {
         int eleccion = mostrarDialogoOpciones();
@@ -219,12 +237,13 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
      * Establece la lista de nombres de permisos para la tabla de roles.
      * * @param listaNombresPermisos Lista de nombres de permisos.
      */
-    public void setListaNombresPermisos(java.util.ArrayList<String> listaNombresPermisos) {
+    public void setListaNombresPermisos(ArrayList<String> listaNombresPermisos) {
         this.listaNombresPermisos = listaNombresPermisos;
     }
 
     /**
      * Obtiene el controlador principal.
+     * 
      * @return El objeto CoPrincipal.
      */
     public CoPrincipal getControlador() {
@@ -233,6 +252,7 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
 
     /**
      * Obtiene la vista CRUD.
+     * 
      * @return El objeto VistaCRUD.
      */
     public VistaCRUD getVistaCRUD() {
@@ -241,6 +261,7 @@ public class OyenteTablaCRUD extends MouseAdapter implements TableModelListener 
 
     /**
      * Obtiene el modelo de la vista.
+     * 
      * @return El objeto MoView.
      */
     public MoView getModeloVista() {

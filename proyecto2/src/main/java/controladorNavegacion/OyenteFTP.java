@@ -1,3 +1,7 @@
+/*
+* @author Carmen - BoniatoTech
+* @version 1.0
+*/
 package controladorNavegacion;
 
 import controladorPrincipal.CoPrincipal;
@@ -28,9 +32,13 @@ import controladorLogs.ControladorLogs;
 import controladorLogs.GestionLogs;
 
 /**
- * Oyente principal que maneja la l�gica de navegaci�n y eventos generales de la
+ * Oyente principal que maneja la l�gica de navegaci�n y eventos generales de
+ * 
+ * a
  * aplicaci�n.
  * Gestiona el inicio de sesi�n, la navegaci�n entre men�s y llamadas a otros
+ * 
+ * 
  * controladores.
  */
 public class OyenteFTP implements ActionListener {
@@ -262,7 +270,7 @@ public class OyenteFTP implements ActionListener {
 		String contrasenia = vistaLogin.getCajas().get(1).getText();
 		modelo.setUser(usuario);
 		modelo.setPass(contrasenia);
-		// vistaArchivo.inicializarFileManager();
+		vistaArchivo.inicializarFileManager();
 
 		try {
 			modelo.establecerConexion();

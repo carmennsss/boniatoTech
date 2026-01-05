@@ -25,42 +25,42 @@ import modelo.Correo;
 import modelo.MoTextos;
 
 /**
- * Vista principal o "Buzón de Entrada" para la gestión de correos electrónicos.
- * Muestra una lista de mensajes recibidos en una tabla y permite la navegación
- * hacia las funciones de redacción, lectura y refresco de datos.
+ * Vista principal o "Buzï¿½n de Entrada" para la gestiï¿½n de correos electrï¿½nicos.
+ * Muestra una lista de mensajes recibidos en una tabla y permite la navegaciï¿½n
+ * hacia las funciones de redacciï¿½n, lectura y refresco de datos.
  */
 public class VistaGeneralCorreo extends JFrame {
 
-	/** Panel principal que contiene la organización de la ventana. */
+	/** Panel principal que contiene la organizaciï¿½n de la ventana. */
 	private JPanel panel;
 
-	/** Dirección de correo electrónico del usuario actual. */
+	/** Direcciï¿½n de correo electrï¿½nico del usuario actual. */
 	private String correo;
 
-	/** Botón para abrir la ventana de redacción de correos. */
+	/** Botï¿½n para abrir la ventana de redacciï¿½n de correos. */
 	private JButton botonEnviarCorreo;
 
 	/** Modelo de datos que gestiona las filas y columnas de la tabla. */
 	private DefaultTableModel tablaModelo;
 
-	/** Componente de tabla para la visualización de los correos. */
+	/** Componente de tabla para la visualizaciï¿½n de los correos. */
 	private JTable emailTabla;
 
-	/** Botón para regresar al menú principal de la aplicación. */
+	/** Botï¿½n para regresar al menï¿½ principal de la aplicaciï¿½n. */
 	private JButton btnVolver;
 
-	/** Botón para solicitar una nueva sincronización con el servidor de correo. */
+	/** Botï¿½n para solicitar una nueva sincronizaciï¿½n con el servidor de correo. */
 	private JButton btnRefrescar;
 
-	/** Etiqueta que identifica al usuario y el título de la sección. */
+	/** Etiqueta que identifica al usuario y el tï¿½tulo de la secciï¿½n. */
 	private JLabel etiquetaCorreo;
 
 	/** Lista interna de objetos Correo sincronizada con la tabla visual. */
 	private ArrayList<Correo> correosActuales = new ArrayList<>();
 
 	/**
-	 * Constructor que inicializa la vista del buzón de correo.
-	 * * @param correo Dirección de correo electrónico del usuario logueado.
+	 * Constructor que inicializa la vista del buzï¿½n de correo.
+	 * * @param correo Direcciï¿½n de correo electrï¿½nico del usuario logueado.
 	 */
 	public VistaGeneralCorreo(String correo) {
 		this.correo = correo;
@@ -68,7 +68,7 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	/**
-	 * Orquesta la configuración inicial de componentes y estilos.
+	 * Orquesta la configuraciï¿½n inicial de componentes y estilos.
 	 */
 	private void propiedades() {
 		inicializarPanel();
@@ -79,7 +79,7 @@ public class VistaGeneralCorreo extends JFrame {
 
 	/**
 	 * Configura la tabla de correos con un renderizador personalizado para
-	 * destacar mensajes no leídos.
+	 * destacar mensajes no leï¿½dos.
 	 */
 	private void inicializarTabla() {
 		JPanel panelTabla = new JPanel(new BorderLayout());
@@ -150,7 +150,7 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	/**
-	 * Configura los parámetros básicos del JFrame.
+	 * Configura los parï¿½metros bï¿½sicos del JFrame.
 	 */
 	private void propiedadesVentana() {
 		this.setTitle(MoTextos.mail_title_inbox);
@@ -184,7 +184,7 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	/**
-	 * Crea los paneles superior e inferior y añade los botones de control.
+	 * Crea los paneles superior e inferior y aï¿½ade los botones de control.
 	 */
 	private void inicializarVista() {
 		JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 20));
@@ -212,8 +212,9 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	/**
-	 * Crea un botón con el estilo visual unificado de la aplicación.
-	 * * @param texto Etiqueta del botón.
+	 * Crea un botï¿½n con el estilo visual unificado de la aplicaciï¿½n.
+	 * * @param texto Etiqueta del botï¿½n.
+	 * 
 	 * @return JButton configurado.
 	 */
 	private JButton crearBotonEstilizado(String texto) {
@@ -229,7 +230,7 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	/**
-	 * Carga una lista de correos en la tabla y los ordena cronológicamente.
+	 * Carga una lista de correos en la tabla y los ordena cronolï¿½gicamente.
 	 * * @param correos Lista de objetos Correo a visualizar.
 	 */
 	public void cargarCorreos(ArrayList<Correo> correos) {
@@ -249,14 +250,15 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	/**
-	 * Hace visible la ventana del buzón.
+	 * Hace visible la ventana del buzï¿½n.
 	 */
 	public void hacerVisible() {
 		this.setVisible(true);
 	}
 
 	/**
-	 * Actualiza dinámicamente los textos de la interfaz según el idioma seleccionado.
+	 * Actualiza dinï¿½micamente los textos de la interfaz segï¿½n el idioma
+	 * seleccionado.
 	 */
 	public void actualizarTextos() {
 		this.setTitle(MoTextos.mail_title_inbox);
@@ -279,13 +281,13 @@ public class VistaGeneralCorreo extends JFrame {
 		repaint();
 	}
 
-	// --- GETTERS Y SETTERS AL FINAL ---
+	// --- GETTERS Y SETTERS ---
 
 	/**
-	 * Recupera el objeto Correo asociado a una fila específica de la tabla visual.
+	 * Recupera el objeto Correo asociado a una fila especï¿½fica de la tabla visual.
 	 *
-	 * @param fila Índice de la fila.
-	 * @return El objeto Correo correpondiente o null si el índice es inválido.
+	 * @param fila ï¿½ndice de la fila.
+	 * @return El objeto Correo correpondiente o null si el ï¿½ndice es invï¿½lido.
 	 */
 	public Correo getCorreoPorFila(int fila) {
 		if (fila >= 0 && fila < correosActuales.size()) {
@@ -295,7 +297,8 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	/**
-	 * Obtiene el botón de redacción de correo.
+	 * Obtiene el botï¿½n de redacciï¿½n de correo.
+	 * 
 	 * @return Objeto JButton.
 	 */
 	public JButton getBotonEnviarCorreo() {
@@ -303,15 +306,17 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	/**
-	 * Establece el botón de redacción.
-	 * @param botonEnviarCorreo Nuevo botón de composición.
+	 * Establece el botï¿½n de redacciï¿½n.
+	 * 
+	 * @param botonEnviarCorreo Nuevo botï¿½n de composiciï¿½n.
 	 */
 	public void setBotonEnviarCorreo(JButton botonEnviarCorreo) {
 		this.botonEnviarCorreo = botonEnviarCorreo;
 	}
 
 	/**
-	 * Obtiene la dirección de correo del usuario.
+	 * Obtiene la direcciï¿½n de correo del usuario.
+	 * 
 	 * @return String con el correo.
 	 */
 	public String getCorreo() {
@@ -319,8 +324,9 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	/**
-	 * Establece la dirección de correo del usuario.
-	 * @param correo Nueva dirección de correo.
+	 * Establece la direcciï¿½n de correo del usuario.
+	 * 
+	 * @param correo Nueva direcciï¿½n de correo.
 	 */
 	public void setCorreo(String correo) {
 		this.correo = correo;
@@ -328,6 +334,7 @@ public class VistaGeneralCorreo extends JFrame {
 
 	/**
 	 * Obtiene el componente de tabla de correos.
+	 * 
 	 * @return Objeto JTable.
 	 */
 	public JTable getEmailTabla() {
@@ -336,6 +343,7 @@ public class VistaGeneralCorreo extends JFrame {
 
 	/**
 	 * Establece la tabla de correos.
+	 * 
 	 * @param emailTabla Nueva tabla JTable.
 	 */
 	public void setEmailTabla(JTable emailTabla) {
@@ -343,7 +351,8 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	/**
-	 * Obtiene el botón para volver al menú anterior.
+	 * Obtiene el botï¿½n para volver al menï¿½ anterior.
+	 * 
 	 * @return Objeto JButton.
 	 */
 	public JButton getBtnVolver() {
@@ -351,15 +360,17 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	/**
-	 * Establece el botón de retorno.
-	 * @param btnVolver Nuevo botón JButton.
+	 * Establece el botï¿½n de retorno.
+	 * 
+	 * @param btnVolver Nuevo botï¿½n JButton.
 	 */
 	public void setBtnVolver(JButton btnVolver) {
 		this.btnVolver = btnVolver;
 	}
 
 	/**
-	 * Obtiene el botón de refresco de bandeja de entrada.
+	 * Obtiene el botï¿½n de refresco de bandeja de entrada.
+	 * 
 	 * @return Objeto JButton.
 	 */
 	public JButton getBtnRefrescar() {
@@ -367,8 +378,9 @@ public class VistaGeneralCorreo extends JFrame {
 	}
 
 	/**
-	 * Establece el botón de refresco.
-	 * @param btnRefrescar Nuevo botón JButton.
+	 * Establece el botï¿½n de refresco.
+	 * 
+	 * @param btnRefrescar Nuevo botï¿½n JButton.
 	 */
 	public void setBtnRefrescar(JButton btnRefrescar) {
 		this.btnRefrescar = btnRefrescar;

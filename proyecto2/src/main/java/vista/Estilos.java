@@ -1,10 +1,10 @@
-package vista;
+ï»¿package vista;
 
 import java.awt.Color;
 import java.awt.Font;
 
 /**
- * Clase que define los estilos globales (Colores y Fuentes) para la aplicación.
+ * Clase que define los estilos globales (Colores y Fuentes) para la aplicaciÃ³n.
  */
 public class Estilos {
     /** Color verde oscuro para elementos principales. */
@@ -13,7 +13,7 @@ public class Estilos {
     /** Color beige claro para fondos. */
     public static final Color BEIGE_CANVAS = new Color(242, 235, 226);
 
-    /** Color azul grisáceo para textos secundarios. */
+    /** Color azul grisÃ¡ceo para textos secundarios. */
     public static final Color BLUE_SLATE = new Color(92, 103, 132);
 
     /** Color verde salvia para acentos. */
@@ -28,22 +28,22 @@ public class Estilos {
     /** Color del fondo principal. */
     public static final Color FONDO_PRINCIPAL = BEIGE_CANVAS;
 
-    /** Color del título de la aplicación. */
+    /** Color del tÃ­tulo de la aplicaciÃ³n. */
     public static final Color COLOR_TITULO_APP = DARK_SPRUCE;
 
-    /** Color del fondo del menú. */
+    /** Color del fondo del menÃº. */
     public static final Color COLOR_MENU_FONDO = new Color(255, 255, 255, 150);
 
-    /** Color de los botones del menú. */
+    /** Color de los botones del menÃº. */
     public static final Color COLOR_BOTON_MENU = DARK_SPRUCE;
 
-    /** Color de los botones al pasar el ratón. */
+    /** Color de los botones al pasar el ratÃ³n. */
     public static final Color COLOR_BOTON_HOVER = FUCHSIA_PLUM;
 
     /** Color del encabezado de las tablas. */
     public static final Color COLOR_TABLA_HEADER = DARK_SPRUCE;
 
-    /** Color de selección en las tablas. */
+    /** Color de selecciÃ³n en las tablas. */
     public static final Color COLOR_TABLA_SELECCION = FUCHSIA_PLUM;
 
     /** Color de las etiquetas. */
@@ -55,7 +55,7 @@ public class Estilos {
     /** Color del texto en los campos de entrada. */
     public static final Color COLOR_INPUT_TEXT = BLUE_SLATE;
 
-    /** Fuente para títulos. */
+    /** Fuente para tÃ­tulos. */
     public static final Font FONT_TITULO = new Font("SansSerif", Font.BOLD, 24);
 
     /** Fuente para texto normal. */

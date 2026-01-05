@@ -1,3 +1,7 @@
+/*
+ * @author Carmen - BoniatoTech
+ * @version 1.0
+ */
 package controladorWhitelist;
 
 import java.sql.ResultSet;
@@ -15,17 +19,17 @@ import vista.VistaAdmin;
 import vista.VistaWhitelist;
 
 /**
- * Controlador para la gestión de la lista blanca (Whitelist) de correos.
- * Permite añadir y eliminar usuarios de la whitelist.
+ * Controlador para la gestiï¿½n de la lista blanca (Whitelist) de correos.
+ * Permite aï¿½adir y eliminar usuarios de la whitelist.
  */
 public class ControladorWhitelist {
     /** Modelo de base de datos para operaciones de persistencia. */
     private ModeloBaseDatos modeloBaseDatos;
 
-    /** Modelo de vista para gestión de datos. */
+    /** Modelo de vista para gestiï¿½n de datos. */
     private MoView moView;
 
-    /** Vista de administración. */
+    /** Vista de administraciï¿½n. */
     private VistaAdmin vistaAdmin;
 
     /** Vista de whitelist. */
@@ -37,7 +41,7 @@ public class ControladorWhitelist {
      * @param vistaWhitelist  Vista de whitelist.
      * @param modeloBaseDatos Modelo de base de datos.
      * @param moView          Modelo de vista.
-     * @param vistaAdmin      Vista de administración.
+     * @param vistaAdmin      Vista de administraciï¿½n.
      */
     public ControladorWhitelist(VistaWhitelist vistaWhitelist, ModeloBaseDatos modeloBaseDatos, MoView moView,
             VistaAdmin vistaAdmin) {
@@ -48,8 +52,8 @@ public class ControladorWhitelist {
     }
 
     /**
-     * Abre la vista de gestión de whitelist.
-     * Rellena la tabla y muestra la vista, ocultando la vista de administración.
+     * Abre la vista de gestiï¿½n de whitelist.
+     * Rellena la tabla y muestra la vista, ocultando la vista de administraciï¿½n.
      */
     public void abrirWhitelist() {
         rellenarTablaWhitelist();
@@ -58,7 +62,7 @@ public class ControladorWhitelist {
     }
 
     /**
-     * Muestra un diálogo para agregar un nuevo usuario a la whitelist.
+     * Muestra un diï¿½logo para agregar un nuevo usuario a la whitelist.
      * Valida el email y el nombre antes de insertarlo en la base de datos.
      */
     public void anadirUsuario() {
@@ -106,7 +110,7 @@ public class ControladorWhitelist {
     }
 
     /**
-     * Elimina los usuarios seleccionados de la whitelist tras confirmación.
+     * Elimina los usuarios seleccionados de la whitelist tras confirmaciï¿½n.
      */
     public void desasignarUsuarios() {
         ArrayList<String> seleccionados = moView.getCorreosWhitelist();
@@ -166,10 +170,10 @@ public class ControladorWhitelist {
     }
 
     /**
-     * Maneja la selección visual de un usuario en la tabla.
+     * Maneja la selecciï¿½n visual de un usuario en la tabla.
      *
      * @param email El email del usuario.
-     * @param fila  El índice de la fila seleccionada.
+     * @param fila  El ï¿½ndice de la fila seleccionada.
      */
     public void seleccionarUsuario(String email, int fila) {
         boolean selected = moView.buscarCorreoWhitelist(email);
@@ -177,7 +181,7 @@ public class ControladorWhitelist {
     }
 
     /**
-     * Cierra la ventana de whitelist y vuelve a la vista de administración.
+     * Cierra la ventana de whitelist y vuelve a la vista de administraciï¿½n.
      */
     public void volver() {
         vistaWhitelist.setVisible(false);

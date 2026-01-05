@@ -1,3 +1,7 @@
+/*
+* @author Carmen - BoniatoTech
+* @version 1.0
+*/
 package controladorLogs;
 
 import java.awt.event.ActionEvent;
@@ -30,10 +34,10 @@ public class OyenteConsultaLogs implements ActionListener {
     }
 
     /**
-     * Identifica qué botón se pulsó y solicita al controlador la carga de logs con
+     * Identifica quï¿½ botï¿½n se pulsï¿½ y solicita al controlador la carga de logs con
      * el criterio correspondiente.
      *
-     * @param e Evento de acción.
+     * @param e Evento de acciï¿½n.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -58,6 +62,7 @@ public class OyenteConsultaLogs implements ActionListener {
 
     /**
      * Obtiene la vista de logs.
+     * 
      * @return El objeto VistaLogs.
      */
     public VistaLogs getVistaLogs() {
@@ -66,6 +71,7 @@ public class OyenteConsultaLogs implements ActionListener {
 
     /**
      * Establece la vista de logs.
+     * 
      * @param vistaLogs La nueva vista de logs.
      */
     public void setVistaLogs(VistaLogs vistaLogs) {
@@ -74,6 +80,7 @@ public class OyenteConsultaLogs implements ActionListener {
 
     /**
      * Obtiene el controlador de logs asociado.
+     * 
      * @return El objeto ControladorLogs.
      */
     public ControladorLogs getControladorLogs() {
@@ -82,6 +89,7 @@ public class OyenteConsultaLogs implements ActionListener {
 
     /**
      * Establece el controlador de logs asociado.
+     * 
      * @param controladorLogs El nuevo controlador de logs.
      */
     public void setControladorLogs(ControladorLogs controladorLogs) {

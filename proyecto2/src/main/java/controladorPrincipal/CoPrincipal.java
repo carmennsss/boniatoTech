@@ -16,21 +16,23 @@ import controladorCorreos.ControladorCorreos;
 import controladorLogs.ControladorLogs;
 
 /**
- * Controlador Principal de la aplicación (Main Controller).
- * Coordina la inicialización de vistas, modelos y otros controladores específicos.
- * Actúa como punto central para la gestión de eventos y la navegación entre módulos.
+ * Controlador Principal de la aplicaciï¿½n (Main Controller).
+ * Coordina la inicializaciï¿½n de vistas, modelos y otros controladores
+ * especï¿½ficos.
+ * Actï¿½a como punto central para la gestiï¿½n de eventos y la navegaciï¿½n entre
+ * mï¿½dulos.
  */
 public class CoPrincipal {
     /** Modelo de base de datos para operaciones de persistencia. */
     private ModeloBaseDatos bd;
 
-    /** Modelo de vista para gestión de datos de interfaz. */
+    /** Modelo de vista para gestiï¿½n de datos de interfaz. */
     private MoView modeloVista;
 
-    /** Vista de login de la aplicación. */
+    /** Vista de login de la aplicaciï¿½n. */
     private VistaLogin vistaLogin;
 
-    /** Vista principal de CRUD para entidades del zoológico. */
+    /** Vista principal de CRUD para entidades del zoolï¿½gico. */
     private VistaCRUD vistaCRUD;
 
     /** Vista de formulario para crear/editar entidades. */
@@ -42,16 +44,16 @@ public class CoPrincipal {
     /** Vista para asignar roles a usuarios. */
     private VistaAsignarRol vistaAsignarRol;
 
-    /** Vista de gestión de whitelist. */
+    /** Vista de gestiï¿½n de whitelist. */
     private VistaWhitelist vistaWhitelist;
 
     /** Vista del gestor de archivos FTP. */
     private VistaGestorArchivos vistaArchivo;
 
-    /** Vista del menú principal de la aplicación. */
+    /** Vista del menï¿½ principal de la aplicaciï¿½n. */
     private VistaMenuPrincipal vistaMenuPrincipal;
 
-    /** Vista de administración del sistema. */
+    /** Vista de administraciï¿½n del sistema. */
     private VistaAdmin vistaAdmin;
 
     /** Vista de registro de usuarios. */
@@ -60,13 +62,13 @@ public class CoPrincipal {
     /** Vista para eliminar usuarios. */
     private VistaEliminarUsuarios vistaEliminarUsuarios;
 
-    /** Vista general de correo electrónico. */
+    /** Vista general de correo electrï¿½nico. */
     private VistaGeneralCorreo vistaGeneralCorreo;
 
     /** Vista de logs del sistema. */
     private VistaLogs vistaLogs;
 
-    /** Indica si se está editando una entidad. */
+    /** Indica si se estï¿½ editando una entidad. */
     private boolean editando;
 
     /** Modelo del cliente FTP. */
@@ -78,16 +80,16 @@ public class CoPrincipal {
     /** Controlador de operaciones CRUD. */
     private ControladorCRUD controladorCRUD;
 
-    /** Controlador de gestión de roles. */
+    /** Controlador de gestiï¿½n de roles. */
     private ControladorRoles controladorRoles;
 
     /** Controlador de whitelist. */
     private ControladorWhitelist controladorWhitelist;
 
-    /** Controlador de gestión de usuarios. */
+    /** Controlador de gestiï¿½n de usuarios. */
     private ControladorUsuarios controladorUsuarios;
 
-    /** Controlador de correo electrónico. */
+    /** Controlador de correo electrï¿½nico. */
     private ControladorCorreos controladorCorreos;
 
     /** Controlador de logs del sistema. */
@@ -129,7 +131,7 @@ public class CoPrincipal {
     }
 
     /**
-     * Actualiza los textos de todas las vistas según el idioma seleccionado
+     * Actualiza los textos de todas las vistas segï¿½n el idioma seleccionado
      * globalmente.
      */
     public void actualizarIdiomaGlobal() {
@@ -162,7 +164,7 @@ public class CoPrincipal {
     }
 
     /**
-     * Inicializa los componentes relacionados con el correo electrónico una vez
+     * Inicializa los componentes relacionados con el correo electrï¿½nico una vez
      * logueado el usuario.
      * Crea la vista de correo y su controlador asociado.
      */
@@ -243,6 +245,7 @@ public class CoPrincipal {
 
     /**
      * Obtiene el controlador de operaciones CRUD.
+     * 
      * @return Controlador CRUD.
      */
     public ControladorCRUD getControladorCRUD() {
@@ -251,6 +254,7 @@ public class CoPrincipal {
 
     /**
      * Obtiene el controlador de correos.
+     * 
      * @return Controlador de correos.
      */
     public ControladorCorreos getControladorCorreos() {
@@ -258,7 +262,8 @@ public class CoPrincipal {
     }
 
     /**
-     * Obtiene el controlador de gestión de roles.
+     * Obtiene el controlador de gestiï¿½n de roles.
+     * 
      * @return Controlador de roles.
      */
     public ControladorRoles getControladorRoles() {
@@ -266,7 +271,8 @@ public class CoPrincipal {
     }
 
     /**
-     * Obtiene el controlador de gestión de usuarios.
+     * Obtiene el controlador de gestiï¿½n de usuarios.
+     * 
      * @return Controlador de usuarios.
      */
     public ControladorUsuarios getControladorUsuarios() {
@@ -275,6 +281,7 @@ public class CoPrincipal {
 
     /**
      * Obtiene el controlador de whitelist.
+     * 
      * @return Controlador de whitelist.
      */
     public ControladorWhitelist getControladorWhitelist() {
@@ -283,6 +290,7 @@ public class CoPrincipal {
 
     /**
      * Obtiene la vista de asignar rol.
+     * 
      * @return Vista de asignar rol.
      */
     public VistaAsignarRol getVistaAsignarRol() {
@@ -291,6 +299,7 @@ public class CoPrincipal {
 
     /**
      * Obtiene la vista CRUD.
+     * 
      * @return Vista CRUD.
      */
     public VistaCRUD getVistaCRUD() {
@@ -299,6 +308,7 @@ public class CoPrincipal {
 
     /**
      * Obtiene la vista de crear rol.
+     * 
      * @return Vista de crear rol.
      */
     public ViCrearRol getViCrearRol() {
@@ -307,6 +317,7 @@ public class CoPrincipal {
 
     /**
      * Obtiene la vista general de correo.
+     * 
      * @return Vista general de correo.
      */
     public VistaGeneralCorreo getVistaGeneralCorreo() {
@@ -315,6 +326,7 @@ public class CoPrincipal {
 
     /**
      * Obtiene la vista de formulario.
+     * 
      * @return Vista de formulario.
      */
     public ViFormulario getViFormulario() {
@@ -323,6 +335,7 @@ public class CoPrincipal {
 
     /**
      * Obtiene la vista de login.
+     * 
      * @return Vista de login.
      */
     public VistaLogin getVistaLogin() {
@@ -331,6 +344,7 @@ public class CoPrincipal {
 
     /**
      * Obtiene la vista de whitelist.
+     * 
      * @return Vista de whitelist.
      */
     public VistaWhitelist getVistaWhitelist() {
@@ -338,8 +352,9 @@ public class CoPrincipal {
     }
 
     /**
-     * Verifica si se está editando una entidad.
-     * @return true si se está editando, false en caso contrario.
+     * Verifica si se estï¿½ editando una entidad.
+     * 
+     * @return true si se estï¿½ editando, false en caso contrario.
      */
     public boolean isEditando() {
         return editando;
@@ -347,6 +362,7 @@ public class CoPrincipal {
 
     /**
      * Establece el controlador de correos.
+     * 
      * @param controladorCorreos Controlador de correos a establecer.
      */
     public void setControladorCorreos(ControladorCorreos controladorCorreos) {
@@ -354,8 +370,9 @@ public class CoPrincipal {
     }
 
     /**
-     * Establece el estado de edición.
-     * @param editando true si se está editando, false en caso contrario.
+     * Establece el estado de ediciï¿½n.
+     * 
+     * @param editando true si se estï¿½ editando, false en caso contrario.
      */
     public void setEditando(boolean editando) {
         this.editando = editando;

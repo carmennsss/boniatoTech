@@ -30,8 +30,8 @@ import modelo.ModeloClienteFTP;
 
 /**
  * Vista para el registro de nuevos usuarios en el sistema. Proporciona un
- * formulario detallado para capturar la información necesaria, permitiendo la
- * creación de cuentas con credenciales de acceso y de correo.
+ * formulario detallado para capturar la informaciï¿½n necesaria, permitiendo la
+ * creaciï¿½n de cuentas con credenciales de acceso y de correo.
  */
 public class VistaRegistroUsuarios extends JFrame {
 
@@ -41,7 +41,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	/** Modelo de base de datos asociado. */
 	private ModeloBaseDatos db;
 
-	/** Referencia a la vista de administración para la navegación. */
+	/** Referencia a la vista de administraciï¿½n para la navegaciï¿½n. */
 	private VistaAdmin vistaAdmin;
 
 	/** Etiqueta para el campo de nombre. */
@@ -50,43 +50,43 @@ public class VistaRegistroUsuarios extends JFrame {
 	/** Campo de texto para el nombre de usuario. */
 	private JTextField textNombre;
 
-	/** Etiqueta para el campo de correo electrónico. */
+	/** Etiqueta para el campo de correo electrï¿½nico. */
 	private JLabel correo;
 
-	/** Campo de texto para la dirección de correo. */
+	/** Campo de texto para la direcciï¿½n de correo. */
 	private JTextField textCorreo;
 
 	/** Etiqueta para el campo de clave de correo. */
 	private JLabel claveCorreo;
 
-	/** Campo de texto para la clave de aplicación del correo. */
+	/** Campo de texto para la clave de aplicaciï¿½n del correo. */
 	private JTextField textClaveCorreo;
 
-	/** Etiqueta para the campo de contraseña. */
+	/** Etiqueta para the campo de contraseï¿½a. */
 	private JLabel contrasena;
 
-	/** Campo de texto oculto para la contraseña de acceso. */
+	/** Campo de texto oculto para la contraseï¿½a de acceso. */
 	private JPasswordField textContrasena;
 
-	/** Etiqueta para la confirmación de la contraseña. */
+	/** Etiqueta para la confirmaciï¿½n de la contraseï¿½a. */
 	private JLabel confContrasena;
 
-	/** Campo de texto oculto para confirmar la contraseña. */
+	/** Campo de texto oculto para confirmar la contraseï¿½a. */
 	private JPasswordField textConfContrasena;
 
-	/** Botón para registrar el usuario. */
+	/** Botï¿½n para registrar el usuario. */
 	private JButton aniadir;
 
-	/** Botón para acceder a la funcionalidad de borrado. */
+	/** Botï¿½n para acceder a la funcionalidad de borrado. */
 	private JButton eliminar;
 
-	/** Botón para regresar a la vista administrativa. */
+	/** Botï¿½n para regresar a la vista administrativa. */
 	private JButton volver;
 
 	/** Imagen de fondo de la ventana. */
 	private Image imagenFondo;
 
-	/** Etiqueta del título principal en el panel. */
+	/** Etiqueta del tï¿½tulo principal en el panel. */
 	private JLabel titulo;
 
 	/** Panel central redondeado que contiene el formulario. */
@@ -95,8 +95,9 @@ public class VistaRegistroUsuarios extends JFrame {
 	/**
 	 * Constructor que inicializa la vista de registro y vincula sus dependencias.
 	 * * @param vistaAdmin Instancia de la vista administrativa padre.
-	 * @param client     Instancia del modelo de cliente FTP.
-	 * @param db         Instancia del modelo de base de datos.
+	 * 
+	 * @param client Instancia del modelo de cliente FTP.
+	 * @param db     Instancia del modelo de base de datos.
 	 */
 	public VistaRegistroUsuarios(VistaAdmin vistaAdmin, ModeloClienteFTP client, ModeloBaseDatos db) {
 		this.vistaAdmin = vistaAdmin;
@@ -106,7 +107,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Orquesta la configuración visual de la ventana y sus componentes internos.
+	 * Orquesta la configuraciï¿½n visual de la ventana y sus componentes internos.
 	 */
 	private void propiedades() {
 		configurarVentana();
@@ -116,7 +117,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Establece las propiedades básicas del marco de la ventana (JFrame).
+	 * Establece las propiedades bï¿½sicas del marco de la ventana (JFrame).
 	 */
 	private void configurarVentana() {
 		this.setTitle(modelo.MoTextos.reg_title_window);
@@ -153,7 +154,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Diseña el panel central redondeado y distribuye los campos de entrada.
+	 * Diseï¿½a el panel central redondeado y distribuye los campos de entrada.
 	 */
 	private void configurarFormulario() {
 		panelCentral = new JPanel(new GridBagLayout()) {
@@ -228,7 +229,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Configura los botones de acción principal y los posiciona en el panel
+	 * Configura los botones de acciï¿½n principal y los posiciona en el panel
 	 * central.
 	 */
 	private void configurarBotones() {
@@ -260,7 +261,8 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Método auxiliar para alinear y añadir una etiqueta con su respectivo campo.
+	 * Mï¿½todo auxiliar para alinear y aï¿½adir una etiqueta con su respectivo cam
+	 * o.
 	 */
 	private void agregarCampo(JPanel panel, GridBagConstraints gbc, int fila, JLabel label, JTextField campo) {
 		gbc.gridx = 0;
@@ -275,7 +277,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Aplica el estilo visual unificado de la aplicación a un botón.
+	 * Aplica el estilo visual unificado de la aplicaciï¿½n a un botï¿½n.
 	 */
 	private void aniadirEstiloBoton(JButton btn, Color bgColor) {
 		btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -295,7 +297,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Actualiza dinámicamente los textos de las etiquetas y botones según el
+	 * Actualiza dinï¿½micamente los textos de las etiquetas y botones segï¿½n el
 	 * idioma.
 	 */
 	public void actualizarTextos() {
@@ -311,10 +313,10 @@ public class VistaRegistroUsuarios extends JFrame {
 		volver.setText(modelo.MoTextos.btn_back);
 	}
 
-	// --- SECCIÓN DE GETTERS Y SETTERS ---
+	// --- GETTERS Y SETTERS ---
 
 	/**
-	 * Obtiene el botón encargado de la eliminación de usuarios.
+	 * Obtiene el botï¿½n encargado de la eliminaciï¿½n de usuarios.
 	 * * @return El objeto JButton de eliminar.
 	 */
 	public JButton getEliminar() {
@@ -322,7 +324,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Establece el botón encargado de la eliminación de usuarios.
+	 * Establece el botï¿½n encargado de la eliminaciï¿½n de usuarios.
 	 * * @param eliminar La nueva instancia de JButton.
 	 */
 	public void setEliminar(JButton eliminar) {
@@ -330,15 +332,15 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Obtiene el botón encargado de procesar el registro (añadir).
-	 * * @return El objeto JButton de añadir.
+	 * Obtiene el botï¿½n encargado de procesar el registro (aï¿½adir).
+	 * * @return El objeto JButton de aï¿½adir.
 	 */
 	public JButton getAniadir() {
 		return aniadir;
 	}
 
 	/**
-	 * Establece el botón encargado de procesar el registro.
+	 * Establece el botï¿½n encargado de procesar el registro.
 	 * * @param aniadir La nueva instancia de JButton.
 	 */
 	public void setAniadir(JButton aniadir) {
@@ -346,7 +348,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Obtiene el botón para regresar a la vista anterior.
+	 * Obtiene el botï¿½n para regresar a la vista anterior.
 	 * * @return El objeto JButton de volver.
 	 */
 	public JButton getVolver() {
@@ -354,7 +356,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Establece el botón para regresar a la vista anterior.
+	 * Establece el botï¿½n para regresar a la vista anterior.
 	 * * @param volver La nueva instancia de JButton.
 	 */
 	public void setVolver(JButton volver) {
@@ -394,7 +396,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Obtiene la referencia a la vista de administración principal.
+	 * Obtiene la referencia a la vista de administraciï¿½n principal.
 	 * * @return El objeto VistaAdmin.
 	 */
 	public VistaAdmin getVistaAdmin() {
@@ -402,7 +404,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Establece la referencia a la vista de administración principal.
+	 * Establece la referencia a la vista de administraciï¿½n principal.
 	 * * @param vistaAdmin La instancia de VistaAdmin a asignar.
 	 */
 	public void setVistaAdmin(VistaAdmin vistaAdmin) {
@@ -458,7 +460,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Obtiene el campo de texto donde se ingresa el correo electrónico.
+	 * Obtiene el campo de texto donde se ingresa el correo electrï¿½nico.
 	 * * @return El objeto JTextField.
 	 */
 	public JTextField getTextCorreo() {
@@ -466,7 +468,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Establece el campo de texto para el correo electrónico.
+	 * Establece el campo de texto para el correo electrï¿½nico.
 	 * * @param textCorreo El nuevo campo JTextField.
 	 */
 	public void setTextCorreo(JTextField textCorreo) {
@@ -490,7 +492,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Obtiene el campo de texto para la clave de aplicación del correo.
+	 * Obtiene el campo de texto para la clave de aplicaciï¿½n del correo.
 	 * * @return El objeto JTextField.
 	 */
 	public JTextField getTextClaveCorreo() {
@@ -498,7 +500,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Establece el campo de texto para la clave de aplicación del correo.
+	 * Establece el campo de texto para la clave de aplicaciï¿½n del correo.
 	 * * @param textClaveCorreo El nuevo campo JTextField.
 	 */
 	public void setTextClaveCorreo(JTextField textClaveCorreo) {
@@ -506,7 +508,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Obtiene la etiqueta del campo Contraseña.
+	 * Obtiene la etiqueta del campo Contraseï¿½a.
 	 * * @return El objeto JLabel.
 	 */
 	public JLabel getContrasena() {
@@ -514,7 +516,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Establece la etiqueta del campo Contraseña.
+	 * Establece la etiqueta del campo Contraseï¿½a.
 	 * * @param contrasena La nueva etiqueta JLabel.
 	 */
 	public void setContrasena(JLabel contrasena) {
@@ -522,7 +524,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Obtiene el campo de contraseña de acceso al sistema.
+	 * Obtiene el campo de contraseï¿½a de acceso al sistema.
 	 * * @return El objeto JPasswordField.
 	 */
 	public JPasswordField getTextContrasena() {
@@ -530,7 +532,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Establece el campo de contraseña de acceso.
+	 * Establece el campo de contraseï¿½a de acceso.
 	 * * @param textContrasena El nuevo campo JPasswordField.
 	 */
 	public void setTextContrasena(JPasswordField textContrasena) {
@@ -538,7 +540,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Obtiene la etiqueta del campo Confirmar Contraseña.
+	 * Obtiene la etiqueta del campo Confirmar Contraseï¿½a.
 	 * * @return El objeto JLabel.
 	 */
 	public JLabel getConfContrasena() {
@@ -546,7 +548,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Establece la etiqueta del campo Confirmar Contraseña.
+	 * Establece la etiqueta del campo Confirmar Contraseï¿½a.
 	 * * @param confContrasena La nueva etiqueta JLabel.
 	 */
 	public void setConfContrasena(JLabel confContrasena) {
@@ -554,7 +556,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Obtiene el campo para validar la contraseña de acceso.
+	 * Obtiene el campo para validar la contraseï¿½a de acceso.
 	 * * @return El objeto JPasswordField.
 	 */
 	public JPasswordField getTextConfContrasena() {
@@ -562,7 +564,7 @@ public class VistaRegistroUsuarios extends JFrame {
 	}
 
 	/**
-	 * Establece el campo para validar la contraseña de acceso.
+	 * Establece el campo para validar la contraseï¿½a de acceso.
 	 * * @param textConfContrasena El nuevo campo JPasswordField.
 	 */
 	public void setTextConfContrasena(JPasswordField textConfContrasena) {

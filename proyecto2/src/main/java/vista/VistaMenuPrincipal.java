@@ -1,22 +1,18 @@
 package vista;
 
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
+import java.awt.RenderingHints;
 
 import java.net.URL;
-import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -34,41 +30,55 @@ import modelo.MoTextos;
 
 /**
  * Vista del menú principal de la aplicación.
- * Proporciona acceso centralizado a los diferentes módulos del sistema: 
- * Gestión de datos (CRUD), Gestor de archivos (FTP), Mensajería (Correo) 
+ * Proporciona acceso centralizado a los diferentes módulos del sistema:
+ * Gestión de datos (CRUD), Gestor de archivos (FTP), Mensajería (Correo)
  * y Panel de Administración.
  */
 public class VistaMenuPrincipal extends JFrame {
-	/** Modelo del cliente FTP para gestionar la sesión activa. */
+	/**
+	 * Modelo que gestiona la funcionalidad de la aplicación.
+	 */
 	private ModeloClienteFTP client;
-
-	/** Botón para acceder al módulo de gestión de datos (CRUD). */
+	/**
+	 * Botón para gestionar datos (CRUD).
+	 */
 	private JButton botonCRUD;
-
-	/** Botón para acceder al explorador de archivos FTP. */
+	/**
+	 * Botón para gestionar archivos (FTP).
+	 */
 	private JButton botonFileManager;
-
-	/** Botón para cerrar la sesión del usuario actual y volver al login. */
+	/**
+	 * Botón para cerrar sesión.
+	 */
 	private JButton botonCerrarSesion;
-
-	/** Botón para acceder a las funciones avanzadas de administración. */
+	/**
+	 * Botón para administrar la aplicación.
+	 */
 	private JButton botonAdmin;
-
-	/** Botón para acceder a la bandeja de entrada y envío de correos. */
+	/**
+	 * Botón para gestionar correo.
+	 */
 	private JButton botonCorreo;
 
-	/** Selector visual de idioma mediante iconos de banderas. */
+	/**
+	 * Selector de idioma con representación visual mediante banderas.
+	 */
 	private JComboBox<ImageIcon> comboIdiomas;
 
-	/** Etiqueta que muestra el título principal de la aplicación. */
+	/**
+	 * Etiqueta que muestra el título de la aplicación en el panel central.
+	 */
 	private JLabel text;
-
-	/** Etiqueta que muestra la instrucción de selección al usuario. */
+	/**
+	 * Etiqueta para el subtítulo de la aplicación en el panel central.
+	 */
 	private JLabel subtext;
 
 	/**
-	 * Constructor que inicializa el menú principal vinculándolo al cliente FTP.
-	 * * @param client Instancia del modelo de cliente FTP.
+	 * Constructor de la vista.
+	 * Inicializa la ventana y sus componentes.
+	 * 
+	 * @param client Modelo que gestiona la funcionalidad de la aplicación.
 	 */
 	public VistaMenuPrincipal(ModeloClienteFTP client) {
 		this.client = client;
@@ -146,7 +156,14 @@ public class VistaMenuPrincipal extends JFrame {
 				if (imagen != null) {
 					Graphics2D g2d = (Graphics2D) g;
 					g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-					g2d.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
+					g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+					double scale = Math.max((double) getWidth() / imagen.getWidth(this),
+							(double) getHeight() / imagen.getHeight(this));
+					int w = (int) (imagen.getWidth(this) * scale);
+					int h = (int) (imagen.getHeight(this) * scale);
+					g.drawImage(imagen, 0, 0, w, h, this);
 				}
 			}
 		};
@@ -192,7 +209,7 @@ public class VistaMenuPrincipal extends JFrame {
 		contentPanel.add(botonAdmin);
 		contentPanel.add(Box.createVerticalStrut(20));
 		contentPanel.add(botonCerrarSesion);
-		contentPanel.add(Box.createVerticalGlue());
+		contentPanel.add(Box.createVerticalStrut(20));
 
 		layeredPane.add(mainPanel, JLayeredPane.DEFAULT_LAYER);
 
@@ -201,7 +218,9 @@ public class VistaMenuPrincipal extends JFrame {
 			public void componentResized(java.awt.event.ComponentEvent e) {
 				int width = layeredPane.getWidth();
 				int height = layeredPane.getHeight();
+
 				mainPanel.setBounds(0, 0, width, height);
+
 				if (comboIdiomas != null) {
 					int comboW = 80;
 					int comboH = 40;
@@ -215,24 +234,29 @@ public class VistaMenuPrincipal extends JFrame {
 	 * Configura el selector de idioma y lo añade a la capa superior.
 	 */
 	private void configurarIdioma() {
+
 		ImageIcon iconEng = null;
 		ImageIcon iconEsp = null;
 		try {
 			java.net.URL urlEng = getClass().getResource("/eng.png");
 			java.net.URL urlEsp = getClass().getResource("/esp.png");
 			if (urlEng != null)
-				iconEng = new ImageIcon(escalarImagen(new ImageIcon(urlEng).getImage(), 30, 20));
+				iconEng = new ImageIcon(new ImageIcon(urlEng).getImage().getScaledInstance(30, 20, Image.SCALE_SMOOTH));
 			if (urlEsp != null)
-				iconEsp = new ImageIcon(escalarImagen(new ImageIcon(urlEsp).getImage(), 30, 20));
-		} catch (Exception e) { e.printStackTrace(); }
+				iconEsp = new ImageIcon(new ImageIcon(urlEsp).getImage().getScaledInstance(30, 20, Image.SCALE_SMOOTH));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		comboIdiomas = new JComboBox<>();
 		comboIdiomas.setRenderer(new RenderComboIdioma());
 		comboIdiomas.setBackground(Color.WHITE);
 		comboIdiomas.setFocusable(false);
 
-		if (iconEng != null) comboIdiomas.addItem(iconEng);
-		if (iconEsp != null) comboIdiomas.addItem(iconEsp);
+		if (iconEng != null)
+			comboIdiomas.addItem(iconEng);
+		if (iconEsp != null)
+			comboIdiomas.addItem(iconEsp);
 
 		if (MoTextos.getIdioma() == 0 && iconEng != null) {
 			comboIdiomas.setSelectedItem(iconEng);
@@ -243,13 +267,22 @@ public class VistaMenuPrincipal extends JFrame {
 		if (getContentPane() instanceof JLayeredPane) {
 			JLayeredPane layeredPane = (JLayeredPane) getContentPane();
 			layeredPane.add(comboIdiomas, JLayeredPane.PALETTE_LAYER);
+
+			int width = getWidth();
+			int comboW = 80;
+			int comboH = 40;
+			comboIdiomas.setBounds(width - comboW - 20, 20, comboW, comboH);
 		}
 	}
 
 	/**
-	 * Aplica un estilo uniforme a los botones del menú.
+	 * Añade el estilo al botón.
+	 * 
+	 * @param btn     Botón.
+	 * @param bgColor Color de fondo.
+	 * @param fgColor Color de primer plano.
 	 */
-	private void aniadirEstiloBoton(JButton btn, Color bgColor, Color fgColor) {
+	public void aniadirEstiloBoton(JButton btn, Color bgColor, Color fgColor) {
 		btn.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		btn.setBackground(bgColor);
 		btn.setForeground(fgColor);
@@ -261,14 +294,14 @@ public class VistaMenuPrincipal extends JFrame {
 	}
 
 	/**
-	 * Hace visible la ventana del menú principal.
+	 * Hace visible la ventana.
 	 */
 	public void hacerVisible() {
 		setVisible(true);
 	}
 
 	/**
-	 * Actualiza los textos de la interfaz según el idioma seleccionado.
+	 * Actualiza los textos de la ventana.
 	 */
 	public void actualizarTextos() {
 		if (comboIdiomas != null) {
@@ -285,77 +318,95 @@ public class VistaMenuPrincipal extends JFrame {
 		repaint();
 	}
 
+	// --- GETTERS Y SETTERS ---
+
 	/**
-	 * Escala una imagen con suavizado de alta calidad.
+	 * Obtiene el botón de correo.
+	 * 
+	 * @return Botón de correo.
 	 */
-	private Image escalarImagen(Image srcImg, int w, int h) {
-		BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2 = resizedImg.createGraphics();
-		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g2.drawImage(srcImg, 0, 0, w, h, null);
-		g2.dispose();
-		return resizedImg;
+	public JButton getBotonCorreo() {
+		return botonCorreo;
 	}
 
-	// --- GETTERS Y SETTERS CON JAVADOC ---
-
 	/**
-	 * Obtiene el botón del módulo de correo.
-	 * @return JButton de correo.
+	 * Establece el botón de correo.
+	 * 
+	 * @param botonCorreo Botón de correo.
 	 */
-	public JButton getBotonCorreo() { return botonCorreo; }
-
-	/**
-	 * Establece el botón del módulo de correo.
-	 * @param botonCorreo Nuevo botón de correo.
-	 */
-	public void setBotonCorreo(JButton botonCorreo) { this.botonCorreo = botonCorreo; }
+	public void setBotonCorreo(JButton botonCorreo) {
+		this.botonCorreo = botonCorreo;
+	}
 
 	/**
 	 * Obtiene el botón de cierre de sesión.
-	 * @return JButton de logout.
+	 * 
+	 * @return Botón de cierre de sesión.
 	 */
-	public JButton getBotonCerrarSesion() { return botonCerrarSesion; }
+	public JButton getBotonCerrarSesion() {
+		return botonCerrarSesion;
+	}
 
 	/**
 	 * Establece el botón de cierre de sesión.
-	 * @param botonCerrarSesion Nuevo botón de logout.
+	 * 
+	 * @param botonCerrarSesion Botón de cierre de sesión.
 	 */
-	public void setBotonCerrarSesion(JButton botonCerrarSesion) { this.botonCerrarSesion = botonCerrarSesion; }
+	public void setBotonCerrarSesion(JButton botonCerrarSesion) {
+		this.botonCerrarSesion = botonCerrarSesion;
+	}
 
 	/**
-	 * Obtiene el botón del gestor de archivos.
-	 * @return JButton de archivos.
+	 * Obtiene el botón de file manager.
+	 * 
+	 * @return Botón de file manager.
 	 */
-	public JButton getBotonFileManager() { return botonFileManager; }
+	public JButton getBotonFileManager() {
+		return botonFileManager;
+	}
 
 	/**
-	 * Establece el botón del gestor de archivos.
-	 * @param botonFileManager Nuevo botón de archivos.
+	 * Establece el botón de file manager.
+	 * 
+	 * @param botonFileManager Botón de file manager.
 	 */
-	public void setBotonFileManager(JButton botonFileManager) { this.botonFileManager = botonFileManager; }
+	public void setBotonFileManager(JButton botonFileManager) {
+		this.botonFileManager = botonFileManager;
+	}
 
 	/**
-	 * Obtiene el botón del panel administrativo.
-	 * @return JButton de administración.
+	 * Obtiene el botón de admin.
+	 * 
+	 * @return Botón de admin.
 	 */
-	public JButton getBotonAdmin() { return botonAdmin; }
+	public JButton getBotonAdmin() {
+		return botonAdmin;
+	}
 
 	/**
-	 * Obtiene el botón del módulo CRUD.
-	 * @return JButton de gestión de datos.
+	 * Obtiene el botón de crud.
+	 * 
+	 * @return Botón de crud.
 	 */
-	public JButton getBotonCRUD() { return botonCRUD; }
+	public JButton getBotonCRUD() {
+		return botonCRUD;
+	}
 
 	/**
-	 * Establece el botón del módulo CRUD.
-	 * @param botonCRUD Nuevo botón CRUD.
+	 * Establece el botón de crud.
+	 * 
+	 * @param botonCRUD Botón de crud.
 	 */
-	public void setBotonCRUD(JButton botonCRUD) { this.botonCRUD = botonCRUD; }
+	public void setBotonCRUD(JButton botonCRUD) {
+		this.botonCRUD = botonCRUD;
+	}
 
 	/**
-	 * Obtiene el selector de idiomas.
-	 * @return JComboBox de iconos.
+	 * Obtiene el combo de idiomas.
+	 * 
+	 * @return Combo de idiomas.
 	 */
-	public JComboBox<ImageIcon> getComboIdiomas() { return comboIdiomas; }
+	public JComboBox<ImageIcon> getComboIdiomas() {
+		return comboIdiomas;
+	}
 }

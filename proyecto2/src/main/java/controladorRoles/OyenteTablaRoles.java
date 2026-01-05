@@ -1,3 +1,7 @@
+/*
+* @author Carmen - BoniatoTech
+* @version 1.0
+*/
 package controladorRoles;
 
 import controladorPrincipal.CoPrincipal;
@@ -9,25 +13,25 @@ import modelo.MoView;
 import vista.VistaAsignarRol;
 
 /**
- * Oyente para manejar la selección múltiple de usuarios en la tabla de
- * asignación de roles.
+ * Oyente para manejar la selecciï¿½n mï¿½ltiple de usuarios en la tabla de
+ * asignaciï¿½n de roles.
  */
 public class OyenteTablaRoles extends MouseAdapter {
-    /** Controlador principal de la aplicación. */
+    /** Controlador principal de la aplicaciï¿½n. */
     private CoPrincipal controlador;
 
-    /** Vista de asignación de roles. */
+    /** Vista de asignaciï¿½n de roles. */
     private VistaAsignarRol vistaAsignarRol;
 
-    /** Modelo de vista para gestión de datos. */
+    /** Modelo de vista para gestiï¿½n de datos. */
     private MoView modeloVista;
 
     /**
      * Constructor del oyente de tabla de roles.
      *
-     * @param controlador      Controlador principal.
+     * @param controlador     Controlador principal.
      * @param vistaAsignarRol Vista de asignar rol.
-     * @param modeloVista      Modelo de vista.
+     * @param modeloVista     Modelo de vista.
      */
     public OyenteTablaRoles(CoPrincipal controlador, VistaAsignarRol vistaAsignarRol, MoView modeloVista) {
         this.controlador = controlador;
@@ -39,7 +43,7 @@ public class OyenteTablaRoles extends MouseAdapter {
      * Maneja el clic en la tabla para seleccionar o deseleccionar un usuario
      * (fila).
      *
-     * @param e El evento de ratón.
+     * @param e El evento de ratï¿½n.
      */
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -64,6 +68,7 @@ public class OyenteTablaRoles extends MouseAdapter {
 
     /**
      * Obtiene el controlador principal asociado.
+     * 
      * @return El objeto CoPrincipal.
      */
     public CoPrincipal getControlador() {
@@ -72,6 +77,7 @@ public class OyenteTablaRoles extends MouseAdapter {
 
     /**
      * Establece el controlador principal asociado.
+     * 
      * @param controlador El nuevo controlador.
      */
     public void setControlador(CoPrincipal controlador) {
@@ -79,7 +85,8 @@ public class OyenteTablaRoles extends MouseAdapter {
     }
 
     /**
-     * Obtiene la vista de asignación de roles.
+     * Obtiene la vista de asignaciï¿½n de roles.
+     * 
      * @return El objeto VistaAsignarRol.
      */
     public VistaAsignarRol getVistaAsignarRol() {
@@ -87,7 +94,8 @@ public class OyenteTablaRoles extends MouseAdapter {
     }
 
     /**
-     * Establece la vista de asignación de roles.
+     * Establece la vista de asignaciï¿½n de roles.
+     * 
      * @param vistaAsignarRol La nueva vista.
      */
     public void setVistaAsignarRol(VistaAsignarRol vistaAsignarRol) {
@@ -96,6 +104,7 @@ public class OyenteTablaRoles extends MouseAdapter {
 
     /**
      * Obtiene el modelo de vista.
+     * 
      * @return El objeto MoView.
      */
     public MoView getModeloVista() {
@@ -104,6 +113,7 @@ public class OyenteTablaRoles extends MouseAdapter {
 
     /**
      * Establece el modelo de vista.
+     * 
      * @param modeloVista El nuevo modelo de vista.
      */
     public void setModeloVista(MoView modeloVista) {

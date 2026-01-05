@@ -1,3 +1,7 @@
+/*
+* @author Carmen - BoniatoTech
+* @version 1.0
+*/
 package controladorCRUD;
 
 import controladorPrincipal.CoPrincipal;
@@ -18,22 +22,22 @@ import java.util.Arrays;
 /**
  * Controlador para las operaciones CRUD (Crear, Leer, Actualizar, Borrar) en la
  * base de datos.
- * Maneja la interacción entre las tablas de la vista y el modelo de datos.
+ * Maneja la interacciï¿½n entre las tablas de la vista y el modelo de datos.
  */
 public class ControladorCRUD {
-    /** Modelo de base de datos para acceder a la información. */
+    /** Modelo de base de datos para acceder a la informaciï¿½n. */
     private ModeloBaseDatos bd;
 
     /** Vista principal del CRUD. */
     private VistaCRUD vistaCRUD;
 
-    /** Formulario dinámico para creación y edición de registros. */
+    /** Formulario dinï¿½mico para creaciï¿½n y ediciï¿½n de registros. */
     private ViFormulario viFormulario;
 
     /** Modelo de la vista para gestionar el estado de la interfaz. */
     private MoView modeloVista;
 
-    /** Controlador principal de la aplicación. */
+    /** Controlador principal de la aplicaciï¿½n. */
     private CoPrincipal coPrincipal;
 
     /** Oyente de eventos para los botones del formulario. */
@@ -41,11 +45,12 @@ public class ControladorCRUD {
 
     /**
      * Constructor del controlador CRUD.
-     * * @param coPrincipal Controlador principal.
-     * @param bd          Modelo de base de datos.
-     * @param vistaCRUD   Vista principal del CRUD.
-     * @param viFormulario Formulario dinámico.
-     * @param modeloVista Modelo de la vista.
+     * 
+     * @param coPrincipal  Controlador principal.
+     * @param bd           Modelo de base de datos.
+     * @param vistaCRUD    Vista principal del CRUD.
+     * @param viFormulario Formulario dinï¿½mico.
+     * @param modeloVista  Modelo de la vista.
      */
     public ControladorCRUD(CoPrincipal coPrincipal, ModeloBaseDatos bd, VistaCRUD vistaCRUD, ViFormulario viFormulario,
             MoView modeloVista) {
@@ -189,7 +194,7 @@ public class ControladorCRUD {
     }
 
     /**
-     * Guarda un nuevo registro en la base de datos con la información del
+     * Guarda un nuevo registro en la base de datos con la informaciï¿½n del
      * formulario.
      */
     public void guardarNuevo() {
@@ -225,7 +230,7 @@ public class ControladorCRUD {
     }
 
     /**
-     * Actualiza el registro seleccionado en la base de datos con la información
+     * Actualiza el registro seleccionado en la base de datos con la informaciï¿½n
      * del formulario.
      */
     public void guardarActualizar() {
@@ -275,7 +280,7 @@ public class ControladorCRUD {
 
     /**
      * Elimina el registro seleccionado de la tabla y de la base de datos.
-     * Pide confirmación al usuario antes de proceder.
+     * Pide confirmaciï¿½n al usuario antes de proceder.
      */
     public void eliminarRegistro() {
         int fila = vistaCRUD.getPanelTabla().getTabla().getSelectedRow();
@@ -338,6 +343,7 @@ public class ControladorCRUD {
 
     /**
      * Obtiene el modelo de base de datos.
+     * 
      * @return El objeto ModeloBaseDatos.
      */
     public ModeloBaseDatos getBd() {
@@ -346,6 +352,7 @@ public class ControladorCRUD {
 
     /**
      * Establece el modelo de base de datos.
+     * 
      * @param bd El nuevo modelo.
      */
     public void setBd(ModeloBaseDatos bd) {
@@ -354,6 +361,7 @@ public class ControladorCRUD {
 
     /**
      * Obtiene la vista principal del CRUD.
+     * 
      * @return El objeto VistaCRUD.
      */
     public VistaCRUD getVistaCRUD() {
@@ -362,6 +370,7 @@ public class ControladorCRUD {
 
     /**
      * Obtiene el modelo de la vista.
+     * 
      * @return El objeto MoView.
      */
     public MoView getModeloVista() {
@@ -370,6 +379,7 @@ public class ControladorCRUD {
 
     /**
      * Establece el oyente para los eventos del formulario.
+     * 
      * @param oyente El nuevo ActionListener.
      */
     public void setOyente(ActionListener oyente) {

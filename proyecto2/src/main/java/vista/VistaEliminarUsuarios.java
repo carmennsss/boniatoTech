@@ -24,12 +24,12 @@ import modelo.ModeloBaseDatos;
 import modelo.ModeloClienteFTP;
 
 /**
- * Vista encargada de la interfaz para la eliminación de usuarios del sistema.
- * Proporciona una tabla para visualizar los usuarios registrados y botones 
+ * Vista encargada de la interfaz para la eliminaciï¿½n de usuarios del sistema.
+ * Proporciona una tabla para visualizar los usuarios registrados y botones
  * para ejecutar la baja tanto en la base de datos como en el servidor FTP.
  */
 public class VistaEliminarUsuarios extends JFrame {
-    /** Referencia a la vista de registro para permitir la navegación. */
+    /** Referencia a la vista de registro para permitir la navegaciï¿½n. */
     private VistaRegistroUsuarios vistaUsuarios;
 
     /** Modelo encargado de las operaciones en el servidor FTP. */
@@ -38,30 +38,30 @@ public class VistaEliminarUsuarios extends JFrame {
     /** Modelo encargado de las operaciones en la base de datos. */
     private ModeloBaseDatos bd;
 
-    /** Lista de etiquetas de texto para la gestión de internacionalización. */
+    /** Lista de etiquetas de texto para la gestiï¿½n de internacionalizaciï¿½n. */
     private ArrayList<JLabel> textos;
 
     /** Lista de botones de la interfaz. */
     private ArrayList<JButton> botones;
 
-    /** Botón para ejecutar la acción de eliminar. */
+    /** Botï¿½n para ejecutar la acciï¿½n de eliminar. */
     private JButton btnEliminar;
 
-    /** Botón para cancelar la operación y volver. */
+    /** Botï¿½n para cancelar la operaciï¿½n y volver. */
     private JButton btnVolver;
 
     /** Componente de tabla personalizado para mostrar la lista de usuarios. */
     private ViTabla tabla;
 
-    /** Imagen de fondo para la personalización estética de la ventana. */
+    /** Imagen de fondo para la personalizaciï¿½n estï¿½tica de la ventana. */
     private Image imagenFondo;
 
     /**
      * Constructor que inicializa la vista con las dependencias necesarias.
      *
      * @param vistaUsuarios Vista de registro previa.
-     * @param modeloFTP     Lógica del cliente FTP.
-     * @param bd            Lógica de la base de datos.
+     * @param modeloFTP     Lï¿½gica del cliente FTP.
+     * @param bd            Lï¿½gica de la base de datos.
      */
     public VistaEliminarUsuarios(VistaRegistroUsuarios vistaUsuarios, ModeloClienteFTP modeloFTP, ModeloBaseDatos bd) {
         this.vistaUsuarios = vistaUsuarios;
@@ -71,7 +71,8 @@ public class VistaEliminarUsuarios extends JFrame {
     }
 
     /**
-     * Configura la ventana y orquesta la creación de todos los componentes visuales.
+     * Configura la ventana y orquesta la creaciï¿½n de todos los componentes
+     * visuales.
      */
     private void propiedades() {
         configurarVentana();
@@ -82,7 +83,7 @@ public class VistaEliminarUsuarios extends JFrame {
     }
 
     /**
-     * Establece los parámetros básicos del JFrame.
+     * Establece los parï¿½metros bï¿½sicos del JFrame.
      */
     private void configurarVentana() {
         this.textos = new ArrayList<>();
@@ -97,7 +98,7 @@ public class VistaEliminarUsuarios extends JFrame {
     }
 
     /**
-     * Carga y configura el panel de fondo con imagen o color sólido.
+     * Carga y configura el panel de fondo con imagen o color sï¿½lido.
      */
     private void configurarFondo() {
         URL url = getClass().getResource("/fondo_abstracto_2.png");
@@ -125,7 +126,7 @@ public class VistaEliminarUsuarios extends JFrame {
     }
 
     /**
-     * Configura la sección superior con el título dinámico.
+     * Configura la secciï¿½n superior con el tï¿½tulo dinï¿½mico.
      */
     private void configurarTitulo() {
         JLabel titulo = new JLabel(modelo.MoTextos.del_user_title);
@@ -176,7 +177,7 @@ public class VistaEliminarUsuarios extends JFrame {
     }
 
     /**
-     * Configura la zona inferior con los botones de acción principal.
+     * Configura la zona inferior con los botones de acciï¿½n principal.
      */
     private void configurarBotones() {
         JPanel panelSur = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
@@ -198,9 +199,9 @@ public class VistaEliminarUsuarios extends JFrame {
     }
 
     /**
-     * Aplica el esquema de diseño institucional a los botones.
+     * Aplica el esquema de diseï¿½o institucional a los botones.
      *
-     * @param btn     Botón a procesar.
+     * @param btn     Botï¿½n a procesar.
      * @param bgColor Color de fondo deseado.
      */
     private void estilarBoton(JButton btn, Color bgColor) {
@@ -222,7 +223,7 @@ public class VistaEliminarUsuarios extends JFrame {
     }
 
     /**
-     * Actualiza dinámicamente los textos de la interfaz según el idioma.
+     * Actualiza dinï¿½micamente los textos de la interfaz segï¿½n el idioma.
      */
     public void actualizarTextos() {
         this.setTitle(modelo.MoTextos.del_user_title);
@@ -233,10 +234,11 @@ public class VistaEliminarUsuarios extends JFrame {
         btnVolver.setText(modelo.MoTextos.del_btn_back);
     }
 
-    // --- GETTERS Y SETTERS AL FINAL ---
+    // --- GETTERS Y SETTERS ---
 
     /**
-     * Obtiene el botón de eliminar.
+     * Obtiene el botï¿½n de eliminar.
+     * 
      * @return El objeto JButton.
      */
     public JButton getBtnEliminar() {
@@ -244,15 +246,17 @@ public class VistaEliminarUsuarios extends JFrame {
     }
 
     /**
-     * Establece el botón de eliminar.
-     * @param btnEliminar Nueva instancia de botón.
+     * Establece el botï¿½n de eliminar.
+     * 
+     * @param btnEliminar Nueva instancia de botï¿½n.
      */
     public void setBtnEliminar(JButton btnEliminar) {
         this.btnEliminar = btnEliminar;
     }
 
     /**
-     * Obtiene el botón de volver.
+     * Obtiene el botï¿½n de volver.
+     * 
      * @return El objeto JButton.
      */
     public JButton getBtnVolver() {
@@ -260,8 +264,9 @@ public class VistaEliminarUsuarios extends JFrame {
     }
 
     /**
-     * Establece el botón de volver.
-     * @param btnVolver Nueva instancia de botón.
+     * Establece el botï¿½n de volver.
+     * 
+     * @param btnVolver Nueva instancia de botï¿½n.
      */
     public void setBtnVolver(JButton btnVolver) {
         this.btnVolver = btnVolver;
@@ -269,6 +274,7 @@ public class VistaEliminarUsuarios extends JFrame {
 
     /**
      * Obtiene el panel de la tabla.
+     * 
      * @return El objeto ViTabla.
      */
     public ViTabla getTabla() {
@@ -277,6 +283,7 @@ public class VistaEliminarUsuarios extends JFrame {
 
     /**
      * Establece la tabla de usuarios.
+     * 
      * @param tabla Nueva instancia de ViTabla.
      */
     public void setTabla(ViTabla tabla) {
@@ -285,6 +292,7 @@ public class VistaEliminarUsuarios extends JFrame {
 
     /**
      * Obtiene la lista completa de botones de la vista.
+     * 
      * @return ArrayList de botones.
      */
     public ArrayList<JButton> getBotones() {

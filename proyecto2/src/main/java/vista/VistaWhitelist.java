@@ -28,36 +28,41 @@ import javax.swing.border.EmptyBorder;
 import modelo.MoTextos;
 
 /**
- * Vista encargada de la gestión de la Whitelist (lista blanca) de correos permitidos.
- * Esta interfaz permite a los administradores del sistema añadir nuevas direcciones
- * autorizadas o eliminar las existentes a través de una tabla dinámica.
+ * Vista encargada de la gestiï¿½n de la Whitelist (lista blanca) de correos
+ * permitidos.
+ * Esta interfaz permite a los administradores del sistema aï¿½adir nuevas
+ * direcciones
+ * autorizadas o eliminar las existentes a travï¿½s de una tabla dinï¿½mica.
  */
 public class VistaWhitelist extends JFrame {
-    /** Lista que almacena las instancias de los botones de acción de la vista. */
+    /** Lista que almacena las instancias de los botones de acciï¿½n de la vista. */
     private ArrayList<JButton> botones;
 
     /** Panel personalizado que contiene la tabla de datos y su modelo. */
     private ViTabla tabla;
 
-    /** Campo de texto utilizado en el diálogo modal para capturar el email. */
+    /** Campo de texto utilizado en el diï¿½logo modal para capturar el email. */
     private JTextField txtEmail;
 
-    /** Campo de texto utilizado en el diálogo modal para capturar el nombre del usuario. */
+    /**
+     * Campo de texto utilizado en el diï¿½logo modal para capturar el nombre del
+     * usuario.
+     */
     private JTextField txtNombre;
 
-    /** Imagen de fondo para la personalización estética de la ventana. */
+    /** Imagen de fondo para la personalizaciï¿½n estï¿½tica de la ventana. */
     private Image imagenFondo;
 
-    /** Botón para disparar el flujo de adición de un nuevo registro. */
+    /** Botï¿½n para disparar el flujo de adiciï¿½n de un nuevo registro. */
     private JButton btnAnadir;
 
-    /** Botón para eliminar un registro seleccionado de la lista de confianza. */
+    /** Botï¿½n para eliminar un registro seleccionado de la lista de confianza. */
     private JButton btnDesasignar;
 
-    /** Botón para regresar a la vista de administración principal. */
+    /** Botï¿½n para regresar a la vista de administraciï¿½n principal. */
     private JButton btnVolver;
 
-    /** Etiqueta que muestra el título principal de la sección. */
+    /** Etiqueta que muestra el tï¿½tulo principal de la secciï¿½n. */
     private JLabel titulo;
 
     /**
@@ -69,8 +74,8 @@ public class VistaWhitelist extends JFrame {
     }
 
     /**
-     * Orquesta la configuración de la ventana invocando los métodos de diseño
-     * y disposición de componentes.
+     * Orquesta la configuraciï¿½n de la ventana invocando los mï¿½todos de diseï¿½o
+     * y disposiciï¿½n de componentes.
      */
     private void propiedades() {
         configurarVentana();
@@ -81,7 +86,7 @@ public class VistaWhitelist extends JFrame {
     }
 
     /**
-     * Establece los parámetros básicos del JFrame como tamaño, posición inicial
+     * Establece los parï¿½metros bï¿½sicos del JFrame como tamaï¿½o, posiciï¿½n inicial
      * y comportamiento de cierre.
      */
     private void configurarVentana() {
@@ -126,7 +131,8 @@ public class VistaWhitelist extends JFrame {
     }
 
     /**
-     * Crea y posiciona el título de la ventana dentro de un panel con bordes redondeados.
+     * Crea y posiciona el tï¿½tulo de la ventana dentro de un panel con bordes
+     * redondeados.
      */
     private void configurarTitulo() {
         titulo = new JLabel(MoTextos.whitelist_title);
@@ -172,7 +178,8 @@ public class VistaWhitelist extends JFrame {
     }
 
     /**
-     * Instancia los botones de acción y los organiza en la parte inferior (Sur) de la ventana.
+     * Instancia los botones de acciï¿½n y los organiza en la parte inferior (Sur) de
+     * la ventana.
      */
     private void configurarBotones() {
         JPanel panelSur = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
@@ -198,9 +205,10 @@ public class VistaWhitelist extends JFrame {
     }
 
     /**
-     * Aplica el esquema de colores, fuentes y cursores unificado a un botón.
-     * @param btn El botón a procesar.
-     * @param bgColor El color de fondo para el botón.
+     * Aplica el esquema de colores, fuentes y cursores unificado a un botï¿½n.
+     * 
+     * @param btn     El botï¿½n a procesar.
+     * @param bgColor El color de fondo para el botï¿½n.
      */
     private void estilarBoton(JButton btn, Color bgColor) {
         btn.setFont(Estilos.FONT_BOTON);
@@ -213,7 +221,9 @@ public class VistaWhitelist extends JFrame {
     }
 
     /**
-     * Aplica estilos visuales (fuente, borde, fondo) a los campos de entrada de datos.
+     * Aplica estilos visuales (fuente, borde, fondo) a los campos de entrada de
+     * datos.
+     * 
      * @param input El componente de entrada a estilar.
      */
     private void estilarInput(JComponent input) {
@@ -227,10 +237,12 @@ public class VistaWhitelist extends JFrame {
     }
 
     /**
-     * Crea un botón configurado específicamente para ser usado en ventanas emergentes.
-     * @param texto Texto que mostrará el botón.
-     * @param color Color de fondo del botón.
-     * @return El botón configurado.
+     * Crea un botï¿½n configurado especï¿½ficamente para ser usado en ventanas
+     * emergentes.
+     * 
+     * @param texto Texto que mostrarï¿½ el botï¿½n.
+     * @param color Color de fondo del botï¿½n.
+     * @return El botï¿½n configurado.
      */
     private JButton crearBotonDialogo(String texto, Color color) {
         JButton btn = new JButton(texto);
@@ -245,8 +257,10 @@ public class VistaWhitelist extends JFrame {
     }
 
     /**
-     * Despliega un diálogo modal para solicitar los datos del nuevo correo a añadir.
-     * @return 0 si el usuario confirma la acción ("Añadir"), 1 si la cancela.
+     * Despliega un diï¿½logo modal para solicitar los datos del nuevo correo a
+     * aï¿½adir.
+     * 
+     * @return 0 si el usuario confirma la acciï¿½n ("Aï¿½adir"), 1 si la cancela.
      */
     public int mostrarAgregarUsuario() {
         final JDialog dialog = new JDialog(this, MoTextos.whitelist_dialog_title, true);
@@ -288,8 +302,14 @@ public class VistaWhitelist extends JFrame {
         buttonPanel.add(btnCancel);
         panel.add(buttonPanel);
 
-        btnNew.addActionListener(e -> { result[0] = 0; dialog.dispose(); });
-        btnCancel.addActionListener(e -> { result[0] = 1; dialog.dispose(); });
+        btnNew.addActionListener(e -> {
+            result[0] = 0;
+            dialog.dispose();
+        });
+        btnCancel.addActionListener(e -> {
+            result[0] = 1;
+            dialog.dispose();
+        });
 
         dialog.add(panel);
         dialog.pack();
@@ -300,8 +320,8 @@ public class VistaWhitelist extends JFrame {
     }
 
     /**
-     * Actualiza dinámicamente los textos de la interfaz y las cabeceras de la
-     * tabla según el idioma configurado en MoTextos.
+     * Actualiza dinï¿½micamente los textos de la interfaz y las cabeceras de la
+     * tabla segï¿½n el idioma configurado en MoTextos.
      */
     public void actualizarTextos() {
         this.setTitle(MoTextos.whitelist_title);
@@ -324,10 +344,11 @@ public class VistaWhitelist extends JFrame {
         this.setVisible(true);
     }
 
-    // --- SECCIÓN DE GETTERS Y SETTERS CON JAVADOC ---
+    // --- GETTERS Y SETTERS ---
 
     /**
      * Obtiene el panel que contiene la tabla de datos.
+     * 
      * @return El componente ViTabla de la vista.
      */
     public ViTabla getTabla() {
@@ -336,6 +357,7 @@ public class VistaWhitelist extends JFrame {
 
     /**
      * Establece un nuevo panel de tabla para la vista.
+     * 
      * @param tabla El objeto ViTabla a asignar.
      */
     public void setTabla(ViTabla tabla) {
@@ -343,7 +365,8 @@ public class VistaWhitelist extends JFrame {
     }
 
     /**
-     * Obtiene la lista completa de botones de acción.
+     * Obtiene la lista completa de botones de acciï¿½n.
+     * 
      * @return Un ArrayList con los objetos JButton.
      */
     public ArrayList<JButton> getBotones() {
@@ -351,7 +374,8 @@ public class VistaWhitelist extends JFrame {
     }
 
     /**
-     * Obtiene el campo de entrada para el correo electrónico.
+     * Obtiene el campo de entrada para el correo electrï¿½nico.
+     * 
      * @return El objeto JTextField de email.
      */
     public JTextField getTxtEmail() {
@@ -360,6 +384,7 @@ public class VistaWhitelist extends JFrame {
 
     /**
      * Obtiene el campo de entrada para el nombre de usuario.
+     * 
      * @return El objeto JTextField de nombre.
      */
     public JTextField getTxtNombre() {
@@ -367,7 +392,8 @@ public class VistaWhitelist extends JFrame {
     }
 
     /**
-     * Obtiene el botón encargado de la acción de añadir.
+     * Obtiene el botï¿½n encargado de la acciï¿½n de aï¿½adir.
+     * 
      * @return La instancia de JButton correspondiente.
      */
     public JButton getBtnAnadir() {
@@ -375,7 +401,8 @@ public class VistaWhitelist extends JFrame {
     }
 
     /**
-     * Obtiene el botón encargado de la acción de desasignar/quitar.
+     * Obtiene el botï¿½n encargado de la acciï¿½n de desasignar/quitar.
+     * 
      * @return La instancia de JButton correspondiente.
      */
     public JButton getBtnDesasignar() {
@@ -383,7 +410,8 @@ public class VistaWhitelist extends JFrame {
     }
 
     /**
-     * Obtiene el botón encargado de la navegación de retorno.
+     * Obtiene el botï¿½n encargado de la navegaciï¿½n de retorno.
+     * 
      * @return La instancia de JButton correspondiente.
      */
     public JButton getBtnVolver() {

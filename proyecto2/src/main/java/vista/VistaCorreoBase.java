@@ -20,40 +20,40 @@ import modelo.Correo;
 import modelo.MoTextos;
 
 /**
- * Vista base para la visualización y composición de correos electrónicos. Actúa
- * como una plantilla dinámica que se adapta mediante sus constructores para el
- * envío de nuevos mensajes o la lectura de correos recibidos.
+ * Vista base para la visualizaciï¿½n y composiciï¿½n de correos electrï¿½nicos. Actï¿½a
+ * como una plantilla dinï¿½mica que se adapta mediante sus constructores para el
+ * envï¿½o de nuevos mensajes o la lectura de correos recibidos.
  */
 public class VistaCorreoBase extends JFrame {
 
-	/** Panel principal que organiza la distribución de la ventana. */
+	/** Panel principal que organiza la distribuciï¿½n de la ventana. */
 	private JPanel panelPrincipal;
 
 	/** Campo para introducir el destinatario o visualizar el remitente. */
 	private JTextField textoPara;
 
-	/** Campo para el título o tema del mensaje. */
+	/** Campo para el tï¿½tulo o tema del mensaje. */
 	private JTextField textoAsunto;
 
-	/** Área principal para el contenido de texto del mensaje. */
+	/** ï¿½rea principal para el contenido de texto del mensaje. */
 	private JTextArea textoCuerpo;
 
-	/** Botón para procesar el envío del correo redactado. */
+	/** Botï¿½n para procesar el envï¿½o del correo redactado. */
 	private JButton botonEnviar;
 
-	/** Botón para eliminar el correo visualizado de la bandeja. */
+	/** Botï¿½n para eliminar el correo visualizado de la bandeja. */
 	private JButton botonEliminar;
 
-	/** Botón para guardar el correo localmente en formato EML. */
+	/** Botï¿½n para guardar el correo localmente en formato EML. */
 	private JButton botonExportar;
 
-	/** Botón para revertir el estado del correo a "No leído". */
+	/** Botï¿½n para revertir el estado del correo a "No leï¿½do". */
 	private JButton botonNoLeido;
 
-	/** Botón para abrir el selector de archivos y adjuntar ficheros. */
+	/** Botï¿½n para abrir el selector de archivos y adjuntar ficheros. */
 	private JButton botonAdjuntar;
 
-	/** Dirección de correo electrónico del usuario que utiliza la aplicación. */
+	/** Direcciï¿½n de correo electrï¿½nico del usuario que utiliza la aplicaciï¿½n. */
 	private String remitente;
 
 	/** Lista de archivos locales seleccionados para ser enviados como adjuntos. */
@@ -65,13 +65,13 @@ public class VistaCorreoBase extends JFrame {
 	/** Etiqueta descriptiva para el campo de asunto. */
 	private JLabel lblAsunto;
 
-	/** Etiqueta descriptiva para el área del cuerpo del mensaje. */
+	/** Etiqueta descriptiva para el ï¿½rea del cuerpo del mensaje. */
 	private JLabel lblMessage;
 
 	/**
-	 * Constructor para el modo de redacción de nuevo correo.
+	 * Constructor para el modo de redacciï¿½n de nuevo correo.
 	 *
-	 * @param remitente Dirección de correo del usuario que envía el mensaje.
+	 * @param remitente Direcciï¿½n de correo del usuario que envï¿½a el mensaje.
 	 */
 	public VistaCorreoBase(String remitente) {
 		this.remitente = remitente;
@@ -94,7 +94,7 @@ public class VistaCorreoBase extends JFrame {
 	}
 
 	/**
-	 * Configura el comportamiento inicial de la ventana según el modo de operación.
+	 * Configura el comportamiento inicial de la ventana segï¿½n el modo de operaciï¿½n.
 	 * 
 	 * @param esEnvio true si la vista es para redactar, false si es para lectura.
 	 */
@@ -125,9 +125,9 @@ public class VistaCorreoBase extends JFrame {
 	}
 
 	/**
-	 * Organiza los componentes en paneles y establece el diseño visual.
+	 * Organiza los componentes en paneles y establece el diseï¿½o visual.
 	 * 
-	 * @param esEnvio Determina qué botones y etiquetas mostrar.
+	 * @param esEnvio Determina quï¿½ botones y etiquetas mostrar.
 	 */
 	private void ensamblarVista(boolean esEnvio) {
 		panelPrincipal = new JPanel(new BorderLayout());
@@ -282,7 +282,7 @@ public class VistaCorreoBase extends JFrame {
 		repaint();
 	}
 
-	// --- GETTERS Y SETTERS AL FINAL CON JAVADOC ---
+	// --- GETTERS Y SETTERS ---
 
 	/**
 	 * Obtiene la lista de archivos adjuntos cargados.
@@ -312,7 +312,7 @@ public class VistaCorreoBase extends JFrame {
 	}
 
 	/**
-	 * Obtiene el área de texto del cuerpo del mensaje.
+	 * Obtiene el ï¿½rea de texto del cuerpo del mensaje.
 	 * 
 	 * @return El componente JTextArea correspondiente.
 	 */
@@ -321,7 +321,7 @@ public class VistaCorreoBase extends JFrame {
 	}
 
 	/**
-	 * Obtiene el botón de envío de correo.
+	 * Obtiene el botï¿½n de envï¿½o de correo.
 	 * 
 	 * @return El objeto JButton para enviar.
 	 */
@@ -330,7 +330,7 @@ public class VistaCorreoBase extends JFrame {
 	}
 
 	/**
-	 * Obtiene la dirección del remitente actual.
+	 * Obtiene la direcciï¿½n del remitente actual.
 	 * 
 	 * @return Cadena con el correo del remitente.
 	 */
@@ -339,7 +339,7 @@ public class VistaCorreoBase extends JFrame {
 	}
 
 	/**
-	 * Establece la dirección del remitente del correo.
+	 * Establece la direcciï¿½n del remitente del correo.
 	 * 
 	 * @param remitente Nuevo correo del remitente.
 	 */
@@ -348,7 +348,7 @@ public class VistaCorreoBase extends JFrame {
 	}
 
 	/**
-	 * Obtiene el botón de eliminación de correo.
+	 * Obtiene el botï¿½n de eliminaciï¿½n de correo.
 	 * 
 	 * @return El objeto JButton para eliminar.
 	 */
@@ -357,16 +357,16 @@ public class VistaCorreoBase extends JFrame {
 	}
 
 	/**
-	 * Establece una nueva instancia para el botón de eliminar.
+	 * Establece una nueva instancia para el botï¿½n de eliminar.
 	 * 
-	 * @param botonEliminar El nuevo botón JButton.
+	 * @param botonEliminar El nuevo botï¿½n JButton.
 	 */
 	public void setBotonEliminar(JButton botonEliminar) {
 		this.botonEliminar = botonEliminar;
 	}
 
 	/**
-	 * Obtiene el botón de exportación a formato EML.
+	 * Obtiene el botï¿½n de exportaciï¿½n a formato EML.
 	 * 
 	 * @return El objeto JButton para exportar.
 	 */
@@ -375,16 +375,16 @@ public class VistaCorreoBase extends JFrame {
 	}
 
 	/**
-	 * Establece una nueva instancia para el botón de exportar.
+	 * Establece una nueva instancia para el botï¿½n de exportar.
 	 * 
-	 * @param botonExportar El nuevo botón JButton.
+	 * @param botonExportar El nuevo botï¿½n JButton.
 	 */
 	public void setBotonExportar(JButton botonExportar) {
 		this.botonExportar = botonExportar;
 	}
 
 	/**
-	 * Obtiene el botón para marcar correos como no leídos.
+	 * Obtiene el botï¿½n para marcar correos como no leï¿½dos.
 	 * 
 	 * @return El objeto JButton correspondiente.
 	 */
@@ -393,16 +393,16 @@ public class VistaCorreoBase extends JFrame {
 	}
 
 	/**
-	 * Establece el botón para la función de "No leído".
+	 * Establece el botï¿½n para la funciï¿½n de "No leï¿½do".
 	 * 
-	 * @param botonNoLeido El nuevo botón JButton.
+	 * @param botonNoLeido El nuevo botï¿½n JButton.
 	 */
 	public void setBotonNoLeido(JButton botonNoLeido) {
 		this.botonNoLeido = botonNoLeido;
 	}
 
 	/**
-	 * Obtiene el botón para adjuntar archivos locales.
+	 * Obtiene el botï¿½n para adjuntar archivos locales.
 	 * 
 	 * @return El objeto JButton correspondiente.
 	 */
@@ -411,9 +411,9 @@ public class VistaCorreoBase extends JFrame {
 	}
 
 	/**
-	 * Establece el botón para la función de adjuntos.
+	 * Establece el botï¿½n para la funciï¿½n de adjuntos.
 	 * 
-	 * @param botonAdjuntar El nuevo botón JButton.
+	 * @param botonAdjuntar El nuevo botï¿½n JButton.
 	 */
 	public void setBotonAdjuntar(JButton botonAdjuntar) {
 		this.botonAdjuntar = botonAdjuntar;

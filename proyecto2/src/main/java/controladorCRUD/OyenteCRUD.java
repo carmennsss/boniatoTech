@@ -1,3 +1,7 @@
+/*
+* @author Carmen - BoniatoTech
+* @version 1.0
+*/
 package controladorCRUD;
 
 import controladorPrincipal.CoPrincipal;
@@ -14,23 +18,23 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Oyente que maneja los eventos de la vista CRUD (botones de menú de tablas y
- * botones de acción nuevo/actualizar).
+ * Oyente que maneja los eventos de la vista CRUD (botones de menï¿½ de tablas y
+ * botones de acciï¿½n nuevo/actualizar).
  */
 public class OyenteCRUD implements ActionListener {
-    /** Controlador principal de la aplicación. */
+    /** Controlador principal de la aplicaciï¿½n. */
     private CoPrincipal controlador;
 
     /** Vista CRUD principal. */
     private VistaCRUD vistaCRUD;
 
-    /** Vista del formulario de edición. */
+    /** Vista del formulario de ediciï¿½n. */
     private ViFormulario viFormulario;
 
-    /** Vista del menú principal. */
+    /** Vista del menï¿½ principal. */
     private VistaMenuPrincipal menuPrincipal;
 
-    /** Modelo de vista para gestión de datos. */
+    /** Modelo de vista para gestiï¿½n de datos. */
     private MoView modeloVista;
 
     /**
@@ -40,7 +44,7 @@ public class OyenteCRUD implements ActionListener {
      * @param vistaCRUD     Vista CRUD.
      * @param viFormulario  Vista del formulario.
      * @param modeloVista   Modelo de vista.
-     * @param menuPrincipal Vista del menú principal.
+     * @param menuPrincipal Vista del menï¿½ principal.
      */
     public OyenteCRUD(CoPrincipal controlador, VistaCRUD vistaCRUD, ViFormulario viFormulario, MoView modeloVista,
             VistaMenuPrincipal menuPrincipal) {
@@ -53,10 +57,10 @@ public class OyenteCRUD implements ActionListener {
 
     /**
      * Maneja las acciones de los botones.
-     * Cambia la tabla activa según el botón del menú presionado o abre formularios
-     * de edición.
+     * Cambia la tabla activa segï¿½n el botï¿½n del menï¿½ presionado o abre formularios
+     * de ediciï¿½n.
      *
-     * @param e El evento de acción.
+     * @param e El evento de acciï¿½n.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -96,7 +100,7 @@ public class OyenteCRUD implements ActionListener {
     }
 
     /**
-     * Resetea el color de todos los botones del menú a su estado por defecto.
+     * Resetea el color de todos los botones del menï¿½ a su estado por defecto.
      */
     private void resetearEstiloBotones() {
         for (JButton btn : vistaCRUD.getPanelMenu().getBotones()) {
@@ -108,6 +112,7 @@ public class OyenteCRUD implements ActionListener {
 
     /**
      * Obtiene el controlador principal.
+     * 
      * @return El controlador principal.
      */
     public CoPrincipal getControlador() {
@@ -116,6 +121,7 @@ public class OyenteCRUD implements ActionListener {
 
     /**
      * Establece el controlador principal.
+     * 
      * @param controlador El nuevo controlador principal.
      */
     public void setControlador(CoPrincipal controlador) {
@@ -124,6 +130,7 @@ public class OyenteCRUD implements ActionListener {
 
     /**
      * Obtiene la vista CRUD principal.
+     * 
      * @return La vista CRUD.
      */
     public VistaCRUD getVistaCRUD() {
@@ -132,6 +139,7 @@ public class OyenteCRUD implements ActionListener {
 
     /**
      * Establece la vista CRUD principal.
+     * 
      * @param vistaCRUD La nueva vista CRUD.
      */
     public void setVistaCRUD(VistaCRUD vistaCRUD) {
@@ -139,7 +147,8 @@ public class OyenteCRUD implements ActionListener {
     }
 
     /**
-     * Obtiene la vista del formulario de edición.
+     * Obtiene la vista del formulario de ediciï¿½n.
+     * 
      * @return La vista del formulario.
      */
     public ViFormulario getViFormulario() {
@@ -147,7 +156,8 @@ public class OyenteCRUD implements ActionListener {
     }
 
     /**
-     * Establece la vista del formulario de edición.
+     * Establece la vista del formulario de ediciï¿½n.
+     * 
      * @param viFormulario La nueva vista del formulario.
      */
     public void setViFormulario(ViFormulario viFormulario) {
@@ -156,6 +166,7 @@ public class OyenteCRUD implements ActionListener {
 
     /**
      * Obtiene el modelo de vista.
+     * 
      * @return El modelo de vista.
      */
     public MoView getModeloVista() {
@@ -164,6 +175,7 @@ public class OyenteCRUD implements ActionListener {
 
     /**
      * Establece el modelo de vista.
+     * 
      * @param modeloVista El nuevo modelo de vista.
      */
     public void setModeloVista(MoView modeloVista) {

@@ -1,3 +1,7 @@
+/*
+ * @author Carmen - BoniatoTech
+ * @version 1.0
+ */
 package controladorWhitelist;
 
 import java.awt.event.ActionEvent;
@@ -31,9 +35,9 @@ public class OyenteWhitelist implements ActionListener, MouseListener {
     }
 
     /**
-     * Maneja los eventos de acción (clics en botones).
+     * Maneja los eventos de acciï¿½n (clics en botones).
      *
-     * @param e El evento de acción.
+     * @param e El evento de acciï¿½n.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -49,9 +53,9 @@ public class OyenteWhitelist implements ActionListener, MouseListener {
     }
 
     /**
-     * Maneja los clics del ratón en la tabla para seleccionar usuarios.
+     * Maneja los clics del ratï¿½n en la tabla para seleccionar usuarios.
      *
-     * @param e El evento de ratón.
+     * @param e El evento de ratï¿½n.
      */
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -67,36 +71,36 @@ public class OyenteWhitelist implements ActionListener, MouseListener {
     }
 
     /**
-     * Método no implementado de la interfaz MouseListener.
+     * Mï¿½todo no implementado de la interfaz MouseListener.
      *
-     * @param e El evento de ratón.
+     * @param e El evento de ratï¿½n.
      */
     @Override
     public void mouseEntered(MouseEvent e) {
     }
 
     /**
-     * Método no implementado de la interfaz MouseListener.
+     * Mï¿½todo no implementado de la interfaz MouseListener.
      *
-     * @param e El evento de ratón.
+     * @param e El evento de ratï¿½n.
      */
     @Override
     public void mouseExited(MouseEvent e) {
     }
 
     /**
-     * Método no implementado de la interfaz MouseListener.
+     * Mï¿½todo no implementado de la interfaz MouseListener.
      *
-     * @param e El evento de ratón.
+     * @param e El evento de ratï¿½n.
      */
     @Override
     public void mousePressed(MouseEvent e) {
     }
 
     /**
-     * Método no implementado de la interfaz MouseListener.
+     * Mï¿½todo no implementado de la interfaz MouseListener.
      *
-     * @param e El evento de ratón.
+     * @param e El evento de ratï¿½n.
      */
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -106,6 +110,7 @@ public class OyenteWhitelist implements ActionListener, MouseListener {
 
     /**
      * Obtiene la vista de whitelist asociada.
+     * 
      * @return El objeto VistaWhitelist.
      */
     public VistaWhitelist getVista() {
@@ -114,6 +119,7 @@ public class OyenteWhitelist implements ActionListener, MouseListener {
 
     /**
      * Establece la vista de whitelist asociada.
+     * 
      * @param vista La nueva vista.
      */
     public void setVista(VistaWhitelist vista) {
@@ -122,6 +128,7 @@ public class OyenteWhitelist implements ActionListener, MouseListener {
 
     /**
      * Obtiene el controlador de whitelist asociado.
+     * 
      * @return El objeto ControladorWhitelist.
      */
     public ControladorWhitelist getController() {
@@ -130,6 +137,7 @@ public class OyenteWhitelist implements ActionListener, MouseListener {
 
     /**
      * Establece el controlador de whitelist asociado.
+     * 
      * @param controller El nuevo controlador.
      */
     public void setController(ControladorWhitelist controller) {
