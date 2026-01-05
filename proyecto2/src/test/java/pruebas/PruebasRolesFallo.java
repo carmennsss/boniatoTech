@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import controladorRoles.ControladorRoles;
 import modelo.ModeloBaseDatos;
 import modelo.Rol;
 
@@ -24,9 +25,10 @@ import modelo.Rol;
 public class PruebasRolesFallo {
 
     private static ModeloBaseDatos modeloDB;
+    private static ControladorRoles controladorRoles;
 
     private String correo;
-    private Rol rol;
+    private int idRol;
     private String accion;
     private String descripcion;
 
@@ -34,13 +36,13 @@ public class PruebasRolesFallo {
      * Constructor para la prueba parametrizada.
      * 
      * @param correo      Correo del usuario
-     * @param rol         Rol a asignar o desasignar
+     * @param idRol       ID del Rol a asignar o desasignar
      * @param accion      Accion a realizar (ASIGNAR o DESASIGNAR)
      * @param descripcion Descripcion del caso de prueba fallido
      */
-    public PruebasRolesFallo(String correo, Rol rol, String accion, String descripcion) {
+    public PruebasRolesFallo(String correo, int idRol, String accion, String descripcion) {
         this.correo = correo;
-        this.rol = rol;
+        this.idRol = idRol;
         this.accion = accion;
         this.descripcion = descripcion;
     }
@@ -51,6 +53,7 @@ public class PruebasRolesFallo {
     @BeforeClass
     public static void setUpBeforeClass() {
         modeloDB = new ModeloBaseDatos();
+        controladorRoles = new ControladorRoles(null, modeloDB, null, null, null, null, null, null);
     }
 
     /**
@@ -72,10 +75,9 @@ public class PruebasRolesFallo {
     @Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
-                { "noexiste@gmail.com", new Rol(1, "Admin", "Administrador"), "ASIGNAR", "Usuario inexistente" },
-                { "admin@admin", new Rol(99999, "RolInvalido", "No existe"), "ASIGNAR", "Rol inexistente" },
-                { "", new Rol(1, "Admin", "Administrador"), "ASIGNAR", "Email vacio" },
-                { "admin@admin", null, "ASIGNAR", "Rol null" }
+                { "noexiste@gmail.com", 1, "ASIGNAR", "Usuario inexistente" },
+                { "admin@admin", 9999, "ASIGNAR", "Rol inexistente" },
+                { "", 1, "ASIGNAR", "Email vacio" }
         });
     }
 
@@ -89,31 +91,35 @@ public class PruebasRolesFallo {
         boolean fallo = false;
 
         try {
-            if (rol == null || correo == null || correo.isEmpty()) {
+            Rol rol = new Rol(idRol, "Rol Test", "Descripcion Test");
+            ArrayList<String> correos = new ArrayList<>(Arrays.asList(correo));
+            boolean asigna = accion.equals("ASIGNAR");
+
+            // Esto lo hace la aplicacion sola mediante un JTable (usuarios) y un JComboBox
+            // (roles)
+
+            String sqlComprobarUsuario = "SELECT * FROM usuarios WHERE email = ?;";
+            boolean usuarioExiste = modeloDB.existeRegistro(sqlComprobarUsuario,
+                    new ArrayList<>(Arrays.asList(correo)));
+
+            String sqlComprobarRol = "SELECT * FROM roles WHERE id_roles = ?;";
+            boolean rolExiste = modeloDB.existeRegistro(sqlComprobarRol,
+                    new ArrayList<>(Arrays.asList(String.valueOf(idRol))));
+
+            if (!usuarioExiste || !rolExiste || correo.isEmpty()) {
                 fallo = true;
             } else {
-                String sqlComprobarUsuario = "SELECT * FROM usuarios WHERE email = ?;";
-                boolean usuarioExiste = modeloDB.existeRegistro(sqlComprobarUsuario,
-                        new ArrayList<>(Arrays.asList(correo)));
+                controladorRoles.asignarRol(asigna, correos, rol);
 
-                String sqlComprobarRol = "SELECT * FROM roles WHERE id_roles = ?;";
-                boolean rolExiste = modeloDB.existeRegistro(sqlComprobarRol,
-                        new ArrayList<>(Arrays.asList(String.valueOf(rol.getId_roles()))));
+                String sqlComprobar = "SELECT * FROM usuarios_roles WHERE email_usuario = ? AND roles_id = ?;";
+                boolean existe = modeloDB.existeRegistro(sqlComprobar,
+                        new ArrayList<>(Arrays.asList(correo, String.valueOf(idRol))));
 
-                if (!usuarioExiste || !rolExiste) {
+                if (accion.equals("ASIGNAR") && !existe) {
                     fallo = true;
-                } else {
-                    if (accion.equals("ASIGNAR")) {
-                        String sqlAsignar = "INSERT INTO usuarios_roles (email_usuario, roles_id) VALUES (?, ?);";
-                        int filas = modeloDB.ejecutarActualizacion(sqlAsignar,
-                                new ArrayList<>(Arrays.asList(correo, String.valueOf(rol.getId_roles()))));
-
-                        if (filas <= 0) {
-                            fallo = true;
-                        }
-                    }
                 }
             }
+
         } catch (Exception e) {
             System.out.println("Excepcion capturada (esperada): " + e.getMessage());
             fallo = true;
