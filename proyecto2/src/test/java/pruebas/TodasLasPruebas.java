@@ -17,7 +17,11 @@ import org.junit.runners.Suite.SuiteClasses;
         PruebasRolesExito.class,
         PruebasRolesFallo.class,
         PruebasEnvioCorreoExito.class,
-        PruebasEnvioCorreoFallo.class
+        PruebasEnvioCorreoFallo.class,
+        PruebasUsuariosExito.class,
+        PruebasUsuariosFallo.class,
+        PruebasArchivosExito.class,
+        PruebasArchivosFallo.class
 })
 public class TodasLasPruebas {
     // Esta clase permanece vacia, solo sirve como contenedor para la suite

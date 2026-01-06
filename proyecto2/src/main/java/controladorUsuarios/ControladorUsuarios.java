@@ -1,3 +1,8 @@
+/*
+* @author Daniel - BoniatoTech
+* @version 1.0
+*/
+
 package controladorUsuarios;
 
 import vista.VistaAdmin;

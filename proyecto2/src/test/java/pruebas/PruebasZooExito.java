@@ -35,7 +35,7 @@ public class PruebasZooExito {
     private Object objeto;
     private String accion;
 
-    /**
+    /** 
      * Constructor para la prueba parametrizada.
      * 
      * @param tabla  Nombre de la tabla a probar

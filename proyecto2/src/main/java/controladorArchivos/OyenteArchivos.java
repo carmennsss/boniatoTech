@@ -1,3 +1,8 @@
+/*
+* @author Daniel - BoniatoTech
+* @version 1.0
+*/
+
 package controladorArchivos;
 
 import java.awt.event.ActionEvent;
