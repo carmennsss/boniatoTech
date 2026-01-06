@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import modelo.Log;
+import modelo.MoTextos;
 import modelo.ModeloBaseDatos;
 
 /**
@@ -16,28 +17,29 @@ import modelo.ModeloBaseDatos;
  * Permite registrar acciones, consultar logs con filtros y exportar a CSV.
  */
 public class GestionLogs {
-	/** Conexi髇 a la base de datos. */
+	/** Conexi贸n a la base de datos. */
 	private static Connection conexion;
 
 	/**
-	 * Constructor de la gesti髇 de logs.
-	 * Inicializa la conexi髇 a la base de datos.
+	 * Constructor de la gesti贸n de logs.
+	 * Inicializa la conexi贸n a la base de datos.
 	 */
 	public GestionLogs() {
 		conexion = ModeloBaseDatos.getConexion();
 	}
 
 	/**
-	 * Consulta los logs de la base de datos aplicando un criterio de ordenaci髇.
+	 * Consulta los logs de la base de datos aplicando un criterio de ordenaci贸n.
 	 *
-	 * @param consulta Criterio de ordenaci髇 ("actions", "users", "dates",
-	 * "results").
+	 * @param consulta Criterio de ordenaci贸n ("actions", "users", "dates",
+	 *                 "results").
 	 * @return Lista de logs recuperados.
 	 */
 	public static ArrayList<Log> consultLogs(String consulta) {
 		if (conexion == null) {
 			conexion = ModeloBaseDatos.getConexion();
-			if (conexion == null) return new ArrayList<>();
+			if (conexion == null)
+				return new ArrayList<>();
 		}
 		ArrayList<Log> logs = new ArrayList<>();
 
@@ -76,12 +78,13 @@ public class GestionLogs {
 	 * Exporta todos los logs a un archivo CSV.
 	 *
 	 * @param file El archivo destino.
-	 * @return true si la exportaci髇 fue exitosa, false en caso contrario.
+	 * @return true si la exportaci贸n fue exitosa, false en caso contrario.
 	 */
 	public boolean exportLogs(File file) {
 		if (conexion == null) {
 			conexion = ModeloBaseDatos.getConexion();
-			if (conexion == null) return false;
+			if (conexion == null)
+				return false;
 		}
 
 		ArrayList<Log> logs = consultLogs("all");
@@ -89,12 +92,12 @@ public class GestionLogs {
 		try (FileWriter fw = new FileWriter(file)) {
 
 			if (logs == null || logs.isEmpty()) {
-				fw.write("There aren't logs registered in the database.\n");
+				fw.write(MoTextos.logs_csv_no_data + "\n");
 				return true;
 			}
 
 			// Cabecera CSV
-			fw.write("Date,User,Action,Result\n");
+			fw.write(MoTextos.logs_csv_header + "\n");
 
 			for (Log log : logs) {
 				fw.write(log.toString());
@@ -111,7 +114,7 @@ public class GestionLogs {
 	/**
 	 * Registra un nuevo log en la base de datos.
 	 *
-	 * @param log Objeto Log con la informaci髇 de la acci髇, usuario y resultado.
+	 * @param log Objeto Log con la informaci贸n de la acci贸n, usuario y resultado.
 	 */
 	public static void writeLog(Log log) {
 		if (conexion == null) {
@@ -140,25 +143,27 @@ public class GestionLogs {
 	}
 
 	/**
-	 * Muestra los logs en consola (m閠odo auxiliar no implementado).
+	 * Muestra los logs en consola (m茅todo auxiliar no implementado).
 	 */
 	public void mostrarLogs() {
-		// Implementaci髇 futura si es necesaria
+		// Implementaci贸n futura si es necesaria
 	}
 
 	// --- GETTERS Y SETTERS ---
 
 	/**
-	 * Obtiene la conexi髇 actual de la gesti髇 de logs.
-	 * @return La conexi髇 a la base de datos.
+	 * Obtiene la conexi贸n actual de la gesti贸n de logs.
+	 * 
+	 * @return La conexi贸n a la base de datos.
 	 */
 	public static Connection getConexion() {
 		return conexion;
 	}
 
 	/**
-	 * Establece la conexi髇 de la gesti髇 de logs.
-	 * @param conexion La nueva conexi髇.
+	 * Establece la conexi贸n de la gesti贸n de logs.
+	 * 
+	 * @param conexion La nueva conexi贸n.
 	 */
 	public static void setConexion(Connection conexion) {
 		GestionLogs.conexion = conexion;

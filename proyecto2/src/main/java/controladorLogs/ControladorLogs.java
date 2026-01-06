@@ -12,11 +12,11 @@ import vista.VistaLogs;
 
 /**
  * Controlador de la vista de Logs.
- * Gestiona la visualizaci髇, filtros y exportaci髇 de logs del sistema.
+ * Gestiona la visualizaci贸n, filtros y exportaci贸n de logs del sistema.
  */
 public class ControladorLogs {
 
-	/** Conexi髇 a la base de datos. */
+	/** Conexi贸n a la base de datos. */
 	private Connection conn;
 
 	/** Vista de logs. */
@@ -28,7 +28,7 @@ public class ControladorLogs {
 	/**
 	 * Constructor del controlador de logs.
 	 *
-	 * @param conn      Conexi髇 a la base de datos.
+	 * @param conn      Conexi贸n a la base de datos.
 	 * @param vistaLogs Vista de logs.
 	 */
 	public ControladorLogs(Connection conn, VistaLogs vistaLogs) {
@@ -40,23 +40,23 @@ public class ControladorLogs {
 	}
 
 	/**
-	 * Carga y filtra los logs en la vista seg鷑 el tipo de consulta.
-	 * Actualiza el t韙ulo de la vista seg鷑 el filtro aplicado.
+	 * Carga y filtra los logs en la vista seg煤n el tipo de consulta.
+	 * Actualiza el t铆tulo de la vista seg煤n el filtro aplicado.
 	 *
 	 * @param consulta Tipo de filtro ("actions", "users", "dates", "results", o
-	 * "all").
+	 *                 "all").
 	 */
 	public void cargarLogs(String consulta) {
 		ArrayList<Log> logs = new ArrayList<>();
 
 		if (consulta.equals("actions")) {
-			vistaLogs.setTituloTexto(MoTextos.logs_title + " - Acciones");
+			vistaLogs.setTituloTexto(MoTextos.logs_title + MoTextos.logs_filter_actions);
 		} else if (consulta.equals("users")) {
-			vistaLogs.setTituloTexto(MoTextos.logs_title + " - Usuarios");
+			vistaLogs.setTituloTexto(MoTextos.logs_title + MoTextos.logs_filter_users);
 		} else if (consulta.equals("dates")) {
-			vistaLogs.setTituloTexto(MoTextos.logs_title + " - Fechas");
+			vistaLogs.setTituloTexto(MoTextos.logs_title + MoTextos.logs_filter_dates);
 		} else if (consulta.equals("results")) {
-			vistaLogs.setTituloTexto(MoTextos.logs_title + " - Resultados");
+			vistaLogs.setTituloTexto(MoTextos.logs_title + MoTextos.logs_filter_results);
 		} else {
 			vistaLogs.setTituloTexto(MoTextos.logs_title);
 		}
@@ -84,7 +84,7 @@ public class ControladorLogs {
 	}
 
 	/**
-	 * Asigna los oyentes a los botones de exportaci髇 y volver.
+	 * Asigna los oyentes a los botones de exportaci贸n y volver.
 	 */
 	private void asignarOyenteBtnExport() {
 		vistaLogs.getBtnExport().addActionListener(new OyenteBtnExport(gestionLogs, vistaLogs));
@@ -94,16 +94,18 @@ public class ControladorLogs {
 	// --- GETTERS Y SETTERS ---
 
 	/**
-	 * Obtiene la conexi髇 a la base de datos.
-	 * @return La conexi髇 actual.
+	 * Obtiene la conexi贸n a la base de datos.
+	 * 
+	 * @return La conexi贸n actual.
 	 */
 	public Connection getConn() {
 		return conn;
 	}
 
 	/**
-	 * Establece la conexi髇 a la base de datos.
-	 * @param conn La nueva conexi髇.
+	 * Establece la conexi贸n a la base de datos.
+	 * 
+	 * @param conn La nueva conexi贸n.
 	 */
 	public void setConn(Connection conn) {
 		this.conn = conn;
@@ -111,6 +113,7 @@ public class ControladorLogs {
 
 	/**
 	 * Obtiene la vista de logs.
+	 * 
 	 * @return El objeto VistaLogs.
 	 */
 	public VistaLogs getVistaLogs() {
@@ -119,6 +122,7 @@ public class ControladorLogs {
 
 	/**
 	 * Establece la vista de logs.
+	 * 
 	 * @param vistaLogs La nueva vista.
 	 */
 	public void setVistaLogs(VistaLogs vistaLogs) {
@@ -127,6 +131,7 @@ public class ControladorLogs {
 
 	/**
 	 * Obtiene el gestor de logs.
+	 * 
 	 * @return El objeto GestionLogs.
 	 */
 	public GestionLogs getGestionLogs() {
