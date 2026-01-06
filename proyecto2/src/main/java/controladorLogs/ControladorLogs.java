@@ -35,15 +35,6 @@ public class ControladorLogs {
 		this.conn = conn;
 		this.vistaLogs = vistaLogs;
 		this.gestionLogs = new GestionLogs();
-
-		// Actualizar textos de botones programáticamente
-		if (vistaLogs.getBotonesConsultas() != null && vistaLogs.getBotonesConsultas().size() >= 4) {
-			vistaLogs.getBotonesConsultas().get(0).setText(MoTextos.btn_log_actions);
-			vistaLogs.getBotonesConsultas().get(1).setText(MoTextos.btn_log_users);
-			vistaLogs.getBotonesConsultas().get(2).setText(MoTextos.btn_log_dates);
-			vistaLogs.getBotonesConsultas().get(3).setText(MoTextos.btn_log_results);
-		}
-
 		asignarOyenteBtnExport();
 		asignarOyenteConsultaLogs();
 	}
