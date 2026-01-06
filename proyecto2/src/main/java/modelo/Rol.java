@@ -1,4 +1,4 @@
-﻿package modelo;
+package modelo;
 
 /**
  * Representa un rol de usuario dentro del sistema.
