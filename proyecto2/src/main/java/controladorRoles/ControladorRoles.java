@@ -370,27 +370,28 @@ public class ControladorRoles {
         String sql = "";
         String accion = "";
         if (asignar) {
-            accion = "asignado";
+            accion = MoTextos.msg_role_assigned;
             sql = "INSERT INTO usuarios_roles (email_usuario, roles_id) VALUES (?, ?);";
         } else {
-            accion = "desasignado";
+            accion = MoTextos.msg_role_unassigned;
             sql = "DELETE FROM usuarios_roles WHERE email_usuario = ? AND roles_id = ?;";
         }
         for (String correo : correoSeleccionados) {
             String sqlComprobar = "SELECT * FROM usuarios_roles WHERE email_usuario = ? AND roles_id = ?;";
             if (!bd.existeRegistro(sqlComprobar,
                     new ArrayList<>(Arrays.asList(correo, String.valueOf(rol.getId_roles()))))
-                    && accion.equalsIgnoreCase("asignado")) {
+                    && accion.equalsIgnoreCase(MoTextos.msg_role_assigned)) {
                 bd.ejecutarActualizacion(sql,
                         new ArrayList<>(Arrays.asList(correo, String.valueOf(rol.getId_roles()))));
             } else if (bd.existeRegistro(sqlComprobar,
                     new ArrayList<>(Arrays.asList(correo, String.valueOf(rol.getId_roles()))))
-                    && accion.equalsIgnoreCase("desasignado")) {
+                    && accion.equalsIgnoreCase(MoTextos.msg_role_unassigned)) {
                 bd.ejecutarActualizacion(sql,
                         new ArrayList<>(Arrays.asList(correo, String.valueOf(rol.getId_roles()))));
             } else {
                 JOptionPane.showMessageDialog(viCrearRol,
-                        "The user " + correo + " already has the role " + rol.getNombre_roles() + " " + accion);
+                        MoTextos.msg_role_already_status_prefix + correo + MoTextos.msg_role_already_status_middle
+                                + rol.getNombre_roles() + MoTextos.msg_role_already_status_suffix + accion);
             }
         }
     }

@@ -158,6 +158,11 @@ public class MoTextos {
 	// --- ROLES MESSAGES ---
 	public static String msg_role_name_empty = "The role name cannot be empty";
 	public static String msg_role_desc_empty = "The role description cannot be empty";
+	public static String msg_role_assigned = "assigned";
+	public static String msg_role_unassigned = "unassigned";
+	public static String msg_role_already_status_prefix = "The user ";
+	public static String msg_role_already_status_middle = " already has the role ";
+	public static String msg_role_already_status_suffix = " ";
 	public static String col_user = "User";
 	public static String col_email = "Email";
 	public static String col_roles = "Roles";
@@ -206,6 +211,18 @@ public class MoTextos {
 	public static String del_msg_confirm = "Are you sure you want to delete this user?";
 	public static String del_msg_success = "User deleted successfully";
 	public static String del_msg_error = "Error deleting user";
+
+	// --- LOGS FILTERS & CSV ---
+	public static String logs_filter_actions = " - Actions";
+	public static String logs_filter_users = " - Users";
+	public static String logs_filter_dates = " - Dates";
+	public static String logs_filter_results = " - Results";
+	public static String logs_csv_no_data = "There aren't logs registered in the database.";
+	public static String logs_csv_header = "Date,User,Action,Result";
+	public static String btn_log_actions = "By Actions";
+	public static String btn_log_users = "By Users";
+	public static String btn_log_dates = "By Dates";
+	public static String btn_log_results = "By Results";
 
 	// --- FILEMANAGER STRINGS ---
 	public static String msg_confirm_delete_file = "Do you want to delete the selected file?";
@@ -327,11 +344,14 @@ public class MoTextos {
 			btn_export = "Exportar";
 			btn_attach = "Adjuntar";
 
+			msg_role_name_empty = "El nombre del rol no puede estar vacío";
+			msg_role_desc_empty = "La descripción del rol no puede estar vacía";
+
 			roles_title_create = "Crear Rol";
 			roles_title_available = "Roles disponibles";
 			roles_btn_create = "Agregar Rol";
 			roles_lbl_name = "Nombre:";
-			roles_lbl_desc = "Descripci�n:";
+			roles_lbl_desc = "Descripción:";
 			roles_lbl_role = "Rol:";
 			roles_dialog_title = "Agregar Rol";
 			roles_btn_assign = "Asignar Rol";
@@ -351,6 +371,7 @@ public class MoTextos {
 			reg_lbl_pass = "Contrase�a:";
 			reg_lbl_conf_pass = "Confirmar Contrase�a:";
 			reg_btn_register = "Registrar";
+			msg_invalid_address_key = "Formato inválido para la Clave del Correo, debe ser: xxxx xxxx xxxx xxxx (todo en minúsculas)";
 
 			mail_title_inbox = "Bandeja de Entrada";
 			mail_btn_compose = "Redactar";
@@ -383,10 +404,15 @@ public class MoTextos {
 			msg_user_registered = "Usuario registrado correctamente";
 			msg_user_exists = "Ya existe un usuario con este nombre o correo";
 
+			msg_no_users_selected = "No hay usuarios seleccionados para eliminar.";
+			title_warning = "Advertencia";
+			msg_confirm_remove_prefix = "¿Está seguro de que desea eliminar ";
+			msg_confirm_remove_suffix = " usuario(s) de la Whitelist?";
+			title_confirm_removal = "Confirmar Eliminación";
 			msg_fill_email_name = "Por favor, llena los campos de Email y Nombre";
 			msg_user_exists_whitelist = "El usuario ya existe en la Whitelist";
-			msg_user_added_whitelist = "Usuario a�adido correctamente a la Whitelist";
-			msg_err_adding_user = "Error al a�adir usuario";
+			msg_user_added_whitelist = "Usuario añadido correctamente a la Whitelist";
+			msg_err_adding_user = "Error al añadir usuario";
 
 			msg_upload_success = "Archivo subido correctamente";
 			msg_upload_error = "Error al subir el archivo";
@@ -410,12 +436,25 @@ public class MoTextos {
 			mail_msg_sent_error_recipient = "El mensaje no pudo ser enviado; verifica la direcci�n del destinatario.";
 			mail_msg_attached_prefix = "Archivo adjuntado: ";
 
+			logs_filter_actions = " - Acciones";
+			logs_filter_users = " - Usuarios";
+			logs_filter_dates = " - Fechas";
+			logs_filter_results = " - Resultados";
+
+			logs_csv_no_data = "No hay logs registrados en la base de datos.";
+			logs_csv_header = "Fecha,Usuario,Acción,Resultado";
+
 			logs_title = "Registros";
 			logs_col_action = "Operaci�n";
 			logs_col_user = "Usuario";
 			logs_col_date = "Fecha";
 			logs_col_result = "Resultado";
 			logs_btn_export = "Exportar CSV";
+
+			btn_log_actions = "Por Acciones";
+			btn_log_users = "Por Usuarios";
+			btn_log_dates = "Por Fechas";
+			btn_log_results = "Por Resultados";
 			logs_dialog_save_title = "Guardar registros";
 
 			msg_confirm_delete_file = "�Quieres borrar el archivo seleccionado?";
@@ -446,21 +485,26 @@ public class MoTextos {
 			col_email = "Email";
 			col_roles = "Roles";
 			msg_no_roles = "Sin roles asignados";
+			msg_role_assigned = "asignado";
+			msg_role_unassigned = "desasignado";
+			msg_role_already_status_prefix = "El usuario ";
+			msg_role_already_status_middle = " ya tiene el rol ";
+			msg_role_already_status_suffix = " ";
 			col_id = "ID";
 			col_role = "Rol";
-			col_desc = "Descripci�n";
-			msg_saved_ok = "Guardado con �xito";
+			col_desc = "Descripcin";
+			msg_saved_ok = "Guardado con xito";
 			msg_save_error = "Error al guardar";
-			msg_updated_ok = "Actualizado con �xito";
+			msg_updated_ok = "Actualizado con xito";
 			msg_update_error = "Error al actualizar";
-			msg_confirm_delete = "�Est� seguro de que desea eliminar este registro?";
-			msg_deleted_ok = "Eliminado con �xito";
+			msg_confirm_delete = "Est seguro de que desea eliminar este registro?";
+			msg_deleted_ok = "Eliminado con xito";
 			msg_delete_error = "Error al eliminar";
 			gender_male = "Macho";
 			gender_female = "Hembra";
 
 		} else {
-			// --- INGL�S (DEFAULT) ---
+			// --- INGLS (DEFAULT) ---
 			app_title = "Zoo Manager";
 			login_title = "Login";
 			menu_title = "Main Menu";
@@ -556,6 +600,7 @@ public class MoTextos {
 			reg_lbl_pass = "Password:";
 			reg_lbl_conf_pass = "Confirm Password:";
 			reg_btn_register = "Register";
+			msg_invalid_address_key = "Invalid format for Address Key, it must be: xxxx xxxx xxxx xxxx (all in lowercase)";
 
 			mail_title_inbox = "Inbox";
 			mail_btn_compose = "Compose";
@@ -588,9 +633,14 @@ public class MoTextos {
 			msg_user_registered = "User registered correctly";
 			msg_user_exists = "User with this name or email already exists";
 
-			msg_fill_email_name = "Please fill in both Email and Name fields";
-			msg_user_exists_whitelist = "User with this email already exists in Whitelist";
-			msg_user_added_whitelist = "User added successfully to Whitelist";
+			msg_no_users_selected = "No users selected to remove.";
+			title_warning = "Warning";
+			msg_confirm_remove_prefix = "Are you sure you want to remove ";
+			msg_confirm_remove_suffix = " user(s) from Whitelist?";
+			title_confirm_removal = "Confirm Removal";
+			msg_fill_email_name = "Please fill in the Email and Name fields";
+			msg_user_exists_whitelist = "User already exists in Whitelist";
+			msg_user_added_whitelist = "User added to Whitelist successfully";
 			msg_err_adding_user = "Error adding user";
 
 			msg_upload_success = "File uploaded successfully";
@@ -608,11 +658,37 @@ public class MoTextos {
 			msg_select_folder = "Please select a folder";
 			msg_permission_denied_delete_folder = "You do not have permission to delete this folder";
 			msg_select_folder_not_file = "You must select a folder, not a file";
+			msg_permission_denied_rename = "You do not have permission to rename this file";
+
+			msg_confirm_delete_file = "Do you want to delete the selected file?";
+			msg_could_not_delete = "Could not be deleted...";
+			msg_confirm_delete_folder = "Do you want to delete the selected folder?";
+			msg_folder_not_empty = "The folder may not be empty.";
+			msg_could_not_create = "Could not be created...";
 
 			mail_msg_recipient_obligatory = "The recipient and the message body are obligatory";
 			mail_msg_sent_prefix = "Email successfully sent to ";
 			mail_msg_sent_error_recipient = "The message could not be sent; please check the recipient's email address.";
 			mail_msg_attached_prefix = "File attached: ";
+
+			title_select_upload = "Select the file to upload";
+			title_select_download = "Select where to download the file";
+			msg_enter_new_name = "Enter new name for the file:";
+			msg_invalid_name = "Invalid name.";
+			msg_rename_canceled = "Renaming canceled or invalid name.";
+
+			logs_filter_actions = " - Actions";
+			logs_filter_users = " - Users";
+			logs_filter_dates = " - Dates";
+			logs_filter_results = " - Results";
+
+			logs_csv_no_data = "There aren't logs registered in the database.";
+			logs_csv_header = "Date,User,Action,Result";
+
+			btn_log_actions = "By Actions";
+			btn_log_users = "By Users";
+			btn_log_dates = "By Dates";
+			btn_log_results = "By Results";
 
 			logs_title = "Logs";
 			logs_col_action = "Operation";
@@ -622,10 +698,27 @@ public class MoTextos {
 			logs_btn_export = "Export CSV";
 			logs_dialog_save_title = "Save logs";
 
+			title_crud_animals = "Serwo Management - Animals";
+			menu_species = "Species";
+			menu_enclosures = "Enclosures";
+			menu_caretakers = "Caretakers";
+			menu_animals = "Animals";
+			menu_transfers = "Transfers";
+			menu_species_enclosures = "Species-Enclosures";
+			menu_elements = "Elements";
+
+			msg_removed_prefix = "Removed ";
+			msg_removed_suffix = " users.";
+
 			col_user = "User";
 			col_email = "Email";
 			col_roles = "Roles";
 			msg_no_roles = "No roles assigned";
+			msg_role_assigned = "assigned";
+			msg_role_unassigned = "unassigned";
+			msg_role_already_status_prefix = "The user ";
+			msg_role_already_status_middle = " already has the role ";
+			msg_role_already_status_suffix = " ";
 			col_id = "ID";
 			col_role = "Role";
 			col_desc = "Description";
@@ -638,13 +731,8 @@ public class MoTextos {
 			msg_delete_error = "Error while deleting";
 			gender_male = "Male";
 			gender_female = "Female";
-
-			title_crud_animals = "Zoo Management - Animals";
-			menu_species = "Species";
-			menu_enclosures = "Enclosures";
-			menu_caretakers = "Caretakers";
-			menu_animals = "Animals";
-			menu_transfers = "Transfers";
+			msg_role_name_empty = "The role name cannot be empty";
+			msg_role_desc_empty = "The role description cannot be empty";
 		}
 	}
 }

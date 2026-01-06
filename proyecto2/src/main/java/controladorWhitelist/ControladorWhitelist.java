@@ -143,7 +143,13 @@ public class ControladorWhitelist {
      * Rellena la tabla de la whitelist con los datos de la base de datos.
      */
     public void rellenarTablaWhitelist() {
-        DefaultTableModel modelo = (DefaultTableModel) vistaWhitelist.getTabla().getTabla().getModel();
+        DefaultTableModel modelo = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        vistaWhitelist.getTabla().getTabla().setModel(modelo);
         modelo.setRowCount(0);
         modelo.setColumnCount(0);
         modelo.addColumn(MoTextos.whitelist_col_email);
