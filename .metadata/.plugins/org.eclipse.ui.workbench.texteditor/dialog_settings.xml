@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="hasShownOverlayPopupBefore" value="true"/>
+	<section name="java.lang.Class">
+		<item key="replaceBarOpen" value="true"/>
+		<list key="findhistory">
+			<item value="idPadre"/>
+			<item value="oyenteAR"/>
+			<item value="eliminar"/>
+			<item value="update"/>
+			<item value="correo"/>
+			<item value="Syste"/>
+			<item value="rellenar"/>
+			<item value="rellena"/>
+			<item value="rol"/>
+			<item value="boton"/>
+			<item value="VistaRegistroUsuarios.this"/>
+			<item value="direc"/>
+			<item value="user"/>
+			<item value="nombre"/>
+			<item value="system"/>
+		</list>
+		<list key="replacehistory">
+			<item value="vistaUsuario"/>
+		</list>
+	</section>
+</section>
